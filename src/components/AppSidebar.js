@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 
 import { AppSidebarNav } from './AppSidebarNav'
 
@@ -29,7 +28,7 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <img src={logo} height={35} style={{ textAlign: 'left' }} />
+        <img src={logo} height={35} style={{ textAlign: 'left' }} alt="Jameen Logo" />
         <p className="sidebar-brand-full"> Jameen </p>
       </CSidebarBrand>
       <CSidebarNav>

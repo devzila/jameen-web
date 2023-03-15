@@ -6,14 +6,14 @@ import {
   cilNewspaper,
   cilSettings,
   cilPeople,
-  cilGarage,
-  cilGroup,
-  cilCalculator,
+  cibViber,
   cilHouse,
   cilInstitution,
   cilSpeedometer,
+  cilWc,
+  cibLaunchpad,
 } from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import { CNavItem } from '@coreui/react'
 
 const _nav = [
   {
@@ -36,7 +36,7 @@ const _nav = [
     component: CNavItem,
     name: 'Residents',
     to: '/theme/typography',
-    icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilWc} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
@@ -58,7 +58,7 @@ const _nav = [
     component: CNavItem,
     name: 'Maintenance',
     href: 'https://coreui.io/react/docs/templates/installation/',
-    icon: <CIcon icon={cilGarage} customClassName="nav-icon" />,
+    icon: <CIcon icon={cibViber} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
@@ -70,7 +70,7 @@ const _nav = [
     component: CNavItem,
     name: 'Operations',
     href: 'https://coreui.io/react/docs/templates/installation/',
-    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+    icon: <CIcon icon={cibLaunchpad} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
@@ -83,6 +83,12 @@ const _nav = [
     name: 'Reports',
     href: 'https://coreui.io/react/docs/templates/installation/',
     icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Settings',
+    href: 'https://coreui.io/react/docs/templates/installation/',
+    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
   },
 ]
 

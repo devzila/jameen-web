@@ -1,17 +1,9 @@
 {
-  "name": "@coreui/coreui-free-react-admin-template",
-  "version": "4.4.0",
-  "description": "CoreUI Free React Admin Template",
+  "name": "Jameen",
+  "version": "0.0.1",
+  "description": "Jameen Admin Interface",
   "homepage": ".",
-  "bugs": {
-    "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:coreui/coreui-free-react-admin-template.git"
-  },
-  "license": "MIT",
-  "author": "The CoreUI Team (https://github.com/orgs/coreui/people)",
+  "author": "The Devzila Team (https://devzila.com)",
   "scripts": {
     "build": "react-scripts build",
     "changelog": "auto-changelog --starting-version 4.4.0 --commit-limit false --hide-credit",
