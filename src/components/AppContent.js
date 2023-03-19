@@ -10,7 +10,7 @@ const AppContent = () => {
   return (
     <CContainer lg>
       <Suspense fallback={<CSpinner color="primary" />}>
-        <ProtectedRoutes isSignedIn={false}>
+        <ProtectedRoutes>
           <Routes>
             {routes.map((route, idx) => {
               return (

@@ -1,13 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
-
 import routes from '../routes'
-
 import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
+import { AuthContext } from '../contexts/AuthContext'
 
 const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
-
+  const auth = useContext(AuthContext)
   const getRouteName = (pathname, routes) => {
     const currentRoute = routes.find((route) => route.path === pathname)
     return currentRoute ? currentRoute.name : false
@@ -40,7 +39,7 @@ const AppBreadcrumb = () => {
             {...(breadcrumb.active ? { active: true } : { href: breadcrumb.pathname })}
             key={index}
           >
-            {breadcrumb.name}
+            {`${breadcrumb.name}, ${auth},  ${process.env.REACT_APP_API_URL}`}
           </CBreadcrumbItem>
         )
       })}
