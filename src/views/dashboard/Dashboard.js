@@ -1,4 +1,5 @@
 import React from 'react'
+import { toast } from 'react-toastify'
 
 import {
   CAvatar,
@@ -177,6 +178,8 @@ const Dashboard = () => {
     },
   ]
 
+  const showToast = () => toast('Wow so easy!')
+
   return (
     <>
       <WidgetsDropdown />
@@ -190,7 +193,7 @@ const Dashboard = () => {
               <div className="small text-medium-emphasis">January - July 2021</div>
             </CCol>
             <CCol sm={7} className="d-none d-md-block">
-              <CButton color="primary" className="float-end">
+              <CButton color="primary" className="float-end" onClick={showToast}>
                 <CIcon icon={cilCloudDownload} />
               </CButton>
               <CButtonGroup className="float-end me-3">
