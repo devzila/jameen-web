@@ -29,25 +29,25 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Finance',
-    to: '/theme/colors',
+    to: '/finance',
     icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Residents',
-    to: '/theme/typography',
+    to: '/resident',
     icon: <CIcon icon={cilWc} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Units',
-    to: '/charts',
+    to: '/unit',
     icon: <CIcon icon={cilHouse} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Properties',
-    to: '/widgets',
+    to: '/property',
     icon: <CIcon icon={cilInstitution} customClassName="nav-icon" />,
     badge: {
       color: 'info',
@@ -57,37 +57,37 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Maintenance',
-    href: 'https://coreui.io/react/docs/templates/installation/',
+    to: '/maintenance',
     icon: <CIcon icon={cibViber} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Visitors',
-    href: 'https://coreui.io/react/docs/templates/installation/',
+    to: 'visitor',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Operations',
-    href: 'https://coreui.io/react/docs/templates/installation/',
+    to: 'operation',
     icon: <CIcon icon={cibLaunchpad} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'News/Posts',
-    href: 'https://coreui.io/react/docs/templates/installation/',
+    to: '/news',
     icon: <CIcon icon={cilNewspaper} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Reports',
-    href: 'https://coreui.io/react/docs/templates/installation/',
+    to: '/report',
     icon: <CIcon icon={cilBarChart} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Settings',
-    href: 'https://coreui.io/react/docs/templates/installation/',
+    to: 'settings',
     icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
   },
 ]
