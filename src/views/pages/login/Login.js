@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import {
   CButton,
@@ -16,7 +15,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-import { AuthContext, initialAuthState, reducer } from '../../../contexts/AuthContext'
+import { AuthContext } from '../../../contexts/AuthContext'
 
 const Login = () => {
   const { dispatch } = React.useContext(AuthContext)

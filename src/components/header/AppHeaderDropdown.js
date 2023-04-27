@@ -16,7 +16,6 @@ import {
   cilCommentSquare,
   cilEnvelopeOpen,
   cilFile,
-  cilLockLocked,
   cilExitToApp,
   cilSettings,
   cilTask,
