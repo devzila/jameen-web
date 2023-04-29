@@ -62,7 +62,15 @@ const Login = () => {
         })
       })
       .catch((error) => {
-        console.log(error)
+        if (!('json' in error)) {
+          toast('Unknown Error Occured. Server response not received.')
+          setData({
+            ...data,
+            isSubmitting: false,
+          })
+          return
+        }
+
         error.json().then((response) => {
           toast(response.message)
           setData({
