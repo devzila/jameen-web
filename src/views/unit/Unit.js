@@ -16,7 +16,7 @@ const Unit = () => {
         {getUnitsApi.error && <p>{getUnitsApi.error}</p>}
         <ul>
           {getUnitsApi.data?.map((unit) => (
-            <li key={unit.id}>{unit.title}</li>
+            <li key={unit.id}>{unit.name}</li>
           ))}
         </ul>
       </div>

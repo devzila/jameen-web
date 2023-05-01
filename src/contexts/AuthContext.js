@@ -10,7 +10,7 @@ export const reducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN':
       localStorage.setItem('user', JSON.stringify(action.payload.data.object))
-      localStorage.setItem('token', JSON.stringify(action.payload.data.token))
+      localStorage.setItem('token', action.payload.data.token)
       return {
         ...state,
         isAutheticated: true,
