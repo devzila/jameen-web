@@ -2,13 +2,21 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { toast } from 'react-toastify'
 
-const Msg = ({ closeToast, toastProps }) => (
-  <div>
-    Unable to connect with server. Your token either expired or invalid.
-    <br /> <button>Login Here</button> &nbsp;
-    <button onClick={closeToast}>Close</button>
-  </div>
-)
+const Msg = ({ closeToast, toastProps }) => {
+  const handleLogout = () => {
+    localStorage.clear()
+    window.location.href = '/'
+  }
+  return (
+    <div>
+      Unable to connect with server. Your token either expired or invalid.
+      <br />
+      <button onClick={handleLogout} className="btn btn-primary">
+        Login
+      </button>
+    </div>
+  )
+}
 
 export default (apiFunc) => {
   const [data, setData] = useState(null)
@@ -22,7 +30,7 @@ export default (apiFunc) => {
       setData(result.data.data.users)
     } catch (err) {
       setError(err.message || 'Unexpected Error!')
-      if (err.response.status == 401) {
+      if (err.response.status === 401) {
         toast(<Msg />)
       } else {
         toast('Unexpected Error!')
