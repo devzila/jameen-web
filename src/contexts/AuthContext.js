@@ -2,7 +2,7 @@ import { createContext } from 'react'
 export const AuthContext = createContext('')
 export const initialAuthState = {
   isAutheticated: localStorage.getItem('token') !== null,
-  user: localStorage.getItem('user'),
+  user: JSON.parse(localStorage.getItem('user')),
   token: localStorage.getItem('token'),
 }
 
