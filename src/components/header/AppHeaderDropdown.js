@@ -23,6 +23,7 @@ import {
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { AuthContext } from './../../contexts/AuthContext'
+import defaultAvatar from '../../assets/images/avatars/default.png'
 
 const AppHeaderDropdown = () => {
   const navigate = useNavigate()
@@ -38,7 +39,7 @@ const AppHeaderDropdown = () => {
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
         <CAvatar
-          src={state.user?.avatar?.path == null ? '/no-user.png' : state.user?.avatar?.path}
+          src={state.user?.avatar?.path == null ? defaultAvatar : state.user?.avatar?.path}
           size="md"
         />
       </CDropdownToggle>
