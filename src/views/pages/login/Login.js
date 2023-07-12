@@ -20,8 +20,8 @@ import { AuthContext } from '../../../contexts/AuthContext'
 const Login = () => {
   const { dispatch } = React.useContext(AuthContext)
   const initialState = {
-    email: 'admin',
-    password: 'root1234',
+    email: '',
+    password: '',
     isSubmitting: false,
     errorMessage: null,
   }
