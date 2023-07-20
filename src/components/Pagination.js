@@ -2,7 +2,7 @@ import React from 'react'
 import { CPagination, CPaginationItem } from '@coreui/react'
 import PropTypes from 'prop-types'
 
-const Pagination = ({ path, current, pageCount }) => {
+const Pagination = ({ current, pageCount }) => {
   const accommodatableLimit = 10
   const trailItemsCount = 2
   let trailingLabel = ''

@@ -30,7 +30,7 @@ export default (apiFunc) => {
       setData(result.data.data.users)
     } catch (err) {
       setError(err.message || 'Unexpected Error!')
-      if (err.response.status === 401) {
+      if (err?.response?.status === 401) {
         toast(<Msg />)
       } else {
         toast('Unexpected Error!')

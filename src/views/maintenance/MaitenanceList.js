@@ -24,9 +24,9 @@ const MaintenanceList = ({ listData }) => {
       <CTableBody>
         {listData.map((o, i) => (
           <CTableRow key={i}>
-            <CTableDataCell>{i}</CTableDataCell>
-            <CTableDataCell>{o.a}</CTableDataCell>
-            <CTableDataCell></CTableDataCell>
+            <CTableDataCell>{o.id}</CTableDataCell>
+            <CTableDataCell>{o.description}</CTableDataCell>
+            <CTableDataCell>{o.category.name}</CTableDataCell>
             <CTableDataCell></CTableDataCell>
             <CTableDataCell></CTableDataCell>
           </CTableRow>
