@@ -20,7 +20,7 @@ const Maintenance = () => {
   useEffect(() => {
     setLoading(true)
     apiClient
-      .get(`/v1/admin/maintenance/requests/?page=1`)
+      .get(`/v1/admin/maintenance/requests/?page=${currentPage}`)
       .then((response) => {
         Array.isArray(response.data.data.requests)
           ? setData(response.data.data)

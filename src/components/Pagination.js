@@ -6,8 +6,12 @@ const Pagination = ({ current, pageCount }) => {
   const accommodatableLimit = 10
   const trailItemsCount = 2
   let trailingLabel = ''
+  const handlePageClick = (page) => {
+    alert(page)
+  }
+
   return (
-    <CPagination aria-label="Page navigation example">
+    <CPagination>
       {current > 1 && (
         <CPaginationItem aria-label="Previous">
           <span aria-hidden="true">&laquo;</span>
@@ -15,7 +19,13 @@ const Pagination = ({ current, pageCount }) => {
       )}
       {[...Array(Math.min(pageCount, accommodatableLimit))].map((x, i) => (
         <CPaginationItem key={i} {...(i + 1 == current ? { active: true } : {})}>
-          {i + 1}
+          <a
+            onClick={() => {
+              handlePageClick(2)
+            }}
+          >
+            {i + 1}
+          </a>
         </CPaginationItem>
       ))}
       {pageCount > accommodatableLimit &&
@@ -28,7 +38,12 @@ const Pagination = ({ current, pageCount }) => {
           </CPaginationItem>
         ))}
       {current < pageCount && (
-        <CPaginationItem aria-label="Next">
+        <CPaginationItem
+          aria-label="Next"
+          onClick={() => {
+            handlePageClick(2)
+          }}
+        >
           <span aria-hidden="true">&raquo;</span>
         </CPaginationItem>
       )}

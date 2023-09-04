@@ -15,7 +15,7 @@ const MaintenanceList = ({ listData }) => {
       <CTableHead>
         <CTableRow>
           <CTableHeaderCell scope="col">#</CTableHeaderCell>
-          <CTableHeaderCell scope="col">Unit</CTableHeaderCell>
+          <CTableHeaderCell scope="col">Description</CTableHeaderCell>
           <CTableHeaderCell scope="col">Category</CTableHeaderCell>
           <CTableHeaderCell scope="col">Other Details</CTableHeaderCell>
           <CTableHeaderCell scope="col">Status</CTableHeaderCell>
