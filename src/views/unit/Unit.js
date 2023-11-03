@@ -13,7 +13,6 @@ function Unit() {
     getUnitsApi.request()
   }, [])
 
-
   const [units, setUnits] = useState([])
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
