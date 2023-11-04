@@ -23,7 +23,6 @@ function Unit() {
 
   async function loadInitialUnits() {
     const initialUnits = await get(`/v1/admin/premises/properties/1/units?page=${currentPage}`)
-
     if (response.ok) {
       setUnits(initialUnits.data.units)
       setPagination(initialUnits.data.pagination)
@@ -51,7 +50,6 @@ function Unit() {
                   <thead>
                     <tr>
                       <th className="border-0">Unit_no</th>
-                      <th className="border-0">Unit_Type</th>
                       <th className="border-0">Bedroom No</th>
                       <th className="border-0">Bathroom No</th>
                       <th className="border-0">Parking</th>
@@ -62,10 +60,9 @@ function Unit() {
                     </tr>
                   </thead>
                   <tbody>
-                    {getUnitsApi.data?.map((unit) => (
+                    {units.map((unit) => (
                       <tr key={unit.id}>
                         <td>{unit.unit_no}</td>
-                        <td>{unit.unit_type_id}</td>
                         <td>{unit.bedrooms_number}</td>
                         <td>{unit.bathrooms_number}</td>
                         <td>{unit.has_parking}</td>
@@ -100,4 +97,4 @@ function Unit() {
   )
 }
 
-export default Unit
+export default Unit;
