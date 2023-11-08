@@ -1,58 +1,40 @@
 import React from 'react'
-import { CPagination, CPaginationItem } from '@coreui/react'
+import ReactPaginate from 'react-paginate'
 import PropTypes from 'prop-types'
 
-const Pagination = ({ current, pageCount }) => {
-  const accommodatableLimit = 10
-  const trailItemsCount = 2
-  let trailingLabel = ''
-  const handlePageClick = (page) => {
-    alert(page)
-  }
-
+export default function Paginate({
+  forcePage,
+  pageCount,
+  pageRangeDisplayed,
+  onPageChange,
+}) {
   return (
-    <CPagination>
-      {current > 1 && (
-        <CPaginationItem aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </CPaginationItem>
-      )}
-      {[...Array(Math.min(pageCount, accommodatableLimit))].map((x, i) => (
-        <CPaginationItem key={i} {...(i + 1 == current ? { active: true } : {})}>
-          <a
-            onClick={() => {
-              handlePageClick(2)
-            }}
-          >
-            {i + 1}
-          </a>
-        </CPaginationItem>
-      ))}
-      {pageCount > accommodatableLimit &&
-        [...Array(Math.min(pageCount - accommodatableLimit, trailItemsCount + 1))].map((x, i) => (
-          <CPaginationItem
-            key={pageCount - trailItemsCount + i}
-            {...(pageCount - trailItemsCount + i == current ? { active: true } : {})}
-          >
-            {pageCount - trailItemsCount + i}
-          </CPaginationItem>
-        ))}
-      {current < pageCount && (
-        <CPaginationItem
-          aria-label="Next"
-          onClick={() => {
-            handlePageClick(2)
-          }}
-        >
-          <span aria-hidden="true">&raquo;</span>
-        </CPaginationItem>
-      )}
-    </CPagination>
+    <ReactPaginate
+      breakLabel="..."
+      nextLabel="next >"
+      breakClassName="page-item"
+      breakLinkClassName="page-link"
+      containerClassName="pagination justify-content-center"
+      pageClassName="page-item"
+      pageLinkClassName="page-link"
+      previousClassName="page-item"
+      previousLinkClassName="page-link"
+      nextClassName="page-item"
+      nextLinkClassName="page-link"
+      activeClassName="active"
+      onPageChange={onPageChange}
+      pageRangeDisplayed={pageRangeDisplayed}
+      pageCount={pageCount}
+      previousLabel="< previous"
+      renderOnZeroPageCount={null}
+      forcePage={forcePage}
+    />
   )
 }
-Pagination.propTypes = {
-  path: PropTypes.string,
-  current: PropTypes.number,
-  pageCount: PropTypes.number,
+
+Paginate.propTypes = {
+  forcePage: PropTypes.number.isRequired,
+  pageCount: PropTypes.number.isRequired,
+  pageRangeDisplayed: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
 }
-export default Pagination
