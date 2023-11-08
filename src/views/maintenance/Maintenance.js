@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Pagination from 'src/components/Pagination'
 import MaintenanceList from './MaitenanceList'
-import apiClient from './../../api/client'
 
 const Maintenance = () => {
   //const [listData, setListData] = useState([{ a: 'a' }, { a: 'b' }])
@@ -19,19 +18,6 @@ const Maintenance = () => {
 
   useEffect(() => {
     setLoading(true)
-    apiClient
-      .get(`/v1/admin/maintenance/requests/?page=${currentPage}`)
-      .then((response) => {
-        Array.isArray(response.data.data.requests)
-          ? setData(response.data.data)
-          : setError('Invalid API response')
-      })
-      .catch((error) => {
-        setError(error.message)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
   }, [currentPage])
 
   return (

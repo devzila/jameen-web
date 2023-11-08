@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
-import useApi from '../../hooks/useApi'
-import { getUnits } from './../../api/unit'
 import { Container, Row, Col, Card, Table } from 'react-bootstrap'
 import Pagination from 'src/components/Pagination'
 
 function Unit() {
   const { get, response } = useFetch()
-  const getUnitsApi = useApi(getUnits)
 
-  useEffect(() => {
-    getUnitsApi.request()
-  }, [])
+  useEffect(() => {}, [])
 
   const [units, setUnits] = useState([])
   const [pagination, setPagination] = useState(null)
@@ -35,9 +30,6 @@ function Unit() {
 
   return (
     <>
-      {getUnitsApi.loading && <p>Posts are loading!</p>}
-      {getUnitsApi.error && <p>{getUnitsApi.error}</p>}
-
       <Container fluid>
         <Row>
           <Col md="12">
@@ -97,4 +89,4 @@ function Unit() {
   )
 }
 
-export default Unit;
+export default Unit
