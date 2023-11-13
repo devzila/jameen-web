@@ -1,13 +1,7 @@
 import React from 'react'
 import ReactPaginate from 'react-paginate'
 import PropTypes from 'prop-types'
-
-export default function Paginate({
-  forcePage,
-  pageCount,
-  pageRangeDisplayed,
-  onPageChange,
-}) {
+export default function Paginate({ forcePage, pageCount, pageRangeDisplayed, onPageChange }) {
   return (
     <ReactPaginate
       breakLabel="..."

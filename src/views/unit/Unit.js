@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
-import { Container, Row, Col, Card, Table } from 'react-bootstrap'
 import { BsThreeDots } from 'react-icons/bs'
 import { Container, Row, Button, Col, Card, Table } from 'react-bootstrap'
 import Pagination from 'src/components/Pagination'
