@@ -6,7 +6,7 @@ import { Container, Row, Button, Col, Card, Table } from 'react-bootstrap'
 import Pagination from 'src/components/Pagination'
 import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from '../../components/CustomDivToggle'
-import Search from '../search/search'
+import Search from '../component/search'
 
 function Unit() {
   const { get, response } = useFetch()
@@ -14,22 +14,22 @@ function Unit() {
   useEffect(() => {}, [])
 
   const [units, setUnits] = useState([])
-  const [filteredUnits, setFilteredUnits] = useState([])
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [searchKeyword, setSearchKeyword] = useState('')
 
   useEffect(() => {
+    console.log(`Rendering List with keyword= ${searchKeyword}`)
     loadInitialUnits()
-  }, [currentPage])
+  }, [currentPage, searchKeyword])
 
-  async function loadInitialUnits(searchTerm = '') {
-    const endpoint = `/v1/admin/premises/properties/1/units?page=${currentPage}&search=${searchTerm}`
+  async function loadInitialUnits() {
+    const endpoint = `/v1/admin/premises/properties/1/units?page=${currentPage}&search=${searchKeyword}`
     const initialUnits = await get(endpoint)
 
     if (response.ok) {
       setUnits(initialUnits.data.units)
       setPagination(initialUnits.data.pagination)
-      filterUnits(searchTerm, initialUnits.data.units)
     }
   }
 
@@ -41,23 +41,15 @@ function Unit() {
     loadInitialUnits(searchTerm)
   }
 
-  const filterUnits = (term, unitList) => {
-    const filtered = unitList.filter(
-      (unit) =>
-      unit.unit_no.toLowerCase().includes(term.toLowerCase()) ||
-      (typeof unit.bedrooms_number === 'string' && unit.bedrooms_number.toLowerCase().includes(term.toLowerCase())) ||
-      (typeof unit.bathrooms_number === 'string' && unit.bathrooms_number.toLowerCase().includes(term.toLowerCase())) ||
-      String(unit.has_parking).toLowerCase().includes(term.toLowerCase()) ||
-      (typeof unit.year_built === 'string' && unit.year_built.toLowerCase().includes(term.toLowerCase())) ||
-      unit.status.toLowerCase().includes(term.toLowerCase())
-
-    )
-    setFilteredUnits(filtered)
-  }
-
   return (
     <>
       <Container fluid>
+        <Row>
+          <Col md="12" className="align-right">
+            <Search listner={setSearchKeyword} />
+          </Col>
+        </Row>
+        <br />
         <Row>
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
@@ -66,8 +58,7 @@ function Unit() {
                   <Col md="8">
                     <Card.Title as="h4"> Units </Card.Title>
                   </Col>
-                  <Col md="4" className="align-right">
-                    <Search onSearch={handleSearch} />
+                  <Col md="4">
                     <Button>Add Units</Button>
                   </Col>
                 </Row>
@@ -86,7 +77,7 @@ function Unit() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredUnits.map((unit) => (
+                    {units.map((unit) => (
                       <tr key={unit.id}>
                         <td>{unit.unit_no}</td>
                         <td>{unit.bedrooms_number}</td>

@@ -8,7 +8,7 @@ import CustomDivToggle from '../../components/CustomDivToggle'
 function News() {
   const { get, response } = useFetch()
 
-  useEffect(() => { }, [])
+  useEffect(() => {}, [])
 
   const [posts, setPosts] = useState([])
   const [pagination, setPagination] = useState(null)
@@ -105,6 +105,5 @@ function News() {
     </>
   )
 }
-
 
 export default News
