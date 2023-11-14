@@ -54,7 +54,7 @@ function Property() {
         property.invoice_overdue_days.toString().includes(term) ||
         property.overdue_charge_amount.toString().includes(term) ||
         property.payment_term.toLowerCase().includes(term.toLowerCase()) ||
-        property.invoice_day.toString().includes(term)
+        property.invoice_day.toString().includes(term),
     )
     setFilteredProperties(filtered)
   }

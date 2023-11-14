@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-
-const Search = ({ onSearch }) => {
+const Search = ({ listner }) => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearch = () => {
-    onSearch(searchTerm)
+    listner(searchTerm)
   }
 
   const handleKeyPress = (e) => {
@@ -24,9 +23,13 @@ const Search = ({ onSearch }) => {
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyPress={handleKeyPress}
       />
-      <button onClick={handleSearch}>Search</button>
+      &nbsp;<button onClick={handleSearch}>Search</button>
     </div>
   )
+}
+
+Search.propTypes = {
+  listner: PropTypes.any,
 }
 
 export default Search
