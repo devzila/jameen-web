@@ -99,6 +99,7 @@ function Property() {
                   <tbody>
                     {filteredProperties.map((property) => (
                       <tr key={property.id}>
+                        <td>{property.id}</td>
                         <td>{property.name}</td>
                         <td>{property.address}</td>
                         <td>{property.city}</td>
