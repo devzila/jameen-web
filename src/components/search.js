@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Search = ({ listner }) => {
+const Search = ({ listener }) => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearch = () => {
-    listner(searchTerm)
+    listener(searchTerm)
   }
 
   const handleKeyPress = (e) => {
@@ -29,7 +29,7 @@ const Search = ({ listner }) => {
 }
 
 Search.propTypes = {
-  listner: PropTypes.any,
+  listener: PropTypes.func,
 }
 
 export default Search
