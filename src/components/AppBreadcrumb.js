@@ -1,22 +1,17 @@
 import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
-import routes from '../routes'
 import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
 import { AuthContext } from '../contexts/AuthContext'
 
 const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
   const auth = useContext(AuthContext)
-  const getRouteName = (pathname, routes) => {
-    const currentRoute = routes.find((route) => route.path === pathname)
-    return currentRoute ? currentRoute.name : false
-  }
 
   const getBreadcrumbs = (location) => {
     const breadcrumbs = []
     location.split('/').reduce((prev, curr, index, array) => {
       const currentPathname = `${prev}/${curr}`
-      const routeName = getRouteName(currentPathname, routes)
+      const routeName = currentPathname
       routeName &&
         breadcrumbs.push({
           pathname: currentPathname,

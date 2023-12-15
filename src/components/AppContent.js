@@ -3,27 +3,34 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { CContainer, CSpinner } from '@coreui/react'
 
 // routes config
-import routes from '../routes'
+const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
+const Finance = React.lazy(() => import('../views/finance/Finance'))
+const Resident = React.lazy(() => import('../views/resident/Resident'))
+const Unit = React.lazy(() => import('../views/unit/Unit'))
+const Property = React.lazy(() => import('../views/property/Property'))
+const Maintenance = React.lazy(() => import('../views/maintenance/Maintenance'))
+const Visitor = React.lazy(() => import('../views/visitor/Visitor'))
+const Operation = React.lazy(() => import('../views/operation/Operation'))
+const News = React.lazy(() => import('../views/news/News'))
+const Report = React.lazy(() => import('../views/report/Report'))
+const Settings = React.lazy(() => import('../views/settings/Settings'))
 
 const AppContent = () => {
   return (
     <CContainer lg>
       <Suspense fallback={<CSpinner color="primary" />}>
         <Routes>
-          {routes.map((route, idx) => {
-            return (
-              route.element && (
-                <Route
-                  key={idx}
-                  path={route.path}
-                  exact={route.exact}
-                  name={route.name}
-                  element={<route.element />}
-                />
-              )
-            )
-          })}
-          <Route path="/" element={<Navigate to="dashboard" replace />} />
+          <Route path="/" exact={true} name="Dashboard" element={<Dashboard />} />
+          <Route path="/finance" name="Finance" element={<Finance />} />
+          <Route path="/resident" name="Resident" element={<Resident />} />
+          <Route path="/unit" name="Unit" element={<Unit />} />
+          <Route path="/property" name="Property" element={<Property />} />
+          <Route path="/maintenance" name="Maintenance" element={<Maintenance />} />
+          <Route path="/visitor" name="Visitor" element={<Visitor />} />
+          <Route path="/operation" name="Operation" element={<Operation />} />
+          <Route path="/news" name="News" element={<News />} />
+          <Route path="/report" name="Report" element={<Report />} />
+          <Route path="/settings" name="Settings" element={<Settings />} />
         </Routes>
       </Suspense>
     </CContainer>

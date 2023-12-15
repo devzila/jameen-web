@@ -114,7 +114,6 @@ coreui-free-react-admin-template
 │   ├── App.js
 │   ├── ...
 │   ├── index.js
-│   ├── routes.js    # routes config
 │   └── store.js     # template state example 
 │
 └── package.json
