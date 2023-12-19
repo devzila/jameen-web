@@ -13,7 +13,10 @@ const Visitor = React.lazy(() => import('../views/visitor/Visitor'))
 const Operation = React.lazy(() => import('../views/operation/Operation'))
 const News = React.lazy(() => import('../views/news/News'))
 const Report = React.lazy(() => import('../views/report/Report'))
-const Settings = React.lazy(() => import('../views/settings/Settings'))
+const Settings = React.lazy(() => import('../views/settings/Index'))
+const Page404 = React.lazy(() => import('../views/Page404'))
+const User = React.lazy(() => import('../views/settings/User'))
+const Role = React.lazy(() => import('../views/settings/Role'))
 
 const AppContent = () => {
   return (
@@ -30,7 +33,11 @@ const AppContent = () => {
           <Route path="/operation" name="Operation" element={<Operation />} />
           <Route path="/news" name="News" element={<News />} />
           <Route path="/report" name="Report" element={<Report />} />
-          <Route path="/settings" name="Settings" element={<Settings />} />
+          <Route path="settings" name="Settings" element={<Settings />}>
+            <Route path="users" name="User" element={<User />} />
+            <Route path="roles" name="Role" element={<Role />} />
+          </Route>
+          <Route path="*" element={<Page404 />} />
         </Routes>
       </Suspense>
     </CContainer>
