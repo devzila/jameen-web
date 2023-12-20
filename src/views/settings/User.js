@@ -22,12 +22,11 @@ export default function User() {
       setUser_properties(initialUser.data.users.assigned_properties)
       console.log(user_properties)
     }
-  
   }
   return (
     <>
       <UserForm />
-      <Container fluid >
+      <Container fluid>
         <Row>
           <Col md="12">
             <Card className="strpied-tabled-with-hover ">
@@ -49,7 +48,7 @@ export default function User() {
                       <th className="border-0">EMAIL</th>
                       <th className="border-0">MOBILE NO.</th>
                       <th className="border-0">Role</th>
-                      <th className="border-0">Assigned Properties</th> 
+                      <th className="border-0">Assigned Properties</th>
                     </tr>
                   </thead>
 
@@ -61,7 +60,6 @@ export default function User() {
                         <td>{User.mobile_number}</td>
                         <td>{User.role.name}</td>
                         <td></td>
-
                       </tr>
                     ))}
                   </tbody>
