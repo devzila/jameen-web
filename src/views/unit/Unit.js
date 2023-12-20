@@ -6,7 +6,7 @@ import { Container, Row, Button, Col, Card, Table } from 'react-bootstrap'
 import Pagination from 'src/components/Pagination'
 import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from '../../components/CustomDivToggle'
-// import Search from '../component/search'
+import Search from '../../components/Search'
 
 function Unit() {
   const { get, response } = useFetch()
@@ -24,12 +24,13 @@ function Unit() {
   }, [currentPage, searchKeyword])
 
   async function loadInitialUnits() {
-    const endpoint = `/v1/admin/premises/properties/1/units?page=${currentPage}&search=${searchKeyword}`
+    const endpoint = `/v1/admin/premises/properties/1/units?page=${currentPage}?q[unit_id_eq]=${searchKeyword}`
     const initialUnits = await get(endpoint)
 
     if (response.ok) {
       setUnits(initialUnits.data.units)
       setPagination(initialUnits.data.pagination)
+      setSearchKeyword(initialUnits.data.search)
     }
   }
 
@@ -55,6 +56,7 @@ function Unit() {
                 <Row>
                   <Col md="8">
                     <Card.Title as="h4"> Units </Card.Title>
+                    <Search listener={handleSearch} />
                   </Col>
                   <Col md="4">
                     <Button>Add Units</Button>

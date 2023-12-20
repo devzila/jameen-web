@@ -6,7 +6,7 @@ import { Container, Row, Button, Col, Card, Table } from 'react-bootstrap'
 import Pagination from 'src/components/Pagination'
 import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from '../../components/CustomDivToggle'
-import Search from 'src/components/search'
+import Search from 'src/components/Search'
 
 function Property() {
   const { get, response } = useFetch()

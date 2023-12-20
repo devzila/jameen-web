@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Button, Col, Card, Table } from 'react-bootstrap'
 import useFetch from 'use-http'
-import UserModal from './UserModal'
 
 export default function User() {
   const { get, response } = useFetch()
