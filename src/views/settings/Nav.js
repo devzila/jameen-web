@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import User from './User'
 
@@ -12,22 +12,22 @@ export default function Nav({ children }) {
       <div className="new-settings-menu">
         <div className="menu-list">
           <div>
-            <Link to="/settings/roles">Role</Link>
+            <NavLink to="/settings/roles"> Role </NavLink>
           </div>
           <div>
-            <Link to="/settings/users">User</Link>
+            <NavLink to="/settings/users">User</NavLink>
           </div>
           <div>
-            <Link to="/setting/allotment"> Allotment </Link>
+            <NavLink to="/setting/allotment"> Allotment </NavLink>
           </div>
           <div>
-            <Link to="/setting/moving-out"> Moving Out </Link>
+            <NavLink to="/setting/moving-out"> Moving Out </NavLink>
           </div>
           <div>
-            <Link to="/setting/integrations"> Integrations </Link>
+            <NavLink to="/setting/integrations"> Integrations </NavLink>
           </div>
           <div>
-            <Link to="/setting/workflow_settings"> Workflow </Link>
+            <NavLink to="/setting/workflow_settings"> Workflow </NavLink>
           </div>
         </div>
       </div>
