@@ -17,6 +17,9 @@ const Settings = React.lazy(() => import('../views/settings/Index'))
 const Page404 = React.lazy(() => import('../views/Page404'))
 const User = React.lazy(() => import('../views/settings/User'))
 const Role = React.lazy(() => import('../views/settings/Role'))
+const MovingOut = React.lazy(() => import('../views/settings/MovingOut'))
+
+const Allotment = React.lazy(() => import('../views/settings/Allotment'))
 
 const AppContent = () => {
   return (
@@ -36,6 +39,8 @@ const AppContent = () => {
           <Route path="/settings/*" name="Settings" element={<Settings />}>
             <Route path="users" name="User" element={<User />} />
             <Route path="roles" name="Role" element={<Role />} />
+            <Route path="allotment" name="Allotment" element={<Allotment />} />
+            <Route path="moving-out" name="Moving Out" element={<MovingOut />} />
           </Route>
           <Route path="*" element={<Page404 />} />
         </Routes>

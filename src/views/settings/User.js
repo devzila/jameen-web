@@ -7,6 +7,7 @@ import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import { Link, useParams } from 'react-router-dom'
+import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 
 // react-bootstrap components
 import { Badge, Button, Card, Navbar, Nav, Table, Container, Row, Col } from 'react-bootstrap'
@@ -38,81 +39,98 @@ function Index() {
   }
 
   return (
-    <>
+    <div>
       {error && error.Error}
       {loading && 'Loading...'}
+      <section style={{ width: '100%', padding: '0px' }}>
+        <CNavbar expand="lg" colorScheme="light" className="bg-light">
+          <CContainer fluid>
+            <CNavbarBrand href="#">User</CNavbarBrand>
+            {/* <CButton color="success" variant="outline">
+            Actions
+          </CButton> */}
+            <CForm className="d-flex">
+              <CFormInput type="search" className="me-2" placeholder="Search" />
+              <CButton type="submit" color="success" variant="outline">
+                Search
+              </CButton>
+            </CForm>
+          </CContainer>
+        </CNavbar>
+        <div>
+          <div className="mask d-flex align-items-center h-100">
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-12">
+                  <div className="table-responsive bg-white">
+                    <table className="table mb-0">
+                      <thead
+                        style={{
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          overFlow: 'hidden',
+                        }}
+                      >
+                        <tr>
+                          <th className="border-0">Name</th>
+                          <th className="border-0">Email</th>
+                          <th className="border-0">Phone Number</th>
+                          <th className="border-0">Username</th>
+                          <th className="border-0">Role ID</th>
+                          <th className="border-0">Assigned Properties</th>
+                          <th className="border-0">Action </th>
+                        </tr>
+                      </thead>
 
-      <Container className="container-fluid">
-        <Row>
-          <Col md="12">
-            <Card className="table">
-              <Card.Header>
-                <Row>
-                  <Col md="12">
-                    <Card.Title as="h4"> Users </Card.Title>
-                    <p className="card-category">List of Users </p>
-                  </Col>
-                  <Col md="4" className="align-right">
-                    <Button onClick={addUser}>Add User</Button>
-                  </Col>
-                </Row>
-              </Card.Header>
-              <Card.Body className="table-full-width table-responsive px-0">
-                <Table className="table">
-                  <thead>
-                    <tr>
-                      <th className="border-0">Name</th>
-                      <th className="border-0">Email</th>
-                      <th className="border-0">Phone Number</th>
-                      <th className="border-0">Username</th>
-                      <th className="border-0">Role ID</th>
-                      <th className="border-0">Assigned Properties</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users.map((user) => (
-                      <tr key={user.id}>
-                        <td>{user.name}</td>
-                        <td>{user.email}</td>
-                        <td>{user.mobile_number}</td>
-                        <td>{user.username}</td>
-                        <td>{user.role.name}</td>
-                        <td>
-                          <AssignedPropertiesPop prop={user.assigned_properties} />
-                        </td>
+                      <tbody>
+                        {users.map((user) => (
+                          <tr key={user.id}>
+                            <th scope="row" style={{ color: '#666666' }}>
+                              {user.name}
+                            </th>
+                            <td>{user.email}</td>
+                            <td>{user.mobile_number}</td>
+                            <td>{user.username}</td>
+                            <td>{user.role.name}</td>
+                            <td>
+                              <AssignedPropertiesPop prop={user.assigned_properties} />
+                            </td>
 
-                        <td>
-                          <Dropdown key={user.id}>
-                            <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                              <BsThreeDots />
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                              <Dropdown.Item
-                                key={`edit-${user.id}`}
-                                as={Link}
-                                to={`/companies/${companyId}/users/${user.id}/edit`}
-                              >
-                                Edit
-                              </Dropdown.Item>
+                            <td>
+                              <Dropdown key={user.id}>
+                                <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
+                                  <BsThreeDots />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  <Dropdown.Item
+                                    key={`edit-${user.id}`}
+                                    as={Link}
+                                    to={`/companies/${companyId}/users/${user.id}/edit`}
+                                  >
+                                    Edit
+                                  </Dropdown.Item>
 
-                              <Dropdown.Item
-                                key={`user-show-${user.id}`}
-                                as={Link}
-                                to={`/companies/${companyId}/users/${user.id}`}
-                              >
-                                User Show
-                              </Dropdown.Item>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+                                  <Dropdown.Item
+                                    key={`user-show-${user.id}`}
+                                    as={Link}
+                                    to={`/companies/${companyId}/users/${user.id}`}
+                                  >
+                                    User Show
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br></br>
         <Row>
           <Col md="12">
             {pagination ? (
@@ -127,8 +145,8 @@ function Index() {
             )}
           </Col>
         </Row>
-      </Container>
-    </>
+      </section>
+    </div>
   )
 }
 
