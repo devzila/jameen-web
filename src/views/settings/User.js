@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import Paginate from '../../components/Pagination'
+import AssignedPropertiesPop from 'src/components/AssignedPropertiesPop'
 import { useNavigate } from 'react-router-dom'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown } from 'react-bootstrap'
@@ -77,7 +78,7 @@ function Index() {
                         <td>{user.username}</td>
                         <td>{user.role.name}</td>
                         <td>
-                          {user.assigned_properties.map((property) => property.name).join(', ')}
+                          <AssignedPropertiesPop prop={user.assigned_properties} />
                         </td>
                         <td>
                           <Dropdown key={user.id}>

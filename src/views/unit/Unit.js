@@ -6,7 +6,7 @@ import Pagination from 'src/components/Pagination'
 import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import Search from '../../components/Search'
-import '../../scss/unit.scss'
+// import '../../scss/unit.scss'
 
 function Unit() {
   const { get, response } = useFetch()
@@ -67,7 +67,7 @@ function Unit() {
                 </Row>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
-                <Table className="table-hover table-striped custom-table">
+                <Table className="table-hover table-striped custom-table overflow-hidden">
                   <thead>
                     <tr>
                       <th className="border-0">Unit Number</th>
