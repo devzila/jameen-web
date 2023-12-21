@@ -80,6 +80,7 @@ function Index() {
                         <td>
                           <AssignedPropertiesPop prop={user.assigned_properties} />
                         </td>
+
                         <td>
                           <Dropdown key={user.id}>
                             <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
