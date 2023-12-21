@@ -6,7 +6,7 @@ import Pagination from 'src/components/Pagination'
 import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import Search from '../../components/Search'
-// import '../../scss/unit.scss'
+import '../../scss/unit.scss'
 
 function Unit() {
   const { get, response } = useFetch()

@@ -107,3 +107,40 @@
   color: #00bfcc;
   border-bottom-color: #00bfcc;
 }
+
+.full-page-container {
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+}
+
+.card-container {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.custom-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.custom-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
