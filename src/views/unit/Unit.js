@@ -1,4 +1,3 @@
-// Unit.js
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import { BsThreeDots } from 'react-icons/bs'
@@ -7,6 +6,7 @@ import Pagination from 'src/components/Pagination'
 import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import Search from '../../components/Search'
+import '../../scss/unit.scss'
 
 function Unit() {
   const { get, response } = useFetch()
@@ -19,18 +19,21 @@ function Unit() {
   const [searchKeyword, setSearchKeyword] = useState('')
 
   useEffect(() => {
-    console.log(`Rendering List with keyword= ${searchKeyword}`)
     loadInitialUnits()
   }, [currentPage, searchKeyword])
 
   async function loadInitialUnits() {
-    const endpoint = `/v1/admin/premises/properties/1/units?page=${currentPage}?q[unit_id_eq]=${searchKeyword}`
+    let endpoint = `/v1/admin/premises/properties/1/units?page=${currentPage}`
+
+    if (searchKeyword) {
+      endpoint += `&q[unit_no_eq]=${searchKeyword}`
+    }
+
     const initialUnits = await get(endpoint)
 
     if (response.ok) {
       setUnits(initialUnits.data.units)
       setPagination(initialUnits.data.pagination)
-      setSearchKeyword(initialUnits.data.search)
     }
   }
 
@@ -39,19 +42,19 @@ function Unit() {
   }
 
   const handleSearch = (searchTerm) => {
-    loadInitialUnits(searchTerm)
+    setSearchKeyword(searchTerm)
   }
 
   return (
     <>
-      <Container fluid>
+      <Container fluid className="full-width-container">
         <Row>
           <Col md="12" className="align-right"></Col>
         </Row>
         <br />
         <Row>
           <Col md="12">
-            <Card className="strpied-tabled-with-hover">
+            <Card className="strpied-tabled-with-hover custom-card">
               <Card.Header>
                 <Row>
                   <Col md="8">
@@ -59,12 +62,12 @@ function Unit() {
                     <Search listener={handleSearch} />
                   </Col>
                   <Col md="4">
-                    <Button>Add Units</Button>
+                    <Button className="custom-button">Add Units</Button>
                   </Col>
                 </Row>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
-                <Table className="table-hover table-striped">
+                <Table className="table-hover table-striped custom-table">
                   <thead>
                     <tr>
                       <th className="border-0">Unit Number</th>

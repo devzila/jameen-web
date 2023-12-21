@@ -1,1 +1,9 @@
-dist/
+# dist/
+# # Ignore all HTML files:
+# **/*.js
+
+# **/.git
+# **/.svn
+# **/.hg
+# **/node_modules
+# **/.html

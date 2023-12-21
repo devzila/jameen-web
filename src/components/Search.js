@@ -18,7 +18,7 @@ const Search = ({ listener }) => {
     <div className="search-container">
       <input
         type="text"
-        placeholder="Search by property name"
+        placeholder="Search by property id"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyPress={handleKeyPress}
