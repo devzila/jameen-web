@@ -18,16 +18,16 @@ export default function Nav({ children }) {
             <NavLink to="/settings/users">User</NavLink>
           </div>
           <div>
-            <NavLink to="/setting/allotment"> Allotment </NavLink>
+            <NavLink to="/settings/allotment"> Allotment </NavLink>
           </div>
           <div>
-            <NavLink to="/setting/moving-out"> Moving Out </NavLink>
+            <NavLink to="/settings/moving-out"> Moving Out </NavLink>
           </div>
           <div>
-            <NavLink to="/setting/integrations"> Integrations </NavLink>
+            <NavLink to="/settings/integrations"> Integrations </NavLink>
           </div>
           <div>
-            <NavLink to="/setting/workflow_settings"> Workflow </NavLink>
+            <NavLink to="/settings/workflow_settings"> Workflow </NavLink>
           </div>
         </div>
       </div>

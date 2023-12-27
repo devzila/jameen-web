@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import Paginate from '../../components/Pagination'
-import AssignedPropertiesPop from 'src/components/AssignedPropertiesPop'
-import { useNavigate } from 'react-router-dom'
-import { BsThreeDots } from 'react-icons/bs'
-import { Dropdown } from 'react-bootstrap'
+import MultiValueListPop from 'src/components/MultiValueListPop'
 import CustomDivToggle from 'src/components/CustomDivToggle'
-import { Link, useParams } from 'react-router-dom'
+import AddUser from './AddUser'
 import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-
-// react-bootstrap components
-import { Badge, Button, Card, Navbar, Nav, Table, Container, Row, Col } from 'react-bootstrap'
+import { BsThreeDots } from 'react-icons/bs'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Dropdown, Row, Col } from 'react-bootstrap'
 
 function Index() {
   const { companyId } = useParams()
   const [users, setusers] = useState([])
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [userid, setUserid] = useState(null)
   const { get, post, response, loading, error } = useFetch()
   useEffect(() => {
     loadInitialusers()
@@ -27,7 +25,7 @@ function Index() {
   }
 
   async function loadInitialusers() {
-    const initialusers = await get(`/v1/admin/users?page=${currentPage}`)
+    const initialusers = await get(`/v1/admin/users/`)
     if (response.ok) {
       setusers(initialusers.data.users)
       setPagination(initialusers.data.pagination)
@@ -49,12 +47,21 @@ function Index() {
             {/* <CButton color="success" variant="outline">
             Actions
           </CButton> */}
-            <CForm className="d-flex">
-              <CFormInput type="search" className="me-2" placeholder="Search" />
-              <CButton type="submit" color="success" variant="outline">
-                Search
-              </CButton>
-            </CForm>
+            <div className="d-flex justify-content-end">
+              <CForm className="d-flex">
+                <CFormInput
+                  onChange={(e) => setUserid(e.target.value)}
+                  type="search"
+                  className="me-2"
+                  placeholder="Search"
+                />
+                <CButton onClick={loadInitialusers} color="success" variant="outline">
+                  Search
+                </CButton>
+              </CForm>
+              <br></br>
+              <AddUser />
+            </div>
           </CContainer>
         </CNavbar>
         <div>
@@ -76,9 +83,10 @@ function Index() {
                           <th className="border-0">Email</th>
                           <th className="border-0">Phone Number</th>
                           <th className="border-0">Username</th>
-                          <th className="border-0">Role ID</th>
+                          <th className="border-0">Role</th>
                           <th className="border-0">Assigned Properties</th>
                           <th className="border-0">Action </th>
+                          <th className="border-0"> </th>
                         </tr>
                       </thead>
 
@@ -93,7 +101,7 @@ function Index() {
                             <td>{user.username}</td>
                             <td>{user.role.name}</td>
                             <td>
-                              <AssignedPropertiesPop prop={user.assigned_properties} />
+                              {/* <AssignedPropertiesPop prop={user.assigned_properties} /> */}
                             </td>
 
                             <td>
@@ -131,20 +139,26 @@ function Index() {
           </div>
         </div>
         <br></br>
-        <Row>
-          <Col md="12">
-            {pagination ? (
-              <Paginate
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={pagination.per_page}
-                pageCount={pagination.total_pages}
-                forcePage={currentPage - 1}
-              />
-            ) : (
-              <br />
-            )}
-          </Col>
-        </Row>
+        <CNavbar
+          colorScheme="light"
+          className="bg-light d-flex justify-content-center"
+          placement="fixed-bottom"
+        >
+          <Row>
+            <Col md="12">
+              {pagination ? (
+                <Paginate
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={pagination.per_page}
+                  pageCount={pagination.total_pages}
+                  forcePage={currentPage - 1}
+                />
+              ) : (
+                <br />
+              )}
+            </Col>
+          </Row>
+        </CNavbar>
       </section>
     </div>
   )
