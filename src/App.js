@@ -1,8 +1,6 @@
 import React, { Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './scss/style.scss'
-import IndexUnit from '/src/views/unit/Index.js'
-import AddUnit from 'src/views/unit/Add.js'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -22,8 +20,6 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={loading}>
         <Routes>
-        <Route exact path="/properties/:id/units" name="/units" element={<IndexUnit />} />
-          <Route exact path="/properties/:id/units/add" name="/units" element={<AddUnit />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
           <Route path="*" name="Home" element={<DefaultLayout />} />
         </Routes>
