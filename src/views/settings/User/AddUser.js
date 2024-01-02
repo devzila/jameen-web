@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import useFetch from 'use-http'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
@@ -19,28 +19,38 @@ import { Button, Card, Form, Container, Row, Col } from 'react-bootstrap'
 
 export default function UserForm() {
   const [visible, setVisible] = useState(false)
-  const { register, handleSubmit, setValue } = useForm()
+  const { register, handleSubmit, setValue, control } = useForm()
   const { get, post, response } = useFetch()
 
   const [userData, setUserData] = useState({})
   const navigate = useNavigate()
-
+  const roles = [
+    { value: 0, label: 'Admin' },
+    { value: 1, label: 'User' },
+    { value: 2, label: 'Finance' },
+    { value: 3, label: 'Security Personal' },
+    { value: 4, label: 'Maintenance Staff' },
+  ]
   async function onSubmit(data) {
     console.log(data)
+    const role_id_value = data.role_id.value
+    console.log(role_id_value)
+    setValue('role_id', role_id_value)
+
     const api = await post(`/v1/admin/users`, { user: data })
     if (response.ok) {
+      console.log(data)
       setValue('name', api.data.user.name)
       setValue('email', api.data.user.email)
       setValue('mobile_number', api.data.user.mobile_number)
       setValue('username', api.data.user.username)
       setValue('password', api.data.user.password)
+      setValue('active', api.data.user.active)
       setValue('role_id', api.data.user.role_id)
       setValue('assigned_properties', api.data.user.assigned_properties)
 
-      // setValue('rolename', api.data.user.role.name)
-
-      navigate(`/`)
       toast('user added Successfully')
+      setVisible(!visible)
     } else {
       toast(response.data?.message)
     }
@@ -72,7 +82,7 @@ export default function UserForm() {
           <CContainer>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
-                <Col className="pr-1" md="6">
+                <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Name</label>
                     <Form.Control
@@ -83,22 +93,24 @@ export default function UserForm() {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col className="pr-1" md="4">
-                  <Form.Group className="form-check form-switch">
+                <Col className="pr-1 mt-3" md="4">
+                  <Form.Group className="mt-4 form-check form-switch">
+                    <label>Active</label>
+
                     <Form.Control
                       className="form-check-input"
                       type="checkbox"
                       role="switch"
-                      id="flexSwitchCheckDefault"
+                      // id="flexSwitchCheckDefault"
                       defaultValue={userData.active}
                       {...register('active')}
                     ></Form.Control>
-                    <label className="form-check-label">Active</label>
+                    {/* <label className="form-check-label">Active</label> */}
                   </Form.Group>
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-1" md="6">
+                <Col className="pr-3 mt-3" md="6">
                   <Form.Group>
                     <label>Username</label>
                     <Form.Control
@@ -109,20 +121,20 @@ export default function UserForm() {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col className="pr-1" md="6">
+                <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Password</label>
                     <Form.Control
                       defaultValue={userData.password}
                       placeholder="Password"
-                      type="text"
+                      type="password"
                       {...register('password')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-1" md="6">
+                <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Email</label>
                     <Form.Control
@@ -133,7 +145,7 @@ export default function UserForm() {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col className="pr-1" md="6">
+                <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Phone No</label>
                     <Form.Control
@@ -145,27 +157,10 @@ export default function UserForm() {
                   </Form.Group>
                 </Col>
               </Row>
-              {/* Modal part 2 role */}
-              <CModalTitle id="StaticBackdropExampleLabel">Role</CModalTitle>
-
               <Row>
-                <Col className="pr-1" md="12">
+                <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>Role ID</label>
-                    <Form.Control
-                      defaultValue={userData.role_id}
-                      placeholder="Role"
-                      type="text"
-                      {...register('role_id')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <CModalTitle id="StaticBackdropExampleLabel">Assigned Properties</CModalTitle>
-              <Row>
-                <Col className="pr-1" md="12">
-                  <Form.Group>
-                    <label></label>
+                    <label>Assigned Properties</label>
                     <Form.Control
                       defaultValue={userData.assigned_properties}
                       placeholder="Assigned Properties"
@@ -175,26 +170,43 @@ export default function UserForm() {
                   </Form.Group>
                 </Col>
               </Row>
+              {/* Modal part 2 role */}
+              <CModalTitle className="mt-3" id="StaticBackdropExampleLabel">
+                Role
+              </CModalTitle>
+
+              <Row>
+                <Col className="pr-1 mt-3" md="12">
+                  <Form.Group>
+                    <Controller
+                      name="role_id"
+                      render={({ field }) => <Select {...field} options={roles} />}
+                      control={control}
+                      placeholder="Role"
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
               <div className="text-center">
-                <Button
-                  data-mdb-ripple-init
-                  type="submit"
-                  className="btn  btn-primary btn-block"
-                  style={{ width: '600px', marginTop: '5px' }}
-                >
-                  Submit
-                </Button>
+                <CModalFooter>
+                  <Button
+                    data-mdb-ripple-init
+                    type="submit"
+                    className="btn  btn-primary btn-block"
+                    style={{ marginTop: '5px' }}
+                  >
+                    Submit
+                  </Button>
+                  <CButton color="secondary" onClick={() => setVisible(false)}>
+                    Close
+                  </CButton>
+                </CModalFooter>
               </div>
-              <div className="clearfix"></div>
             </Form>
+            <div className="clearfix"></div>
           </CContainer>
         </CModalBody>
-        <CModalFooter>
-          <CButton color="secondary" onClick={() => setVisible(false)}>
-            Close
-          </CButton>
-        </CModalFooter>
       </CModal>
     </div>
   )

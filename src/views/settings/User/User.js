@@ -18,9 +18,14 @@ function Index() {
   const [currentPage, setCurrentPage] = useState(1)
   const [searchKeyword, setSearchKeyword] = useState(null)
   const { get, post, response, loading, error } = useFetch()
-  useEffect(() => {
-    loadInitialusers()
-  }, [currentPage])
+  useEffect(
+    () => {
+      loadInitialusers()
+    },
+    [currentPage],
+    [EditUser],
+    [AddUser],
+  )
 
   const history = useNavigate()
   const addUser = () => {

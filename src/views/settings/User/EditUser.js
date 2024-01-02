@@ -41,12 +41,10 @@ export default function EditUser(propsdata) {
         setValue('mobile_number', api.data.user.mobile_number)
         setValue('username', api.data.user.username)
         setValue('password', api.data.user.password)
-        setValue('role_id', api.data.user.role_id)
+        setValue('role_id', api.data.user.role.id)
         setValue('assigned_properties', api.data.user.assigned_properties)
 
         setUsers(api.data.user)
-        console.log(users)
-        console.log(watch('role_id'))
       }
     }
   }
@@ -54,6 +52,7 @@ export default function EditUser(propsdata) {
     const api = await put(`/v1/admin/users/${id}`, { user: data })
     if (response.ok) {
       toast('User Data Edited Successfully')
+      setVisible(!visible)
     } else {
       toast(response.data?.message)
     }
@@ -169,7 +168,7 @@ export default function EditUser(propsdata) {
                 <Row>
                   <Col className="pr-1" md="12">
                     <Form.Group>
-                      <label>Role ID</label>
+                      <label>Role</label>
                       <Form.Control
                         defaultValue={userData.role_id}
                         placeholder="Role"
