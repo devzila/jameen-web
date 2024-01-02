@@ -7,6 +7,7 @@ import Pagination from 'src/components/Pagination'
 import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import Search from 'src/components/Search'
+import { Link, useParams } from 'react-router-dom'
 
 function Property() {
   const { get, response } = useFetch()
@@ -85,9 +86,6 @@ function Property() {
                       <th className="border-0">NAME</th>
                       <th className="border-0">ADDRESS</th>
                       <th className="border-0">CITY</th>
-                      <th className="border-0">SHORT NAME</th>
-                      <th className="border-0">VAT NO</th>
-                      <th className="border-0">INVOICE NO</th>
                       <th className="border-0">USE TYPE</th>
                       <th className="border-0">OVERVIEW DAYS</th>
                       <th className="border-0">CHARGE AMOUNT</th>
@@ -103,9 +101,6 @@ function Property() {
                         <td>{property.name}</td>
                         <td>{property.address}</td>
                         <td>{property.city}</td>
-                        <td>{property.short_name}</td>
-                        <td>{property.vat_no}</td>
-                        <td>{property.invoice_no_prefix}</td>
                         <td>{property.use_type}</td>
                         <td>{property.invoice_overdue_days}</td>
                         <td>{property.overdue_charge_amount}</td>
@@ -114,6 +109,15 @@ function Property() {
                         <td>
                           <Dropdown key={property.id}>
                             <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
+                              <Dropdown.Menu>
+                                <Dropdown.Item
+                                  key={`edit-${property.id}`}
+                                  as={Link}
+                                  to={`/properties/1/units/add`}
+                                >
+                                  Add
+                                </Dropdown.Item>
+                              </Dropdown.Menu>
                               <BsThreeDots />
                             </Dropdown.Toggle>
                           </Dropdown>

@@ -6,7 +6,8 @@ import Pagination from 'src/components/Pagination'
 import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import Search from '../../components/Search'
-import Add from './Add'
+import Add from '../property/Add'
+import Edit from './Edit'
 import '../../scss/_custom.scss'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
@@ -78,9 +79,7 @@ function Unit() {
                     <Card.Title as="h4"> Units </Card.Title>
                     <Search listener={handleSearch} />
                   </Col>
-                  <Col md="4">
-                    <Button onClick={openAddModal}>Add Unit</Button>
-                  </Col>
+                  <Col md="4">{/* <Button onClick={openAddModal}>Add Unit</Button> */}</Col>
                 </Row>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">

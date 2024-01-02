@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './scss/style.scss'
+import AddProperty from 'src/views/property/Add.js'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -20,8 +21,9 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={loading}>
         <Routes>
-          <Route exact path="/500" name="Page 500" element={<Page500 />} />
-          <Route path="*" name="Home" element={<DefaultLayout />} />
+          <Route exact path="/properties/:propertyID/units/add" element={<AddProperty />} />
+          <Route exact path="/500" element={<Page500 />} />
+          <Route path="*" element={<DefaultLayout />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
