@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import User from './User'
+import User from './User/User'
 
 export default function Nav({ children }) {
   const [show, setShow] = useState(false)

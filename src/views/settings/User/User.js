@@ -1,45 +1,58 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import Paginate from '../../components/Pagination'
+import Paginate from '../../../components/Pagination'
 import MultiValueListPop from 'src/components/MultiValueListPop'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import AddUser from './AddUser'
+import EditUser from './EditUser'
 import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { Dropdown, Row, Col } from 'react-bootstrap'
+import ShowUser from './ShowUser'
 
 function Index() {
   const { companyId } = useParams()
   const [users, setusers] = useState([])
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [userid, setUserid] = useState(null)
+  const [searchKeyword, setSearchKeyword] = useState(null)
   const { get, post, response, loading, error } = useFetch()
   useEffect(() => {
     loadInitialusers()
   }, [currentPage])
+
   const history = useNavigate()
   const addUser = () => {
     history(`/companies/${companyId}/users/add`)
   }
 
   async function loadInitialusers() {
-    const initialusers = await get(`/v1/admin/users/`)
+    let endpoint = `/v1/admin/users?page=${currentPage}`
+    if (searchKeyword) {
+      endpoint += `&q[username_eq]=${searchKeyword}`
+    }
+    let initialusers = await get(endpoint)
+
     if (response.ok) {
-      setusers(initialusers.data.users)
-      setPagination(initialusers.data.pagination)
+      if (initialusers.data) {
+        setusers(initialusers.data.users)
+        setPagination(initialusers.data.pagination)
+      }
     }
   }
 
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
   }
+  const handleSearch = (searchTerm) => {
+    setSearchKeyword(searchTerm)
+  }
 
   return (
     <div>
       {error && error.Error}
-      {loading && 'Loading...'}
+      {/* {loading && 'Loading...'} */}
       <section style={{ width: '100%', padding: '0px' }}>
         <CNavbar expand="lg" colorScheme="light" className="bg-light">
           <CContainer fluid>
@@ -48,19 +61,28 @@ function Index() {
             Actions
           </CButton> */}
             <div className="d-flex justify-content-end">
-              <CForm className="d-flex">
+              {/* <CContainer className="h-50 d-flex"> */}
+              <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
+                {/* <Search listener={handleSearch} /> */}
+
                 <CFormInput
-                  onChange={(e) => setUserid(e.target.value)}
+                  onChange={(e) => setSearchKeyword(e.target.value)}
                   type="search"
-                  className="me-2"
+                  className="me-0"
                   placeholder="Search"
                 />
-                <CButton onClick={loadInitialusers} color="success" variant="outline">
+                <CButton
+                  onClick={loadInitialusers}
+                  // color="success"
+                  variant="outline"
+                  className="btn btn-outline-success my-2 my-sm-0 "
+                >
                   Search
                 </CButton>
+                {/* </CContainer> */}
+                <br></br>
+                <AddUser />
               </CForm>
-              <br></br>
-              <AddUser />
             </div>
           </CContainer>
         </CNavbar>
@@ -110,21 +132,8 @@ function Index() {
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  <Dropdown.Item
-                                    key={`edit-${user.id}`}
-                                    as={Link}
-                                    to={`/companies/${companyId}/users/${user.id}/edit`}
-                                  >
-                                    Edit
-                                  </Dropdown.Item>
-
-                                  <Dropdown.Item
-                                    key={`user-show-${user.id}`}
-                                    as={Link}
-                                    to={`/companies/${companyId}/users/${user.id}`}
-                                  >
-                                    User Show
-                                  </Dropdown.Item>
+                                  <EditUser userid={{ id: `${user.id}` }} />
+                                  <ShowUser userid={{ id: `${user.id}` }} />
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

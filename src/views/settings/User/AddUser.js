@@ -3,6 +3,7 @@ import useFetch from 'use-http'
 import { useForm } from 'react-hook-form'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import Select from 'react-select'
 
 import {
   CButton,
@@ -38,7 +39,7 @@ export default function UserForm() {
 
       // setValue('rolename', api.data.user.role.name)
 
-      navigate(`/vi/users`)
+      navigate(`/`)
       toast('user added Successfully')
     } else {
       toast(response.data?.message)
@@ -71,7 +72,7 @@ export default function UserForm() {
           <CContainer>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
-                <Col className="pr-1" md="8">
+                <Col className="pr-1" md="6">
                   <Form.Group>
                     <label>Name</label>
                     <Form.Control
