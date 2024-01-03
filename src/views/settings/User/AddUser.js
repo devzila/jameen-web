@@ -20,13 +20,9 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 export default function UserForm() {
   const [visible, setVisible] = useState(false)
   const [roles, setRoles] = useState([])
+  const [userData, setUserData] = useState({})
   const { register, handleSubmit, control } = useForm()
   const { get, post, response } = useFetch()
-
-  const [userData, setUserData] = useState({})
-
-  const [itemType, setItemType] = useState({})
-  const [roleidval, setRoleidval] = useState(null)
 
   const navigate = useNavigate()
 
@@ -45,14 +41,6 @@ export default function UserForm() {
     }
   }
 
-  const handleChangeType = (option) => {
-    if (option) {
-      setItemType(option)
-      const value = itemType.value
-      setRoleidval(value)
-      return value
-    }
-  }
   useEffect(() => {
     fetchRoles()
   }, [])
@@ -68,8 +56,6 @@ export default function UserForm() {
       toast(response.data?.message)
     }
   }
-
-  console.log(roleidval)
 
   return (
     <div>
@@ -196,16 +182,14 @@ export default function UserForm() {
                   <Form.Group>
                     <Controller
                       name="role_id"
-                      render={({ field: { onChange, value, name, ref } }) => (
+                      render={({ field }) => (
                         <Select
-                          name={name}
-                          inputRef={ref}
+                          {...field}
                           options={roles}
-                          value={roleidval}
-                          onChange={handleChangeType}
+                          value={roles.find((c) => c.value === field.value)}
+                          onChange={(val) => field.onChange(val.value)}
                         />
                       )}
-                      // render={({ field }) => <Select {...field} options={roles} />}
                       control={control}
                       placeholder="Role"
                     />
