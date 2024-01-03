@@ -7,30 +7,27 @@ import AddUser from './AddUser'
 import EditUser from './EditUser'
 import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import ShowUser from './ShowUser'
 
 function Index() {
-  const { companyId } = useParams()
-  const [users, setusers] = useState([])
+  const [users, setUsers] = useState([])
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [refresh, setRefresh] = useState(false)
+
   const [searchKeyword, setSearchKeyword] = useState(null)
-  const { get, post, response, loading, error } = useFetch()
+  const { get, response, error } = useFetch()
   useEffect(
     () => {
       loadInitialusers()
     },
     [currentPage],
-    [EditUser],
-    [AddUser],
+    [refresh],
   )
 
   const history = useNavigate()
-  const addUser = () => {
-    history(`/companies/${companyId}/users/add`)
-  }
 
   async function loadInitialusers() {
     let endpoint = `/v1/admin/users?page=${currentPage}`
@@ -41,7 +38,7 @@ function Index() {
 
     if (response.ok) {
       if (initialusers.data) {
-        setusers(initialusers.data.users)
+        setUsers(initialusers.data.users)
         setPagination(initialusers.data.pagination)
       }
     }
@@ -52,6 +49,9 @@ function Index() {
   }
   const handleSearch = (searchTerm) => {
     setSearchKeyword(searchTerm)
+  }
+  const refreshHandler = () => {
+    setRefresh(!refresh)
   }
 
   return (

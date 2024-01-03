@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { useForm } from 'react-hook-form'
-import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import Select from 'react-select'
+// import Select from 'react-select'
 import {
   CButton,
   CModal,
@@ -14,17 +13,16 @@ import {
   CContainer,
 } from '@coreui/react'
 // react-bootstrap components
-import { Button, Card, Form, Container, Row, Col } from 'react-bootstrap'
+import { Button, Form, Row, Col } from 'react-bootstrap'
 
 export default function EditUser(propsdata) {
   const [users, setUsers] = useState([])
-  const { get, post, put, response } = useFetch()
+  const { get, put, response } = useFetch()
 
   const [visible, setVisible] = useState(false)
   const { register, handleSubmit, setValue, watch } = useForm()
 
   const [userData, setUserData] = useState({})
-  const navigate = useNavigate()
 
   const id = propsdata.userid.id
   useEffect(() => {
@@ -79,6 +77,7 @@ export default function EditUser(propsdata) {
           alignment="center"
           size="xl"
           visible={visible}
+          backdrop="static"
           onClose={() => setVisible(false)}
           aria-labelledby="StaticBackdropExampleLabel"
         >
@@ -89,7 +88,7 @@ export default function EditUser(propsdata) {
             <CContainer>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Row>
-                  <Col className="pr-1" md="6">
+                  <Col className="pr-1 mt-1" md="6">
                     <Form.Group>
                       <label>Name</label>
                       <Form.Control
@@ -100,7 +99,7 @@ export default function EditUser(propsdata) {
                       ></Form.Control>
                     </Form.Group>
                   </Col>
-                  <Col className="pr-1" md="4">
+                  <Col className="pr-1 mt-4" md="4">
                     <Form.Group className="form-check form-switch">
                       <Form.Control
                         className="form-check-input"
@@ -115,7 +114,7 @@ export default function EditUser(propsdata) {
                   </Col>
                 </Row>
                 <Row>
-                  <Col className="pr-1" md="6">
+                  <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
                       <label>Username</label>
                       <Form.Control
@@ -126,7 +125,7 @@ export default function EditUser(propsdata) {
                       ></Form.Control>
                     </Form.Group>
                   </Col>
-                  <Col className="pr-1" md="6">
+                  <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
                       <label>Password</label>
                       <Form.Control
@@ -139,7 +138,7 @@ export default function EditUser(propsdata) {
                   </Col>
                 </Row>
                 <Row>
-                  <Col className="pr-1" md="6">
+                  <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
                       <label>Email</label>
                       <Form.Control
@@ -150,7 +149,7 @@ export default function EditUser(propsdata) {
                       ></Form.Control>
                     </Form.Group>
                   </Col>
-                  <Col className="pr-1" md="6">
+                  <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
                       <label>Phone No</label>
                       <Form.Control
@@ -162,27 +161,10 @@ export default function EditUser(propsdata) {
                     </Form.Group>
                   </Col>
                 </Row>
-                {/* Modal part 2 role */}
-                <CModalTitle id="StaticBackdropExampleLabel">Role</CModalTitle>
-
                 <Row>
-                  <Col className="pr-1" md="12">
+                  <Col className="pr-1 mt-3" md="12">
                     <Form.Group>
-                      <label>Role</label>
-                      <Form.Control
-                        defaultValue={userData.role_id}
-                        placeholder="Role"
-                        type="text"
-                        {...register('role_id')}
-                      ></Form.Control>
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <CModalTitle id="StaticBackdropExampleLabel">Assigned Properties</CModalTitle>
-                <Row>
-                  <Col className="pr-1" md="12">
-                    <Form.Group>
-                      <label></label>
+                      <label>Assigned Properties</label>
                       <Form.Control
                         defaultValue={userData.assigned_properties}
                         placeholder="Assigned Properties"
@@ -192,26 +174,43 @@ export default function EditUser(propsdata) {
                     </Form.Group>
                   </Col>
                 </Row>
+                {/* Modal part 2 role */}
+                <CModalTitle className="mt-3" id="StaticBackdropExampleLabel">
+                  Role
+                </CModalTitle>
+
+                <Row>
+                  <Col className="pr-1 mt-1" md="12">
+                    <Form.Group>
+                      <Form.Control
+                        defaultValue={userData.role_id}
+                        placeholder="Role"
+                        type="text"
+                        {...register('role_id')}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
 
                 <div className="text-center">
-                  <Button
-                    data-mdb-ripple-init
-                    type="submit"
-                    className="btn  btn-primary btn-block"
-                    style={{ width: '600px', marginTop: '5px' }}
-                  >
-                    Submit
-                  </Button>
+                  <CModalFooter>
+                    <Button
+                      data-mdb-ripple-init
+                      type="submit"
+                      className="btn  btn-primary btn-block"
+                      style={{ marginTop: '5px' }}
+                    >
+                      Submit
+                    </Button>
+                    <CButton color="secondary" onClick={() => setVisible(false)}>
+                      Close
+                    </CButton>
+                  </CModalFooter>
                 </div>
                 <div className="clearfix"></div>
               </Form>
             </CContainer>
           </CModalBody>
-          <CModalFooter>
-            <CButton color="secondary" onClick={() => setVisible(false)}>
-              Close
-            </CButton>
-          </CModalFooter>
         </CModal>
       </div>
     </>

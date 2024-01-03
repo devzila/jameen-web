@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -15,46 +15,61 @@ import {
   CContainer,
 } from '@coreui/react'
 // react-bootstrap components
-import { Button, Card, Form, Container, Row, Col } from 'react-bootstrap'
+import { Button, Form, Row, Col } from 'react-bootstrap'
 
 export default function UserForm() {
   const [visible, setVisible] = useState(false)
-  const { register, handleSubmit, setValue, control } = useForm()
+  const [roles, setRoles] = useState([])
+  const { register, handleSubmit, control } = useForm()
   const { get, post, response } = useFetch()
 
   const [userData, setUserData] = useState({})
   const navigate = useNavigate()
-  const roles = [
-    { value: 0, label: 'Admin' },
-    { value: 1, label: 'User' },
-    { value: 2, label: 'Finance' },
-    { value: 3, label: 'Security Personal' },
-    { value: 4, label: 'Maintenance Staff' },
-  ]
+
+  let rolesarray = []
+  function trimRoles(rolesdata) {
+    rolesdata.forEach((element) => {
+      rolesarray.push({ value: element.id, label: element.name })
+    })
+    return rolesarray
+  }
+
+  async function fetchRoles() {
+    const api = await get('/v1/admin/roles')
+    if (response.ok) {
+      setRoles(trimRoles(api.data.roles))
+    }
+  }
+
+  useEffect(() => {
+    fetchRoles()
+  }, [])
+
   async function onSubmit(data) {
     console.log(data)
-    const role_id_value = data.role_id.value
-    console.log(role_id_value)
-    setValue('role_id', role_id_value)
 
     const api = await post(`/v1/admin/users`, { user: data })
     if (response.ok) {
-      console.log(data)
-      setValue('name', api.data.user.name)
-      setValue('email', api.data.user.email)
-      setValue('mobile_number', api.data.user.mobile_number)
-      setValue('username', api.data.user.username)
-      setValue('password', api.data.user.password)
-      setValue('active', api.data.user.active)
-      setValue('role_id', api.data.user.role_id)
-      setValue('assigned_properties', api.data.user.assigned_properties)
-
       toast('user added Successfully')
       setVisible(!visible)
     } else {
       toast(response.data?.message)
     }
   }
+  const [itemType, setItemType] = useState({})
+
+  const [roleidval, setRoleidval] = useState()
+
+  const handleChangeType = (option) => {
+    if (option) {
+      setItemType(option)
+      const value = itemType.value
+      setRoleidval(value)
+
+      return value
+    }
+  }
+  console.log(roleidval)
 
   return (
     <div>
@@ -72,6 +87,7 @@ export default function UserForm() {
         alignment="center"
         size="xl"
         visible={visible}
+        backdrop="static"
         onClose={() => setVisible(false)}
         aria-labelledby="StaticBackdropExampleLabel"
       >
@@ -180,7 +196,16 @@ export default function UserForm() {
                   <Form.Group>
                     <Controller
                       name="role_id"
-                      render={({ field }) => <Select {...field} options={roles} />}
+                      // render={({ field: { onChange, value, name, ref } }) => (
+                      //   <Select
+                      //     name="role_id"
+                      //     inputRef={ref}
+                      //     options={roles}
+                      //     value={roleidval}
+                      //     onChange={handleChangeType}
+                      //   />
+                      // )}
+                      render={({ field }) => <Select {...field[0]} options={roles} />}
                       control={control}
                       placeholder="Role"
                     />
