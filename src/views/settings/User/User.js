@@ -105,28 +105,27 @@ function Index() {
                           overFlow: 'hidden',
                         }}
                       >
-                        <tr>
-                          <th className="border-0">Name</th>
-                          <th className="border-0">Email</th>
-                          <th className="border-0">Phone Number</th>
-                          <th className="border-0">Username</th>
-                          <th className="border-0">Role</th>
-                          <th className="border-0">Assigned Properties</th>
-                          <th className="border-0">Action </th>
-                          <th className="border-0"> </th>
+                        <tr style={{ color: 'pink' }}>
+                          <th className="pt-3 pb-3 border-0">Name</th>
+                          <th className="pt-3 pb-3 border-0">Email</th>
+                          <th className="pt-3 pb-3 border-0">Phone Number</th>
+                          <th className="pt-3 pb-3 border-0">Username</th>
+                          <th className="pt-3 pb-3 border-0">Role</th>
+                          <th className="pt-3 pb-3 border-0">Assigned Properties</th>
+                          <th className="pt-3 pb-3 border-0">Action </th>
                         </tr>
                       </thead>
 
                       <tbody>
                         {users.map((user) => (
                           <tr key={user.id}>
-                            <th scope="row" style={{ color: '#666666' }}>
+                            <th className="pt-3" scope="row" style={{ color: '#666666' }}>
                               {user.name}
                             </th>
-                            <td>{user.email}</td>
-                            <td>{user.mobile_number}</td>
-                            <td>{user.username}</td>
-                            <td>{user.role.name}</td>
+                            <td className="pt-3">{user.email}</td>
+                            <td className="pt-3">{user.mobile_number}</td>
+                            <td className="pt-3">{user.username}</td>
+                            <td className="pt-3">{user.role.name}</td>
                             <td>
                               {/* <AssignedPropertiesPop prop={user.assigned_properties} /> */}
                             </td>

@@ -198,11 +198,14 @@ export default function EditUser(propsdata) {
                       data-mdb-ripple-init
                       type="submit"
                       className="btn  btn-primary btn-block"
-                      style={{ marginTop: '5px' }}
+                      style={{ marginTop: '5px', backgroundColor: '#00bfcc', border: 'none' }}
                     >
                       Submit
                     </Button>
-                    <CButton color="secondary" onClick={() => setVisible(false)}>
+                    <CButton
+                      style={{ color: 'white', backgroundColor: 'gray', border: 'none' }}
+                      onClick={() => setVisible(false)}
+                    >
                       Close
                     </CButton>
                   </CModalFooter>

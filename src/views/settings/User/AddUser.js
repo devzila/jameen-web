@@ -24,6 +24,10 @@ export default function UserForm() {
   const { get, post, response } = useFetch()
 
   const [userData, setUserData] = useState({})
+
+  const [itemType, setItemType] = useState({})
+  const [roleidval, setRoleidval] = useState(null)
+
   const navigate = useNavigate()
 
   let rolesarray = []
@@ -41,6 +45,14 @@ export default function UserForm() {
     }
   }
 
+  const handleChangeType = (option) => {
+    if (option) {
+      setItemType(option)
+      const value = itemType.value
+      setRoleidval(value)
+      return value
+    }
+  }
   useEffect(() => {
     fetchRoles()
   }, [])
@@ -56,19 +68,7 @@ export default function UserForm() {
       toast(response.data?.message)
     }
   }
-  const [itemType, setItemType] = useState({})
 
-  const [roleidval, setRoleidval] = useState()
-
-  const handleChangeType = (option) => {
-    if (option) {
-      setItemType(option)
-      const value = itemType.value
-      setRoleidval(value)
-
-      return value
-    }
-  }
   console.log(roleidval)
 
   return (
@@ -196,16 +196,16 @@ export default function UserForm() {
                   <Form.Group>
                     <Controller
                       name="role_id"
-                      // render={({ field: { onChange, value, name, ref } }) => (
-                      //   <Select
-                      //     name="role_id"
-                      //     inputRef={ref}
-                      //     options={roles}
-                      //     value={roleidval}
-                      //     onChange={handleChangeType}
-                      //   />
-                      // )}
-                      render={({ field }) => <Select {...field[0]} options={roles} />}
+                      render={({ field: { onChange, value, name, ref } }) => (
+                        <Select
+                          name={name}
+                          inputRef={ref}
+                          options={roles}
+                          value={roleidval}
+                          onChange={handleChangeType}
+                        />
+                      )}
+                      // render={({ field }) => <Select {...field} options={roles} />}
                       control={control}
                       placeholder="Role"
                     />
@@ -219,11 +219,20 @@ export default function UserForm() {
                     data-mdb-ripple-init
                     type="submit"
                     className="btn  btn-primary btn-block"
-                    style={{ marginTop: '5px' }}
+                    style={{
+                      marginTop: '5px',
+                      color: 'white',
+                      backgroundColor: '#00bfcc',
+                      border: '0px',
+                    }}
                   >
                     Submit
                   </Button>
-                  <CButton color="secondary" onClick={() => setVisible(false)}>
+                  <CButton
+                    color="secondary"
+                    style={{ border: '0px', color: 'white' }}
+                    onClick={() => setVisible(false)}
+                  >
                     Close
                   </CButton>
                 </CModalFooter>
