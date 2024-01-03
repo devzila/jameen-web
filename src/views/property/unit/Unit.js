@@ -7,12 +7,11 @@ import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from '../../../components/CustomDivToggle'
 import Search from '../../../components/Search'
 import '../../../scss/_custom.scss'
-import { useParams } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 function Unit() {
   const { get, response } = useFetch()
-  const { propertyID } = useParams()
+  const { propertyId } = useParams()
 
   const [units, setUnits] = useState([])
   const [pagination, setPagination] = useState(null)
@@ -27,7 +26,7 @@ function Unit() {
   const navigate = useNavigate()
 
   async function loadInitialUnits() {
-    let endpoint = `/v1/admin/premises/properties/1/units?page=${currentPage}`
+    let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`
 
     if (searchKeyword) {
       endpoint += `&q[unit_no_eq]=${searchKeyword}`
