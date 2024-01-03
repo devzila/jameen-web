@@ -14,6 +14,7 @@ function Property() {
 
   useEffect(() => {}, [])
 
+  const { propertyID } = useParams()
   const [properties, setProperties] = useState([])
   const [filteredProperties, setFilteredProperties] = useState([])
   const [pagination, setPagination] = useState(null)
@@ -116,6 +117,13 @@ function Property() {
                                   to={`/properties/1/units/add`}
                                 >
                                   Add
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                  key={`edit-${property.id}`}
+                                  as={Link}
+                                  to={`/properties/1/units`}
+                                >
+                                  Unit
                                 </Dropdown.Item>
                               </Dropdown.Menu>
                               <BsThreeDots />

@@ -6,15 +6,13 @@ import Pagination from 'src/components/Pagination'
 import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import Search from '../../components/Search'
-import Add from '../property/Add'
-import Edit from './Edit'
 import '../../scss/_custom.scss'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
 function Unit() {
   const { get, response } = useFetch()
-  const { propertyId } = useParams()
+  const { propertyID } = useParams()
 
   const [units, setUnits] = useState([])
   const [pagination, setPagination] = useState(null)
@@ -135,14 +133,14 @@ function Unit() {
         </Row>
       </Container>
 
-      <Modal show={showAddModal} onHide={closeAddModal} size="lg">
+      {/* <Modal show={showAddModal} onHide={closeAddModal} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Add Unit</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Add onAdd={handleAddUnit} onCancel={closeAddModal} />
         </Modal.Body>
-      </Modal>
+      </Modal> */}
     </>
   )
 }
