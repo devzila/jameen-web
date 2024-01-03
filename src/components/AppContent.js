@@ -6,7 +6,7 @@ import { CContainer, CSpinner } from '@coreui/react'
 const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
 const Finance = React.lazy(() => import('../views/finance/Finance'))
 const Resident = React.lazy(() => import('../views/resident/Resident'))
-const Unit = React.lazy(() => import('../views/unit/Unit'))
+const Unit = React.lazy(() => import('../views/property/unit/Unit'))
 const Property = React.lazy(() => import('../views/property/Property'))
 const Maintenance = React.lazy(() => import('../views/maintenance/Maintenance'))
 const Visitor = React.lazy(() => import('../views/visitor/Visitor'))
@@ -30,7 +30,9 @@ const AppContent = () => {
           <Route path="/finance" name="Finance" element={<Finance />} />
           <Route path="/resident" name="Resident" element={<Resident />} />
           <Route path="/unit" name="Unit" element={<Unit />} />
-          <Route path="/property" name="Property" element={<Property />} />
+          <Route path="/property" name="Property" element={<Property />}>
+            <Route path="unit" name="Unit" element={<Unit />} />
+          </Route>
           <Route path="/maintenance" name="Maintenance" element={<Maintenance />} />
           <Route path="/visitor" name="Visitor" element={<Visitor />} />
           <Route path="/operation" name="Operation" element={<Operation />} />

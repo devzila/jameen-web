@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Card, Dropdown, Row, Col, Table } from 'react-bootstrap'
-import CustomDivToggle from '../../components/CustomDivToggle'
+import CustomDivToggle from '../../../components/CustomDivToggle'
 import { BsThreeDots } from 'react-icons/bs'
 
 const UnitListView = ({ units }) => {

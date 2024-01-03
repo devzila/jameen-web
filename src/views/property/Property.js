@@ -1,5 +1,6 @@
 // Property.js
 import React, { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import useFetch from 'use-http'
 import { BsThreeDots } from 'react-icons/bs'
 import { Container, Row, Button, Col, Card, Table } from 'react-bootstrap'
@@ -14,7 +15,7 @@ function Property() {
 
   useEffect(() => {}, [])
 
-  const { propertyID } = useParams()
+  const { id } = useParams()
   const [properties, setProperties] = useState([])
   const [filteredProperties, setFilteredProperties] = useState([])
   const [pagination, setPagination] = useState(null)
@@ -83,30 +84,24 @@ function Property() {
                 <Table className="table-hover table-striped">
                   <thead>
                     <tr>
-                      <th className="border-0">Property Number</th>
                       <th className="border-0">NAME</th>
-                      <th className="border-0">ADDRESS</th>
                       <th className="border-0">CITY</th>
                       <th className="border-0">USE TYPE</th>
-                      <th className="border-0">OVERVIEW DAYS</th>
-                      <th className="border-0">CHARGE AMOUNT</th>
+                      <th className="border-0">UNIT COUNT</th>
                       <th className="border-0">PAYMENT TERM</th>
-                      <th className="border-0">INVOICE DAY</th>
                       <th className="border-0">ACTIONS</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredProperties.map((property) => (
                       <tr key={property.id}>
-                        <td>{property.id}</td>
                         <td>{property.name}</td>
-                        <td>{property.address}</td>
                         <td>{property.city}</td>
                         <td>{property.use_type}</td>
-                        <td>{property.invoice_overdue_days}</td>
-                        <td>{property.overdue_charge_amount}</td>
+                        <td align="center">
+                          <NavLink to={`/property/${id}/unit`}>{property.unit_count}</NavLink>
+                        </td>
                         <td>{property.payment_term}</td>
-                        <td>{property.invoice_day}</td>
                         <td>
                           <Dropdown key={property.id}>
                             <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
