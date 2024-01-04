@@ -17,7 +17,6 @@ function Unit() {
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchKeyword, setSearchKeyword] = useState('')
-  const [showAddModal, setShowAddModal] = useState(false)
 
   useEffect(() => {
     loadInitialUnits()
@@ -26,7 +25,7 @@ function Unit() {
   const navigate = useNavigate()
 
   async function loadInitialUnits() {
-    let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`
+    let endpoint = `/v1/admin/premises/properties/1/units?page=${currentPage}`
 
     if (searchKeyword) {
       endpoint += `&q[unit_no_eq]=${searchKeyword}`
@@ -46,18 +45,6 @@ function Unit() {
 
   const handleSearch = (searchTerm) => {
     setSearchKeyword(searchTerm)
-  }
-
-  const openAddModal = () => {
-    setShowAddModal(true)
-  }
-
-  const closeAddModal = () => {
-    setShowAddModal(false)
-  }
-
-  const handleAddUnit = () => {
-    closeAddModal()
   }
 
   return (
@@ -131,15 +118,6 @@ function Unit() {
           </Col>
         </Row>
       </Container>
-
-      {/* <Modal show={showAddModal} onHide={closeAddModal} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Add Unit</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Add onAdd={handleAddUnit} onCancel={closeAddModal} />
-        </Modal.Body>
-      </Modal> */}
     </>
   )
 }

@@ -112,16 +112,9 @@ function Property() {
                                 <Dropdown.Item
                                   key={`edit-${property.id}`}
                                   as={Link}
-                                  to={`/properties/1/units/add`}
+                                  to={`/properties/${property.id}/units/add`}
                                 >
                                   Add
-                                </Dropdown.Item>
-                                <Dropdown.Item
-                                  key={`edit-${property.id}`}
-                                  as={Link}
-                                  to={`/properties/1/units`}
-                                >
-                                  Unit
                                 </Dropdown.Item>
                               </Dropdown.Menu>
                               <BsThreeDots />
