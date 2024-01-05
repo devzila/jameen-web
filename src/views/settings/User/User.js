@@ -6,6 +6,9 @@ import CustomDivToggle from 'src/components/CustomDivToggle'
 import AddUser from './AddUser'
 import EditUser from './EditUser'
 import Loading from 'src/components/loading/loading'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
 import {
   CForm,
   CButton,
@@ -159,6 +162,22 @@ function Index() {
                         ))}
                       </tbody>
                     </table>
+                    {loading && (
+                      <div className="d-flex justify-content-start">
+                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                      </div>
+                    )}
                     {loading && <Loading />}
                   </div>
                 </div>
