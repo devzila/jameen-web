@@ -164,18 +164,16 @@ function Index() {
                     </table>
                     {loading && (
                       <div className="d-flex justify-content-start">
+                        <Skeleton
+                          style={{ width: '100px', height: '20px', marginLeft: '2px' }}
+                          count={10}
+                        />
                         <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '240px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '200px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '120px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '240px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '240px', height: '20px' }} count={10} />
                       </div>
                     )}
                     {loading && <Loading />}
