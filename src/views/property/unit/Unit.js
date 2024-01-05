@@ -8,6 +8,7 @@ import CustomDivToggle from '../../../components/CustomDivToggle'
 import Search from '../../../components/Search'
 import '../../../scss/_custom.scss'
 import { useNavigate, useParams } from 'react-router-dom'
+import Add from './Add'
 
 function Unit() {
   const { get, response } = useFetch()
@@ -17,6 +18,7 @@ function Unit() {
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchKeyword, setSearchKeyword] = useState('')
+  const [showAddModal, setShowAddModal] = useState(false)
 
   useEffect(() => {
     loadInitialUnits()
@@ -25,7 +27,7 @@ function Unit() {
   const navigate = useNavigate()
 
   async function loadInitialUnits() {
-    let endpoint = `/v1/admin/premises/properties/1/units?page=${currentPage}`
+    let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`
 
     if (searchKeyword) {
       endpoint += `&q[unit_no_eq]=${searchKeyword}`
@@ -47,6 +49,18 @@ function Unit() {
     setSearchKeyword(searchTerm)
   }
 
+  const openAddModal = () => {
+    setShowAddModal(true)
+  }
+
+  const closeAddModal = () => {
+    setShowAddModal(false)
+  }
+
+  const handleAddUnit = () => {
+    closeAddModal()
+  }
+
   return (
     <>
       <Container fluid className="full-width-container">
@@ -63,7 +77,10 @@ function Unit() {
                     <Card.Title as="h4"> Units </Card.Title>
                     <Search listener={handleSearch} />
                   </Col>
-                  <Col md="4">{/* <Button onClick={openAddModal}>Add Unit</Button> */}</Col>
+                  <Col md="4">
+                    {' '}
+                    <Button onClick={openAddModal}>Add Unit</Button>{' '}
+                  </Col>
                 </Row>
               </Card.Header>
               <Card.Body className="table-full-width table-responsive px-0">
@@ -118,6 +135,15 @@ function Unit() {
           </Col>
         </Row>
       </Container>
+
+      <Modal show={showAddModal} onHide={closeAddModal} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Add Unit</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Add onAdd={handleAddUnit} onCancel={closeAddModal} />
+        </Modal.Body>
+      </Modal>
     </>
   )
 }
