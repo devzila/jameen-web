@@ -20,11 +20,15 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 export default function UserForm() {
   const [visible, setVisible] = useState(false)
   const [roles, setRoles] = useState([])
+  const [properties_data, setProperties_data] = useState([])
+
   const [userData, setUserData] = useState({})
   const { register, handleSubmit, control } = useForm()
   const { get, post, response } = useFetch()
 
   const navigate = useNavigate()
+
+  //roles
 
   let rolesarray = []
   function trimRoles(rolesdata) {
@@ -41,8 +45,26 @@ export default function UserForm() {
     }
   }
 
+  // Properties
+
+  let properties_array = []
+  function trimProperties(properties) {
+    properties.forEach((element) => {
+      properties_array.push({ value: element.id, label: element.name })
+    })
+    return properties_array
+  }
+
+  async function fetchProperties() {
+    const api = await get('/v1/admin/premises/properties')
+    if (response.ok) {
+      setProperties_data(trimProperties(api.data.properties))
+    }
+  }
+
   useEffect(() => {
     fetchRoles()
+    fetchProperties()
   }, [])
 
   async function onSubmit(data) {
@@ -163,12 +185,22 @@ export default function UserForm() {
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Assigned Properties</label>
-                    <Form.Control
-                      defaultValue={userData.assigned_properties}
+
+                    <Controller
+                      name="assigned_properties"
+                      render={({ field }) => (
+                        <Select
+                          isMulti
+                          type="text"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          {...field}
+                          options={properties_data}
+                        />
+                      )}
+                      control={control}
                       placeholder="Assigned Properties"
-                      type="text"
-                      {...register('assigned_properties')}
-                    ></Form.Control>
+                    />
                   </Form.Group>
                 </Col>
               </Row>
