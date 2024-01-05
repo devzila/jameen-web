@@ -14,7 +14,7 @@ import {
   CModalTitle,
   CContainer,
 } from '@coreui/react'
-// react-bootstrap components
+
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
 export default function UserForm() {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
-// import Select from 'react-select'
+import Select from 'react-select'
 import {
   CButton,
   CModal,
@@ -20,13 +20,31 @@ export default function EditUser(propsdata) {
   const { get, put, response } = useFetch()
 
   const [visible, setVisible] = useState(false)
-  const { register, handleSubmit, setValue, watch } = useForm()
+  const { register, handleSubmit, setValue, watch, control } = useForm()
 
   const [userData, setUserData] = useState({})
+  const [roles, setRoles] = useState([])
+
+  let rolesarray = []
+  function trimRoles(rolesdata) {
+    rolesdata.forEach((element) => {
+      rolesarray.push({ value: element.id, label: element.name })
+    })
+    return rolesarray
+  }
+
+  async function fetchRoles() {
+    const api = await get('/v1/admin/roles')
+    if (response.ok) {
+      setRoles(trimRoles(api.data.roles))
+    }
+  }
 
   const id = propsdata.userid.id
+
   useEffect(() => {
     getUserData()
+    fetchRoles()
   }, [])
   async function getUserData() {
     let api = await get(`/v1/admin/users/${id}`)
@@ -182,12 +200,19 @@ export default function EditUser(propsdata) {
                 <Row>
                   <Col className="pr-1 mt-1" md="12">
                     <Form.Group>
-                      <Form.Control
-                        defaultValue={userData.role_id}
+                      <Controller
+                        name="role_id"
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={roles}
+                            value={roles.find((c) => c.value === field.value)}
+                            onChange={(val) => field.onChange(val.value)}
+                          />
+                        )}
+                        control={control}
                         placeholder="Role"
-                        type="text"
-                        {...register('role_id')}
-                      ></Form.Control>
+                      />
                     </Form.Group>
                   </Col>
                 </Row>
