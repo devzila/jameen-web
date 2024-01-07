@@ -4,6 +4,8 @@ import { useForm, Controller } from 'react-hook-form'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 import {
   CButton,
@@ -14,21 +16,21 @@ import {
   CModalTitle,
   CContainer,
 } from '@coreui/react'
-// react-bootstrap components
+
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
 export default function UserForm() {
   const [visible, setVisible] = useState(false)
   const [roles, setRoles] = useState([])
+  const [properties_data, setProperties_data] = useState([])
+
+  const [userData, setUserData] = useState({})
   const { register, handleSubmit, control } = useForm()
   const { get, post, response } = useFetch()
 
-  const [userData, setUserData] = useState({})
-
-  const [itemType, setItemType] = useState({})
-  const [roleidval, setRoleidval] = useState(null)
-
   const navigate = useNavigate()
+
+  //roles
 
   let rolesarray = []
   function trimRoles(rolesdata) {
@@ -45,16 +47,26 @@ export default function UserForm() {
     }
   }
 
-  const handleChangeType = (option) => {
-    if (option) {
-      setItemType(option)
-      const value = itemType.value
-      setRoleidval(value)
-      return value
+  // Properties
+
+  let properties_array = []
+  function trimProperties(properties) {
+    properties.forEach((element) => {
+      properties_array.push({ value: element.id, label: element.name })
+    })
+    return properties_array
+  }
+
+  async function fetchProperties() {
+    const api = await get('/v1/admin/premises/properties')
+    if (response.ok) {
+      setProperties_data(trimProperties(api.data.properties))
     }
   }
+
   useEffect(() => {
     fetchRoles()
+    fetchProperties()
   }, [])
 
   async function onSubmit(data) {
@@ -69,15 +81,13 @@ export default function UserForm() {
     }
   }
 
-  console.log(roleidval)
-
   return (
     <div>
       <button
         style={{ backgroundColor: '#00bfcc', color: 'white', marginLeft: '4px' }}
         color="#00bfcc"
         type="button"
-        className="btn  s-3"
+        className="btn flex s-3"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
@@ -177,12 +187,22 @@ export default function UserForm() {
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Assigned Properties</label>
-                    <Form.Control
-                      defaultValue={userData.assigned_properties}
+
+                    <Controller
+                      name="assigned_properties"
+                      render={({ field }) => (
+                        <Select
+                          isMulti
+                          type="text"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          {...field}
+                          options={properties_data}
+                        />
+                      )}
+                      control={control}
                       placeholder="Assigned Properties"
-                      type="text"
-                      {...register('assigned_properties')}
-                    ></Form.Control>
+                    />
                   </Form.Group>
                 </Col>
               </Row>
@@ -196,16 +216,14 @@ export default function UserForm() {
                   <Form.Group>
                     <Controller
                       name="role_id"
-                      render={({ field: { onChange, value, name, ref } }) => (
+                      render={({ field }) => (
                         <Select
-                          name={name}
-                          inputRef={ref}
-                          options={roles}
-                          value={roleidval}
-                          onChange={handleChangeType}
+                          {...field}
+                          options={roles || skeleton_options}
+                          value={roles.find((c) => c.value === field.value)}
+                          onChange={(val) => field.onChange(val.value)}
                         />
                       )}
-                      // render={({ field }) => <Select {...field} options={roles} />}
                       control={control}
                       placeholder="Role"
                     />

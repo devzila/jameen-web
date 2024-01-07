@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
-// import Select from 'react-select'
+import Select from 'react-select'
 import {
   CButton,
   CModal,
@@ -20,13 +20,52 @@ export default function EditUser(propsdata) {
   const { get, put, response } = useFetch()
 
   const [visible, setVisible] = useState(false)
-  const { register, handleSubmit, setValue, watch } = useForm()
+  const { register, handleSubmit, setValue, watch, control } = useForm()
 
   const [userData, setUserData] = useState({})
+  const [roles, setRoles] = useState([])
+  const [properties_data, setProperties_data] = useState([])
+
+  //roles
+
+  let rolesarray = []
+  function trimRoles(rolesdata) {
+    rolesdata.forEach((element) => {
+      rolesarray.push({ value: element.id, label: element.name })
+    })
+    return rolesarray
+  }
+
+  async function fetchRoles() {
+    const api = await get('/v1/admin/roles')
+    if (response.ok) {
+      setRoles(trimRoles(api.data.roles))
+    }
+  }
+
+  //properties
+
+  let properties_array = []
+  function trimProperties(properties) {
+    properties.forEach((element) => {
+      properties_array.push({ value: element.id, label: element.name + ', ' + element.city })
+    })
+    return properties_array
+  }
+
+  async function fetchProperties() {
+    const api = await get('/v1/admin/premises/properties')
+    if (response.ok) {
+      setProperties_data(trimProperties(api.data.properties))
+    }
+  }
 
   const id = propsdata.userid.id
+
   useEffect(() => {
     getUserData()
+    fetchRoles()
+    fetchProperties()
   }, [])
   async function getUserData() {
     let api = await get(`/v1/admin/users/${id}`)
@@ -40,9 +79,8 @@ export default function EditUser(propsdata) {
         setValue('username', api.data.user.username)
         setValue('password', api.data.user.password)
         setValue('role_id', api.data.user.role.id)
-        setValue('assigned_properties', api.data.user.assigned_properties)
-
-        setUsers(api.data.user)
+        setValue('active', api.data.user.active)
+        setValue('assigned_properties', api.data.user.assigned_properties ? [0] : null)
       }
     }
   }
@@ -165,12 +203,23 @@ export default function EditUser(propsdata) {
                   <Col className="pr-1 mt-3" md="12">
                     <Form.Group>
                       <label>Assigned Properties</label>
-                      <Form.Control
-                        defaultValue={userData.assigned_properties}
+
+                      <Controller
+                        name="assigned_properties"
+                        render={({ field }) => (
+                          <Select
+                            isMulti
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            {...field}
+                            options={properties_data}
+                            // value={roles.find((c) => c.value === field.value)}
+                            // onChange={(val) => field.onChange(val.value)}
+                          />
+                        )}
+                        control={control}
                         placeholder="Assigned Properties"
-                        type="text"
-                        {...register('assigned_properties')}
-                      ></Form.Control>
+                      />
                     </Form.Group>
                   </Col>
                 </Row>
@@ -182,12 +231,19 @@ export default function EditUser(propsdata) {
                 <Row>
                   <Col className="pr-1 mt-1" md="12">
                     <Form.Group>
-                      <Form.Control
-                        defaultValue={userData.role_id}
+                      <Controller
+                        name="role_id"
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={roles}
+                            value={roles.find((c) => c.value === field.value)}
+                            onChange={(val) => field.onChange(val.value)}
+                          />
+                        )}
+                        control={control}
                         placeholder="Role"
-                        type="text"
-                        {...register('role_id')}
-                      ></Form.Control>
+                      />
                     </Form.Group>
                   </Col>
                 </Row>

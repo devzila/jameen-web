@@ -5,7 +5,19 @@ import MultiValueListPop from 'src/components/MultiValueListPop'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import AddUser from './AddUser'
 import EditUser from './EditUser'
-import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import Loading from 'src/components/loading/loading'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
+
+import {
+  CForm,
+  CButton,
+  CFormInput,
+  CNavbar,
+  CContainer,
+  CNavbarBrand,
+  CSpinner,
+} from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom'
 import { Dropdown, Row, Col } from 'react-bootstrap'
@@ -16,9 +28,11 @@ function Index() {
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [refresh, setRefresh] = useState(false)
+  const [errors, setErrors] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const [searchKeyword, setSearchKeyword] = useState(null)
-  const { get, response, error } = useFetch()
+  const { get, response } = useFetch()
   useEffect(
     () => {
       loadInitialusers()
@@ -35,12 +49,17 @@ function Index() {
       endpoint += `&q[username_eq]=${searchKeyword}`
     }
     let initialusers = await get(endpoint)
+    console.log(initialusers)
 
     if (response.ok) {
       if (initialusers.data) {
+        setLoading(false)
         setUsers(initialusers.data.users)
         setPagination(initialusers.data.pagination)
       }
+    } else {
+      setErrors(true)
+      // setLoading(false)
     }
   }
 
@@ -56,35 +75,25 @@ function Index() {
 
   return (
     <div>
-      {error && error.Error}
-      {/* {loading && 'Loading...'} */}
       <section style={{ width: '100%', padding: '0px' }}>
         <CNavbar expand="lg" colorScheme="light" className="bg-light">
           <CContainer fluid>
             <CNavbarBrand href="#">User</CNavbarBrand>
-            {/* <CButton color="success" variant="outline">
-            Actions
-          </CButton> */}
             <div className="d-flex justify-content-end">
-              {/* <CContainer className="h-50 d-flex"> */}
               <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
-                {/* <Search listener={handleSearch} /> */}
-
                 <CFormInput
                   onChange={(e) => setSearchKeyword(e.target.value)}
                   type="search"
-                  className="me-0"
-                  placeholder="Search"
+                  className="me-0 s-3 "
+                  placeholder="Username"
                 />
                 <CButton
                   onClick={loadInitialusers}
-                  // color="success"
                   variant="outline"
-                  className="btn btn-outline-success my-2 my-sm-0 "
+                  className="btn btn-outline-success "
                 >
                   Search
                 </CButton>
-                {/* </CContainer> */}
                 <br></br>
                 <AddUser />
               </CForm>
@@ -145,6 +154,22 @@ function Index() {
                         ))}
                       </tbody>
                     </table>
+                    {loading && (
+                      <div className="d-flex justify-content-start">
+                        <Skeleton
+                          style={{ width: '100px', height: '23px', marginLeft: '2px' }}
+                          count={10}
+                        />
+                        <Skeleton style={{ width: '100px', height: '23px' }} count={10} />
+                        <Skeleton style={{ width: '240px', height: '23px' }} count={10} />
+                        <Skeleton style={{ width: '200px', height: '23px' }} count={10} />
+                        <Skeleton style={{ width: '120px', height: '23px' }} count={10} />
+                        <Skeleton style={{ width: '240px', height: '23px' }} count={10} />
+                        <Skeleton style={{ width: '240px', height: '23px' }} count={10} />
+                      </div>
+                    )}
+                    {loading && <Loading />}
+                    {/* <Skeleton style={{ width: '1250px', height: '280px' }} count={1} /> */}
                   </div>
                 </div>
               </div>

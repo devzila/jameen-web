@@ -5,21 +5,21 @@ export default function Paginate({ forcePage, pageCount, pageRangeDisplayed, onP
   return (
     <ReactPaginate
       breakLabel="..."
-      nextLabel="next >"
+      nextLabel="Next >"
       breakClassName="page-item"
-      breakLinkClassName="page-link"
+      breakLinkClassName="btn btn-outline-info mx-1 btn-floating"
       containerClassName="pagination justify-content-center"
       pageClassName="page-item"
-      pageLinkClassName="page-link"
+      pageLinkClassName="btn btn-outline-info mx-1 btn-floating"
       previousClassName="page-item"
-      previousLinkClassName="page-link"
+      previousLinkClassName="btn btn-outline-info mx-1 btn-floating"
       nextClassName="page-item"
-      nextLinkClassName="page-link"
+      nextLinkClassName="btn btn-outline-info mx-1 btn-floating"
       activeClassName="active"
       onPageChange={onPageChange}
       pageRangeDisplayed={pageRangeDisplayed}
       pageCount={pageCount}
-      previousLabel="< previous"
+      previousLabel="< Prev"
       renderOnZeroPageCount={null}
       forcePage={forcePage}
     />
@@ -32,3 +32,4 @@ Paginate.propTypes = {
   pageRangeDisplayed: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
 }
+// pageLinkClassName="page-link"
