@@ -4,6 +4,8 @@ import { useForm, Controller } from 'react-hook-form'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 import {
   CButton,
@@ -85,7 +87,7 @@ export default function UserForm() {
         style={{ backgroundColor: '#00bfcc', color: 'white', marginLeft: '4px' }}
         color="#00bfcc"
         type="button"
-        className="btn  s-3"
+        className="btn flex s-3"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
@@ -217,7 +219,7 @@ export default function UserForm() {
                       render={({ field }) => (
                         <Select
                           {...field}
-                          options={roles}
+                          options={roles || skeleton_options}
                           value={roles.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
                         />

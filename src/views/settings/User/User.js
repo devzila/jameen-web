@@ -79,29 +79,21 @@ function Index() {
         <CNavbar expand="lg" colorScheme="light" className="bg-light">
           <CContainer fluid>
             <CNavbarBrand href="#">User</CNavbarBrand>
-            {/* <CButton color="success" variant="outline">
-            Actions
-          </CButton> */}
             <div className="d-flex justify-content-end">
-              {/* <CContainer className="h-50 d-flex"> */}
               <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
-                {/* <Search listener={handleSearch} /> */}
-
                 <CFormInput
                   onChange={(e) => setSearchKeyword(e.target.value)}
                   type="search"
-                  className="me-0"
-                  placeholder="Search"
+                  className="me-0 s-3 "
+                  placeholder="Username"
                 />
                 <CButton
                   onClick={loadInitialusers}
-                  // color="success"
                   variant="outline"
-                  className="btn btn-outline-success my-2 my-sm-0 "
+                  className="btn btn-outline-success "
                 >
                   Search
                 </CButton>
-                {/* </CContainer> */}
                 <br></br>
                 <AddUser />
               </CForm>
@@ -165,18 +157,19 @@ function Index() {
                     {loading && (
                       <div className="d-flex justify-content-start">
                         <Skeleton
-                          style={{ width: '100px', height: '20px', marginLeft: '2px' }}
+                          style={{ width: '100px', height: '23px', marginLeft: '2px' }}
                           count={10}
                         />
-                        <Skeleton style={{ width: '100px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '240px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '200px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '120px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '240px', height: '20px' }} count={10} />
-                        <Skeleton style={{ width: '240px', height: '20px' }} count={10} />
+                        <Skeleton style={{ width: '100px', height: '23px' }} count={10} />
+                        <Skeleton style={{ width: '240px', height: '23px' }} count={10} />
+                        <Skeleton style={{ width: '200px', height: '23px' }} count={10} />
+                        <Skeleton style={{ width: '120px', height: '23px' }} count={10} />
+                        <Skeleton style={{ width: '240px', height: '23px' }} count={10} />
+                        <Skeleton style={{ width: '240px', height: '23px' }} count={10} />
                       </div>
                     )}
                     {loading && <Loading />}
+                    {/* <Skeleton style={{ width: '1250px', height: '280px' }} count={1} /> */}
                   </div>
                 </div>
               </div>

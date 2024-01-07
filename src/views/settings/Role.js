@@ -7,9 +7,7 @@ export default function Role() {
       <CNavbar expand="lg" colorScheme="light" className="bg-light">
         <CContainer fluid>
           <CNavbarBrand href="#">Role</CNavbarBrand>
-          {/* <CButton color="success" variant="outline">
-            Actions
-          </CButton> */}
+
           <CForm className="d-flex">
             <CFormInput type="search" className="me-2" placeholder="Search" />
             <CButton type="submit" color="success" variant="outline">
