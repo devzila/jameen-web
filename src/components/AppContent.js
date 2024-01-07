@@ -34,7 +34,7 @@ const AppContent = () => {
           <Route path="properties" name="Properties" element={<Properties />} />
           <Route path="properties/:propertyId/add" name="Add" element={<Properties />} />
           <Route path="/properties/:propertyId" element={<Property />} />
-          <Route path="properties/:propertyId/units" name="Unit" element={<Unit />} />
+          <Route path="/properties/:propertyId/units" name="Unit" element={<Unit />} />
           <Route path="/maintenance" name="Maintenance" element={<Maintenance />} />
           <Route path="/visitor" name="Visitor" element={<Visitor />} />
           <Route path="/operation" name="Operation" element={<Operation />} />
