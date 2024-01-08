@@ -118,7 +118,7 @@ function Add() {
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Year_Built</label>
+                    <label>Year Built</label>
 
                     <Form.Control
                       defaultValue={unitData.year_built}
@@ -141,24 +141,34 @@ function Add() {
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>UnitType Name</label>
+                    <label>Electricity Account-No</label>
 
                     <Form.Control
-                      defaultValue={unitData.name}
+                      defaultValue={unitData.electricity_account_number}
                       type="string"
-                      {...register('unit_type_name')}
+                      {...register('electricity_account_number')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-1 mt-3" md="12">
+                <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>UnitType Descryption</label>
+                    <label>Water Account-No</label>
                     <Form.Control
-                      defaultValue={unitData.descryption}
-                      type="text"
-                      {...register('unit_type_descryption')}
+                      defaultValue={unitData.water_account_number}
+                      type="string"
+                      {...register('water_account_number')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Internal Extension number</label>
+                    <Form.Control
+                      defaultValue={unitData.internal_extension_number}
+                      type="string"
+                      {...register('internal_extension_number')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -194,125 +204,6 @@ function Add() {
         </CModalBody>
       </CModal>
     </div>
-
-    // <>
-    //   <Container fluid>
-    //     <Row>
-    //       <Col md="12">
-    //         <Card>
-    //           <Card.Header>
-    //             <Row>
-    //               <Col md="6">
-    //                 <Card.Title as="h4">Add unit</Card.Title>
-    //               </Col>
-    //             </Row>
-    //           </Card.Header>
-    //           <Card.Body>
-    //             <Form onSubmit={handleSubmit(onSubmit)}>
-    //               <Row>
-    //                 <Col className="pr-1" md="12">
-    //                   <Form.Group className="form-group">
-    //                     <Form.Control
-    //                       type="integer"
-    //                       defaultValue={unitData.no}
-    //                       {...register('unit_no')}
-    //                     />
-    //                     <label>Unit_No</label>
-    //                   </Form.Group>
-    //                 </Col>
-    //               </Row>
-    //               <Row>
-    //                 <Col className="pr-1" md="12">
-    //                   <Form.Group className="form-group">
-    //                     <Form.Control
-    //                       type="integer"
-    //                       defaultValue={unitData.bedrooms_number}
-    //                       {...register('bedrooms_number')}
-    //                     />
-    //                     <label>Bed_No</label>
-    //                   </Form.Group>
-    //                 </Col>
-    //               </Row>
-    //               <Row>
-    //                 <Col className="pr-1" md="12">
-    //                   <Form.Group className="form-group">
-    //                     <Form.Control
-    //                       type="integer"
-    //                       defaultValue={unitData.bathrooms_number}
-    //                       {...register('bathrooms_number')}
-    //                     />
-    //                     <label>bathroom_number</label>
-    //                   </Form.Group>
-    //                 </Col>
-    //               </Row>
-    //               <Row>
-    //                 <Col className="pr-1" md="12">
-    //                   <Form.Group className="form-group">
-    //                     <Form.Control
-    //                       type="integer"
-    //                       defaultValue={unitData.year_built}
-    //                       {...register('year_Built')}
-    //                     />
-    //                     <label>Year-Built</label>
-    //                   </Form.Group>
-    //                 </Col>
-    //               </Row>
-    //               <Row>
-    //                 <Col className="pr-1" md="12">
-    //                   <Form.Group className="form-group">
-    //                     <Form.Control
-    //                       type="integer"
-    //                       defaultValue={unitData.id}
-    //                       {...register('unit_type_id')}
-    //                     />
-    //                     <label>UnitType-ID</label>
-    //                   </Form.Group>
-    //                 </Col>
-    //               </Row>
-    //               <Row>
-    //                 <Col className="pr-1" md="12">
-    //                   <Form.Group className="form-group">
-    //                     <Form.Control
-    //                       type="name"
-    //                       defaultValue={unitData.name}
-    //                       {...register('unit_type_name')}
-    //                     />
-    //                     <label>UnitType-Name</label>
-    //                   </Form.Group>
-    //                 </Col>
-    //               </Row>
-    //               <Row>
-    //                 <Col className="pr-1" md="12">
-    //                   <Form.Group className="form-group">
-    //                     <Form.Control
-    //                       type="text"
-    //                       defaultValue={unitData.descryption}
-    //                       {...register('unit_type_descryption')}
-    //                     />
-    //                     <label>Descryption</label>
-    //                   </Form.Group>
-    //                 </Col>
-    //               </Row>
-    //               <Row>
-    //                 <Col className="pr-1" md="12">
-    //                   <Form.Group className="form-group">
-    //                     <Form.Control type="text" {...register('unit_type_use_type')} />
-    //                     <label>Use-Type</label>
-    //                   </Form.Group>
-    //                 </Col>
-    //               </Row>
-    //               <Button className="btn-fill float-right mt-3" type="submit" variant="info">
-    //                 Update Profile
-    //               </Button>
-
-    //               <div className="clearfix"></div>
-    //             </Form>
-    //           </Card.Body>
-    //         </Card>
-    //       </Col>
-    //     </Row>
-    //   </Container>
-    // </>
   )
 }
 

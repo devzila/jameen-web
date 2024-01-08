@@ -141,15 +141,47 @@ export default function Edit(propsdata) {
                 <Row>
                   <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
-                      <label>Status</label>
+                      <label>Unit-Type-Id</label>
                       <Form.Control
-                        defaultValue={unitData.status}
-                        type="text"
-                        {...register('status')}
+                        defaultValue={unitData.id}
+                        type="integer"
+                        {...register('unit_type_id')}
                       ></Form.Control>
                     </Form.Group>
                   </Col>
+                  {/* <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <label>Electricity-Account-No</label>
+                      <Form.Control
+                        defaultValue={unitData.electricity_account_number}
+                        type="text"
+                        {...register('electricity_account_number')}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col> */}
                 </Row>
+                {/* <Row>
+                  <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <label>Water-Account-No</label>
+                      <Form.Control
+                        defaultValue={unitData.water_account_number}
+                        type="text"
+                        {...register('water_account_number')}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <label>Internal-Extension-No</label>
+                      <Form.Control
+                        defaultValue={unitData.internal_extension_number}
+                        type="text"
+                        {...register('internal_extension_number')}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row> */}
                 {/* Modal part 2 role */}
                 <div className="text-center">
                   <CModalFooter>

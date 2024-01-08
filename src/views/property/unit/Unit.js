@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { BsThreeDots } from 'react-icons/bs'
-import { Container, Row, Button, Col, Card, Table, Modal } from 'react-bootstrap'
-import Pagination from 'src/components/Pagination'
+import { Row, Button, Col, Card, Table, Modal } from 'react-bootstrap'
 import Paginate from '../../../components/Pagination'
 import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from '../../../components/CustomDivToggle'
-import Search from '../../../components/Search'
 import '../../../scss/_custom.scss'
 import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Add from './Add'
 import Edit from './Edit'
 import Show from './Show'
+import Delete from './Delete'
 
 function Unit() {
   const { get, response, error } = useFetch()
@@ -133,6 +132,7 @@ function Unit() {
                                   <Dropdown.Menu>
                                     <Edit unitid={{ id: `${unit.id}` }} />
                                     <Show unitid={{ id: `${unit.id}` }} />
+                                    <Delete unitid={{ id: `${unit.id}` }} />
                                   </Dropdown.Menu>
                                 </Dropdown>
                               </td>
