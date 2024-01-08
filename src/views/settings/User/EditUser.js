@@ -80,12 +80,15 @@ export default function EditUser(propsdata) {
         setValue('password', api.data.user.password)
         setValue('role_id', api.data.user.role.id)
         setValue('active', api.data.user.active)
-        setValue('assigned_properties', api.data.user.assigned_properties ? [0] : null)
+        setValue('compounds', api.data.user.compounds)
       }
     }
   }
   async function onSubmit(data) {
+    console.log(data)
+
     const api = await put(`/v1/admin/users/${id}`, { user: data })
+    console.log(api)
     if (response.ok) {
       toast('User Data Edited Successfully')
       setVisible(!visible)
@@ -205,7 +208,7 @@ export default function EditUser(propsdata) {
                       <label>Assigned Properties</label>
 
                       <Controller
-                        name="assigned_properties"
+                        name="compounds"
                         render={({ field }) => (
                           <Select
                             isMulti

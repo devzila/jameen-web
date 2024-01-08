@@ -1,25 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import Paginate from '../../../components/Pagination'
-import MultiValueListPop from 'src/components/MultiValueListPop'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import AddUser from './AddUser'
 import EditUser from './EditUser'
 import Loading from 'src/components/loading/loading'
-import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
-import {
-  CForm,
-  CButton,
-  CFormInput,
-  CNavbar,
-  CContainer,
-  CNavbarBrand,
-  CSpinner,
-} from '@coreui/react'
+import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
-import { useNavigate } from 'react-router-dom'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import ShowUser from './ShowUser'
 
@@ -27,21 +16,14 @@ function Index() {
   const [users, setUsers] = useState([])
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [refresh, setRefresh] = useState(false)
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
 
   const [searchKeyword, setSearchKeyword] = useState(null)
   const { get, response } = useFetch()
-  useEffect(
-    () => {
-      loadInitialusers()
-    },
-    [currentPage],
-    [refresh],
-  )
-
-  const history = useNavigate()
+  useEffect(() => {
+    loadInitialusers()
+  }, [currentPage])
 
   async function loadInitialusers() {
     let endpoint = `/v1/admin/users?page=${currentPage}`
@@ -49,6 +31,7 @@ function Index() {
       endpoint += `&q[username_eq]=${searchKeyword}`
     }
     let initialusers = await get(endpoint)
+
     console.log(initialusers)
 
     if (response.ok) {
@@ -59,18 +42,12 @@ function Index() {
       }
     } else {
       setErrors(true)
-      // setLoading(false)
+      setLoading(false)
     }
   }
 
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
-  }
-  const handleSearch = (searchTerm) => {
-    setSearchKeyword(searchTerm)
-  }
-  const refreshHandler = () => {
-    setRefresh(!refresh)
   }
 
   return (
@@ -120,7 +97,6 @@ function Index() {
                           <th className="pt-3 pb-3 border-0">Phone Number</th>
                           <th className="pt-3 pb-3 border-0">Username</th>
                           <th className="pt-3 pb-3 border-0">Role</th>
-                          <th className="pt-3 pb-3 border-0">Assigned Properties</th>
                           <th className="pt-3 pb-3 border-0">Action </th>
                         </tr>
                       </thead>
@@ -135,9 +111,6 @@ function Index() {
                             <td className="pt-3">{user.mobile_number}</td>
                             <td className="pt-3">{user.username}</td>
                             <td className="pt-3">{user.role.name}</td>
-                            <td>
-                              {/* <AssignedPropertiesPop prop={user.assigned_properties} /> */}
-                            </td>
 
                             <td>
                               <Dropdown key={user.id}>
@@ -154,22 +127,15 @@ function Index() {
                         ))}
                       </tbody>
                     </table>
-                    {loading && (
-                      <div className="d-flex justify-content-start">
-                        <Skeleton
-                          style={{ width: '100px', height: '23px', marginLeft: '2px' }}
-                          count={10}
-                        />
-                        <Skeleton style={{ width: '100px', height: '23px' }} count={10} />
-                        <Skeleton style={{ width: '240px', height: '23px' }} count={10} />
-                        <Skeleton style={{ width: '200px', height: '23px' }} count={10} />
-                        <Skeleton style={{ width: '120px', height: '23px' }} count={10} />
-                        <Skeleton style={{ width: '240px', height: '23px' }} count={10} />
-                        <Skeleton style={{ width: '240px', height: '23px' }} count={10} />
-                      </div>
-                    )}
                     {loading && <Loading />}
-                    {/* <Skeleton style={{ width: '1250px', height: '280px' }} count={1} /> */}
+                    {errors && (
+                      <p
+                        className="d-flex justify-content-cente"
+                        style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
+                      >
+                        We are facing a technical issue at our end.
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

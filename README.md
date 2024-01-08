@@ -201,4 +201,5 @@ Task :
 Rahul :
 
 1. Resident crud
-2.
+
+properties_ids 2.

@@ -24,6 +24,7 @@ export default function ShowUser(propsd) {
   }, [])
   async function getUserData() {
     let api = await get(`/v1/admin/users/${id}`)
+    console.log(api)
     setUser(api.data.user)
 
     if (response.ok) {

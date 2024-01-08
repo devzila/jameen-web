@@ -4,7 +4,6 @@ import { useForm, Controller } from 'react-hook-form'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
-import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 import {
@@ -59,6 +58,7 @@ export default function UserForm() {
 
   async function fetchProperties() {
     const api = await get('/v1/admin/premises/properties')
+    console.log(api)
     if (response.ok) {
       setProperties_data(trimProperties(api.data.properties))
     }
@@ -71,8 +71,9 @@ export default function UserForm() {
 
   async function onSubmit(data) {
     console.log(data)
-
-    const api = await post(`/v1/admin/users`, { user: data })
+    const assigned_properties_data = data?.properties_id.map((element) => element.value)
+    const body = { ...data, properties_id: assigned_properties_data }
+    const api = await post(`/v1/admin/users`, { user: body })
     if (response.ok) {
       toast('user added Successfully')
       setVisible(!visible)
@@ -80,6 +81,7 @@ export default function UserForm() {
       toast(response.data?.message)
     }
   }
+  let value = []
 
   return (
     <div>
@@ -189,7 +191,7 @@ export default function UserForm() {
                     <label>Assigned Properties</label>
 
                     <Controller
-                      name="assigned_properties"
+                      name="properties_id"
                       render={({ field }) => (
                         <Select
                           isMulti
@@ -198,6 +200,8 @@ export default function UserForm() {
                           classNamePrefix="select"
                           {...field}
                           options={properties_data}
+                          // value={value.push(roles.find((c) => c.value === field.value))}
+                          // onChange={(val) => field.onChange(val.value)}
                         />
                       )}
                       control={control}
@@ -219,7 +223,7 @@ export default function UserForm() {
                       render={({ field }) => (
                         <Select
                           {...field}
-                          options={roles || skeleton_options}
+                          options={roles}
                           value={roles.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
                         />
