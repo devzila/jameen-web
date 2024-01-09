@@ -58,7 +58,6 @@ export default function UserForm() {
 
   async function fetchProperties() {
     const api = await get('/v1/admin/premises/properties')
-    console.log(api)
     if (response.ok) {
       setProperties_data(trimProperties(api.data.properties))
     }
@@ -71,8 +70,8 @@ export default function UserForm() {
 
   async function onSubmit(data) {
     console.log(data)
-    const assigned_properties_data = data?.properties_id.map((element) => element.value)
-    const body = { ...data, properties_id: assigned_properties_data }
+    const assigned_properties_data = data?.property_ids.map((element) => element.value)
+    const body = { ...data, property_ids: assigned_properties_data }
     const api = await post(`/v1/admin/users`, { user: body })
     if (response.ok) {
       toast('user added Successfully')
@@ -191,7 +190,7 @@ export default function UserForm() {
                     <label>Assigned Properties</label>
 
                     <Controller
-                      name="properties_id"
+                      name="property_ids"
                       render={({ field }) => (
                         <Select
                           isMulti
@@ -200,8 +199,6 @@ export default function UserForm() {
                           classNamePrefix="select"
                           {...field}
                           options={properties_data}
-                          // value={value.push(roles.find((c) => c.value === field.value))}
-                          // onChange={(val) => field.onChange(val.value)}
                         />
                       )}
                       control={control}

@@ -53,6 +53,15 @@ export default function EditUser(propsdata) {
     return properties_array
   }
 
+  let selected_properties = []
+
+  function trimProperties2(properties) {
+    properties.forEach((element) => {
+      selected_properties.push({ value: element.id, label: element.name + ', ' + element.city })
+    })
+    return selected_properties
+  }
+
   async function fetchProperties() {
     const api = await get('/v1/admin/premises/properties')
     if (response.ok) {
@@ -80,14 +89,16 @@ export default function EditUser(propsdata) {
         setValue('password', api.data.user.password)
         setValue('role_id', api.data.user.role.id)
         setValue('active', api.data.user.active)
-        setValue('compounds', api.data.user.compounds)
+        setValue('property_ids', trimProperties2(api.data.user.properties))
       }
     }
   }
   async function onSubmit(data) {
     console.log(data)
+    const assigned_properties_data = data?.property_ids.map((element) => element.value)
+    const body = { ...data, property_ids: assigned_properties_data }
 
-    const api = await put(`/v1/admin/users/${id}`, { user: data })
+    const api = await put(`/v1/admin/users/${id}`, { user: body })
     console.log(api)
     if (response.ok) {
       toast('User Data Edited Successfully')
@@ -133,7 +144,7 @@ export default function EditUser(propsdata) {
                     <Form.Group>
                       <label>Name</label>
                       <Form.Control
-                        defaultValue={users.name}
+                        // defaultValue={users.name}
                         placeholder="Full Name"
                         type="text"
                         {...register('name')}
@@ -208,16 +219,15 @@ export default function EditUser(propsdata) {
                       <label>Assigned Properties</label>
 
                       <Controller
-                        name="compounds"
+                        name="property_ids"
                         render={({ field }) => (
                           <Select
+                            defaultValue={selected_properties}
                             isMulti
                             className="basic-multi-select"
                             classNamePrefix="select"
                             {...field}
                             options={properties_data}
-                            // value={roles.find((c) => c.value === field.value)}
-                            // onChange={(val) => field.onChange(val.value)}
                           />
                         )}
                         control={control}
