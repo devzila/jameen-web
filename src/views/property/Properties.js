@@ -9,6 +9,7 @@ import { Dropdown } from 'react-bootstrap'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import Search from 'src/components/Search'
 import { Link } from 'react-router-dom'
+import Loading from 'src/components/loading/loading'
 
 function Property() {
   const { get, response } = useFetch()
@@ -19,15 +20,21 @@ function Property() {
   const [filteredProperties, setFilteredProperties] = useState([])
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [errors, setErrors] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const loadInitialProperties = async (searchTerm = '') => {
     let endpoint = `/v1/admin/premises/properties?page=${currentPage}&search=${searchTerm}`
 
     const initialProperties = await get(endpoint)
     if (response.ok) {
+      setLoading(false)
       setProperties(initialProperties.data.properties)
       setPagination(initialProperties.data.pagination)
       filterProperties(searchTerm, initialProperties.data.properties)
+    } else {
+      setErrors(true)
+      setLoading(false)
     }
   }
 
@@ -125,6 +132,15 @@ function Property() {
                     ))}
                   </tbody>
                 </Table>
+                {loading && <Loading />}
+                {errors && (
+                  <p
+                    className="d-flex justify-content-cente"
+                    style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
+                  >
+                    There is a technical issue in Backened
+                  </p>
+                )}
               </Card.Body>
             </Card>
           </Col>

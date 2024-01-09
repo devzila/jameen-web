@@ -55,10 +55,6 @@ function Unit() {
     setCurrentPage(e.selected + 1)
   }
 
-  const handleSearch = (searchTerm) => {
-    setSearchKeyword(searchTerm)
-  }
-
   return (
     <>
       <div>
