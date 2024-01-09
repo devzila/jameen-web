@@ -4,7 +4,6 @@ import { useForm, Controller } from 'react-hook-form'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
-import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 import {
@@ -71,8 +70,9 @@ export default function UserForm() {
 
   async function onSubmit(data) {
     console.log(data)
-
-    const api = await post(`/v1/admin/users`, { user: data })
+    const assigned_properties_data = data?.property_ids.map((element) => element.value)
+    const body = { ...data, property_ids: assigned_properties_data }
+    const api = await post(`/v1/admin/users`, { user: body })
     if (response.ok) {
       toast('user added Successfully')
       setVisible(!visible)
@@ -80,6 +80,7 @@ export default function UserForm() {
       toast(response.data?.message)
     }
   }
+  let value = []
 
   return (
     <div>
@@ -189,7 +190,7 @@ export default function UserForm() {
                     <label>Assigned Properties</label>
 
                     <Controller
-                      name="assigned_properties"
+                      name="property_ids"
                       render={({ field }) => (
                         <Select
                           isMulti
@@ -219,7 +220,7 @@ export default function UserForm() {
                       render={({ field }) => (
                         <Select
                           {...field}
-                          options={roles || skeleton_options}
+                          options={roles}
                           value={roles.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
                         />

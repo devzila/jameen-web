@@ -201,4 +201,10 @@ Task :
 Rahul :
 
 1. Resident crud
-2.
+
+properties_ids 2.
+masan
+
+TODO
+
+> > > Clear local storage if unauthorized . error handling

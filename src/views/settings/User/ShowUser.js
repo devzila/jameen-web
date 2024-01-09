@@ -24,6 +24,7 @@ export default function ShowUser(propsd) {
   }, [])
   async function getUserData() {
     let api = await get(`/v1/admin/users/${id}`)
+    console.log(api)
     setUser(api.data.user)
 
     if (response.ok) {
@@ -93,13 +94,20 @@ export default function ShowUser(propsd) {
                 </Form.Group>
               </Col>
             </Row>
-            <CModalTitle id="StaticBackdropExampleLabel">Compounds</CModalTitle>
+            <CModalTitle className="pr-1 mt-4" id="StaticBackdropExampleLabel">
+              Assigned Properties{' '}
+            </CModalTitle>
             <Row>
               <Col className="pr-1 mt-4" md="6">
                 <Form.Group>
-                  {/* {user.compounds.map((val) => (
-                    <Form.Control defaultValue={val} type="text" disabled></Form.Control>
-                  ))} */}
+                  {user.properties?.map((val) => (
+                    <Form.Control
+                      key={val.id}
+                      defaultValue={val.name}
+                      type="text"
+                      disabled
+                    ></Form.Control>
+                  ))}
                 </Form.Group>
               </Col>
             </Row>
