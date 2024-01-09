@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Button, Card, Form, Container, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import {
   CButton,
   CModal,
@@ -19,15 +21,17 @@ function Add() {
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     formState: { errors },
   } = useForm()
 
+  const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
-  const { property } = useParams()
-  const { post, response, api } = useFetch()
+  const { get, post, response, api } = useFetch()
   const [unitData, setUnitData] = useState({})
   const navigate = useNavigate()
+  const [units_data, setUnits_data] = useState([])
 
   useEffect(() => {
     const inputs = document.querySelectorAll('.form-group input')
@@ -43,13 +47,33 @@ function Add() {
     })
   }, [])
 
+  let unit_id_array = []
+  function trimUnits(units) {
+    units.forEach((element) => {
+      unit_id_array.push({ value: element.id, label: element.id })
+    })
+    return unit_id_array
+  }
+
+  async function fetchUnits() {
+    const api = await get(`/v1/admin/premises/properties/${propertyId}/units`)
+    console.log(api)
+    if (response.ok) {
+      setUnits_data(trimUnits(api.data.units.map((x) => x.unit_type)))
+    }
+  }
+  useEffect(() => {
+    fetchUnits()
+  }, [])
+  console.log('units Data:', units_data)
+
   async function onSubmit(data) {
     console.log(data)
-    const apiResponse = await post(`/v1/admin/premises/properties/1/units`, {
+    const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/units`, {
       unit: data,
     })
     if (apiResponse.ok) {
-      navigate(`/properties/${property.id}/units`)
+      navigate(`/units/${propertyId}/units`)
       toast('Unit added successfully')
     } else {
       toast(response.data?.message)
@@ -131,12 +155,23 @@ function Add() {
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>UnitType ID</label>
-                    <Form.Control
-                      defaultValue={unitData.id}
-                      type="integer"
-                      {...register('unit_type_id')}
-                    ></Form.Control>
+                    <label>Unit Type</label>
+
+                    <Controller
+                      name="unit_type_id"
+                      render={({ field }) => (
+                        <Select
+                          type="text"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          {...field}
+                          value={units_data.find((c) => c.value === field.value)}
+                          onChange={(val) => field.onChange(val.value)}
+                          options={units_data}
+                        />
+                      )}
+                      control={control}
+                    />
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">

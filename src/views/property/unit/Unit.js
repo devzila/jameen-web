@@ -105,6 +105,7 @@ function Unit() {
                             <th className="pt-3 pb-3 border-0">BedRoom Number</th>
                             <th className="pt-3 pb-3 border-0">BathRoom Number</th>
                             <th className="pt-3 pb-3 border-0">Year Built</th>
+                            <th className="pt-3 pb-3 border-0">Owner/Resident</th>
                             <th className="pt-3 pb-3 border-0">Status</th>
                             <th className="pt-3 pb-3 border-0">Action </th>
                           </tr>
@@ -119,6 +120,11 @@ function Unit() {
                               <td className="pt-3">{unit.bedrooms_number}</td>
                               <td className="pt-3">{unit.bathrooms_number}</td>
                               <td className="pt-3">{unit.year_built}</td>
+                              <td className="pt-3">
+                                {unit.resident_units[0]?.resident.first_name +
+                                  ' ' +
+                                  unit.resident_units[0]?.resident.last_name}
+                              </td>
                               <td className="pt-3">{unit.status}</td>
 
                               <td>
