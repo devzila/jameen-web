@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { useNavigate, useParams } from 'react-router-dom'
+import Select from 'react-select'
 import {
   CButton,
   CModal,
@@ -15,36 +16,34 @@ import {
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
 export default function Edit(propsdata) {
-  const [units, setUnits] = useState([])
+  const [visible, setVisible] = useState(false)
+  const { register, handleSubmit, setValue, control } = useForm()
   const { propertyId } = useParams()
   const { get, put, response } = useFetch()
-
-  const [visible, setVisible] = useState(false)
-  const { register, handleSubmit, setValue, watch } = useForm()
-
-  const [unitData, setunitData] = useState({})
+  const [unitData, setUnitData] = useState({})
+  const [units_data, setUnits_data] = useState([])
 
   const id = propsdata.unitid.id
+
   useEffect(() => {
     getUnitData()
+    fetchUnits() // Assuming you want to populate the unit types for the dropdown
   }, [])
+
   async function getUnitData() {
     try {
-      let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${id}`)
-      console.log(api)
-
+      const api = await get(`/v1/admin/premises/properties/${propertyId}/units/${id}`)
       if (response.ok) {
-        if (api.data && api.data.unit) {
-          setValue('unit_no', api.data.unit.unit_no || '')
-          setValue('bedrooms_number', api.data.unit.bedrooms_number || '')
-          setValue('bathrooms_number', api.data.unit.bathrooms_number || '')
-          setValue('year_built', api.data.unit.year_built || '')
-          setValue('status', api.data.unit.status || '')
-
-          setunitData(api.data.unit)
-        } else {
-          console.error('api.data.unit is undefined')
-        }
+        const unit = api.data?.unit || {}
+        setUnitData(unit)
+        setValue('unit_no', unit.unit_no || '')
+        setValue('bedrooms_number', unit.bedrooms_number || '')
+        setValue('bathrooms_number', unit.bathrooms_number || '')
+        setValue('year_built', unit.year_built || '')
+        setValue('status', unit.status || '')
+        setValue('electricity_account_number', unit.electricity_account_number || '')
+        setValue('water_account_number', unit.water_account_number || '')
+        setValue('internal_extension_number', unit.internal_extension_number || '')
       } else {
         console.error(response)
       }
@@ -53,15 +52,31 @@ export default function Edit(propsdata) {
     }
   }
 
+  async function fetchUnits() {
+    const api = await get(`/v1/admin/premises/properties/${propertyId}/units`)
+    if (response.ok) {
+      setUnits_data(trimUnits(api.data.units.map((x) => x.unit_type)))
+    }
+  }
+
+  function trimUnits(units) {
+    let unit_id_array = []
+    units.forEach((element) => {
+      unit_id_array.push({ value: element.id, label: element.id })
+    })
+    return unit_id_array
+  }
+
   async function onSubmit(data) {
     const api = await put(`/v1/admin/premises/properties/${propertyId}/units/${id}`, { unit: data })
     if (response.ok) {
-      toast('unit Data Edited Successfully')
-      setVisible(!visible)
+      toast('Unit Data Edited Successfully')
+      setVisible(false)
     } else {
-      toast(response.data?.message)
+      toast(response.data?.message || 'Failed to edit unit data')
     }
   }
+
   return (
     <>
       <div>
@@ -74,7 +89,7 @@ export default function Edit(propsdata) {
             color: '#00bfcc',
           }}
           type="button"
-          className="btn btn-tertiary "
+          className="btn btn-tertiary"
           data-mdb-ripple-init
           onClick={() => setVisible(!visible)}
         >
@@ -89,44 +104,66 @@ export default function Edit(propsdata) {
           aria-labelledby="StaticBackdropExampleLabel"
         >
           <CModalHeader>
-            <CModalTitle id="StaticBackdropExampleLabel">Edit unit</CModalTitle>
+            <CModalTitle id="StaticBackdropExampleLabel">Edit Unit</CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CContainer>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Row>
-                  <Col className="pr-1 mt-1" md="6">
+                  <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <label>Unit Type</label>
+                      <Controller
+                        name="unit_type_id"
+                        render={({ field }) => (
+                          <Select
+                            type="text"
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            {...field}
+                            value={units_data.find((c) => c.value === field.value)}
+                            onChange={(val) => field.onChange(val.value)}
+                            options={units_data}
+                          />
+                        )}
+                        control={control}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
                       <label>Unit Number</label>
                       <Form.Control
                         defaultValue={unitData.unit_no}
                         type="integer"
                         {...register('unit_no')}
-                      ></Form.Control>
-                    </Form.Group>
-                  </Col>
-                  <Col className="pr-1 mt-4" md="4">
-                    <Form.Group>
-                      <label>Bedroom Number</label>
-                      <Form.Control
-                        type="integer"
-                        defaultValue={unitData.bedrooms_number}
-                        {...register('bedrooms_number')}
-                      ></Form.Control>
+                      />
                     </Form.Group>
                   </Col>
                 </Row>
                 <Row>
                   <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
-                      <label>BathRoom Number</label>
+                      <label>Bedroom Number</label>
+                      <Form.Control
+                        type="integer"
+                        defaultValue={unitData.bedrooms_number}
+                        {...register('bedrooms_number')}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <label>Bathroom Number</label>
                       <Form.Control
                         defaultValue={unitData.bathrooms_number}
                         type="integer"
                         {...register('bathrooms_number')}
-                      ></Form.Control>
+                      />
                     </Form.Group>
                   </Col>
+                </Row>
+                <Row>
                   <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
                       <label>Year Built</label>
@@ -134,61 +171,62 @@ export default function Edit(propsdata) {
                         defaultValue={unitData.year_built}
                         type="integer"
                         {...register('year_built')}
-                      ></Form.Control>
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <label>Status</label>
+                      <Form.Control
+                        defaultValue={unitData.status}
+                        type="text"
+                        {...register('status')}
+                      />
                     </Form.Group>
                   </Col>
                 </Row>
                 <Row>
                   <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
-                      <label>Unit-Type-Id</label>
-                      <Form.Control
-                        defaultValue={unitData.id}
-                        type="integer"
-                        {...register('unit_type_id')}
-                      ></Form.Control>
-                    </Form.Group>
-                  </Col>
-                  {/* <Col className="pr-1 mt-3" md="6">
-                    <Form.Group>
-                      <label>Electricity-Account-No</label>
+                      <label>Electricity Account Number</label>
                       <Form.Control
                         defaultValue={unitData.electricity_account_number}
-                        type="text"
+                        type="string"
                         {...register('electricity_account_number')}
-                      ></Form.Control>
+                      />
                     </Form.Group>
-                  </Col> */}
-                </Row>
-                {/* <Row>
+                  </Col>
                   <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
-                      <label>Water-Account-No</label>
+                      <label>Water Account Number</label>
                       <Form.Control
                         defaultValue={unitData.water_account_number}
-                        type="text"
+                        type="string"
                         {...register('water_account_number')}
-                      ></Form.Control>
+                      />
                     </Form.Group>
                   </Col>
+                </Row>
+                <Row>
                   <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
-                      <label>Internal-Extension-No</label>
+                      <label>Internal Extension Number</label>
                       <Form.Control
                         defaultValue={unitData.internal_extension_number}
-                        type="text"
+                        type="string"
                         {...register('internal_extension_number')}
-                      ></Form.Control>
+                      />
                     </Form.Group>
                   </Col>
-                </Row> */}
+                </Row>
+
                 {/* Modal part 2 role */}
                 <div className="text-center">
                   <CModalFooter>
                     <Button
                       data-mdb-ripple-init
                       type="submit"
-                      className="btn  btn-primary btn-block"
+                      className="btn btn-primary btn-block"
                       style={{ marginTop: '5px', backgroundColor: '#00bfcc', border: 'none' }}
                     >
                       Submit
