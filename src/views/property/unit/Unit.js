@@ -8,6 +8,7 @@ import CustomDivToggle from '../../../components/CustomDivToggle'
 import '../../../scss/_custom.scss'
 import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { useNavigate, useParams } from 'react-router-dom'
+import Loading from 'src/components/loading/loading'
 import Add from './Add'
 import Edit from './Edit'
 import Show from './Show'
@@ -24,6 +25,8 @@ function Unit() {
   const [currentPage, setCurrentPage] = useState(1)
   const [searchKeyword, setSearchKeyword] = useState('')
   const [refresh, setRefresh] = useState(false)
+  const [errors, setErrors] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     loadInitialUnits()
@@ -39,8 +42,12 @@ function Unit() {
     const initialUnits = await get(endpoint)
 
     if (response.ok) {
+      setLoading(false)
       setUnits(initialUnits.data.units)
       setPagination(initialUnits.data.pagination)
+    } else {
+      setErrors(true)
+      setLoading(false)
     }
   }
 
@@ -50,10 +57,6 @@ function Unit() {
 
   const handleSearch = (searchTerm) => {
     setSearchKeyword(searchTerm)
-  }
-
-  const refreshHandler = () => {
-    setRefresh(!refresh)
   }
 
   return (
@@ -146,6 +149,15 @@ function Unit() {
                           ))}
                         </tbody>
                       </table>
+                      {loading && <Loading />}
+                      {errors && (
+                        <p
+                          className="d-flex justify-content-cente"
+                          style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
+                        >
+                          There is a technical issue in Backened
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
