@@ -39,7 +39,7 @@ function Index() {
         setLoading(false)
         console.log(initialusers)
         setUsers(initialusers.data)
-        setPagination(initialusers.data.pagination)
+        setPagination(initialusers.pagination)
       }
     } else {
       setErrors(true)
