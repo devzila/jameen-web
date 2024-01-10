@@ -55,14 +55,14 @@ export default function Edit(propsdata) {
   async function fetchUnits() {
     const api = await get(`/v1/admin/premises/properties/${propertyId}/unit_types`)
     if (response.ok) {
-      setUnits_data(trimUnits(api.data.map((x) => x.unit_types)))
+      setUnits_data(trimUnits(api.data.units.map((x) => x.unit_type)))
     }
   }
 
   function trimUnits(units) {
     let unit_id_array = []
     units.forEach((element) => {
-      unit_id_array.push({ value: element.id, label: element.id })
+      unit_id_array.push({ value: element.id, label: element.name })
     })
     return unit_id_array
   }
@@ -117,13 +117,10 @@ export default function Edit(propsdata) {
                         name="unit_type_id"
                         render={({ field }) => (
                           <Select
-                            type="text"
-                            className="basic-multi-select"
-                            classNamePrefix="select"
                             {...field}
-                            value={units_data.find((c) => c.value === field.value)}
-                            onChange={(val) => field.onChange(val.value)}
                             options={units_data}
+                            value={units_data.find((c) => c.label === unitData.unit_type_name)}
+                            onChange={(val) => field.onChange(val.value)}
                           />
                         )}
                         control={control}
