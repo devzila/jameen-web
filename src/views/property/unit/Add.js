@@ -50,25 +50,22 @@ function Add() {
   let unit_id_array = []
   function trimUnits(units) {
     units.forEach((element) => {
-      unit_id_array.push({ value: element.id, label: element.id })
+      unit_id_array.push({ value: element.id, label: element.name })
     })
     return unit_id_array
   }
 
   async function fetchUnits() {
-    const api = await get(`/v1/admin/premises/properties/${propertyId}/units`)
-    console.log(api)
+    const api = await get(`/v1/admin/premises/properties/${propertyId}/unit_types`)
     if (response.ok) {
-      setUnits_data(trimUnits(api.data.units.map((x) => x.unit_type)))
+      setUnits_data(trimUnits(api.data.map((x) => x.unit_types)))
     }
   }
   useEffect(() => {
     fetchUnits()
   }, [])
-  console.log('units Data:', units_data)
 
   async function onSubmit(data) {
-    console.log(data)
     const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/units`, {
       unit: data,
     })

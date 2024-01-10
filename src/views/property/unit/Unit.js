@@ -13,6 +13,7 @@ import Add from './Add'
 import Edit from './Edit'
 import Show from './Show'
 import Delete from './Delete'
+import PickOwner from './PickOwner'
 
 function Unit() {
   const { get, response, error } = useFetch()
@@ -53,25 +54,6 @@ function Unit() {
 
   const handlePageClick = (e) => {
     setCurrentPage(e.selected + 1)
-  }
-
-  function pickOwner(resObj) {
-    const ownerMatch = resObj.filter((curRes) => {
-      return curRes.association_type == 'owner'
-    })
-    const ownerName =
-      ownerMatch.length > 0
-        ? ownerMatch[0].resident.first_name + ' ' + ownerMatch[0].resident.last_name
-        : ''
-
-    const residentMatch = resObj.filter((curRes) => {
-      return curRes.association_type == 'primary_resident'
-    })
-    const residentName =
-      residentMatch.length > 0
-        ? residentMatch[0].resident.first_name + ' ' + residentMatch[0].resident.last_name
-        : ''
-    return ownerName + '/' + residentName
   }
 
   return (
@@ -138,7 +120,7 @@ function Unit() {
                               <td className="pt-3">{unit.bedrooms_number}</td>
                               <td className="pt-3">{unit.bathrooms_number}</td>
                               <td className="pt-3">{unit.year_built}</td>
-                              <td className="pt-3">{pickOwner(unit.resident_units)}</td>
+                              <td className="pt-3">{PickOwner(unit.resident_units)}</td>
                               <td className="pt-3">{unit.status}</td>
 
                               <td>

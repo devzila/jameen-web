@@ -53,9 +53,9 @@ export default function Edit(propsdata) {
   }
 
   async function fetchUnits() {
-    const api = await get(`/v1/admin/premises/properties/${propertyId}/units`)
+    const api = await get(`/v1/admin/premises/properties/${propertyId}/unit_types`)
     if (response.ok) {
-      setUnits_data(trimUnits(api.data.units.map((x) => x.unit_type)))
+      setUnits_data(trimUnits(api.data.map((x) => x.unit_types)))
     }
   }
 
