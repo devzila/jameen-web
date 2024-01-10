@@ -29,9 +29,8 @@ function Property() {
     const initialProperties = await get(endpoint)
     if (response.ok) {
       setLoading(false)
-      setProperties(initialProperties.data.properties)
-      setPagination(initialProperties.data.pagination)
-      filterProperties(searchTerm, initialProperties.data.properties)
+      setProperties(initialProperties.data)
+      setPagination(initialProperties.pagination)
     } else {
       setErrors(true)
       setLoading(false)
@@ -48,24 +47,6 @@ function Property() {
 
   const handleSearch = (searchTerm) => {
     loadInitialProperties(searchTerm)
-  }
-
-  const filterProperties = (term, propertyList) => {
-    const filtered = propertyList.filter(
-      (property) =>
-        property.name.toLowerCase().includes(term.toLowerCase()) ||
-        property.address.toLowerCase().includes(term.toLowerCase()) ||
-        property.city.toLowerCase().includes(term.toLowerCase()) ||
-        property.short_name.toLowerCase().includes(term.toLowerCase()) ||
-        property.vat_no.toLowerCase().includes(term.toLowerCase()) ||
-        property.invoice_no_prefix.toLowerCase().includes(term.toLowerCase()) ||
-        property.use_type.toLowerCase().includes(term.toLowerCase()) ||
-        property.invoice_overdue_days.toString().includes(term) ||
-        property.overdue_charge_amount.toString().includes(term) ||
-        property.payment_term.toLowerCase().includes(term.toLowerCase()) ||
-        property.invoice_day.toString().includes(term),
-    )
-    setFilteredProperties(filtered)
   }
 
   return (
@@ -99,7 +80,7 @@ function Property() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredProperties.map((property) => (
+                    {properties.map((property) => (
                       <tr key={property.id}>
                         <td>
                           <NavLink to={`/properties/${property.id}`}>{property.name}</NavLink>

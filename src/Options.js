@@ -2,6 +2,7 @@ const options = {
   headers: {
     Accept: 'application/json',
     Authorization: localStorage.getItem('token'),
+    Test: '123',
   },
   interceptors: {
     // every time we make an http request, this will run 1st before the request is made

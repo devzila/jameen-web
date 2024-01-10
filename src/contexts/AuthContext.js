@@ -9,8 +9,9 @@ export const initialAuthState = {
 export const reducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN':
-      localStorage.setItem('user', JSON.stringify(action.payload.data.object))
-      localStorage.setItem('token', action.payload.data.token)
+      console.log('===', action.payload.token)
+      localStorage.setItem('user', JSON.stringify(action.payload.object))
+      localStorage.setItem('token', action.payload.token)
       return {
         ...state,
         isAutheticated: true,
