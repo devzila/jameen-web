@@ -37,7 +37,8 @@ function Index() {
     if (response.ok) {
       if (initialusers.data) {
         setLoading(false)
-        setUsers(initialusers.data.users)
+        console.log(initialusers)
+        setUsers(initialusers.data)
         setPagination(initialusers.data.pagination)
       }
     } else {

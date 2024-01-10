@@ -41,8 +41,9 @@ export default function UserForm() {
 
   async function fetchRoles() {
     const api = await get('/v1/admin/roles')
+    console.log(api)
     if (response.ok) {
-      setRoles(trimRoles(api.data.roles))
+      setRoles(trimRoles(api.data))
     }
   }
 
@@ -58,8 +59,9 @@ export default function UserForm() {
 
   async function fetchProperties() {
     const api = await get('/v1/admin/premises/properties')
+    console.log(api)
     if (response.ok) {
-      setProperties_data(trimProperties(api.data.properties))
+      setProperties_data(trimProperties(api.data))
     }
   }
 
@@ -72,6 +74,7 @@ export default function UserForm() {
     console.log(data)
     const assigned_properties_data = data?.property_ids.map((element) => element.value)
     const body = { ...data, property_ids: assigned_properties_data }
+    console.log(body)
     const api = await post(`/v1/admin/users`, { user: body })
     if (response.ok) {
       toast('user added Successfully')
@@ -80,7 +83,6 @@ export default function UserForm() {
       toast(response.data?.message)
     }
   }
-  let value = []
 
   return (
     <div>

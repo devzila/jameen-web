@@ -39,7 +39,7 @@ export default function EditUser(propsdata) {
   async function fetchRoles() {
     const api = await get('/v1/admin/roles')
     if (response.ok) {
-      setRoles(trimRoles(api.data.roles))
+      setRoles(trimRoles(api.data))
     }
   }
 
@@ -65,7 +65,7 @@ export default function EditUser(propsdata) {
   async function fetchProperties() {
     const api = await get('/v1/admin/premises/properties')
     if (response.ok) {
-      setProperties_data(trimProperties(api.data.properties))
+      setProperties_data(trimProperties(api.data))
     }
   }
 
@@ -82,14 +82,14 @@ export default function EditUser(propsdata) {
 
     if (response.ok) {
       if (api.data) {
-        setValue('name', api.data.user.name)
-        setValue('email', api.data.user.email)
-        setValue('mobile_number', api.data.user.mobile_number)
-        setValue('username', api.data.user.username)
-        setValue('password', api.data.user.password)
-        setValue('role_id', api.data.user.role.id)
-        setValue('active', api.data.user.active)
-        setValue('property_ids', trimProperties2(api.data.user.properties))
+        setValue('name', api.data.name)
+        setValue('email', api.data.email)
+        setValue('mobile_number', api.data.mobile_number)
+        setValue('username', api.data.username)
+        setValue('password', api.data.password)
+        setValue('role_id', api.data.role.id)
+        setValue('active', api.data.active)
+        setValue('property_ids', trimProperties2(api.data.properties))
       }
     }
   }
@@ -97,6 +97,7 @@ export default function EditUser(propsdata) {
     console.log(data)
     const assigned_properties_data = data?.property_ids.map((element) => element.value)
     const body = { ...data, property_ids: assigned_properties_data }
+    console.log(body)
 
     const api = await put(`/v1/admin/users/${id}`, { user: body })
     console.log(api)

@@ -25,10 +25,10 @@ export default function ShowUser(propsd) {
   async function getUserData() {
     let api = await get(`/v1/admin/users/${id}`)
     console.log(api)
-    setUser(api.data.user)
+    setUser(api.data)
 
     if (response.ok) {
-      setUser(api.data.user)
+      setUser(api.data)
       console.log(user)
     }
   }
