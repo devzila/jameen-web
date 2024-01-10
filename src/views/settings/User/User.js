@@ -92,7 +92,7 @@ function Index() {
                           overFlow: 'hidden',
                         }}
                       >
-                        <tr style={{ color: 'pink' }}>
+                        <tr>
                           <th className="pt-3 pb-3 border-0">Name</th>
                           <th className="pt-3 pb-3 border-0">Email</th>
                           <th className="pt-3 pb-3 border-0">Phone Number</th>

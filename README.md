@@ -210,4 +210,11 @@ TODO
 > > > Clear local storage if unauthorized . error handling
 > > > Fix login issue
 > > > Change according to new api changes  
-> > >
+> > > Pagination style
+> > > Active status
+
+> > > dialogue
+
+> > > error handling for api response : generic message
+
+> > > Search add email name username using like

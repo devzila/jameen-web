@@ -127,11 +127,12 @@ export default function UserForm() {
                     <label>Active</label>
 
                     <Form.Control
+                      checked
                       className="form-check-input"
                       type="checkbox"
                       role="switch"
                       // id="flexSwitchCheckDefault"
-                      defaultValue={userData.active}
+                      defaultValue={true}
                       {...register('active')}
                     ></Form.Control>
                     {/* <label className="form-check-label">Active</label> */}
