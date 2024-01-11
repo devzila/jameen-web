@@ -4,7 +4,6 @@ import { useForm, Controller } from 'react-hook-form'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
-
 import {
   CButton,
   CModal,
@@ -17,69 +16,49 @@ import {
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
-export default function UserForm() {
+export default function AddResidents() {
   const [visible, setVisible] = useState(false)
-  const [roles, setRoles] = useState([])
   const [properties_data, setProperties_data] = useState([])
 
   const [userData, setUserData] = useState({})
   const { register, handleSubmit, control } = useForm()
   const { get, post, response } = useFetch()
 
-  const navigate = useNavigate()
+  const gender = [
+    { value: 'male', label: 'Male' },
+    { value: 'female', label: 'Female' },
+  ]
 
-  //roles
+  useEffect(() => {
+    loadInitialProperties()
+  }, [])
 
-  let rolesarray = []
-  function trimRoles(rolesdata) {
-    rolesdata.forEach((element) => {
-      rolesarray.push({ value: element.id, label: element.name })
-    })
-    return rolesarray
-  }
+  const loadInitialProperties = async () => {
+    let endpoint = `/v1/admin/premises/properties`
 
-  async function fetchRoles() {
-    const api = await get('/v1/admin/roles')
-    console.log(api)
+    const initialProperties = await get(endpoint)
     if (response.ok) {
-      setRoles(trimRoles(api.data))
+      setProperties_data(trimProperties(initialProperties.data))
+    } else {
+      toast("Can't load properties data")
     }
   }
 
-  // Properties
-
   let properties_array = []
-  function trimProperties(properties) {
-    properties.forEach((element) => {
+  function trimProperties(properties_obj) {
+    properties_obj.forEach((element) => {
       properties_array.push({ value: element.id, label: element.name })
     })
     return properties_array
   }
 
-  async function fetchProperties() {
-    const api = await get('/v1/admin/premises/properties')
-    console.log(api)
-    if (response.ok) {
-      setProperties_data(trimProperties(api.data))
-    }
-  }
-
-  useEffect(() => {
-    fetchRoles()
-    fetchProperties()
-  }, [])
-
   async function onSubmit(data) {
-    console.log(data)
-    const assigned_properties_data = data?.property_ids.map((element) => element.value)
-    const body = { ...data, property_ids: assigned_properties_data }
-    console.log(body)
-    const api = await post(`/v1/admin/users`, { user: body })
+    const api = await post(`/v1/admin/residents`, { resident: data })
     if (response.ok) {
-      toast('user added Successfully')
+      toast('Resident added Successfully')
       setVisible(!visible)
     } else {
-      toast(response.data?.message)
+      toast(response.data?.message || response.statusText || 'Internet Not Working')
     }
   }
 
@@ -93,7 +72,7 @@ export default function UserForm() {
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Add User
+        Add Resident
       </button>
       <CModal
         alignment="center"
@@ -104,7 +83,7 @@ export default function UserForm() {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add User </CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Add Resident </CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
@@ -112,25 +91,43 @@ export default function UserForm() {
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Name</label>
+                    <label>First Name</label>
                     <Form.Control
-                      placeholder="Full Name"
+                      placeholder="First Name"
                       type="text"
-                      {...register('name')}
+                      {...register('first_name')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="4">
-                  <Form.Group className="mt-4 form-check form-switch">
-                    <label>Active</label>
-
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Last Name</label>
                     <Form.Control
-                      checked
-                      className="form-check-input"
-                      type="checkbox"
-                      role="switch"
-                      defaultValue={true}
-                      {...register('active')}
+                      placeholder="Last Name"
+                      type="text"
+                      {...register('last_name')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Email</label>
+                    <Form.Control
+                      placeholder="abc@example.com"
+                      type="text"
+                      {...register('email')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Phone No</label>
+                    <Form.Control
+                      placeholder="Phone Number"
+                      type="text"
+                      {...register('phone_number')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -157,71 +154,59 @@ export default function UserForm() {
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Email</label>
-                    <Form.Control
-                      placeholder="abc@example.com"
-                      type="text"
-                      {...register('email')}
-                    ></Form.Control>
+                    <label>Gender</label>
+                    <Controller
+                      name="gender"
+                      render={({ field }) => (
+                        <Select
+                          {...field}
+                          options={gender}
+                          value={gender.find((c) => c.value === field.value)}
+                          onChange={(val) => field.onChange(val.value)}
+                        />
+                      )}
+                      control={control}
+                      placeholder="Role"
+                    />
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Phone No</label>
+                    <label>D.O.B</label>
                     <Form.Control
-                      placeholder="Phone Number"
-                      type="text"
-                      {...register('mobile_number')}
+                      placeholder="Date of Birth"
+                      type="date"
+                      {...register('dob')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Assigned Properties</label>
 
                     <Controller
-                      name="property_ids"
+                      name="property_id"
                       render={({ field }) => (
                         <Select
-                          isMulti
+                          s
                           type="text"
                           className="basic-multi-select"
                           classNamePrefix="select"
                           {...field}
                           options={properties_data}
-                        />
-                      )}
-                      control={control}
-                      placeholder="Assigned Properties"
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              {/* Modal part 2 role */}
-              <CModalTitle className="mt-3" id="StaticBackdropExampleLabel">
-                Role
-              </CModalTitle>
-
-              <Row>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <Controller
-                      name="role_id"
-                      render={({ field }) => (
-                        <Select
-                          {...field}
-                          options={roles}
-                          value={roles.find((c) => c.value === field.value)}
+                          value={gender.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
                         />
                       )}
                       control={control}
-                      placeholder="Role"
+                      placeholder="Assigned Properties"
                     />
                   </Form.Group>
                 </Col>

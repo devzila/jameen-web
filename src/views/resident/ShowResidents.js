@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
-import { useParams, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import Select from 'react-select'
-
 import {
   CButton,
   CModal,
@@ -14,87 +11,59 @@ import {
   CModalTitle,
   CContainer,
 } from '@coreui/react'
-
 import { Button, Form, Row, Col } from 'react-bootstrap'
+import { toast } from 'react-toastify'
 
-export default function UserForm() {
+export default function ShowResidents(props) {
+  const [resident_data, setResident_data] = useState({})
   const [visible, setVisible] = useState(false)
-  const [roles, setRoles] = useState([])
-  const [properties_data, setProperties_data] = useState([])
+  const { register, setValue, control } = useForm()
+  const { get, response } = useFetch()
 
-  const [userData, setUserData] = useState({})
-  const { register, handleSubmit, control } = useForm()
-  const { get, post, response } = useFetch()
+  console.log(props)
 
-  const navigate = useNavigate()
-
-  //roles
-
-  let rolesarray = []
-  function trimRoles(rolesdata) {
-    rolesdata.forEach((element) => {
-      rolesarray.push({ value: element.id, label: element.name })
-    })
-    return rolesarray
-  }
-
-  async function fetchRoles() {
-    const api = await get('/v1/admin/roles')
-    console.log(api)
-    if (response.ok) {
-      setRoles(trimRoles(api.data))
-    }
-  }
-
-  // Properties
-
-  let properties_array = []
-  function trimProperties(properties) {
-    properties.forEach((element) => {
-      properties_array.push({ value: element.id, label: element.name })
-    })
-    return properties_array
-  }
-
-  async function fetchProperties() {
-    const api = await get('/v1/admin/premises/properties')
-    console.log(api)
-    if (response.ok) {
-      setProperties_data(trimProperties(api.data))
-    }
-  }
+  const resident_id = props.residentid.id
 
   useEffect(() => {
-    fetchRoles()
-    fetchProperties()
+    loadResident()
   }, [])
-
-  async function onSubmit(data) {
-    console.log(data)
-    const assigned_properties_data = data?.property_ids.map((element) => element.value)
-    const body = { ...data, property_ids: assigned_properties_data }
-    console.log(body)
-    const api = await post(`/v1/admin/users`, { user: body })
+  const loadResident = async () => {
+    const endpoint = await get(`/v1/admin/residents/${resident_id}`)
     if (response.ok) {
-      toast('user added Successfully')
-      setVisible(!visible)
+      console.log(endpoint)
+      setResident_data(endpoint.data)
+      setValue('first_name', endpoint.data.first_name)
+      setValue('last_name', endpoint.data.last_name)
+      setValue('email', endpoint.data.email)
+      setValue('phone_number', endpoint.data.phone_number)
+      setValue('username', endpoint.data.username)
+      setValue('password', endpoint.data.first_name)
+      setValue('gender', endpoint.data.gender)
+      setValue('dob', endpoint.data.dob)
+      setValue('property_id', endpoint.data.property_id)
     } else {
-      toast(response.data?.message)
+      toast(response?.data.message)
     }
   }
 
   return (
     <div>
       <button
-        style={{ backgroundColor: '#00bfcc', color: 'white', marginLeft: '4px' }}
-        color="#00bfcc"
+        style={{
+          backgroundColor: 'white',
+          marginLeft: '4px',
+          width: '90%',
+          border: 'none',
+          color: '#00bfcc',
+        }}
         type="button"
-        className="btn flex s-3"
+        className="btn btn-tertiary "
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Add User
+        Show
       </button>
+
       <CModal
         alignment="center"
         size="xl"
@@ -104,55 +73,29 @@ export default function UserForm() {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add User </CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Add Resident </CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form>
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Name</label>
+                    <label>First Name</label>
                     <Form.Control
-                      placeholder="Full Name"
+                      placeholder="First Name"
                       type="text"
-                      {...register('name')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="4">
-                  <Form.Group className="mt-4 form-check form-switch">
-                    <label>Active</label>
-
-                    <Form.Control
-                      checked
-                      className="form-check-input"
-                      type="checkbox"
-                      role="switch"
-                      defaultValue={true}
-                      {...register('active')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="pr-3 mt-3" md="6">
-                  <Form.Group>
-                    <label>Username</label>
-                    <Form.Control
-                      placeholder="UserName"
-                      type="text"
-                      {...register('username')}
+                      {...register('first_name')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Password</label>
+                    <label>Last Name</label>
                     <Form.Control
-                      placeholder="Password"
-                      type="password"
-                      {...register('password')}
+                      placeholder="Last Name"
+                      type="text"
+                      {...register('last_name')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -180,48 +123,71 @@ export default function UserForm() {
                 </Col>
               </Row>
               <Row>
+                <Col className="pr-3 mt-3" md="6">
+                  <Form.Group>
+                    <label>Username</label>
+                    <Form.Control
+                      placeholder="UserName"
+                      type="text"
+                      {...register('username')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Password</label>
+                    <Form.Control
+                      placeholder="Password"
+                      type="password"
+                      {...register('password')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Gender</label>
+                    <Controller
+                      name="gender"
+                      render={({ field }) => <Select {...field} />}
+                      control={control}
+                      placeholder="Role"
+                      defaultValue={resident_data.gender}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>D.O.B</label>
+                    <Form.Control
+                      placeholder="Date of Birth"
+                      type="date"
+                      {...register('dob')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Assigned Properties</label>
 
                     <Controller
-                      name="property_ids"
+                      name="property_id"
                       render={({ field }) => (
                         <Select
-                          isMulti
                           type="text"
                           className="basic-multi-select"
                           classNamePrefix="select"
                           {...field}
-                          options={properties_data}
+                          defaultValue={resident_data.assigned_properties}
                         />
                       )}
                       control={control}
                       placeholder="Assigned Properties"
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              {/* Modal part 2 role */}
-              <CModalTitle className="mt-3" id="StaticBackdropExampleLabel">
-                Role
-              </CModalTitle>
-
-              <Row>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <Controller
-                      name="role_id"
-                      render={({ field }) => (
-                        <Select
-                          {...field}
-                          options={roles}
-                          value={roles.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
-                        />
-                      )}
-                      control={control}
-                      placeholder="Role"
                     />
                   </Form.Group>
                 </Col>

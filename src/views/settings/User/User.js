@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import Paginate from '../../../components/Pagination'
-import CustomDivToggle from 'src/components/CustomDivToggle'
 import AddUser from './AddUser'
+import ShowUser from './ShowUser'
 import EditUser from './EditUser'
+import { toast } from 'react-toastify'
+import Paginate from '../../../components/Pagination'
 import Loading from 'src/components/loading/loading'
-import 'react-loading-skeleton/dist/skeleton.css'
+import CustomDivToggle from 'src/components/CustomDivToggle'
 
 import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
-import ShowUser from './ShowUser'
 
 function Index() {
   const [users, setUsers] = useState([])
@@ -21,6 +21,7 @@ function Index() {
 
   const [searchKeyword, setSearchKeyword] = useState(null)
   const { get, response } = useFetch()
+
   useEffect(() => {
     loadInitialusers()
   }, [currentPage])
@@ -28,7 +29,7 @@ function Index() {
   async function loadInitialusers() {
     let endpoint = `/v1/admin/users?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[username_eq]=${searchKeyword}`
+      endpoint += `&q[username_like]=${searchKeyword}`
     }
     let initialusers = await get(endpoint)
 
@@ -58,23 +59,19 @@ function Index() {
           <CContainer fluid>
             <CNavbarBrand href="#">User</CNavbarBrand>
             <div className="d-flex justify-content-end">
-              <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
-                <CFormInput
+              <div class="d-flex" role="search">
+                <input
                   onChange={(e) => setSearchKeyword(e.target.value)}
+                  class="form-control me-2"
                   type="search"
-                  className="me-0 s-3 "
-                  placeholder="Username"
+                  placeholder="Search"
+                  aria-label="Search"
                 />
-                <CButton
-                  onClick={loadInitialusers}
-                  variant="outline"
-                  className="btn btn-outline-success "
-                >
+                <button onClick={loadInitialusers} class="btn btn-outline-success" type="submit">
                   Search
-                </CButton>
-                <br></br>
-                <AddUser />
-              </CForm>
+                </button>
+              </div>
+              <AddUser />
             </div>
           </CContainer>
         </CNavbar>
@@ -119,8 +116,8 @@ function Index() {
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  <EditUser userid={{ id: `${user.id}` }} />
-                                  <ShowUser userid={{ id: `${user.id}` }} />
+                                  <EditUser userid={{ id: user.id }} />
+                                  <ShowUser userid={{ id: user.id }} />
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>
@@ -129,14 +126,7 @@ function Index() {
                       </tbody>
                     </table>
                     {loading && <Loading />}
-                    {errors && (
-                      <p
-                        className="d-flex justify-content-cente"
-                        style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
-                      >
-                        We are facing a technical issue at our end.
-                      </p>
-                    )}
+                    {errors && toast('We are facing a technical issue at our end.')}
                   </div>
                 </div>
               </div>

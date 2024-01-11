@@ -218,3 +218,8 @@ TODO
 > > > error handling for api response : generic message
 
 > > > Search add email name username using like
+
+||>>resident
+
+1.First Name ,Last Name,dob , Gender , email , phone_number;
+2.username , password (add edit); property id (drop down) 3.

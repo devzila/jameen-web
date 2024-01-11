@@ -5,7 +5,7 @@ import { CContainer, CSpinner } from '@coreui/react'
 // routes config
 const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
 const Finance = React.lazy(() => import('../views/finance/Finance'))
-const Resident = React.lazy(() => import('../views/resident/Resident'))
+const Residents = React.lazy(() => import('../views/resident/Residents'))
 const Unit = React.lazy(() => import('../views/property/unit/Unit'))
 const Properties = React.lazy(() => import('../views/property/Properties'))
 const Property = React.lazy(() => import('../views/property/Property'))
@@ -29,7 +29,7 @@ const AppContent = () => {
         <Routes>
           <Route path="/" exact={true} name="Dashboard" element={<Dashboard />} />
           <Route path="/finance" name="Finance" element={<Finance />} />
-          <Route path="/resident" name="Resident" element={<Resident />} />
+          <Route path="/resident" name="Resident" element={<Residents />} />
           <Route path="/unit" name="Unit" element={<Unit />} />
           <Route path="properties" name="Properties" element={<Properties />} />
           <Route path="properties/:propertyId/add" name="Add" element={<Properties />} />
