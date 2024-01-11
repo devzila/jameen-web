@@ -20,8 +20,6 @@ export default function ShowResidents(props) {
   const { register, setValue, control } = useForm()
   const { get, response } = useFetch()
 
-  console.log(props)
-
   const resident_id = props.residentid.id
 
   const gender = [
@@ -226,7 +224,13 @@ export default function ShowResidents(props) {
                     </div>
                   </div>
                 </div>
-                <hr></hr>
+                <div className="text-center">
+                  <CModalFooter>
+                    <CButton color="secondary" onClick={() => setVisible(false)}>
+                      Close
+                    </CButton>
+                  </CModalFooter>
+                </div>
               </div>
             </div>
             <div className="clearfix"></div>

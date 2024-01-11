@@ -59,15 +59,6 @@ export default function EditResidents(props) {
 
     if (response.ok) {
       setResident(endpoint.data)
-      setValue('first_name', endpoint.data.first_name)
-      setValue('last_name', endpoint.data.last_name)
-      setValue('email', endpoint.data.email)
-      setValue('phone_number', endpoint.data.phone_number)
-      setValue('username', endpoint.data.username)
-      setValue('password', endpoint.data.first_name)
-      setValue('gender', endpoint.data.gender)
-      setValue('dob', endpoint.data.dob)
-      setValue('property_id', endpoint.data.property_id)
     } else {
       toast(response?.data.message)
     }

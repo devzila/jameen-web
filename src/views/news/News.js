@@ -62,7 +62,7 @@ function News() {
                     </tr>
                   </thead>
                   <tbody>
-                    {posts.map((post) => (
+                    {posts?.map((post) => (
                       <tr key={post.id}>
                         <td>{post.title}</td>
                         <td>{post.content}</td>
