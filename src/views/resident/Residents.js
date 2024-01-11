@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
+import { toast } from 'react-toastify'
 import AddResidents from './AddResidents'
 import EditResidents from './EditResidents'
 import ShowResidents from './ShowResidents'
@@ -31,6 +32,7 @@ const Residents = () => {
     if (searchKeyword) {
       endpoint += `&q[username_eq]=${searchKeyword}`
     }
+    console.log(endpoint)
     let initialResidents = await get(endpoint)
 
     console.log(initialResidents)
@@ -130,14 +132,7 @@ const Residents = () => {
                     </tbody>
                   </table>
                   {loading && <Loading />}
-                  {errors && (
-                    <p
-                      className="d-flex justify-content-cente"
-                      style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
-                    >
-                      We are facing a technical issue at our end.
-                    </p>
-                  )}
+                  {errors && toast('Unable To Load data')}
                 </div>
               </div>
             </div>
