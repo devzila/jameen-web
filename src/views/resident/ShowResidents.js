@@ -97,29 +97,16 @@ export default function ShowResidents(props) {
                     />
                     <ul title="Ratings" className="list-inline ratings text-center">
                       <li>
-                        <a href="#">
-                          <span className="glyphicon glyphicon-star"></span>
-                        </a>
+                        <span className="glyphicon glyphicon-star"></span>
                       </li>
                       <li>
-                        <a href="#">
-                          <span className="glyphicon glyphicon-star"></span>
-                        </a>
+                        <span className="glyphicon glyphicon-star"></span>
                       </li>
                       <li>
-                        <a href="#">
-                          <span className="glyphicon glyphicon-star"></span>
-                        </a>
+                        <span className="glyphicon glyphicon-star"></span>
                       </li>
                       <li>
-                        <a href="#">
-                          <span className="glyphicon glyphicon-star"></span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <span className="glyphicon glyphicon-star"></span>
-                        </a>
+                        <span className="glyphicon glyphicon-star"></span>
                       </li>
                     </ul>
                   </div>
@@ -137,7 +124,9 @@ export default function ShowResidents(props) {
                                 First Name
                               </strong>
                             </td>
-                            <td className="text-primary">{resident_data.first_name}</td>
+                            <td className="text-primary text-black-50">
+                              {resident_data.first_name}
+                            </td>
                           </tr>
                           <tr>
                             <td>
@@ -146,7 +135,9 @@ export default function ShowResidents(props) {
                                 Last Name
                               </strong>
                             </td>
-                            <td className="text-primary">{resident_data.last_name}</td>
+                            <td className="text-primary text-black-50">
+                              {resident_data.last_name}
+                            </td>
                           </tr>
                           <tr>
                             <td>
@@ -155,7 +146,7 @@ export default function ShowResidents(props) {
                                 D.O.B
                               </strong>
                             </td>
-                            <td className="text-primary">{resident_data.dob}</td>
+                            <td className="text-primary text-black-50">{resident_data.dob}</td>
                           </tr>
                           <tr>
                             <td>
@@ -164,7 +155,7 @@ export default function ShowResidents(props) {
                                 Username
                               </strong>
                             </td>
-                            <td className="text-primary">{resident_data.username}</td>
+                            <td className="text-primary text-black-50">{resident_data.username}</td>
                           </tr>
                           <tr>
                             <td>
@@ -173,7 +164,7 @@ export default function ShowResidents(props) {
                                 Gender
                               </strong>
                             </td>
-                            <td className="text-primary">{resident_data.gender}</td>
+                            <td className="text-primary text-black-50">{resident_data.gender}</td>
                           </tr>
 
                           <tr>
@@ -183,7 +174,9 @@ export default function ShowResidents(props) {
                                 Mobile Number
                               </strong>
                             </td>
-                            <td className="text-primary">{resident_data.phone_number}</td>
+                            <td className="text-primary text-black-50">
+                              {resident_data.phone_number}
+                            </td>
                           </tr>
                           <tr>
                             <td>
@@ -192,7 +185,7 @@ export default function ShowResidents(props) {
                                 Email ID
                               </strong>
                             </td>
-                            <td className="text-primary">{resident_data.email}</td>
+                            <td className="text-primary text-black-50">{resident_data.email}</td>
                           </tr>
 
                           <tr>
@@ -202,7 +195,9 @@ export default function ShowResidents(props) {
                                 Assigned Properties
                               </strong>
                             </td>
-                            <td className="text-primary">{resident_data.property.name}</td>
+                            <td className="text-primary text-black-50">
+                              {resident_data.property?.name}
+                            </td>
                           </tr>
                           <tr>
                             <td>
@@ -211,7 +206,9 @@ export default function ShowResidents(props) {
                                 Created At
                               </strong>
                             </td>
-                            <td className="text-primary">{resident_data.created_at}</td>
+                            <td className="text-primary text-black-50">
+                              {resident_data.created_at}
+                            </td>
                           </tr>
                           <tr>
                             <td>
@@ -220,13 +217,16 @@ export default function ShowResidents(props) {
                                 Modified
                               </strong>
                             </td>
-                            <td className="text-primary">{resident_data.updated_at}</td>
+                            <td className="text-primary text-black-50">
+                              {resident_data.updated_at}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
                   </div>
                 </div>
+                <hr></hr>
               </div>
             </div>
             <div className="clearfix"></div>
