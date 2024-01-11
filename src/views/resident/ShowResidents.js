@@ -24,11 +24,17 @@ export default function ShowResidents(props) {
 
   const resident_id = props.residentid.id
 
+  const gender = [
+    { value: 'male', label: 'male' },
+    { value: 'female', label: 'female' },
+  ]
+
   useEffect(() => {
     loadResident()
   }, [])
   const loadResident = async () => {
     const endpoint = await get(`/v1/admin/residents/${resident_id}`)
+    console.log(endpoint)
     if (response.ok) {
       console.log(endpoint)
       setResident_data(endpoint.data)
@@ -73,151 +79,156 @@ export default function ShowResidents(props) {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add Resident </CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel"> Resident Information</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
-            <Form>
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>First Name</label>
-                    <Form.Control
-                      placeholder="First Name"
-                      type="text"
-                      {...register('first_name')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Last Name</label>
-                    <Form.Control
-                      placeholder="Last Name"
-                      type="text"
-                      {...register('last_name')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Email</label>
-                    <Form.Control
-                      placeholder="abc@example.com"
-                      type="text"
-                      {...register('email')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Phone No</label>
-                    <Form.Control
-                      placeholder="Phone Number"
-                      type="text"
-                      {...register('mobile_number')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="pr-3 mt-3" md="6">
-                  <Form.Group>
-                    <label>Username</label>
-                    <Form.Control
-                      placeholder="UserName"
-                      type="text"
-                      {...register('username')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Password</label>
-                    <Form.Control
-                      placeholder="Password"
-                      type="password"
-                      {...register('password')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Gender</label>
-                    <Controller
-                      name="gender"
-                      render={({ field }) => <Select {...field} />}
-                      control={control}
-                      placeholder="Role"
-                      defaultValue={resident_data.gender}
+            <div className="container bootstrap snippets bootdey">
+              <div className="panel-body inf-content">
+                <div className="row">
+                  <div className="col-md-4">
+                    <img
+                      alt=""
+                      style={{ width: '600px;', marginTop: '20%', marginLeft: '4%' }}
+                      title=""
+                      className="img-circle img-thumbnail isTooltip  "
+                      src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                      data-original-title="Usuario"
                     />
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>D.O.B</label>
-                    <Form.Control
-                      placeholder="Date of Birth"
-                      type="date"
-                      {...register('dob')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
+                    <ul title="Ratings" className="list-inline ratings text-center">
+                      <li>
+                        <a href="#">
+                          <span className="glyphicon glyphicon-star"></span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <span className="glyphicon glyphicon-star"></span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <span className="glyphicon glyphicon-star"></span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <span className="glyphicon glyphicon-star"></span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <span className="glyphicon glyphicon-star"></span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="col-md-6">
+                    <strong>Information for resident ID {resident_data.id}</strong>
+                    <hr></hr>
+                    <br />
+                    <div className="table-responsive">
+                      <table className="table table-user-information">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-asterisk text-primary"></span>
+                                First Name
+                              </strong>
+                            </td>
+                            <td className="text-primary">{resident_data.first_name}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-user  text-primary"></span>
+                                Last Name
+                              </strong>
+                            </td>
+                            <td className="text-primary">{resident_data.last_name}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-user  text-primary"></span>
+                                D.O.B
+                              </strong>
+                            </td>
+                            <td className="text-primary">{resident_data.dob}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-cloud text-primary"></span>
+                                Username
+                              </strong>
+                            </td>
+                            <td className="text-primary">{resident_data.username}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-bookmark text-primary"></span>
+                                Gender
+                              </strong>
+                            </td>
+                            <td className="text-primary">{resident_data.gender}</td>
+                          </tr>
 
-              <Row>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <label>Assigned Properties</label>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-eye-open text-primary"></span>
+                                Mobile Number
+                              </strong>
+                            </td>
+                            <td className="text-primary">{resident_data.phone_number}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-bookmark text-primary"></span>
+                                Email ID
+                              </strong>
+                            </td>
+                            <td className="text-primary">{resident_data.email}</td>
+                          </tr>
 
-                    <Controller
-                      name="property_id"
-                      render={({ field }) => (
-                        <Select
-                          type="text"
-                          className="basic-multi-select"
-                          classNamePrefix="select"
-                          {...field}
-                          defaultValue={resident_data.assigned_properties}
-                        />
-                      )}
-                      control={control}
-                      placeholder="Assigned Properties"
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <div className="text-center">
-                <CModalFooter>
-                  <Button
-                    data-mdb-ripple-init
-                    type="submit"
-                    className="btn  btn-primary btn-block"
-                    style={{
-                      marginTop: '5px',
-                      color: 'white',
-                      backgroundColor: '#00bfcc',
-                      border: '0px',
-                    }}
-                  >
-                    Submit
-                  </Button>
-                  <CButton
-                    color="secondary"
-                    style={{ border: '0px', color: 'white' }}
-                    onClick={() => setVisible(false)}
-                  >
-                    Close
-                  </CButton>
-                </CModalFooter>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-bookmark text-primary"></span>
+                                Assigned Properties
+                              </strong>
+                            </td>
+                            <td className="text-primary">{resident_data.property.name}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-calendar text-primary"></span>
+                                Created At
+                              </strong>
+                            </td>
+                            <td className="text-primary">{resident_data.created_at}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-calendar text-primary"></span>
+                                Modified
+                              </strong>
+                            </td>
+                            <td className="text-primary">{resident_data.updated_at}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </Form>
+            </div>
             <div className="clearfix"></div>
           </CContainer>
         </CModalBody>
