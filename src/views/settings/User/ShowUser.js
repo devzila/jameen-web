@@ -70,7 +70,11 @@ export default function ShowUser(propsd) {
                       style={{ width: '600px', marginTop: '20%', marginLeft: '4%' }}
                       title=""
                       className="img-circle img-thumbnail isTooltip  "
-                      src={user.avatar || 'https://bootdey.com/img/Content/avatar/avatar7.png'}
+                      src={
+                        user.avatar
+                          ? user.avatar
+                          : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                      }
                       data-original-title="Usuario"
                     />
                     <ul title="Ratings" className="list-inline ratings text-center">

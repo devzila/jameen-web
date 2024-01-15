@@ -23,10 +23,13 @@ export default function UserForm() {
   const [properties_data, setProperties_data] = useState([])
 
   const [userData, setUserData] = useState({})
-  const { register, handleSubmit, control } = useForm()
+  const { register, handleSubmit, control, watch } = useForm()
   const { get, post, response } = useFetch()
 
   const navigate = useNavigate()
+
+  const avatar_obj = watch('avatar')
+  console.log(avatar_obj)
 
   //roles
 
@@ -71,12 +74,19 @@ export default function UserForm() {
 
   async function onSubmit(data) {
     console.log(data)
+    const avatar_obj = watch('avatar')
     const assigned_properties_data = data?.property_ids.map((element) => element.value)
-    const body = { ...data, property_ids: assigned_properties_data }
+    const body = {
+      ...data,
+      property_ids: assigned_properties_data,
+      avatar: URL.createObjectURL(avatar_obj[0]),
+    }
     console.log(body)
     const api = await post(`/v1/admin/users`, { user: body })
     if (response.ok) {
       toast('user added Successfully')
+      reset()
+
       setVisible(!visible)
     } else {
       toast(response.data?.message)
@@ -110,6 +120,29 @@ export default function UserForm() {
           <CContainer>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
+                <div className="col text-center">
+                  <img
+                    alt="Avatar Image"
+                    style={{
+                      width: '300px',
+                      height: '300px',
+
+                      marginTop: '2%',
+                      marginLeft: '4%',
+                      borderRadius: '50%',
+                    }}
+                    title="Avatar"
+                    className="img-circle img-thumbnail isTooltip  "
+                    src={
+                      avatar_obj
+                        ? URL.createObjectURL(avatar_obj[0])
+                        : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                    }
+                    data-original-title="Usuario"
+                  />
+                </div>
+              </Row>
+              <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Name</label>
@@ -120,17 +153,14 @@ export default function UserForm() {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="4">
-                  <Form.Group className="mt-4 form-check form-switch">
-                    <label>Active</label>
-
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Avatar Image</label>
                     <Form.Control
-                      checked
-                      className="form-check-input"
-                      type="checkbox"
-                      role="switch"
-                      defaultValue={true}
-                      {...register('active')}
+                      placeholder="Full Name"
+                      type="file"
+                      accept=".jpg, .jpeg, .png"
+                      {...register('avatar')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -168,13 +198,26 @@ export default function UserForm() {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="6">
+                <Col className="pr-1 mt-3" md="4">
                   <Form.Group>
                     <label>Phone No</label>
                     <Form.Control
                       placeholder="Phone Number"
                       type="text"
                       {...register('mobile_number')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="2">
+                  <Form.Group className="mt-4 form-check form-switch">
+                    <label>Active</label>
+
+                    <Form.Control
+                      className="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      defaultValue={true}
+                      {...register('active')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -202,6 +245,7 @@ export default function UserForm() {
                   </Form.Group>
                 </Col>
               </Row>
+
               {/* Modal part 2 role */}
               <CModalTitle className="mt-3" id="StaticBackdropExampleLabel">
                 Role
