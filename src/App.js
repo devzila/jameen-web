@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './scss/style.scss'
 
@@ -16,6 +16,9 @@ const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 function App() {
+  useEffect(() => {
+    console.log('====== App is loaded ==========')
+  }, [])
   return (
     <BrowserRouter>
       <Suspense fallback={loading}>
