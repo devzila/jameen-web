@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { loadMetaData } from './services/MetaDataLoader'
 import './scss/style.scss'
 
 const loading = (
@@ -17,7 +18,7 @@ const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 function App() {
   useEffect(() => {
-    console.log('====== App is loaded ==========')
+    loadMetaData()
   }, [])
   return (
     <BrowserRouter>
