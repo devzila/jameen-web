@@ -17,7 +17,7 @@ import {
   CContainer,
 } from '@coreui/react'
 
-function Add() {
+function AddProperty() {
   const {
     register,
     handleSubmit,
@@ -56,7 +56,7 @@ function Add() {
   }
 
   async function fetchUnits() {
-    const api = await get(`/v1/admin/premises/properties/${propertyId}/units`)
+    const api = await get(`/v1/admin/premises/properties`)
     if (response.ok) {
       setUnits_data(trimUnits(api.data.map((x) => x.unit_type)))
     }
@@ -66,11 +66,11 @@ function Add() {
   }, [])
 
   async function onSubmit(data) {
-    const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/units`, {
+    const apiResponse = await post(`/v1/admin/premises/properties`, {
       unit: data,
     })
     if (apiResponse.ok) {
-      navigate(`/units/${propertyId}/units`)
+      navigate(`properties`)
       toast('Unit added successfully')
     } else {
       toast(response.data?.message)
@@ -239,4 +239,4 @@ function Add() {
   )
 }
 
-export default Add
+export default AddProperty

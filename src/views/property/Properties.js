@@ -10,6 +10,7 @@ import CustomDivToggle from '../../components/CustomDivToggle'
 import Search from 'src/components/Search'
 import { Link } from 'react-router-dom'
 import Loading from 'src/components/loading/loading'
+import AddProperty from './AddProperty'
 
 function Property() {
   const { get, response } = useFetch()
@@ -100,7 +101,7 @@ function Property() {
                                 <Dropdown.Item
                                   key={`edit-${property.id}`}
                                   as={Link}
-                                  to={`/properties/${property.id}/units/add`}
+                                  to={`/properties/add`}
                                 >
                                   Add
                                 </Dropdown.Item>

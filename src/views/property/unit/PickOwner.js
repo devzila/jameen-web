@@ -1,6 +1,3 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-
 function PickOwner(resObj) {
   const ownerMatch = resObj.filter((curRes) => {
     return curRes.association_type == 'owner'
