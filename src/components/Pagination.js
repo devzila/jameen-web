@@ -5,7 +5,7 @@ export default function Paginate({ forcePage, pageCount, pageRangeDisplayed, onP
   return (
     <ReactPaginate
       breakLabel="..."
-      nextLabel="Next >"
+      nextLabel=">>>"
       breakClassName="page-item"
       breakLinkClassName="btn btn-outline-info mx-1 "
       containerClassName="pagination justify-content-center "
@@ -19,7 +19,7 @@ export default function Paginate({ forcePage, pageCount, pageRangeDisplayed, onP
       onPageChange={onPageChange}
       pageRangeDisplayed={pageRangeDisplayed}
       pageCount={pageCount}
-      previousLabel="< Prev"
+      previousLabel="<<<"
       renderOnZeroPageCount={null}
       forcePage={forcePage}
     />

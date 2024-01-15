@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import Paginate from '../../../components/Pagination'
-import CustomDivToggle from 'src/components/CustomDivToggle'
 import AddUser from './AddUser'
+import ShowUser from './ShowUser'
 import EditUser from './EditUser'
+import { toast } from 'react-toastify'
+import Paginate from '../../../components/Pagination'
 import Loading from 'src/components/loading/loading'
-import 'react-loading-skeleton/dist/skeleton.css'
+import CustomDivToggle from 'src/components/CustomDivToggle'
 
-import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
-import ShowUser from './ShowUser'
 
 function Index() {
   const [users, setUsers] = useState([])
@@ -21,6 +21,7 @@ function Index() {
 
   const [searchKeyword, setSearchKeyword] = useState(null)
   const { get, response } = useFetch()
+
   useEffect(() => {
     loadInitialusers()
   }, [currentPage])
@@ -37,8 +38,9 @@ function Index() {
     if (response.ok) {
       if (initialusers.data) {
         setLoading(false)
-        setUsers(initialusers.data.users)
-        setPagination(initialusers.data.pagination)
+        console.log(initialusers)
+        setUsers(initialusers.data)
+        setPagination(initialusers.pagination)
       }
     } else {
       setErrors(true)
@@ -57,23 +59,23 @@ function Index() {
           <CContainer fluid>
             <CNavbarBrand href="#">User</CNavbarBrand>
             <div className="d-flex justify-content-end">
-              <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
-                <CFormInput
+              <div className="d-flex" role="search">
+                <input
                   onChange={(e) => setSearchKeyword(e.target.value)}
+                  className="form-control me-2"
                   type="search"
-                  className="me-0 s-3 "
-                  placeholder="Username"
+                  placeholder="Search"
+                  aria-label="Search"
                 />
-                <CButton
+                <button
                   onClick={loadInitialusers}
-                  variant="outline"
-                  className="btn btn-outline-success "
+                  className="btn btn-outline-success"
+                  type="submit"
                 >
                   Search
-                </CButton>
-                <br></br>
-                <AddUser />
-              </CForm>
+                </button>
+              </div>
+              <AddUser />
             </div>
           </CContainer>
         </CNavbar>
@@ -91,7 +93,7 @@ function Index() {
                           overFlow: 'hidden',
                         }}
                       >
-                        <tr style={{ color: 'pink' }}>
+                        <tr>
                           <th className="pt-3 pb-3 border-0">Name</th>
                           <th className="pt-3 pb-3 border-0">Email</th>
                           <th className="pt-3 pb-3 border-0">Phone Number</th>
@@ -118,8 +120,8 @@ function Index() {
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  <EditUser userid={{ id: `${user.id}` }} />
-                                  <ShowUser userid={{ id: `${user.id}` }} />
+                                  <EditUser userid={{ id: user.id }} />
+                                  <ShowUser userid={{ id: user.id }} />
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>
@@ -128,14 +130,7 @@ function Index() {
                       </tbody>
                     </table>
                     {loading && <Loading />}
-                    {errors && (
-                      <p
-                        className="d-flex justify-content-cente"
-                        style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
-                      >
-                        We are facing a technical issue at our end.
-                      </p>
-                    )}
+                    {errors == true ? toast('We are facing a technical issue at our end.') : null}
                   </div>
                 </div>
               </div>

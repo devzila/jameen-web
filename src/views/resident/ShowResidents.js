@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-
+import { toast } from 'react-toastify'
 import {
   CButton,
   CModal,
@@ -11,53 +11,56 @@ import {
   CContainer,
 } from '@coreui/react'
 
-export default function ShowUser(propsd) {
+export default function ShowResidents(props) {
+  const [resident_data, setResident_data] = useState({})
   const [visible, setVisible] = useState(false)
-  const [user, setUser] = useState([])
+
   const { get, response } = useFetch()
 
-  const id = propsd.userid.id
-  useEffect(() => {
-    getUserData()
-  }, [])
-  async function getUserData() {
-    let api = await get(`/v1/admin/users/${id}`)
-    console.log(api)
-    setUser(api.data)
+  console.log(props)
+  const resident_id = props?.id
 
+  useEffect(() => {
+    loadResident()
+  }, [])
+  const loadResident = async () => {
+    const endpoint = await get(`/v1/admin/residents/${resident_id}`)
+    console.log(endpoint)
     if (response.ok) {
-      setUser(api.data)
-      console.log(user)
+      setResident_data(endpoint.data)
+      console.log(endpoint)
+    } else {
+      toast(response?.data.message)
     }
   }
-  console.log(user)
 
   return (
     <div>
       <button
         style={{
-          color: '#00bfcc',
           backgroundColor: 'white',
           marginLeft: '4px',
           width: '90%',
           border: 'none',
+          color: '#00bfcc',
         }}
         type="button"
         className="btn btn-tertiary "
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Show User
+        Show
       </button>
       <CModal
         alignment="center"
         size="xl"
         visible={visible}
+        backdrop="static"
         onClose={() => setVisible(false)}
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">User Data</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel"> Resident Information</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
@@ -67,26 +70,21 @@ export default function ShowUser(propsd) {
                   <div className="col-md-4">
                     <img
                       alt=""
-                      style={{ width: '600px', marginTop: '20%', marginLeft: '4%' }}
+                      style={{ width: '600px;', marginTop: '20%', marginLeft: '4%' }}
                       title=""
                       className="img-circle img-thumbnail isTooltip  "
-                      src={user.avatar || 'https://bootdey.com/img/Content/avatar/avatar7.png'}
+                      src="https://bootdey.com/img/Content/avatar/avatar7.png"
                       data-original-title="Usuario"
                     />
                     <ul title="Ratings" className="list-inline ratings text-center">
                       <li>
-                        <span className="glyphicon glyphicon-star">
-                          <small>
-                            <i>{user.name}</i>
-                          </small>
-                        </span>
+                        <span className="glyphicon glyphicon-star"></span>
                       </li>
                     </ul>
                   </div>
                   <div className="col-md-6">
-                    <strong>Information for User ID {user.id}</strong>
+                    <strong>Information for resident ID {resident_data.id}</strong>
                     <hr></hr>
-                    <br />
                     <div className="table-responsive">
                       <table className="table table-user-information">
                         <tbody>
@@ -94,50 +92,53 @@ export default function ShowUser(propsd) {
                             <td>
                               <strong>
                                 <span className="glyphicon glyphicon-asterisk text-primary"></span>
-                                Full Name
+                                First Name
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.name}</td>
+                            <td className="text-primary text-black-50">
+                              {resident_data.first_name}
+                            </td>
                           </tr>
                           <tr>
                             <td>
                               <strong>
                                 <span className="glyphicon glyphicon-user  text-primary"></span>
-                                Username
+                                Last Name
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.username}</td>
+                            <td className="text-primary text-black-50">
+                              {resident_data.last_name}
+                            </td>
                           </tr>
                           <tr>
                             <td>
                               <strong>
                                 <span className="glyphicon glyphicon-bookmark text-primary"></span>
-                                Active Status
+                                Gender
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">
-                              {user.active ? 'True' : 'False'}
-                            </td>
+                            <td className="text-primary text-black-50">{resident_data.gender}</td>
                           </tr>
 
                           <tr>
                             <td>
                               <strong>
-                                <span className="glyphicon glyphicon-user  text-primary"></span>
-                                Email
+                                <span className="glyphicon glyphicon-cloud text-primary"></span>
+                                Username
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.email}</td>
+                            <td className="text-primary text-black-50">{resident_data.username}</td>
                           </tr>
                           <tr>
                             <td>
                               <strong>
-                                <span className="glyphicon glyphicon-cloud text-primary"></span>
-                                Role
+                                <span className="glyphicon glyphicon-user  text-primary"></span>
+                                D.O.B
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.role?.name}</td>
+                            <td className="text-primary text-black-50">{resident_data.dob}</td>
                           </tr>
+
                           <tr>
                             <td>
                               <strong>
@@ -145,8 +146,20 @@ export default function ShowUser(propsd) {
                                 Mobile Number
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.mobile_number}</td>
+                            <td className="text-primary text-black-50">
+                              {resident_data.phone_number}
+                            </td>
                           </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-bookmark text-primary"></span>
+                                Email ID
+                              </strong>
+                            </td>
+                            <td className="text-primary text-black-50">{resident_data.email}</td>
+                          </tr>
+
                           <tr>
                             <td>
                               <strong>
@@ -155,9 +168,7 @@ export default function ShowUser(propsd) {
                               </strong>
                             </td>
                             <td className="text-primary text-black-50">
-                              {user.properties?.map((val) => (
-                                <p key={val.id}>{val.name}</p>
-                              ))}
+                              {resident_data.property?.name}
                             </td>
                           </tr>
                           <tr>
@@ -167,7 +178,9 @@ export default function ShowUser(propsd) {
                                 Created At
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.created_at}</td>
+                            <td className="text-primary text-black-50">
+                              {resident_data.created_at}
+                            </td>
                           </tr>
                           <tr>
                             <td>
@@ -176,7 +189,9 @@ export default function ShowUser(propsd) {
                                 Modified
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.updated_at}</td>
+                            <td className="text-primary text-black-50">
+                              {resident_data.updated_at}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -192,7 +207,6 @@ export default function ShowUser(propsd) {
                 </div>
               </div>
             </div>
-
             <div className="clearfix"></div>
           </CContainer>
         </CModalBody>

@@ -208,3 +208,18 @@ masan
 TODO
 
 > > > Clear local storage if unauthorized . error handling
+> > > Fix login issue
+> > > Change according to new api changes  
+> > > Pagination style
+> > > Active status
+
+> > > dialogue
+
+> > > error handling for api response : generic message
+
+> > > Search add email name username using like
+
+||>>resident
+
+1.First Name ,Last Name,dob , Gender , email , phone_number;
+2.username , password (add edit); property id (drop down) 3.

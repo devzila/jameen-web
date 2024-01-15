@@ -100,7 +100,7 @@ function Unit() {
                             overFlow: 'hidden',
                           }}
                         >
-                          <tr style={{ color: 'pink' }}>
+                          <tr>
                             <th className="pt-3 pb-3 border-0">Unit Number</th>
                             <th className="pt-3 pb-3 border-0">BedRoom Number</th>
                             <th className="pt-3 pb-3 border-0">BathRoom Number</th>
