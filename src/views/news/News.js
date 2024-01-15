@@ -20,8 +20,10 @@ function News() {
 
   async function loadInitialPosts() {
     const initialPosts = await get(`/v1/admin/posts?page=${currentPage}`)
+
     if (response.ok) {
-      setPosts(initialPosts.data.posts)
+      console.log(response)
+      setPosts(initialPosts.data)
       setPagination(initialPosts.data.pagination)
     }
   }

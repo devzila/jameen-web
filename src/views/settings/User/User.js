@@ -8,7 +8,7 @@ import Paginate from '../../../components/Pagination'
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 
-import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 
@@ -29,7 +29,7 @@ function Index() {
   async function loadInitialusers() {
     let endpoint = `/v1/admin/users?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[username_like]=${searchKeyword}`
+      endpoint += `&q[username_eq]=${searchKeyword}`
     }
     let initialusers = await get(endpoint)
 
@@ -59,15 +59,19 @@ function Index() {
           <CContainer fluid>
             <CNavbarBrand href="#">User</CNavbarBrand>
             <div className="d-flex justify-content-end">
-              <div class="d-flex" role="search">
+              <div className="d-flex" role="search">
                 <input
                   onChange={(e) => setSearchKeyword(e.target.value)}
-                  class="form-control me-2"
+                  className="form-control me-2"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
                 />
-                <button onClick={loadInitialusers} class="btn btn-outline-success" type="submit">
+                <button
+                  onClick={loadInitialusers}
+                  className="btn btn-outline-success"
+                  type="submit"
+                >
                   Search
                 </button>
               </div>
@@ -126,7 +130,7 @@ function Index() {
                       </tbody>
                     </table>
                     {loading && <Loading />}
-                    {errors && toast('We are facing a technical issue at our end.')}
+                    {errors == true ? toast('We are facing a technical issue at our end.') : null}
                   </div>
                 </div>
               </div>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
-import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
 import {
@@ -20,7 +19,6 @@ export default function AddResidents() {
   const [visible, setVisible] = useState(false)
   const [properties_data, setProperties_data] = useState([])
 
-  const [userData, setUserData] = useState({})
   const { register, handleSubmit, control } = useForm()
   const { get, post, response } = useFetch()
 
@@ -53,7 +51,8 @@ export default function AddResidents() {
   }
 
   async function onSubmit(data) {
-    const api = await post(`/v1/admin/residents`, { resident: data })
+    await post(`/v1/admin/residents`, { resident: data })
+
     if (response.ok) {
       toast('Resident added Successfully')
       setVisible(!visible)

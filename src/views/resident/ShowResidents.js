@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { useForm, Controller } from 'react-hook-form'
-import Select from 'react-select'
+import { toast } from 'react-toastify'
 import {
   CButton,
   CModal,
@@ -11,21 +10,15 @@ import {
   CModalTitle,
   CContainer,
 } from '@coreui/react'
-import { Button, Form, Row, Col } from 'react-bootstrap'
-import { toast } from 'react-toastify'
 
 export default function ShowResidents(props) {
   const [resident_data, setResident_data] = useState({})
   const [visible, setVisible] = useState(false)
-  const { register, setValue, control } = useForm()
+
   const { get, response } = useFetch()
 
-  const resident_id = props.residentid.id
-
-  const gender = [
-    { value: 'male', label: 'male' },
-    { value: 'female', label: 'female' },
-  ]
+  console.log(props)
+  const resident_id = props?.id
 
   useEffect(() => {
     loadResident()
@@ -34,17 +27,8 @@ export default function ShowResidents(props) {
     const endpoint = await get(`/v1/admin/residents/${resident_id}`)
     console.log(endpoint)
     if (response.ok) {
-      console.log(endpoint)
       setResident_data(endpoint.data)
-      setValue('first_name', endpoint.data.first_name)
-      setValue('last_name', endpoint.data.last_name)
-      setValue('email', endpoint.data.email)
-      setValue('phone_number', endpoint.data.phone_number)
-      setValue('username', endpoint.data.username)
-      setValue('password', endpoint.data.first_name)
-      setValue('gender', endpoint.data.gender)
-      setValue('dob', endpoint.data.dob)
-      setValue('property_id', endpoint.data.property_id)
+      console.log(endpoint)
     } else {
       toast(response?.data.message)
     }
@@ -67,7 +51,6 @@ export default function ShowResidents(props) {
       >
         Show
       </button>
-
       <CModal
         alignment="center"
         size="xl"
@@ -97,21 +80,11 @@ export default function ShowResidents(props) {
                       <li>
                         <span className="glyphicon glyphicon-star"></span>
                       </li>
-                      <li>
-                        <span className="glyphicon glyphicon-star"></span>
-                      </li>
-                      <li>
-                        <span className="glyphicon glyphicon-star"></span>
-                      </li>
-                      <li>
-                        <span className="glyphicon glyphicon-star"></span>
-                      </li>
                     </ul>
                   </div>
                   <div className="col-md-6">
                     <strong>Information for resident ID {resident_data.id}</strong>
                     <hr></hr>
-                    <br />
                     <div className="table-responsive">
                       <table className="table table-user-information">
                         <tbody>
@@ -140,12 +113,13 @@ export default function ShowResidents(props) {
                           <tr>
                             <td>
                               <strong>
-                                <span className="glyphicon glyphicon-user  text-primary"></span>
-                                D.O.B
+                                <span className="glyphicon glyphicon-bookmark text-primary"></span>
+                                Gender
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{resident_data.dob}</td>
+                            <td className="text-primary text-black-50">{resident_data.gender}</td>
                           </tr>
+
                           <tr>
                             <td>
                               <strong>
@@ -158,11 +132,11 @@ export default function ShowResidents(props) {
                           <tr>
                             <td>
                               <strong>
-                                <span className="glyphicon glyphicon-bookmark text-primary"></span>
-                                Gender
+                                <span className="glyphicon glyphicon-user  text-primary"></span>
+                                D.O.B
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{resident_data.gender}</td>
+                            <td className="text-primary text-black-50">{resident_data.dob}</td>
                           </tr>
 
                           <tr>

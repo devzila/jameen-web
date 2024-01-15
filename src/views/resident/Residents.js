@@ -8,7 +8,7 @@ import Paginate from '../../components/Pagination'
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 
-import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 
@@ -25,17 +25,14 @@ const Residents = () => {
 
   useEffect(() => {
     loadInitialResidents()
-  }, [])
+  }, [currentPage])
 
   async function loadInitialResidents() {
     let endpoint = `/v1/admin/residents?page=${currentPage}`
     if (searchKeyword) {
       endpoint += `&q[username_eq]=${searchKeyword}`
     }
-    console.log(endpoint)
-    let initialResidents = await get(endpoint)
-
-    console.log(initialResidents)
+    const initialResidents = await get(endpoint)
 
     if (response.ok) {
       if (initialResidents.data) {
@@ -50,6 +47,7 @@ const Residents = () => {
   }
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
+    console.log(currentPage)
   }
 
   return (
@@ -123,7 +121,7 @@ const Residents = () => {
                               </Dropdown.Toggle>
                               <Dropdown.Menu>
                                 <EditResidents residentid={{ id: `${residents.id}` }} />
-                                <ShowResidents residentid={{ id: `${residents.id}` }} />
+                                <ShowResidents id={residents.id} />
                               </Dropdown.Menu>
                             </Dropdown>
                           </td>

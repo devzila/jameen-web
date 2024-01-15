@@ -11,8 +11,6 @@ import {
   CContainer,
 } from '@coreui/react'
 
-import { Form, Row, Col } from 'react-bootstrap'
-
 export default function ShowUser(propsd) {
   const [visible, setVisible] = useState(false)
   const [user, setUser] = useState([])
@@ -69,7 +67,7 @@ export default function ShowUser(propsd) {
                   <div className="col-md-4">
                     <img
                       alt=""
-                      style={{ width: '600px;', marginTop: '20%', marginLeft: '4%' }}
+                      style={{ width: '600px', marginTop: '20%', marginLeft: '4%' }}
                       title=""
                       className="img-circle img-thumbnail isTooltip  "
                       src={user.avatar || 'https://bootdey.com/img/Content/avatar/avatar7.png'}
@@ -158,7 +156,7 @@ export default function ShowUser(propsd) {
                             </td>
                             <td className="text-primary text-black-50">
                               {user.properties?.map((val) => (
-                                <td key={val.id}>{val?.name}</td>
+                                <p key={val.id}>{val.name}</p>
                               ))}
                             </td>
                           </tr>
@@ -202,36 +200,3 @@ export default function ShowUser(propsd) {
     </div>
   )
 }
-
-// <CModalTitle className="pr-1 mt-4" id="StaticBackdropExampleLabel">
-// Assigned Properties{' '}
-// </CModalTitle>
-// <Row>
-// <Col className="pr-1 mt-4" md="6">
-//   <Form.Group>
-//     {user.properties?.map((val) => (
-//       <Form.Control
-//         key={val.id}
-//         defaultValue={val.name}
-//         type="text"
-//         disabled
-//       ></Form.Control>
-//     ))}
-//   </Form.Group>
-// </Col>
-// </Row>
-
-// <Row>
-// <Col className="pr-1 mt-4" md="6">
-//   <Form.Group>
-//     <label>Role </label>
-//     <Form.Control defaultValue={user.role?.name} type="text" disabled></Form.Control>
-//   </Form.Group>
-// </Col>
-// <Col className="pr-1 mt-4" md="6">
-//   <Form.Group>
-//     <label>Created At</label>
-//     <Form.Control defaultValue={user.created_at} type="text" disabled></Form.Control>
-//   </Form.Group>
-// </Col>
-// </Row>
