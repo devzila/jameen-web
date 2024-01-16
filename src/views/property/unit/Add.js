@@ -47,20 +47,24 @@ function Add() {
     })
   }, [])
 
-  let unit_id_array = []
   function trimUnits(units) {
-    units.forEach((element) => {
-      unit_id_array.push({ value: element.id, label: element.name })
-    })
-    return unit_id_array
+    if (units && units.data) {
+      return units.data.map((e) => ({
+        value: e.id,
+        label: e.name,
+      }))
+    } else {
+      return []
+    }
   }
 
   async function fetchUnits() {
-    const api = await get(`/v1/admin/premises/properties/${propertyId}/units`)
-    if (response.ok) {
-      setUnits_data(trimUnits(api.data.map((x) => x.unit_type)))
+    const api = await get(`/v1/admin/premises/properties/${propertyId}/unit_types`)
+    if (response.ok && api.data) {
+      setUnits_data(trimUnits(api))
     }
   }
+
   useEffect(() => {
     fetchUnits()
   }, [])

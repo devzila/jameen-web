@@ -13,6 +13,7 @@ import {
 
 import { Form, Row, Col } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
+import Edit from './Edit'
 
 export default function Showunit(propsd) {
   const { propertyId } = useParams()
@@ -63,67 +64,122 @@ export default function Showunit(propsd) {
         </CModalHeader>
         <CModalBody>
           <CContainer>
-            <Row>
-              <Col className="pr-1 mt-4" md="6">
-                <Form.Group>
-                  <label>Bedroom No</label>
-                  <Form.Control
-                    defaultValue={unit.bedrooms_number}
-                    type="text"
-                    disabled
-                  ></Form.Control>
-                </Form.Group>
-              </Col>
-              <Col className="pr-1 mt-4" md="6">
-                <Form.Group>
-                  <label>Bathroom No</label>
-                  <Form.Control
-                    defaultValue={unit.bathrooms_number}
-                    type="text"
-                    disabled
-                  ></Form.Control>
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col className="pr-1 mt-4" md="6">
-                <Form.Group>
-                  <label>Year Built</label>
-                  <Form.Control defaultValue={unit.year_built} type="text" disabled></Form.Control>
-                </Form.Group>
-              </Col>
-              <Col className="pr-1 mt-4" md="6">
-                <Form.Group>
-                  <label>Owner</label>
-                  <Form.Control
-                    defaultValue={unit.resident_units}
-                    type="text"
-                    disabled
-                  ></Form.Control>
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col className="pr-1 mt-4" md="6">
-                <Form.Group>
-                  <label>Status </label>
-                  <Form.Control defaultValue={unit.status} type="text" disabled></Form.Control>
-                </Form.Group>
-              </Col>
-              <Col className="pr-1 mt-4" md="6">
-                <Form.Group>
-                  <label>Created At</label>
-                  <Form.Control defaultValue={unit.created_at} type="text" disabled></Form.Control>
-                </Form.Group>
-              </Col>
-            </Row>
+            <div className="container bootstrap snippets bootdey">
+              <div className="panel-body inf-content">
+                <div className="row">
+                  <div className="col-md-4">
+                    <img
+                      alt=""
+                      style={{ width: '600px', marginTop: '20%', marginLeft: '4%' }}
+                      title=""
+                      className="img-circle img-thumbnail isTooltip  "
+                      src={unit.avatar || 'https://bootdey.com/img/Content/avatar/avatar7.png'}
+                      data-original-title="Usuario"
+                    />
+                    <ul title="Ratings" className="list-inline ratings text-center">
+                      <li>
+                        <span className="glyphicon glyphicon-star">
+                          <small>
+                            <i>{unit.name}</i>
+                          </small>
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="col-md-6">
+                    <strong>Information for unit No {unit.unit_no}</strong>
+                    <hr></hr>
+                    <br />
+                    <div className="table-responsive">
+                      <table className="table table-unit-information">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-asterisk text-primary"></span>
+                                Bedroom Number
+                              </strong>
+                            </td>
+                            <td className="text-primary text-black-50">{unit.bedrooms_number}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-unit  text-primary"></span>
+                                Bathroom Number
+                              </strong>
+                            </td>
+                            <td className="text-primary text-black-50">{unit.bathrooms_number}</td>
+                          </tr>
 
-            <div className="text-center">
-              <CModalFooter>
-                <CButton color="secondary" onClick={() => setVisible(false)}>
-                  Close
-                </CButton>
-              </CModalFooter>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-unit  text-primary"></span>
+                                Year Built
+                              </strong>
+                            </td>
+                            <td className="text-primary text-black-50">{unit.year_built}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-cloud text-primary"></span>
+                                Electricity No
+                              </strong>
+                            </td>
+                            <td className="text-primary text-black-50">{unit.electricity_account_number}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-cloud text-primary"></span>
+                                Water Acc No
+                              </strong>
+                            </td>
+                            <td className="text-primary text-black-50">{unit.water_account_number}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-eye-open text-primary"></span>
+                                Status
+                              </strong>
+                            </td>
+                            <td className="text-primary text-black-50">{unit.status}</td>
+                          </tr>
+
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-calendar text-primary"></span>
+                                Created At
+                              </strong>
+                            </td>
+                            <td className="text-primary text-black-50">{unit.created_at}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong>
+                                <span className="glyphicon glyphicon-calendar text-primary"></span>
+                                Modified
+                              </strong>
+                            </td>
+                            <td className="text-primary text-black-50">{unit.updated_at}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <CModalFooter>
+                    <CButton color="secondary" onClick={() => setVisible(false)}>
+                      Close
+                    </CButton>
+                  </CModalFooter>
+                </div>
+              </div>
             </div>
 
             <div className="clearfix"></div>

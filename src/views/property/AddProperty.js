@@ -29,9 +29,9 @@ function AddProperty() {
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
   const { get, post, response, api } = useFetch()
-  const [unitData, setUnitData] = useState({})
+  const [propertyData, setpropertyData] = useState({})
   const navigate = useNavigate()
-  const [units_data, setUnits_data] = useState([])
+  const [properties_data, setProperties_data] = useState([])
 
   useEffect(() => {
     const inputs = document.querySelectorAll('.form-group input')
@@ -47,22 +47,25 @@ function AddProperty() {
     })
   }, [])
 
-  let unit_id_array = []
-  function trimUnits(units) {
-    units.forEach((element) => {
-      unit_id_array.push({ value: element.id, label: element.name })
-    })
-    return unit_id_array
+  function trimProperties(properties) {
+    if (properties && properties.data) {
+      return properties.data.map((e) => ({
+        value: e.id,
+        label: e.name,
+      }))
+    } else {
+      return []
+    }
   }
 
-  async function fetchUnits() {
+  async function fetchProperties() {
     const api = await get(`/v1/admin/premises/properties`)
     if (response.ok) {
-      setUnits_data(trimUnits(api.data.map((x) => x.unit_type)))
+      setProperties_data(trimProperties(api))
     }
   }
   useEffect(() => {
-    fetchUnits()
+    fetchProperties()
   }, [])
 
   async function onSubmit(data) {
@@ -98,7 +101,7 @@ function AddProperty() {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add Unit Details</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Add Property Details</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
@@ -106,9 +109,9 @@ function AddProperty() {
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Unit-Number</label>
+                    <label>Name</label>
                     <Form.Control
-                      defaultValue={unitData.no}
+                      defaultValue={propertyData.name}
                       type="integer"
                       {...register('unit_no')}
                     ></Form.Control>
@@ -116,10 +119,10 @@ function AddProperty() {
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>BedRoom-No</label>
+                    <label>City</label>
 
                     <Form.Control
-                      defaultValue={unitData.bedrooms_number}
+                      defaultValue={propertyData.city}
                       type="integer"
                       {...register('bedrooms_number')}
                     ></Form.Control>
@@ -129,9 +132,9 @@ function AddProperty() {
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>BathRoom-Number</label>
+                    <label>Use Type</label>
                     <Form.Control
-                      defaultValue={unitData.bathrooms_number}
+                      defaultValue={propertyData.use_type}
                       type="integer"
                       {...register('bathrooms_number')}
                     ></Form.Control>
@@ -139,68 +142,25 @@ function AddProperty() {
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Year Built</label>
+                    <label>Unit Count</label>
 
                     <Form.Control
-                      defaultValue={unitData.year_built}
+                      defaultValue={propertyData.unit_count}
                       type="integer"
                       {...register('year_built')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Unit Type</label>
-
-                    <Controller
-                      name="unit_type_id"
-                      render={({ field }) => (
-                        <Select
-                          type="text"
-                          className="basic-multi-select"
-                          classNamePrefix="select"
-                          {...field}
-                          value={units_data.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
-                          options={units_data}
-                        />
-                      )}
-                      control={control}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Electricity Account-No</label>
-
+                    <label>Payment Term</label>
                     <Form.Control
-                      defaultValue={unitData.electricity_account_number}
-                      type="string"
-                      {...register('electricity_account_number')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Water Account-No</label>
-                    <Form.Control
-                      defaultValue={unitData.water_account_number}
+                      defaultValue={propertyData.payment_term}
                       type="string"
                       {...register('water_account_number')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Internal Extension number</label>
-                    <Form.Control
-                      defaultValue={unitData.internal_extension_number}
-                      type="string"
-                      {...register('internal_extension_number')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
