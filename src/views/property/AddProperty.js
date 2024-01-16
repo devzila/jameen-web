@@ -90,7 +90,7 @@ function AddProperty() {
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Add Unit
+        Add Property
       </button>
       <CModal
         alignment="center"
@@ -157,11 +157,22 @@ function AddProperty() {
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Payment Term</label>
-                    <Form.Control
-                      defaultValue={propertyData.payment_term}
-                      type="string"
-                      {...register('water_account_number')}
-                    ></Form.Control>
+
+                    <Controller
+                      name="unit_type_id"
+                      render={({ field }) => (
+                        <Select
+                          type="text"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          {...field}
+                          value={properties_data.find((c) => c.value === field.value)}
+                          onChange={(val) => field.onChange(val.value)}
+                          options={properties_data}
+                        />
+                      )}
+                      control={control}
+                    />
                   </Form.Group>
                 </Col>
               </Row>
