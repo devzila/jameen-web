@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
-import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
 
@@ -22,13 +21,14 @@ export default function UserForm() {
   const [roles, setRoles] = useState([])
   const [properties_data, setProperties_data] = useState([])
 
-  const [userData, setUserData] = useState({})
-  const { register, handleSubmit, control, watch } = useForm()
+  const { register, handleSubmit, control, watch, reset } = useForm()
   const { get, post, response } = useFetch()
 
-  const navigate = useNavigate()
-
   const avatar_obj = watch('avatar')
+  const image_url =
+    avatar_obj?.length > 0
+      ? URL.createObjectURL(avatar_obj[0])
+      : 'https://bootdey.com/img/Content/avatar/avatar7.png'
   console.log(avatar_obj)
 
   //roles
@@ -43,7 +43,6 @@ export default function UserForm() {
 
   async function fetchRoles() {
     const api = await get('/v1/admin/roles')
-    console.log(api)
     if (response.ok) {
       setRoles(trimRoles(api.data))
     }
@@ -61,7 +60,6 @@ export default function UserForm() {
 
   async function fetchProperties() {
     const api = await get('/v1/admin/premises/properties')
-    console.log(api)
     if (response.ok) {
       setProperties_data(trimProperties(api.data))
     }
@@ -74,13 +72,10 @@ export default function UserForm() {
 
   async function onSubmit(data) {
     console.log(data)
-    const avatar_obj = watch('avatar')
-    const assigned_properties_data = data?.property_ids.map((element) => element.value)
-    const body = {
-      ...data,
-      property_ids: assigned_properties_data,
-      avatar: URL.createObjectURL(avatar_obj[0]),
-    }
+    const assigned_properties_data =
+      data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
+
+    const body = { ...data, property_ids: assigned_properties_data, avatar: data.avatar[0] }
     console.log(body)
     const api = await post(`/v1/admin/users`, { user: body })
     if (response.ok) {
@@ -89,6 +84,7 @@ export default function UserForm() {
 
       setVisible(!visible)
     } else {
+      console.log(response)
       toast(response.data?.message)
     }
   }
@@ -133,11 +129,7 @@ export default function UserForm() {
                     }}
                     title="Avatar"
                     className="img-circle img-thumbnail isTooltip  "
-                    src={
-                      avatar_obj
-                        ? URL.createObjectURL(avatar_obj[0])
-                        : 'https://bootdey.com/img/Content/avatar/avatar7.png'
-                    }
+                    src={image_url}
                     data-original-title="Usuario"
                   />
                 </div>
@@ -147,9 +139,10 @@ export default function UserForm() {
                   <Form.Group>
                     <label>Name</label>
                     <Form.Control
+                      required
                       placeholder="Full Name"
                       type="text"
-                      {...register('name')}
+                      {...register('name', { required: ' Name is required.' })}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -157,10 +150,9 @@ export default function UserForm() {
                   <Form.Group>
                     <label>Avatar Image</label>
                     <Form.Control
-                      placeholder="Full Name"
                       type="file"
                       accept=".jpg, .jpeg, .png"
-                      {...register('avatar')}
+                      {...register('avatar', { required: 'Avatar Image is Required' })}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -170,6 +162,7 @@ export default function UserForm() {
                   <Form.Group>
                     <label>Username</label>
                     <Form.Control
+                      required
                       placeholder="UserName"
                       type="text"
                       {...register('username')}
@@ -216,7 +209,7 @@ export default function UserForm() {
                       className="form-check-input"
                       type="checkbox"
                       role="switch"
-                      defaultValue={true}
+                      defaultChecked={true}
                       {...register('active')}
                     ></Form.Control>
                   </Form.Group>
