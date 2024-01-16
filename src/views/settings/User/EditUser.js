@@ -17,7 +17,7 @@ import {
 // react-bootstrap components
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
-export default function EditUser(propsdata) {
+export default function EditUser(userId) {
   const [users, setUsers] = useState([])
   const { get, put, response } = useFetch()
 
@@ -71,16 +71,13 @@ export default function EditUser(propsdata) {
     }
   }
 
-  const id = propsdata.userid.id
-
   useEffect(() => {
     getUserData()
     fetchRoles()
     fetchProperties()
   }, [])
   async function getUserData() {
-    let api = await get(`/v1/admin/users/${id}`)
-    console.log(api)
+    let api = await get(`/v1/admin/users/${userId}`)
 
     if (response.ok) {
       if (api.data) {
@@ -101,7 +98,7 @@ export default function EditUser(propsdata) {
     const body = { ...data, property_ids: assigned_properties_data }
     console.log(body)
 
-    const api = await put(`/v1/admin/users/${id}`, { user: body })
+    const api = await put(`/v1/admin/users/${userId}`, { user: body })
     console.log(api)
     if (response.ok) {
       toast('User Data Edited Successfully')
@@ -292,6 +289,6 @@ export default function EditUser(propsdata) {
   )
 }
 
-EditUser.PropTypes = {
-  id: PropTypes.number.isRequired,
+EditUser.propTypes = {
+  userId: PropTypes.number.isRequired,
 }

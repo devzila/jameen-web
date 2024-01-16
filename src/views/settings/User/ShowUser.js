@@ -12,23 +12,20 @@ import {
   CContainer,
 } from '@coreui/react'
 
-export default function ShowUser(propsd) {
+export default function ShowUser({ userId }) {
   const [visible, setVisible] = useState(false)
   const [user, setUser] = useState([])
   const { get, response } = useFetch()
 
-  const id = propsd.userid.id
   useEffect(() => {
     getUserData()
   }, [])
   async function getUserData() {
-    let api = await get(`/v1/admin/users/${id}`)
-    console.log(api)
+    let api = await get(`/v1/admin/users/${userId}`)
     setUser(api.data)
 
     if (response.ok) {
       setUser(api.data)
-      console.log(user)
     }
   }
 
@@ -204,6 +201,6 @@ export default function ShowUser(propsd) {
   )
 }
 
-ShowUser.PropTypes = {
-  id: PropTypes.number.isRequired,
+ShowUser.propTypes = {
+  userId: PropTypes.number.isRequired,
 }

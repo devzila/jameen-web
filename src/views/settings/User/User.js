@@ -121,7 +121,7 @@ function Index() {
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                   <EditUser userid={{ id: user.id }} />
-                                  <ShowUser userid={{ id: user.id }} />
+                                  <ShowUser userid={{ userId: user.id }} />
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>
