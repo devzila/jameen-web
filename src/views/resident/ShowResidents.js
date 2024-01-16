@@ -20,13 +20,13 @@ export default function ShowResidents(props) {
   const { get, response } = useFetch()
 
   console.log(props)
-  const resident_id = props?.id
+  const { id } = props
 
   useEffect(() => {
     loadResident()
   }, [])
   const loadResident = async () => {
-    const endpoint = await get(`/v1/admin/residents/${resident_id}`)
+    const endpoint = await get(`/v1/admin/residents/${id}`)
     console.log(endpoint)
     if (response.ok) {
       setResident_data(endpoint.data)

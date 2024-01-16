@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
 import Select from 'react-select'
+import PropTypes from 'prop-types'
+
 import {
   CButton,
   CModal,
@@ -22,9 +24,7 @@ export default function EditResidents(props) {
   const { register, handleSubmit, setValue, watch, control } = useForm()
   const { get, put, response } = useFetch()
 
-  console.log(props)
-
-  let resident_id = props.residentid.id
+  const { id } = props
 
   const gender = [
     { value: 'male', label: 'Male' },
@@ -55,7 +55,7 @@ export default function EditResidents(props) {
     return properties_array
   }
   const loadResident = async () => {
-    const endpoint = await get(`/v1/admin/residents/${resident_id}`)
+    const endpoint = await get(`/v1/admin/residents/${id}`)
 
     if (response.ok) {
       setResident(endpoint.data)
@@ -73,7 +73,7 @@ export default function EditResidents(props) {
     }
   }
   const onSubmit = async (data) => {
-    const endpoint = await put(`/v1/admin/residents/${resident_id}`, { resident: data })
+    const endpoint = await put(`/v1/admin/residents/${id}`, { resident: data })
 
     if (response.ok) {
       toast('Resident Data Edited Successfully')

@@ -120,7 +120,7 @@ const Residents = () => {
                                 <BsThreeDots />
                               </Dropdown.Toggle>
                               <Dropdown.Menu>
-                                <EditResidents residentid={{ id: `${residents.id}` }} />
+                                <EditResidents id={residents.id} />
                                 <ShowResidents id={residents.id} />
                               </Dropdown.Menu>
                             </Dropdown>
