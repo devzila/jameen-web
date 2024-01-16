@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
+import PropTypes from 'prop-types'
 
 import {
   CButton,
@@ -201,4 +202,8 @@ export default function ShowUser(propsd) {
       </CModal>
     </div>
   )
+}
+
+ShowUser.PropTypes = {
+  id: PropTypes.number.isRequired,
 }

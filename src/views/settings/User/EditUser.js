@@ -3,6 +3,8 @@ import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
+import PropTypes from 'prop-types'
+
 import {
   CButton,
   CModal,
@@ -288,4 +290,8 @@ export default function EditUser(propsdata) {
       </div>
     </>
   )
+}
+
+EditUser.PropTypes = {
+  id: PropTypes.number.isRequired,
 }

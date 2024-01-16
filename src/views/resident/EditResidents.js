@@ -269,3 +269,7 @@ export default function EditResidents(props) {
     </div>
   )
 }
+
+EditResidents.propTypes = {
+  id: PropTypes.number.isRequired,
+}

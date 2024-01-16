@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
+import PropTypes from 'prop-types'
+
 import {
   CButton,
   CModal,
@@ -213,4 +215,8 @@ export default function ShowResidents(props) {
       </CModal>
     </div>
   )
+}
+
+ShowResidents.propTypes = {
+  id: PropTypes.number.isRequired,
 }
