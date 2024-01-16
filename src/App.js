@@ -1,5 +1,6 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { loadMetaData } from './services/MetaDataLoader'
 import './scss/style.scss'
 
 const loading = (
@@ -16,6 +17,9 @@ const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 function App() {
+  useEffect(() => {
+    loadMetaData()
+  }, [])
   return (
     <BrowserRouter>
       <Suspense fallback={loading}>
