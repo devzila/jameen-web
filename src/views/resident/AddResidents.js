@@ -19,13 +19,21 @@ export default function AddResidents() {
   const [visible, setVisible] = useState(false)
   const [properties_data, setProperties_data] = useState([])
 
-  const { register, handleSubmit, control } = useForm()
+  const { register, handleSubmit, control, watch, setValue } = useForm()
   const { get, post, response } = useFetch()
 
   const gender = [
     { value: 'male', label: 'Male' },
     { value: 'female', label: 'Female' },
   ]
+  //image
+
+  const avatar_obj = watch('avatar')
+
+  const image_url =
+    avatar_obj?.length > 0
+      ? URL.createObjectURL(avatar_obj[0])
+      : 'https://bootdey.com/img/Content/avatar/avatar7.png'
 
   useEffect(() => {
     loadInitialProperties()
@@ -51,7 +59,12 @@ export default function AddResidents() {
   }
 
   async function onSubmit(data) {
-    await post(`/v1/admin/residents`, { resident: data })
+    console.log(data)
+    const image_val = data.avatar[0] ?? ''
+    const form_data = { ...data, avatar: image_val }
+    console.log(form_data)
+
+    await post(`/v1/admin/residents`, { resident: form_data })
 
     if (response.ok) {
       toast('Resident added Successfully')
@@ -86,7 +99,35 @@ export default function AddResidents() {
         </CModalHeader>
         <CModalBody>
           <CContainer>
+            <div className="col text-center">
+              <img
+                alt=""
+                style={{
+                  width: '300px',
+                  height: '300px',
+                  marginTop: '2%',
+                  marginLeft: '4%',
+                  borderRadius: '50%',
+                }}
+                title=""
+                className="img-circle img-thumbnail isTooltip  "
+                src={image_url}
+                data-original-title="Usuario"
+              />
+            </div>
             <Form onSubmit={handleSubmit(onSubmit)}>
+              <Row>
+                <Col className="pr-1 mt-3" md="12">
+                  <Form.Group>
+                    <label>Avatar Image</label>
+                    <Form.Control
+                      type="file"
+                      accept=".jpg, .jpeg, .png"
+                      {...register('avatar')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
@@ -109,6 +150,7 @@ export default function AddResidents() {
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>

@@ -1,4 +1,5 @@
 import { createContext } from 'react'
+import { loadMetaData } from './../services/MetaDataLoader'
 export const AuthContext = createContext('')
 export const initialAuthState = {
   isAutheticated: localStorage.getItem('token') !== null,
@@ -9,9 +10,9 @@ export const initialAuthState = {
 export const reducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN':
-      console.log('===', action.payload.token)
       localStorage.setItem('user', JSON.stringify(action.payload.object))
       localStorage.setItem('token', action.payload.token)
+      loadMetaData()
       return {
         ...state,
         isAutheticated: true,

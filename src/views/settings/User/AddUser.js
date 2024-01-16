@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
-import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
 
@@ -22,11 +21,15 @@ export default function UserForm() {
   const [roles, setRoles] = useState([])
   const [properties_data, setProperties_data] = useState([])
 
-  const [userData, setUserData] = useState({})
-  const { register, handleSubmit, control } = useForm()
+  const { register, handleSubmit, control, watch, reset } = useForm()
   const { get, post, response } = useFetch()
 
-  const navigate = useNavigate()
+  const avatar_obj = watch('avatar')
+  const image_url =
+    avatar_obj?.length > 0
+      ? URL.createObjectURL(avatar_obj[0])
+      : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+  console.log(avatar_obj)
 
   //roles
 
@@ -40,7 +43,6 @@ export default function UserForm() {
 
   async function fetchRoles() {
     const api = await get('/v1/admin/roles')
-    console.log(api)
     if (response.ok) {
       setRoles(trimRoles(api.data))
     }
@@ -58,7 +60,6 @@ export default function UserForm() {
 
   async function fetchProperties() {
     const api = await get('/v1/admin/premises/properties')
-    console.log(api)
     if (response.ok) {
       setProperties_data(trimProperties(api.data))
     }
@@ -71,14 +72,19 @@ export default function UserForm() {
 
   async function onSubmit(data) {
     console.log(data)
-    const assigned_properties_data = data?.property_ids.map((element) => element.value)
-    const body = { ...data, property_ids: assigned_properties_data }
+    const assigned_properties_data =
+      data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
+
+    const body = { ...data, property_ids: assigned_properties_data, avatar: data.avatar[0] }
     console.log(body)
     const api = await post(`/v1/admin/users`, { user: body })
     if (response.ok) {
       toast('user added Successfully')
+      reset()
+
       setVisible(!visible)
     } else {
+      console.log(response)
       toast(response.data?.message)
     }
   }
@@ -110,27 +116,43 @@ export default function UserForm() {
           <CContainer>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
+                <div className="col text-center">
+                  <img
+                    alt="Avatar Image"
+                    style={{
+                      width: '300px',
+                      height: '300px',
+
+                      marginTop: '2%',
+                      marginLeft: '4%',
+                      borderRadius: '50%',
+                    }}
+                    title="Avatar"
+                    className="img-circle img-thumbnail isTooltip  "
+                    src={image_url}
+                    data-original-title="Usuario"
+                  />
+                </div>
+              </Row>
+              <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Name</label>
                     <Form.Control
+                      required
                       placeholder="Full Name"
                       type="text"
-                      {...register('name')}
+                      {...register('name', { required: ' Name is required.' })}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="4">
-                  <Form.Group className="mt-4 form-check form-switch">
-                    <label>Active</label>
-
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Avatar Image</label>
                     <Form.Control
-                      checked
-                      className="form-check-input"
-                      type="checkbox"
-                      role="switch"
-                      defaultValue={true}
-                      {...register('active')}
+                      type="file"
+                      accept=".jpg, .jpeg, .png"
+                      {...register('avatar', { required: 'Avatar Image is Required' })}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -140,6 +162,7 @@ export default function UserForm() {
                   <Form.Group>
                     <label>Username</label>
                     <Form.Control
+                      required
                       placeholder="UserName"
                       type="text"
                       {...register('username')}
@@ -168,13 +191,26 @@ export default function UserForm() {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="6">
+                <Col className="pr-1 mt-3" md="4">
                   <Form.Group>
                     <label>Phone No</label>
                     <Form.Control
                       placeholder="Phone Number"
                       type="text"
                       {...register('mobile_number')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="2">
+                  <Form.Group className="mt-4 form-check form-switch">
+                    <label>Active</label>
+
+                    <Form.Control
+                      className="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      defaultChecked={true}
+                      {...register('active')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -202,6 +238,7 @@ export default function UserForm() {
                   </Form.Group>
                 </Col>
               </Row>
+
               {/* Modal part 2 role */}
               <CModalTitle className="mt-3" id="StaticBackdropExampleLabel">
                 Role

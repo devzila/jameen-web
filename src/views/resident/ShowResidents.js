@@ -73,7 +73,9 @@ export default function ShowResidents(props) {
                       style={{ width: '600px;', marginTop: '20%', marginLeft: '4%' }}
                       title=""
                       className="img-circle img-thumbnail isTooltip  "
-                      src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                      src={
+                        resident_data.avatar || 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                      }
                       data-original-title="Usuario"
                     />
                     <ul title="Ratings" className="list-inline ratings text-center">
@@ -83,8 +85,6 @@ export default function ShowResidents(props) {
                     </ul>
                   </div>
                   <div className="col-md-6">
-                    <strong>Information for resident ID {resident_data.id}</strong>
-                    <hr></hr>
                     <div className="table-responsive">
                       <table className="table table-user-information">
                         <tbody>

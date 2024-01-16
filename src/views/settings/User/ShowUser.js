@@ -30,7 +30,6 @@ export default function ShowUser(propsd) {
       console.log(user)
     }
   }
-  console.log(user)
 
   return (
     <div>
@@ -47,17 +46,18 @@ export default function ShowUser(propsd) {
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Show User
+        Show
       </button>
       <CModal
         alignment="center"
         size="xl"
         visible={visible}
+        backdrop="static"
         onClose={() => setVisible(false)}
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">User Data</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">User Information</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
@@ -67,10 +67,14 @@ export default function ShowUser(propsd) {
                   <div className="col-md-4">
                     <img
                       alt=""
-                      style={{ width: '600px', marginTop: '20%', marginLeft: '4%' }}
+                      style={{ width: '600px', marginTop: '15%', marginLeft: '4%' }}
                       title=""
-                      className="img-circle img-thumbnail isTooltip  "
-                      src={user.avatar || 'https://bootdey.com/img/Content/avatar/avatar7.png'}
+                      className=" img-circle img-thumbnail isTooltip  "
+                      src={
+                        user.avatar
+                          ? user.avatar
+                          : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                      }
                       data-original-title="Usuario"
                     />
                     <ul title="Ratings" className="list-inline ratings text-center">
@@ -83,9 +87,7 @@ export default function ShowUser(propsd) {
                       </li>
                     </ul>
                   </div>
-                  <div className="col-md-6">
-                    <strong>Information for User ID {user.id}</strong>
-                    <hr></hr>
+                  <div className="col-md-7">
                     <br />
                     <div className="table-responsive">
                       <table className="table table-user-information">
