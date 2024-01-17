@@ -14,11 +14,13 @@ import {
   CModalTitle,
   CContainer,
 } from '@coreui/react'
-// react-bootstrap components
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
-export default function EditUser(userId) {
+//function
+
+export default function EditUser({ userId }) {
   const [users, setUsers] = useState([])
+  const [imageView, setImageView] = useState('')
   const { get, put, response } = useFetch()
 
   const [visible, setVisible] = useState(false)
@@ -30,20 +32,15 @@ export default function EditUser(userId) {
 
   //roles
 
-  let rolesarray = []
-  function trimRoles(rolesdata) {
-    rolesdata.forEach((element) => {
-      rolesarray.push({ value: element.id, label: element.name })
-    })
-    return rolesarray
-  }
+  const meta_data = localStorage.getItem('meta')
+  const parsed_meta_data = JSON.parse(meta_data)
 
-  async function fetchRoles() {
-    const api = await get('/v1/admin/roles')
-    if (response.ok) {
-      setRoles(trimRoles(api.data))
-    }
-  }
+  const roles_data = parsed_meta_data.role_user_type
+
+  const rolesarray = Object.entries(roles_data).map((element) => ({
+    label: element[0].charAt(0).toUpperCase() + element[0].slice(1).replace(/_/g, ' '),
+    value: element[1],
+  }))
 
   //properties
 
@@ -73,9 +70,10 @@ export default function EditUser(userId) {
 
   useEffect(() => {
     getUserData()
-    fetchRoles()
     fetchProperties()
   }, [])
+
+  //Get User Data
   async function getUserData() {
     let api = await get(`/v1/admin/users/${userId}`)
 
@@ -89,13 +87,38 @@ export default function EditUser(userId) {
         setValue('role_id', api.data.role.id)
         setValue('active', api.data.active)
         setValue('property_ids', trimProperties2(api.data.properties))
+        setValue('avatar', api.data.avatar)
       }
     }
   }
+
+  const image_obj = watch('avatar')
+  const image_url =
+    image_obj?.length > 0 ? image_obj : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+
+  //base64
+  const handleFileSelection = (e) => {
+    const selectedFile = e.target.files[0]
+
+    if (selectedFile) {
+      const reader = new FileReader()
+
+      reader.onload = function (e) {
+        const base64Result = e.target.result
+        setValue('avatar', { data: base64Result })
+        console.log('Base64-encoded data:', { data: base64Result })
+        setImageView(base64Result)
+      }
+
+      reader.readAsDataURL(selectedFile)
+    }
+  }
+
+  //Form submit ,post
   async function onSubmit(data) {
     console.log(data)
     const assigned_properties_data = data?.property_ids.map((element) => element.value)
-    const body = { ...data, property_ids: assigned_properties_data }
+    const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
     console.log(body)
 
     const api = await put(`/v1/admin/users/${userId}`, { user: body })
@@ -138,9 +161,28 @@ export default function EditUser(userId) {
           </CModalHeader>
           <CModalBody>
             <CContainer>
+              <Row>
+                <div className="col text-center">
+                  <img
+                    alt="Avatar Image"
+                    style={{
+                      width: '300px',
+                      height: '300px',
+
+                      marginTop: '2%',
+                      marginLeft: '4%',
+                      borderRadius: '50%',
+                    }}
+                    title="Avatar"
+                    className="img-circle img-thumbnail isTooltip  "
+                    src={image_url}
+                    data-original-title="Usuario"
+                  />
+                </div>
+              </Row>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Row>
-                  <Col className="pr-1 mt-1" md="6">
+                  <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
                       <label>Name</label>
                       <Form.Control
@@ -151,17 +193,15 @@ export default function EditUser(userId) {
                       ></Form.Control>
                     </Form.Group>
                   </Col>
-                  <Col className="pr-1 mt-4" md="4">
-                    <Form.Group className="form-check form-switch">
+                  <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <label>Avatar Image</label>
                       <Form.Control
-                        className="form-check-input"
-                        type="checkbox"
-                        role="switch"
-                        id="flexSwitchCheckDefault"
-                        defaultValue={userData.active}
-                        {...register('active')}
+                        type="file"
+                        accept=".jpg, .jpeg, .png"
+                        {...register('avatar')}
+                        onChange={(e) => handleFileSelection(e)}
                       ></Form.Control>
-                      <label className="form-check-label">Active</label>
                     </Form.Group>
                   </Col>
                 </Row>
@@ -201,7 +241,7 @@ export default function EditUser(userId) {
                       ></Form.Control>
                     </Form.Group>
                   </Col>
-                  <Col className="pr-1 mt-3" md="6">
+                  <Col className="pr-1 mt-3" md="4">
                     <Form.Group>
                       <label>Phone No</label>
                       <Form.Control
@@ -210,6 +250,19 @@ export default function EditUser(userId) {
                         type="text"
                         {...register('mobile_number')}
                       ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col className="pr-1 mt-4" md="2">
+                    <Form.Group className="form-check form-switch">
+                      <Form.Control
+                        className="form-check-input"
+                        type="checkbox"
+                        role="switch"
+                        id="flexSwitchCheckDefault"
+                        defaultValue={userData.active}
+                        {...register('active')}
+                      ></Form.Control>
+                      <label className="form-check-label">Active</label>
                     </Form.Group>
                   </Col>
                 </Row>

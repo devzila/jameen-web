@@ -120,8 +120,8 @@ function Index() {
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  <EditUser userid={{ id: user.id }} />
-                                  <ShowUser userid={{ userId: user.id }} />
+                                  <EditUser userId={user.id} />
+                                  <ShowUser userId={user.id} />
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

@@ -40,6 +40,8 @@ export default function AddResidents() {
     loadInitialProperties()
   }, [])
 
+  // Properties fetch
+
   const loadInitialProperties = async () => {
     let endpoint = `/v1/admin/premises/properties`
 
@@ -59,6 +61,7 @@ export default function AddResidents() {
     return properties_array
   }
 
+  //Post Data
   async function onSubmit(data) {
     console.log(data)
     const image_val = data.avatar[0] ?? ''

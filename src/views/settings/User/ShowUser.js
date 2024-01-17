@@ -22,6 +22,7 @@ export default function ShowUser({ userId }) {
   }, [])
   async function getUserData() {
     let api = await get(`/v1/admin/users/${userId}`)
+    console.log(api)
     setUser(api.data)
 
     if (response.ok) {
@@ -68,18 +69,14 @@ export default function ShowUser({ userId }) {
                       style={{ width: '600px', marginTop: '15%', marginLeft: '4%' }}
                       title=""
                       className=" img-circle img-thumbnail isTooltip  "
-                      src={
-                        user.avatar
-                          ? user.avatar
-                          : 'https://bootdey.com/img/Content/avatar/avatar7.png'
-                      }
+                      src={'https://bootdey.com/img/Content/avatar/avatar7.png'}
                       data-original-title="Usuario"
                     />
                     <ul title="Ratings" className="list-inline ratings text-center">
                       <li>
                         <span className="glyphicon glyphicon-star">
                           <small>
-                            <i>{user.name}</i>
+                            <i>{user?.name}</i>
                           </small>
                         </span>
                       </li>
@@ -97,7 +94,7 @@ export default function ShowUser({ userId }) {
                                 Full Name
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.name}</td>
+                            <td className="text-primary text-black-50">{user?.name}</td>
                           </tr>
                           <tr>
                             <td>
@@ -202,5 +199,5 @@ export default function ShowUser({ userId }) {
 }
 
 ShowUser.propTypes = {
-  userId: PropTypes.number.isRequired,
+  userId: PropTypes.number,
 }

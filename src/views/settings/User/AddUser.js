@@ -18,36 +18,34 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 
 export default function UserForm() {
   const [visible, setVisible] = useState(false)
-  const [roles, setRoles] = useState([])
+  const [imageView, setImageView] = useState('')
   const [properties_data, setProperties_data] = useState([])
 
-  const { register, handleSubmit, control, watch, reset } = useForm()
+  const { register, handleSubmit, control, watch, reset, setValue } = useForm()
   const { get, post, response } = useFetch()
 
-  const avatar_obj = watch('avatar')
+  // const avatar_obj = watch('avatar')
+  // const image_url =
+  //   avatar_obj?.length > 0
+  //     ? URL.createObjectURL(avatar_obj[0])
+  //     : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+
+  const image_obj = watch('avatar')
+  console.log(image_obj)
   const image_url =
-    avatar_obj?.length > 0
-      ? URL.createObjectURL(avatar_obj[0])
-      : 'https://bootdey.com/img/Content/avatar/avatar7.png'
-  console.log(avatar_obj)
+    image_obj?.length > 0 ? image_obj[0] : 'https://bootdey.com/img/Content/avatar/avatar7.png'
 
   //roles
 
-  let rolesarray = []
-  function trimRoles(rolesdata) {
-    rolesdata.forEach((element) => {
-      rolesarray.push({ value: element.id, label: element.name })
-    })
-    return rolesarray
-  }
+  const meta_data = localStorage.getItem('meta')
+  const parsed_meta_data = JSON.parse(meta_data)
 
-  async function fetchRoles() {
-    const api = await get('/v1/admin/roles')
-    if (response.ok) {
-      setRoles(trimRoles(api.data))
-    }
-  }
+  const roles_data = parsed_meta_data.role_user_type
 
+  const rolesarray = Object.entries(roles_data).map((element) => ({
+    label: element[0].charAt(0).toUpperCase() + element[0].slice(1).replace(/_/g, ' '),
+    value: element[1],
+  }))
   // Properties
 
   let properties_array = []
@@ -66,16 +64,32 @@ export default function UserForm() {
   }
 
   useEffect(() => {
-    fetchRoles()
     fetchProperties()
   }, [])
+
+  //base64
+  const handleFileSelection = (e) => {
+    const selectedFile = e.target.files[0]
+
+    if (selectedFile) {
+      const reader = new FileReader()
+
+      reader.onload = function (e) {
+        const base64Result = e.target.result
+        // setValue('avatar', { data: base64Result })
+        setImageView(base64Result)
+      }
+
+      reader.readAsDataURL(selectedFile)
+    }
+  }
 
   async function onSubmit(data) {
     console.log(data)
     const assigned_properties_data =
       data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
 
-    const body = { ...data, property_ids: assigned_properties_data, avatar: data.avatar[0] }
+    const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
     console.log(body)
     const api = await post(`/v1/admin/users`, { user: body })
     if (response.ok) {
@@ -129,7 +143,7 @@ export default function UserForm() {
                     }}
                     title="Avatar"
                     className="img-circle img-thumbnail isTooltip  "
-                    src={image_url}
+                    src={imageView}
                     data-original-title="Usuario"
                   />
                 </div>
@@ -152,7 +166,8 @@ export default function UserForm() {
                     <Form.Control
                       type="file"
                       accept=".jpg, .jpeg, .png"
-                      {...register('avatar', { required: 'Avatar Image is Required' })}
+                      {...register('avatar')}
+                      onChange={(e) => handleFileSelection(e)}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -252,8 +267,8 @@ export default function UserForm() {
                       render={({ field }) => (
                         <Select
                           {...field}
-                          options={roles}
-                          value={roles.find((c) => c.value === field.value)}
+                          options={rolesarray}
+                          value={rolesarray.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
                         />
                       )}
