@@ -23,7 +23,7 @@ export default function EditUser({ userId }) {
   const { get, put, response } = useFetch()
 
   const [visible, setVisible] = useState(false)
-  const { register, handleSubmit, setValue, watch, control } = useForm()
+  const { register, handleSubmit, setValue, control } = useForm()
 
   const [userData, setUserData] = useState({})
   const [properties_data, setProperties_data] = useState([])
@@ -86,6 +86,7 @@ export default function EditUser({ userId }) {
         setValue('active', api.data.active)
         setValue('property_ids', trimProperties2(api.data.properties))
         setValue('avatar', api.data.avatar)
+        setUserData(api.data)
       }
     }
   }
@@ -111,7 +112,7 @@ export default function EditUser({ userId }) {
     const assigned_properties_data = data?.property_ids.map((element) => element.value)
     const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
 
-    const api = await put(`/v1/admin/users/${userId}`, { user: body })
+    await put(`/v1/admin/users/${userId}`, { user: body })
     if (response.ok) {
       toast('User Data Edited Successfully')
       setVisible(!visible)
@@ -153,7 +154,7 @@ export default function EditUser({ userId }) {
               <Row>
                 <div className="col text-center">
                   <img
-                    alt="Avatar Image"
+                    alt="Avatar"
                     style={{
                       width: '300px',
                       height: '300px',
@@ -165,7 +166,11 @@ export default function EditUser({ userId }) {
                     title="Avatar"
                     className="img-circle img-thumbnail isTooltip  "
                     src={
-                      imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                      userData.avatar
+                        ? userData.avatar
+                        : imageView
+                        ? imageView
+                        : 'https://bootdey.com/img/Content/avatar/avatar7.png'
                     }
                     data-original-title="Usuario"
                   />
