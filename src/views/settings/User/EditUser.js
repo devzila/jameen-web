@@ -19,7 +19,6 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 //function
 
 export default function EditUser({ userId }) {
-  const [users, setUsers] = useState([])
   const [imageView, setImageView] = useState('')
   const { get, put, response } = useFetch()
 
@@ -27,7 +26,6 @@ export default function EditUser({ userId }) {
   const { register, handleSubmit, setValue, watch, control } = useForm()
 
   const [userData, setUserData] = useState({})
-  const [roles, setRoles] = useState([])
   const [properties_data, setProperties_data] = useState([])
 
   //roles
@@ -92,10 +90,6 @@ export default function EditUser({ userId }) {
     }
   }
 
-  const image_obj = watch('avatar')
-  const image_url =
-    image_obj?.length > 0 ? image_obj : 'https://bootdey.com/img/Content/avatar/avatar7.png'
-
   //base64
   const handleFileSelection = (e) => {
     const selectedFile = e.target.files[0]
@@ -105,8 +99,6 @@ export default function EditUser({ userId }) {
 
       reader.onload = function (e) {
         const base64Result = e.target.result
-        setValue('avatar', { data: base64Result })
-        console.log('Base64-encoded data:', { data: base64Result })
         setImageView(base64Result)
       }
 
@@ -116,13 +108,10 @@ export default function EditUser({ userId }) {
 
   //Form submit ,post
   async function onSubmit(data) {
-    console.log(data)
     const assigned_properties_data = data?.property_ids.map((element) => element.value)
     const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
-    console.log(body)
 
     const api = await put(`/v1/admin/users/${userId}`, { user: body })
-    console.log(api)
     if (response.ok) {
       toast('User Data Edited Successfully')
       setVisible(!visible)
@@ -175,7 +164,9 @@ export default function EditUser({ userId }) {
                     }}
                     title="Avatar"
                     className="img-circle img-thumbnail isTooltip  "
-                    src={image_url}
+                    src={
+                      imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                    }
                     data-original-title="Usuario"
                   />
                 </div>
@@ -302,8 +293,8 @@ export default function EditUser({ userId }) {
                         render={({ field }) => (
                           <Select
                             {...field}
-                            options={roles}
-                            value={roles.find((c) => c.value === field.value)}
+                            options={rolesarray}
+                            value={rolesarray.find((c) => c.value === field.value)}
                             onChange={(val) => field.onChange(val.value)}
                           />
                         )}

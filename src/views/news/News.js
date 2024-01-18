@@ -22,7 +22,6 @@ function News() {
     const initialPosts = await get(`/v1/admin/posts?page=${currentPage}`)
 
     if (response.ok) {
-      console.log(response)
       setPosts(initialPosts.data)
       setPagination(initialPosts.data.pagination)
     }

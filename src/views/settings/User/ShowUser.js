@@ -22,7 +22,6 @@ export default function ShowUser({ userId }) {
   }, [])
   async function getUserData() {
     let api = await get(`/v1/admin/users/${userId}`)
-    console.log(api)
     setUser(api.data)
 
     if (response.ok) {
@@ -69,7 +68,11 @@ export default function ShowUser({ userId }) {
                       style={{ width: '600px', marginTop: '15%', marginLeft: '4%' }}
                       title=""
                       className=" img-circle img-thumbnail isTooltip  "
-                      src={'https://bootdey.com/img/Content/avatar/avatar7.png'}
+                      src={
+                        user.avatar
+                          ? user.avatar
+                          : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                      }
                       data-original-title="Usuario"
                     />
                     <ul title="Ratings" className="list-inline ratings text-center">

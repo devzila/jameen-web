@@ -76,10 +76,8 @@ export default function AddResidents() {
 
   //Post Data
   async function onSubmit(data) {
-    console.log(data)
     const image_val = data.avatar[0] ?? ''
     const form_data = { ...data, avatar: { data: imageView } }
-    console.log(form_data)
 
     await post(`/v1/admin/residents`, { resident: form_data })
 

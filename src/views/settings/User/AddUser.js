@@ -79,12 +79,10 @@ export default function UserForm() {
   }
 
   async function onSubmit(data) {
-    console.log(data)
     const assigned_properties_data =
       data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
 
     const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
-    console.log(body)
     const api = await post(`/v1/admin/users`, { user: body })
     if (response.ok) {
       toast('user added Successfully')
@@ -92,7 +90,6 @@ export default function UserForm() {
 
       setVisible(!visible)
     } else {
-      console.log(response)
       toast(response.data?.message)
     }
   }

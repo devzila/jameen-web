@@ -31,7 +31,6 @@ export default function Showunit(propsd) {
 
     if (response.ok) {
       setUnit(api.data)
-      console.log(unit)
     }
   }
 
@@ -128,7 +127,9 @@ export default function Showunit(propsd) {
                                 Electricity No
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{unit.electricity_account_number}</td>
+                            <td className="text-primary text-black-50">
+                              {unit.electricity_account_number}
+                            </td>
                           </tr>
                           <tr>
                             <td>
@@ -137,7 +138,9 @@ export default function Showunit(propsd) {
                                 Water Acc No
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{unit.water_account_number}</td>
+                            <td className="text-primary text-black-50">
+                              {unit.water_account_number}
+                            </td>
                           </tr>
                           <tr>
                             <td>

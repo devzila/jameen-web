@@ -20,11 +20,28 @@ export default function EditResidents(props) {
   const [resident, setResident] = useState({})
   const [properties_data, setProperties_data] = useState([])
   const [visible, setVisible] = useState(false)
+  const [imageView, setImageView] = useState('')
 
   const { register, handleSubmit, setValue, watch, control } = useForm()
   const { get, put, response } = useFetch()
 
   const { id } = props
+
+  //base64
+  const handleFileSelection = (e) => {
+    const selectedFile = e.target.files[0]
+
+    if (selectedFile) {
+      const reader = new FileReader()
+
+      reader.onload = function (e) {
+        const base64Result = e.target.result
+        setImageView(base64Result)
+      }
+
+      reader.readAsDataURL(selectedFile)
+    }
+  }
 
   const gender = [
     { value: 'male', label: 'Male' },
@@ -73,13 +90,14 @@ export default function EditResidents(props) {
     }
   }
   const onSubmit = async (data) => {
-    const endpoint = await put(`/v1/admin/residents/${id}`, { resident: data })
+    const body = { ...data, avatar: { data: imageView } }
+    const endpoint = await put(`/v1/admin/residents/${id}`, { resident: body })
 
     if (response.ok) {
       toast('Resident Data Edited Successfully')
       setVisible(false)
     } else {
-      toast(response?.error.message)
+      toast(response?.error)
     }
   }
 
@@ -113,7 +131,39 @@ export default function EditResidents(props) {
         </CModalHeader>
         <CModalBody>
           <CContainer>
+            <Row>
+              <div className="col text-center">
+                <img
+                  alt="Avatar Image"
+                  style={{
+                    width: '300px',
+                    height: '300px',
+
+                    marginTop: '2%',
+                    marginLeft: '4%',
+                    borderRadius: '50%',
+                  }}
+                  title="Avatar"
+                  className="img-circle img-thumbnail isTooltip  "
+                  src={imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'}
+                  data-original-title="Usuario"
+                />
+              </div>
+            </Row>
             <Form onSubmit={handleSubmit(onSubmit)}>
+              <Row>
+                <Col className="pr-1 mt-3" md="12">
+                  <Form.Group>
+                    <label>Avatar Image</label>
+                    <Form.Control
+                      type="file"
+                      accept=".jpg, .jpeg, .png"
+                      {...register('avatar')}
+                      onChange={(e) => handleFileSelection(e)}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>

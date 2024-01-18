@@ -70,7 +70,6 @@ const Login = () => {
           })
           return
         }
-        console.log(error.status)
         error.json().then((response) => {
           toast(response.message)
           setData({

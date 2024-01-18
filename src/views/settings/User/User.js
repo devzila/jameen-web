@@ -33,12 +33,9 @@ function Index() {
     }
     let initialusers = await get(endpoint)
 
-    console.log(initialusers)
-
     if (response.ok) {
       if (initialusers.data) {
         setLoading(false)
-        console.log(initialusers)
         setUsers(initialusers.data)
         setPagination(initialusers.pagination)
       }

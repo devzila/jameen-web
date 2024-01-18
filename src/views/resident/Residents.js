@@ -47,7 +47,6 @@ const Residents = () => {
   }
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
-    console.log(currentPage)
   }
 
   return (
