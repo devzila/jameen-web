@@ -19,6 +19,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 export default function AddResidents() {
   const [visible, setVisible] = useState(false)
   const [properties_data, setProperties_data] = useState([])
+  const [imageView, setImageView] = useState('')
 
   const { register, handleSubmit, control, watch, setValue } = useForm()
   const { get, post, response } = useFetch()
@@ -31,15 +32,27 @@ export default function AddResidents() {
 
   const avatar_obj = watch('avatar')
 
-  const image_url =
-    avatar_obj?.length > 0
-      ? URL.createObjectURL(avatar_obj[0])
-      : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+  const image_url = imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'
 
   useEffect(() => {
     loadInitialProperties()
   }, [])
 
+  //base64
+  const handleFileSelection = (e) => {
+    const selectedFile = e.target.files[0]
+
+    if (selectedFile) {
+      const reader = new FileReader()
+
+      reader.onload = function (e) {
+        const base64Result = e.target.result
+        setImageView(base64Result)
+      }
+
+      reader.readAsDataURL(selectedFile)
+    }
+  }
   // Properties fetch
 
   const loadInitialProperties = async () => {
@@ -65,7 +78,7 @@ export default function AddResidents() {
   async function onSubmit(data) {
     console.log(data)
     const image_val = data.avatar[0] ?? ''
-    const form_data = { ...data, avatar: image_val }
+    const form_data = { ...data, avatar: { data: imageView } }
     console.log(form_data)
 
     await post(`/v1/admin/residents`, { resident: form_data })
@@ -115,7 +128,7 @@ export default function AddResidents() {
                 }}
                 title=""
                 className="img-circle img-thumbnail isTooltip  "
-                src={image_url}
+                src={imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'}
                 data-original-title="Usuario"
               />
             </div>
@@ -128,6 +141,7 @@ export default function AddResidents() {
                       type="file"
                       accept=".jpg, .jpeg, .png"
                       {...register('avatar')}
+                      onChange={(e) => handleFileSelection(e)}
                     ></Form.Control>
                   </Form.Group>
                 </Col>

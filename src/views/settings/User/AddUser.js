@@ -30,11 +30,6 @@ export default function UserForm() {
   //     ? URL.createObjectURL(avatar_obj[0])
   //     : 'https://bootdey.com/img/Content/avatar/avatar7.png'
 
-  const image_obj = watch('avatar')
-  console.log(image_obj)
-  const image_url =
-    image_obj?.length > 0 ? image_obj[0] : 'https://bootdey.com/img/Content/avatar/avatar7.png'
-
   //roles
 
   const meta_data = localStorage.getItem('meta')
@@ -76,7 +71,6 @@ export default function UserForm() {
 
       reader.onload = function (e) {
         const base64Result = e.target.result
-        // setValue('avatar', { data: base64Result })
         setImageView(base64Result)
       }
 
@@ -143,7 +137,9 @@ export default function UserForm() {
                     }}
                     title="Avatar"
                     className="img-circle img-thumbnail isTooltip  "
-                    src={imageView}
+                    src={
+                      imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                    }
                     data-original-title="Usuario"
                   />
                 </div>
