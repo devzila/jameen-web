@@ -11,21 +11,21 @@ import {
   CModalTitle,
   CContainer,
 } from '@coreui/react'
-
-export default function ShowUser({ userId }) {
+export default function ShowRoles({ roleId }) {
   const [visible, setVisible] = useState(false)
-  const [user, setUser] = useState([])
+  const [role, setRole] = useState([])
   const { get, response } = useFetch()
 
   useEffect(() => {
     getUserData()
   }, [])
   async function getUserData() {
-    let api = await get(`/v1/admin/users/${userId}`)
-    setUser(api.data)
+    let api = await get(`/v1/admin/roles/${roleId}`)
+    console.log(api)
+    setRole(api.data)
 
     if (response.ok) {
-      setUser(api.data)
+      setRole(api.data)
     }
   }
 
@@ -55,34 +55,31 @@ export default function ShowUser({ userId }) {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">User Information</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel"> Information</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
-            <div className="container bootstrap snippets bootdey ">
+            <div className="container bootstrap snippets bootdey">
               <div className="panel-body inf-content">
                 <div className="row">
                   <div className="col-md-4">
-                    <img
-                      alt="Avatar Image"
-                      style={{
-                        width: '300px',
-                        height: '300px',
+                    <div className="col text-center">
+                      <img
+                        alt="Avatar Image"
+                        style={{
+                          width: '300px',
+                          height: '300px',
 
-                        marginTop: '25%',
-                        marginLeft: '4%',
-                        borderRadius: '50%',
-                      }}
-                      title="Avatar"
-                      className="img-circle img-thumbnail isTooltip  "
-                      src={
-                        user.avatar
-                          ? user.avatar
-                          : 'https://bootdey.com/img/Content/avatar/avatar7.png'
-                      }
-                      data-original-title="Usuario"
-                    />
-
+                          marginTop: '2%',
+                          marginLeft: '4%',
+                          borderRadius: '50%',
+                        }}
+                        title="Avatar"
+                        className="img-circle img-thumbnail isTooltip  "
+                        src={'https://bootdey.com/img/Content/avatar/avatar7.png'}
+                        data-original-title="Usuario"
+                      />
+                    </div>
                     <ul title="Ratings" className="list-inline ratings text-center">
                       <li>
                         <span className="glyphicon glyphicon-star"></span>
@@ -98,72 +95,45 @@ export default function ShowUser({ userId }) {
                             <td>
                               <strong>
                                 <span className="glyphicon glyphicon-asterisk text-primary"></span>
-                                Full Name
+                                Name
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user?.name}</td>
+                            <td className="text-primary text-black-50">{role?.name}</td>
                           </tr>
                           <tr>
                             <td>
                               <strong>
                                 <span className="glyphicon glyphicon-user  text-primary"></span>
-                                Username
+                                Description
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.username}</td>
+                            <td className="text-primary text-black-50">
+                              {role.description || '-'}
+                            </td>
                           </tr>
                           <tr>
                             <td>
                               <strong>
                                 <span className="glyphicon glyphicon-bookmark text-primary"></span>
-                                Active Status
+                                Privileges
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">
-                              {user.active ? 'True' : 'False'}
-                            </td>
+                            <td className="text-primary text-black-50">{role.privileges || '-'}</td>
                           </tr>
 
                           <tr>
                             <td>
                               <strong>
                                 <span className="glyphicon glyphicon-user  text-primary"></span>
-                                Email
-                              </strong>
-                            </td>
-                            <td className="text-primary text-black-50">{user.email}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <strong>
-                                <span className="glyphicon glyphicon-cloud text-primary"></span>
-                                Role
-                              </strong>
-                            </td>
-                            <td className="text-primary text-black-50">{user.role?.name}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <strong>
-                                <span className="glyphicon glyphicon-eye-open text-primary"></span>
-                                Mobile Number
-                              </strong>
-                            </td>
-                            <td className="text-primary text-black-50">{user.mobile_number}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <strong>
-                                <span className="glyphicon glyphicon-bookmark text-primary"></span>
-                                Assigned Properties
+                                User Type
                               </strong>
                             </td>
                             <td className="text-primary text-black-50">
-                              {user.properties?.map((val) => (
-                                <p key={val.id}>{val.name}</p>
-                              ))}
+                              {role.user_type?.charAt(0).toUpperCase() +
+                                role.user_type?.slice(1).replace(/_/g, ' ')}
                             </td>
                           </tr>
+
                           <tr>
                             <td>
                               <strong>
@@ -171,7 +141,9 @@ export default function ShowUser({ userId }) {
                                 Created At
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.created_at}</td>
+                            <td className="text-primary text-black-50">
+                              {role.created_at?.replace('T', ' ').replace('Z', ' ').slice(0, 19)}
+                            </td>
                           </tr>
                           <tr>
                             <td>
@@ -180,7 +152,9 @@ export default function ShowUser({ userId }) {
                                 Modified
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.updated_at}</td>
+                            <td className="text-primary text-black-50">
+                              {role.updated_at?.replace('T', ' ').replace('Z', ' ').slice(0, 19)}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
@@ -205,6 +179,6 @@ export default function ShowUser({ userId }) {
   )
 }
 
-ShowUser.propTypes = {
-  userId: PropTypes.number,
+ShowRoles.propTypes = {
+  roleId: PropTypes.number,
 }

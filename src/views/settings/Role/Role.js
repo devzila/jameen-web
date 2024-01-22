@@ -9,6 +9,9 @@ import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
+import AddRoles from './AddRoles'
+import ShowRoles from './ShowRoles'
+import EditRoles from './EditRoles'
 
 export default function Role() {
   const [pagination, setPagination] = useState(null)
@@ -71,7 +74,7 @@ export default function Role() {
                   Search
                 </button>
               </div>
-              {/* <AddUser /> */}
+              <AddRoles />
             </div>
           </CContainer>
         </CNavbar>
@@ -124,8 +127,8 @@ export default function Role() {
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  {/* <EditUser userId={role.id} />
-                                  <ShowUser userId={role.id} /> */}
+                                  <EditRoles roleId={role.id} />
+                                  <ShowRoles roleId={role.id} />
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>
