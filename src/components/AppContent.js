@@ -17,7 +17,7 @@ const Report = React.lazy(() => import('../views/report/Report'))
 const Settings = React.lazy(() => import('../views/settings/Index'))
 const Page404 = React.lazy(() => import('../views/Page404'))
 const User = React.lazy(() => import('../views/settings/User/User'))
-const Role = React.lazy(() => import('../views/settings/Role'))
+const Role = React.lazy(() => import('../views/settings/Role/Role'))
 const MovingOut = React.lazy(() => import('../views/settings/MovingOut'))
 
 const Allotment = React.lazy(() => import('../views/settings/Allotment'))

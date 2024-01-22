@@ -5,7 +5,7 @@ import Nav from './Nav'
 
 export default function Index() {
   const User = React.lazy(() => import('./User/User'))
-  const Role = React.lazy(() => import('./Role'))
+  const Role = React.lazy(() => import('./Role/Role'))
   const Allotment = React.lazy(() => import('./Allotment'))
   const MovingOut = React.lazy(() => import('./MovingOut'))
 
