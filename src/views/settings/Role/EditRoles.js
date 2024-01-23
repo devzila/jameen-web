@@ -171,7 +171,7 @@ export default function EditRoles({ roleId }) {
               </CModalTitle>
 
               <Row>
-                <Col className="pr-3 mt-1" md="12">
+                <Col className="pr-3 mt-1" md="6">
                   <div className="card" style={{ margin: '20px ' }}>
                     <div className="card-header p-3">User</div>
                     <div className="card-body">
@@ -215,7 +215,7 @@ export default function EditRoles({ roleId }) {
                     </div>
                   </div>
                 </Col>
-                <Col>
+                <Col className="mt-1" md="6">
                   <div className="card" style={{ margin: '20px ' }}>
                     <div className="card-header p-3">Maintenance</div>
                     <div className="card-body">
@@ -241,6 +241,11 @@ export default function EditRoles({ roleId }) {
                             <span className="success"></span>
                           </label>
                         </li>
+                        <div className="m-4 list-group-item">
+                          <label>
+                            <span className=" default"></span>
+                          </label>
+                        </div>
                       </ul>
                     </div>
                   </div>
@@ -257,11 +262,6 @@ export default function EditRoles({ roleId }) {
                             <span className="default"></span>
                           </label>
                         </li>
-                        <div className="m-4 list-group-item">
-                          <label>
-                            <span className=" default"></span>
-                          </label>
-                        </div>
                       </ul>
                     </div>
                   </div>

@@ -1,11 +1,9 @@
-import { propTypes } from 'react-bootstrap/esm/Image'
-
 import React, { useState, useEffect } from 'react'
-import useFetch from 'use-http'
-import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import Select from 'react-select'
+import PropTypes from 'prop-types'
+import useFetch from 'use-http'
 
+import { Button } from 'react-bootstrap'
 import {
   CButton,
   CModal,
@@ -15,8 +13,6 @@ import {
   CModalTitle,
   CContainer,
 } from '@coreui/react'
-
-import { Button, Form, Row, Col } from 'react-bootstrap'
 
 export default function DeleteRoles({ roleId }) {
   const [visible, setVisible] = useState(false)
@@ -52,7 +48,7 @@ export default function DeleteRoles({ roleId }) {
 
       <CModal
         alignment="center"
-        size="m"
+        size="lg"
         visible={visible}
         backdrop="static"
         onClose={() => setVisible(false)}
@@ -98,5 +94,5 @@ export default function DeleteRoles({ roleId }) {
 }
 
 DeleteRoles.propTypes = {
-  roleId: propTypes.number,
+  roleId: PropTypes.number,
 }

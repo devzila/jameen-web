@@ -138,10 +138,10 @@ export default function ShowRoles({ roleId }) {
                   </div>
                 </div>
                 <Row>
-                  <strong>
-                    <span className="glyphicon glyphicon-bookmark text-primary"></span>
+                  <CModalTitle className="pr-1 mt-3" id="StaticBackdropExampleLabel">
                     Privileges
-                  </strong>
+                  </CModalTitle>
+
                   <Col className="pr-3 mt-1" md="6">
                     <div className="card" style={{ margin: '20px ' }}>
                       <div className="card-header p-3">User</div>
@@ -213,7 +213,7 @@ export default function ShowRoles({ roleId }) {
                   </Col>
                   <Col>
                     <div className="card" style={{ margin: '20px ' }}>
-                      <div className="card-header p-3">Setting</div>
+                      <div className="card-header p-3">Settings</div>
                       <div className="card-body">
                         <ul className="list-group list-group-flush">
                           <li className="list-group-item">
