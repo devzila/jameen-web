@@ -34,7 +34,7 @@ export default function AddRoles() {
   async function onSubmit(data) {
     const api = await post(`/v1/admin/roles`, { role: data })
     if (response.ok) {
-      toast('user added Successfully')
+      toast('New Role Added: Operation Successful')
       reset()
 
       setVisible(!visible)
@@ -71,21 +71,9 @@ export default function AddRoles() {
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
                 <div className="col text-center">
-                  <img
-                    alt="Avatar Image"
-                    style={{
-                      width: '300px',
-                      height: '300px',
-
-                      marginTop: '2%',
-                      marginLeft: '4%',
-                      borderRadius: '50%',
-                    }}
-                    title="Avatar"
-                    className="img-circle img-thumbnail isTooltip  "
-                    src={'https://bootdey.com/img/Content/avatar/avatar7.png'}
-                    data-original-title="Usuario"
-                  />
+                  <p className="text-center display-6" style={{ color: '#00bfcc' }}>
+                    JAMEEN
+                  </p>
                 </div>
               </Row>
 
@@ -96,7 +84,7 @@ export default function AddRoles() {
                     <Form.Control
                       placeholder="Name"
                       type="text"
-                      {...register('name')}
+                      {...register('name', { required: true })}
                     ></Form.Control>
                   </Form.Group>
                 </Col>

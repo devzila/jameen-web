@@ -12,6 +12,7 @@ import { Dropdown, Row, Col } from 'react-bootstrap'
 import AddRoles from './AddRoles'
 import ShowRoles from './ShowRoles'
 import EditRoles from './EditRoles'
+import DeleteRoles from './DeleteRoles'
 
 export default function Role() {
   const [pagination, setPagination] = useState(null)
@@ -35,6 +36,7 @@ export default function Role() {
 
     if (response.ok) {
       if (initialroles.data) {
+        console.log(response)
         setLoading(false)
         setRoles(initialroles.data)
         setPagination(initialroles.pagination)
@@ -111,8 +113,8 @@ export default function Role() {
                             </th>
                             <td className="pt-3">{role.description || '-'}</td>
                             <td className="pt-3">
-                              {role.user_type.charAt(0).toUpperCase() +
-                                role.user_type.slice(1).replace(/_/g, ' ')}
+                              {role.user_type?.charAt(0).toUpperCase() +
+                                role.user_type?.slice(1).replace(/_/g, ' ')}
                             </td>
                             <td className="pt-3">
                               {role.created_at.replace('T', ' ').replace('Z', ' ').slice(0, 19)}
@@ -129,6 +131,7 @@ export default function Role() {
                                 <Dropdown.Menu>
                                   <EditRoles roleId={role.id} />
                                   <ShowRoles roleId={role.id} />
+                                  <DeleteRoles roleId={role.id} />
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

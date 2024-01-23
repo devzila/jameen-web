@@ -127,7 +127,7 @@ export default function UserForm() {
                     style={{
                       width: '300px',
                       height: '300px',
-
+                      objectFit: 'cover',
                       marginTop: '2%',
                       marginLeft: '4%',
                       borderRadius: '50%',

@@ -32,14 +32,16 @@ export default function EditRoles({ roleId }) {
   const roles_data = parsed_meta_data.role_user_type
 
   const rolesarray = Object.entries(roles_data).map((element) => ({
-    label: element[0].charAt(0).toUpperCase() + element[0].slice(1).replace(/_/g, ' '),
+    label: element[0]?.charAt(0).toUpperCase() + element[0].slice(1).replace(/_/g, ' '),
     value: element[1],
   }))
 
   const roles_selected = (data) => {
-    const sliced_data = data.charAt(0).toUpperCase() + data.slice(1).replace('_', ' ')
-    const role = rolesarray.find((role) => role.label === sliced_data)
-    return role ? role.value : null
+    if (data) {
+      const sliced_data = data?.charAt(0).toUpperCase() + data?.slice(1).replace('_', ' ')
+      const role = rolesarray.find((role) => role.label === sliced_data)
+      return role ? role.value : null
+    }
   }
 
   async function loadInitialroles() {
@@ -52,7 +54,16 @@ export default function EditRoles({ roleId }) {
         setLoading(false)
         setValue('name', initialroles.data.name)
         setValue('description', initialroles.data.description)
-        setValue('user_type', roles_selected(initialroles.data.user_type))
+        setValue('user_type', roles_selected(initialroles.data?.user_type))
+        setValue('privileges.users.create', initialroles.data.privileges.users.create)
+        setValue('privileges.users.view', initialroles.data.privileges.users.view)
+        setValue('privileges.users.delete', initialroles.data.privileges.users.delete)
+        setValue('privileges.users.update', initialroles.data.privileges.users.update)
+        setValue('privileges.users.add_notes', initialroles.data.privileges.users.add_notes)
+        setValue('privileges.maintenance.view', initialroles.data.privileges.maintenance.view)
+        setValue('privileges.maintenance.create', initialroles.data.privileges.maintenance.create)
+        setValue('privileges.maintenance.delete', initialroles.data.privileges.maintenance.delete)
+        setValue('privileges.settings.manage', initialroles.data.privileges.settings.manage)
       }
     } else {
       setErrors(true)
@@ -67,7 +78,7 @@ export default function EditRoles({ roleId }) {
     console.log(data)
     const api = await put(`/v1/admin/roles/${roleId}`, { role: data })
     if (response.ok) {
-      toast('user added Successfully')
+      toast('Roles Edited Successfully')
       reset()
 
       setVisible(!visible)
@@ -168,35 +179,35 @@ export default function EditRoles({ roleId }) {
                         <li className="list-group-item ">
                           View
                           <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.user.view')} />
+                            <input type="checkbox" {...register('privileges.users.view')} />
                             <span className="default"></span>
                           </label>
                         </li>
                         <li className="list-group-item">
                           Create
                           <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.user.create')} />
+                            <input type="checkbox" {...register('privileges.users.create')} />
                             <span className="primary"></span>
                           </label>
                         </li>
                         <li className="list-group-item">
                           Delete
                           <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.user.delete')} />
+                            <input type="checkbox" {...register('privileges.users.delete')} />
                             <span className="success"></span>
                           </label>
                         </li>
                         <li className="list-group-item">
                           Update
                           <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.user.update')} />
+                            <input type="checkbox" {...register('privileges.users.update')} />
                             <span className="info"></span>
                           </label>
                         </li>
                         <li className="list-group-item">
                           Add Notes
                           <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.user.add_notes')} />
+                            <input type="checkbox" {...register('privileges.users.add_notes')} />
                             <span className="warning"></span>
                           </label>
                         </li>
@@ -212,21 +223,21 @@ export default function EditRoles({ roleId }) {
                         <li className="list-group-item">
                           View
                           <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.maintenence.view')} />
+                            <input type="checkbox" {...register('privileges.maintenance.view')} />
                             <span className="default"></span>
                           </label>
                         </li>
                         <li className="list-group-item">
                           Create
                           <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.maintenence.create')} />
+                            <input type="checkbox" {...register('privileges.maintenance.create')} />
                             <span className="primary"></span>
                           </label>
                         </li>
                         <li className="list-group-item">
                           Delete
                           <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.maintenence.delete')} />
+                            <input type="checkbox" {...register('privileges.maintenance.delete')} />
                             <span className="success"></span>
                           </label>
                         </li>
