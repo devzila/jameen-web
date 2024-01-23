@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
 import PropTypes from 'prop-types'
+import { formatdate } from 'src/services/dateFormatter'
 
 import {
   CButton,
@@ -68,15 +69,23 @@ export default function ShowResidents(props) {
                 <div className="row">
                   <div className="col-md-4">
                     <img
-                      alt=""
-                      style={{ width: '600px;', marginTop: '20%', marginLeft: '4%' }}
-                      title=""
+                      alt="Avatar Image"
+                      style={{
+                        width: '300px',
+                        height: '300px',
+
+                        marginTop: '15%',
+                        marginLeft: '4%',
+                        borderRadius: '50%',
+                      }}
+                      title="Avatar"
                       className="img-circle img-thumbnail isTooltip  "
                       src={
                         resident_data.avatar || 'https://bootdey.com/img/Content/avatar/avatar7.png'
                       }
                       data-original-title="Usuario"
                     />
+
                     <ul title="Ratings" className="list-inline ratings text-center">
                       <li>
                         <span className="glyphicon glyphicon-star"></span>
@@ -178,7 +187,7 @@ export default function ShowResidents(props) {
                               </strong>
                             </td>
                             <td className="text-primary text-black-50">
-                              {resident_data.created_at}
+                              {formatdate(resident_data.created_at)}
                             </td>
                           </tr>
                           <tr>
@@ -189,7 +198,7 @@ export default function ShowResidents(props) {
                               </strong>
                             </td>
                             <td className="text-primary text-black-50">
-                              {resident_data.updated_at}
+                              {formatdate(resident_data.updated_at)}
                             </td>
                           </tr>
                         </tbody>

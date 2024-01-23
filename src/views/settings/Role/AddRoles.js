@@ -19,7 +19,7 @@ export default function AddRoles() {
   const [visible, setVisible] = useState(false)
 
   const { register, handleSubmit, control, watch, reset, setValue } = useForm()
-  const { get, post, response } = useFetch()
+  const { post, response } = useFetch()
 
   const meta_data = localStorage.getItem('meta')
   const parsed_meta_data = JSON.parse(meta_data)
@@ -128,37 +128,6 @@ export default function AddRoles() {
                       placeholder="Description"
                       type="text"
                       {...register('description')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <CModalTitle className="pr-1 mt-3" id="StaticBackdropExampleLabel">
-                Privileges
-              </CModalTitle>
-
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <Form.Control
-                      placeholder="xxxxx"
-                      className="form-check-input"
-                      type="checkbox"
-                      role="checkbox"
-                      {...register('privileges')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-
-                <Col className="pr-1 mt-3" md="2">
-                  <Form.Group className="mt-4 form-check form-switch">
-                    <label>Active</label>
-
-                    <Form.Control
-                      className="form-check-input"
-                      type="checkbox"
-                      role="switch"
-                      defaultChecked={true}
-                      {...register('active')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>

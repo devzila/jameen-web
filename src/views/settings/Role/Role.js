@@ -24,13 +24,14 @@ export default function Role() {
   const [searchKeyword, setSearchKeyword] = useState(null)
   const { get, response } = useFetch()
 
+  //Ladiong Data
   async function loadInitialroles() {
     let endpoint = `/v1/admin/roles?page=${currentPage}`
+
     if (searchKeyword) {
       endpoint += `&q[username_eq]=${searchKeyword}`
     }
     let initialroles = await get(endpoint)
-    console.log(initialroles)
 
     if (response.ok) {
       if (initialroles.data) {
@@ -39,7 +40,8 @@ export default function Role() {
         setPagination(initialroles.pagination)
       }
     } else {
-      setErrors(true)
+      toast('We are facing a technical issue at our end.')
+
       setLoading(false)
     }
   }
@@ -96,7 +98,6 @@ export default function Role() {
                           <th className="pt-3 pb-3 border-0">Name</th>
                           <th className="pt-3 pb-3 border-0">Description</th>
                           <th className="pt-3 pb-3 border-0">User Type</th>
-                          <th className="pt-3 pb-3 border-0">Privilages</th>
                           <th className="pt-3 pb-3 border-0">Created At </th>
                           <th className="pt-3 pb-3 border-0">Last Modified</th>
                         </tr>
@@ -113,7 +114,6 @@ export default function Role() {
                               {role.user_type.charAt(0).toUpperCase() +
                                 role.user_type.slice(1).replace(/_/g, ' ')}
                             </td>
-                            <td className="pt-3">{role.privileges || '-'}</td>
                             <td className="pt-3">
                               {role.created_at.replace('T', ' ').replace('Z', ' ').slice(0, 19)}
                             </td>
@@ -137,7 +137,6 @@ export default function Role() {
                       </tbody>
                     </table>
                     {loading && <Loading />}
-                    {errors == true ? toast('We are facing a technical issue at our end.') : null}
                   </div>
                 </div>
               </div>

@@ -15,6 +15,8 @@ import {
   CContainer,
 } from '@coreui/react'
 import { Button, Form, Row, Col } from 'react-bootstrap'
+import CIcon from '@coreui/icons-react'
+import { cilX } from '@coreui/icons'
 
 //function
 
@@ -91,6 +93,10 @@ export default function EditUser({ userId }) {
     }
   }
 
+  const clearImage = () => {
+    setValue('avatar', null)
+    setImageView(null)
+  }
   //base64
   const handleFileSelection = (e) => {
     const selectedFile = e.target.files[0]
@@ -189,7 +195,7 @@ export default function EditUser({ userId }) {
                       ></Form.Control>
                     </Form.Group>
                   </Col>
-                  <Col className="pr-1 mt-3" md="6">
+                  <Col className="pr-1 mt-3" md="5">
                     <Form.Group>
                       <label>Avatar Image</label>
                       <Form.Control
@@ -200,6 +206,7 @@ export default function EditUser({ userId }) {
                       ></Form.Control>
                     </Form.Group>
                   </Col>
+                  <Col md="1"></Col>
                 </Row>
                 <Row>
                   <Col className="pr-1 mt-3" md="6">

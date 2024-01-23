@@ -21,7 +21,6 @@ export default function ShowRoles({ roleId }) {
   }, [])
   async function getUserData() {
     let api = await get(`/v1/admin/roles/${roleId}`)
-    console.log(api)
     setRole(api.data)
 
     if (response.ok) {
@@ -118,7 +117,7 @@ export default function ShowRoles({ roleId }) {
                                 Privileges
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{role.privileges || '-'}</td>
+                            {/* <td className="text-primary text-black-50">{role.privileges || '-'}</td> */}
                           </tr>
 
                           <tr>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import PropTypes from 'prop-types'
+import { formatdate } from 'src/services/dateFormatter'
 
 import {
   CButton,
@@ -171,7 +172,9 @@ export default function ShowUser({ userId }) {
                                 Created At
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.created_at}</td>
+                            <td className="text-primary text-black-50">
+                              {formatdate(user.created_at)}
+                            </td>
                           </tr>
                           <tr>
                             <td>
@@ -180,7 +183,9 @@ export default function ShowUser({ userId }) {
                                 Modified
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{user.updated_at}</td>
+                            <td className="text-primary text-black-50">
+                              {formatdate(user.updated_at)}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
