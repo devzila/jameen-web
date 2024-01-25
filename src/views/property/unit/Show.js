@@ -49,7 +49,7 @@ export default function Showunit(propsd) {
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Show unit
+        Show
       </button>
       <CModal
         alignment="center"
@@ -59,7 +59,7 @@ export default function Showunit(propsd) {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">unit Data</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Unit Data</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
