@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import useFetch from 'use-http'
-import Select from 'react-select'
-import { toast } from 'react-toastify'
 import { useForm, Controller } from 'react-hook-form'
-import { Button, Form, Row, Col } from 'react-bootstrap'
+import { toast } from 'react-toastify'
+import Select from 'react-select'
+import { useParams } from 'react-router-dom'
 
 import {
   CButton,
@@ -15,30 +16,58 @@ import {
   CContainer,
 } from '@coreui/react'
 
-export default function AddRoles() {
+import { Button, Form, Row, Col } from 'react-bootstrap'
+import { BsTerminal } from 'react-icons/bs'
+
+export default function AllocateUnit({ unitId, unitNo }) {
+  const { register, handleSubmit, control, reset } = useForm()
+  const { post, get, response } = useFetch()
+
+  const [residents, setResidents] = useState([])
   const [visible, setVisible] = useState(false)
 
-  const { register, handleSubmit, control, reset } = useForm()
-  const { post, response } = useFetch()
+  const { propertyId } = useParams()
 
-  //localstorage
-  const meta_data = localStorage.getItem('meta')
-  const parsed_meta_data = JSON.parse(meta_data)
+  async function loadInitialResidents() {
+    let endpoint = `/v1/admin/residents?limit=-1`
 
-  const roles_data = parsed_meta_data.role_user_type
+    const initialResidents = await get(endpoint)
 
-  const rolesarray = Object.entries(roles_data).map((element) => ({
-    label: element[0].charAt(0).toUpperCase() + element[0].slice(1).replace(/_/g, ' '),
-    value: element[1],
-  }))
-
-  //post method
-  async function onSubmit(data) {
-    await post(`/v1/admin/roles`, { role: data })
     if (response.ok) {
-      toast('New Role Added: Operation Successful')
-      reset()
+      if (initialResidents.data) {
+        setResidents(trimResidents(initialResidents.data))
+      }
+    } else {
+      toast('Unable to load residents')
+    }
+  }
+  useEffect(() => {
+    loadInitialResidents()
+  }, [])
 
+  let resident_array = []
+  function trimResidents(obj) {
+    obj.forEach((element) => {
+      resident_array.push({
+        value: element.id,
+        label: element.first_name + ' ' + element.last_name,
+      })
+    })
+    return resident_array
+  }
+
+  async function onSubmit(data) {
+    const assigned_resident_data =
+      data?.resident_ids?.length > 0 ? data.resident_ids.map((element) => element.value) : []
+
+    const body = { ...data, resident_ids: assigned_resident_data }
+
+    await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/allotment`, {
+      allotment: body,
+    })
+    if (response.ok) {
+      toast('Unit Alloted : Operation Successful')
+      reset()
       setVisible(!visible)
     } else {
       toast(response.data?.message)
@@ -48,14 +77,19 @@ export default function AddRoles() {
   return (
     <div>
       <button
-        style={{ backgroundColor: '#00bfcc', color: 'white', marginLeft: '4px' }}
-        color="#00bfcc"
+        style={{
+          color: '#00bfcc',
+          backgroundColor: 'white',
+          marginLeft: '4px',
+          width: '90%',
+          border: 'none',
+        }}
         type="button"
-        className="btn flex s-3"
+        className="btn btn-tertiary "
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Add Role
+        Allocate
       </button>
       <CModal
         alignment="center"
@@ -66,7 +100,7 @@ export default function AddRoles() {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add Role </CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Unit Allocation </CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
@@ -82,29 +116,37 @@ export default function AddRoles() {
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>Name</label>
+                    <label>
+                      <b>Unit No: </b>
+                      {unitNo}
+                    </label>
                     <Form.Control
+                      hidden
                       placeholder="Name"
+                      defaultValue={unitNo}
                       type="text"
-                      {...register('name', { required: true })}
+                      {...register('unit', { required: true })}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>User Type</label>
+                    <label>Assigned Properties</label>
+
                     <Controller
-                      name="user_type"
+                      name="resident_ids"
                       render={({ field }) => (
                         <Select
+                          isMulti
+                          type="text"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
                           {...field}
-                          options={rolesarray}
-                          value={rolesarray.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
+                          options={residents}
                         />
                       )}
                       control={control}
-                      placeholder="Role"
+                      placeholder="Assigned Properties"
                     />
                   </Form.Group>
                 </Col>
@@ -112,12 +154,12 @@ export default function AddRoles() {
               <Row>
                 <Col className="pr-3 mt-3" md="12">
                   <Form.Group>
-                    <label>Description</label>
+                    <label>Allocation Date</label>
                     <Form.Control
                       required
                       placeholder="Description"
-                      type="text"
-                      {...register('description')}
+                      type="date"
+                      {...register('allotment_date')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -154,4 +196,8 @@ export default function AddRoles() {
       </CModal>
     </div>
   )
+}
+AllocateUnit.propTypes = {
+  unitId: PropTypes.number,
+  unitNo: PropTypes.number,
 }

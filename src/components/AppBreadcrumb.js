@@ -7,6 +7,8 @@ const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
   const auth = useContext(AuthContext)
 
+  console.log(currentLocation)
+
   const getBreadcrumbs = (location) => {
     const breadcrumbs = []
     location.split('/').reduce((prev, curr, index, array) => {

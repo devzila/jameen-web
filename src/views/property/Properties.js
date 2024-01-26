@@ -1,19 +1,16 @@
-// Property.js
 import React, { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
 import useFetch from 'use-http'
-import { BsThreeDots } from 'react-icons/bs'
-import { Container, Row, Button, Col, Card, Table } from 'react-bootstrap'
-import Paginate from 'src/components/Pagination'
-import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import Loading from 'src/components/loading/loading'
+import AddProperty from './AddProperty'
 import { Dropdown } from 'react-bootstrap'
+import { NavLink, Link } from 'react-router-dom'
+import { Row, Col } from 'react-bootstrap'
+import { BsThreeDots } from 'react-icons/bs'
+import Paginate from 'src/components/Pagination'
+import Loading from 'src/components/loading/loading'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import Search from 'src/components/Search'
 import { Link } from 'react-router-dom'
 import AddProperty from './AddProperty'
-import EditProperty from './EditProperty'
-import ShowProperty from './ShowProperty'
 
 function Property() {
   const { get, response, error } = useFetch()
@@ -31,6 +28,7 @@ function Property() {
     let endpoint = `/v1/admin/premises/properties?page=${currentPage}&search=${searchTerm}`
 
     const initialProperties = await get(endpoint)
+    console.log(initialProperties)
     if (response.ok) {
       setLoading(false)
       setProperties(initialProperties.data)
@@ -116,7 +114,7 @@ function Property() {
                                   {property.unit_count}
                                 </NavLink>
                               </td>
-                              <td>{property.payment_term}</td>
+                              <td>{property.payment_term?.replace('_', ' ')}</td>
                               <td>
                                 <Dropdown key={property.id}>
                                   <Dropdown.Toggle

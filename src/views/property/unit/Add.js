@@ -3,10 +3,8 @@ import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { Button, Card, Form, Container, Row, Col } from 'react-bootstrap'
+import { Button, Form, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
 import {
   CButton,
   CModal,
@@ -18,17 +16,11 @@ import {
 } from '@coreui/react'
 
 function Add() {
-  const {
-    register,
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors },
-  } = useForm()
+  const { register, handleSubmit, control } = useForm()
+  const { get, post, response, api } = useFetch()
 
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
-  const { get, post, response, api } = useFetch()
   const [unitData, setUnitData] = useState({})
   const navigate = useNavigate()
   const [units_data, setUnits_data] = useState([])
@@ -73,8 +65,9 @@ function Add() {
     const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/units`, {
       unit: data,
     })
-    if (apiResponse.ok) {
-      navigate(`/units/${propertyId}/units`)
+    if (response.ok) {
+      navigate(`/properties/${propertyId}/units`)
+      setVisible(!visible)
       toast('Unit added successfully')
     } else {
       toast(response.data?.message)
@@ -102,7 +95,7 @@ function Add() {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add Unit Details</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Add Details</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { useForm, Controller } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import Select from 'react-select'
+import { toast } from 'react-toastify'
+import { useForm, Controller } from 'react-hook-form'
+import { Button, Form, Row, Col } from 'react-bootstrap'
 
 import {
   CButton,
@@ -14,23 +15,15 @@ import {
   CContainer,
 } from '@coreui/react'
 
-import { Button, Form, Row, Col } from 'react-bootstrap'
-
 export default function UserForm() {
   const [visible, setVisible] = useState(false)
   const [imageView, setImageView] = useState('')
   const [properties_data, setProperties_data] = useState([])
 
-  const { register, handleSubmit, control, watch, reset, setValue } = useForm()
+  const { register, handleSubmit, control, reset } = useForm()
   const { get, post, response } = useFetch()
 
-  // const avatar_obj = watch('avatar')
-  // const image_url =
-  //   avatar_obj?.length > 0
-  //     ? URL.createObjectURL(avatar_obj[0])
-  //     : 'https://bootdey.com/img/Content/avatar/avatar7.png'
-
-  //roles
+  //localstorage
 
   const meta_data = localStorage.getItem('meta')
   const parsed_meta_data = JSON.parse(meta_data)
@@ -50,7 +43,7 @@ export default function UserForm() {
     })
     return properties_array
   }
-
+  //fetch properties
   async function fetchProperties() {
     const api = await get('/v1/admin/premises/properties')
     if (response.ok) {
@@ -78,12 +71,13 @@ export default function UserForm() {
     }
   }
 
+  //post method
   async function onSubmit(data) {
     const assigned_properties_data =
       data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
 
     const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
-    const api = await post(`/v1/admin/users`, { user: body })
+    await post(`/v1/admin/users`, { user: body })
     if (response.ok) {
       toast('user added Successfully')
       reset()

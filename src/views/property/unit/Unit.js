@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { BsThreeDots } from 'react-icons/bs'
-import { Row, Button, Col, Card, Table, Modal } from 'react-bootstrap'
-import Paginate from '../../../components/Pagination'
-import { Dropdown } from 'react-bootstrap'
-import CustomDivToggle from '../../../components/CustomDivToggle'
 import '../../../scss/_custom.scss'
-import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { BsThreeDots } from 'react-icons/bs'
+import { useParams } from 'react-router-dom'
 import Loading from 'src/components/loading/loading'
+import { Row, Col, Dropdown } from 'react-bootstrap'
+import Paginate from '../../../components/Pagination'
+import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import CustomDivToggle from '../../../components/CustomDivToggle'
 import Add from './Add'
 import Edit from './Edit'
 import Show from './Show'
 import Delete from './Delete'
 import PickOwner from './PickOwner'
+import AllocateUnit from './AllocateUnit'
 
 function Unit() {
   const { get, response, error } = useFetch()
@@ -42,6 +42,7 @@ function Unit() {
 
     const initialUnits = await get(endpoint)
 
+    console.log(initialUnits)
     if (response.ok) {
       setLoading(false)
       setUnits(initialUnits.data)
@@ -64,25 +65,24 @@ function Unit() {
           <CNavbar expand="lg" colorScheme="light" className="bg-light">
             <CContainer fluid>
               <CNavbarBrand href="#">Unit</CNavbarBrand>
-
               <div className="d-flex justify-content-end">
-                <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
-                  <CFormInput
+                <div className="d-flex" role="search">
+                  <input
                     onChange={(e) => setSearchKeyword(e.target.value)}
+                    className="form-control me-2"
                     type="search"
-                    className="me-0"
                     placeholder="Search"
+                    aria-label="Search"
                   />
-                  <CButton
+                  <button
                     onClick={loadInitialUnits}
-                    variant="outline"
-                    className="btn btn-outline-success my-2 my-sm-0 "
+                    className="btn btn-outline-success"
+                    type="submit"
                   >
                     Search
-                  </CButton>
-                  <br></br>
-                  <Add />
-                </CForm>
+                  </button>
+                </div>
+                <Add />
               </div>
             </CContainer>
           </CNavbar>
@@ -135,6 +135,9 @@ function Unit() {
                                     <Edit unitid={{ id: `${unit.id}` }} />
                                     <Show unitid={{ id: `${unit.id}` }} />
                                     <Delete unitid={{ id: `${unit.id}` }} />
+                                    {unit.status === 'unallotted' ? (
+                                      <AllocateUnit unitId={unit.id} unitNo={unit.unit_no} />
+                                    ) : null}
                                   </Dropdown.Menu>
                                 </Dropdown>
                               </td>
