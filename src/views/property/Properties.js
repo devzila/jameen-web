@@ -8,9 +8,9 @@ import { BsThreeDots } from 'react-icons/bs'
 import Paginate from 'src/components/Pagination'
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from '../../components/CustomDivToggle'
-import Search from 'src/components/Search'
-import { Link } from 'react-router-dom'
-import AddProperty from './AddProperty'
+import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@coreui/react'
+import ShowProperty from './ShowProperty'
+import EditProperty from './EditProperty'
 
 function Property() {
   const { get, response, error } = useFetch()
