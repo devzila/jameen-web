@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { Button, Card, Form, Container, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+
 import {
   CButton,
   CModal,
@@ -17,66 +14,87 @@ import {
   CContainer,
 } from '@coreui/react'
 
-function AddProperty() {
-  const {
-    register,
-    handleSubmit,
-    control,
-    setValue,
-    formState: { errors },
-  } = useForm()
+import { Button, Form, Row, Col } from 'react-bootstrap'
 
-  const { propertyId } = useParams()
+export default function PropertyForm() {
   const [visible, setVisible] = useState(false)
-  const { get, post, response, api } = useFetch()
-  const [propertyData, setpropertyData] = useState({})
-  const navigate = useNavigate()
-  const [properties_data, setProperties_data] = useState([])
+  const [imageView, setImageView] = useState('')
+  const [useTypeOptions, setUseTypeOptions] = useState([])
+  const [paymentTermOptions, setPaymentTermOptions] = useState([])
 
-  useEffect(() => {
-    const inputs = document.querySelectorAll('.form-group input')
-    inputs.forEach((input) => {
-      input.addEventListener('focus', () => {
-        input.classList.add('active')
-      })
-      input.addEventListener('blur', () => {
-        if (!input.value) {
-          input.classList.remove('active')
-        }
-      })
-    })
-  }, [])
+  const { register, handleSubmit, control, reset } = useForm()
+  const { get, post, response } = useFetch()
 
+  let properties_array = []
   function trimProperties(properties) {
-    if (properties && properties.data) {
-      return properties.data.map((e) => ({
-        value: e.id,
-        label: e.name,
-      }))
-    } else {
-      return []
-    }
+    properties.forEach((element) => {
+      properties_array.push({ value: element.id, label: element.name })
+    })
+    return properties_array
   }
 
   async function fetchProperties() {
-    const api = await get(`/v1/admin/premises/properties`)
-    if (response.ok) {
-      setProperties_data(trimProperties(api))
+    try {
+      const api = await get('/v1/admin/options')
+      console.log('API Response:', api)
+
+      if (response.ok) {
+        const propertyUseTypesOptions = Object.entries(api.data.property_use_types).map(
+          ([key, value]) => ({
+            value: value,
+            label: key.charAt(0).toUpperCase() + key.slice(1),
+          }),
+        )
+
+        const propertyPaymentTermsOptions = Object.entries(api.data.property_payment_terms).map(
+          ([key, value]) => ({
+            value: value,
+            label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
+          }),
+        )
+
+        setUseTypeOptions(propertyUseTypesOptions)
+        setPaymentTermOptions(propertyPaymentTermsOptions)
+      }
+    } catch (error) {
+      console.error('Error fetching properties:', error)
     }
   }
+
   useEffect(() => {
     fetchProperties()
   }, [])
 
+  const handleFileSelection = (e) => {
+    const selectedFile = e.target.files[0]
+
+    if (selectedFile) {
+      const reader = new FileReader()
+
+      reader.onload = function (e) {
+        const base64Result = e.target.result
+        setImageView(base64Result)
+      }
+
+      reader.readAsDataURL(selectedFile)
+    }
+  }
+
   async function onSubmit(data) {
-    const apiResponse = await post(`/v1/admin/premises/properties`, {
-      unit: data,
-    })
+    const assigned_properties_data =
+      data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
+
+    const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
+
+    const apiResponse = await post(`/v1/admin/premises/properties`, { unit: body })
+
     if (apiResponse.ok) {
-      navigate(`properties`)
       toast('Unit added successfully')
+      reset()
+      setImageView('')
+      setVisible(!visible)
     } else {
-      toast(response.data?.message)
+      toast(apiResponse.data?.message)
     }
   }
 
@@ -86,7 +104,7 @@ function AddProperty() {
         style={{ backgroundColor: '#00bfcc', color: 'white', marginLeft: '4px' }}
         color="#00bfcc"
         type="button"
-        className="btn  s-3"
+        className="btn s-3"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
@@ -107,25 +125,37 @@ function AddProperty() {
           <CContainer>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
+                <div className="col text-center">
+                  <img
+                    alt="Avatar Image"
+                    style={{
+                      width: '300px',
+                      height: '300px',
+                      objectFit: 'cover',
+                      marginTop: '2%',
+                      marginLeft: '4%',
+                      borderRadius: '50%',
+                    }}
+                    title="Avatar"
+                    className="img-circle img-thumbnail isTooltip  "
+                    src={
+                      imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                    }
+                    data-original-title="Usuario"
+                  />
+                </div>
+              </Row>
+              <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Name</label>
-                    <Form.Control
-                      defaultValue={propertyData.name}
-                      type="integer"
-                      {...register('unit_no')}
-                    ></Form.Control>
+                    <Form.Control type="text" {...register('name')}></Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>City</label>
-
-                    <Form.Control
-                      defaultValue={propertyData.city}
-                      type="integer"
-                      {...register('bedrooms_number')}
-                    ></Form.Control>
+                    <Form.Control type="text" {...register('city')}></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
@@ -133,50 +163,64 @@ function AddProperty() {
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Use Type</label>
-                    <Form.Control
-                      defaultValue={propertyData.use_type}
-                      type="integer"
-                      {...register('bathrooms_number')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Unit Count</label>
-
-                    <Form.Control
-                      defaultValue={propertyData.unit_count}
-                      type="integer"
-                      {...register('year_built')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Payment Term</label>
-
                     <Controller
-                      name="unit_type_id"
+                      name="useType"
                       render={({ field }) => (
                         <Select
-                          type="text"
+                          isMulti
                           className="basic-multi-select"
                           classNamePrefix="select"
                           {...field}
-                          value={properties_data.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
-                          options={properties_data}
+                          options={useTypeOptions}
                         />
                       )}
                       control={control}
                     />
                   </Form.Group>
                 </Col>
-              </Row>
 
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Unit Count</label>
+                    <Form.Control type="text" {...register('unitCount')}></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Payment Term</label>
+                    <Controller
+                      name="paymentTerm"
+                      render={({ field }) => (
+                        <Select
+                          isMulti
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          {...field}
+                          options={paymentTermOptions}
+                        />
+                      )}
+                      control={control}
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Add more property fields as needed */}
+              </Row>
+              <Row>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Avatar Image</label>
+                    <Form.Control
+                      type="file"
+                      accept=".jpg, .jpeg, .png"
+                      {...register('avatar')}
+                      onChange={(e) => handleFileSelection(e)}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
               <div className="text-center">
                 <CModalFooter>
                   <Button
@@ -209,5 +253,3 @@ function AddProperty() {
     </div>
   )
 }
-
-export default AddProperty

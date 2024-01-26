@@ -12,6 +12,8 @@ import CustomDivToggle from '../../components/CustomDivToggle'
 import Search from 'src/components/Search'
 import { Link } from 'react-router-dom'
 import AddProperty from './AddProperty'
+import EditProperty from './EditProperty'
+import ShowProperty from './ShowProperty'
 
 function Property() {
   const { get, response, error } = useFetch()
@@ -122,13 +124,8 @@ function Property() {
                                     style={{ cursor: 'pointer' }}
                                   >
                                     <Dropdown.Menu>
-                                      <Dropdown.Item
-                                        key={`edit-${property.id}`}
-                                        as={Link}
-                                        to={`/properties/${property.id}/units/edit`}
-                                      >
-                                        Edit
-                                      </Dropdown.Item>
+                                      <EditProperty propertyId={property.id} />
+                                      <ShowProperty propertyId={property.id} />
                                     </Dropdown.Menu>
                                     <BsThreeDots />
                                   </Dropdown.Toggle>
