@@ -3,6 +3,7 @@ import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
+import defaultAvatar from '../../assets/images/avatars/default.png'
 
 import {
   CButton,
@@ -31,8 +32,6 @@ export default function AddResidents() {
   //image
 
   const avatar_obj = watch('avatar')
-
-  const image_url = imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'
 
   useEffect(() => {
     loadInitialProperties()
