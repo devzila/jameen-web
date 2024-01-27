@@ -131,7 +131,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
                 </Col>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>Assigned Properties</label>
+                    <label> Resident</label>
 
                     <Controller
                       name="resident_ids"
