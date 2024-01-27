@@ -8,7 +8,9 @@ import { BsThreeDots } from 'react-icons/bs'
 import Paginate from 'src/components/Pagination'
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from '../../components/CustomDivToggle'
-import { CForm, CButton, CFormInput, CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@coreui/react'
+import ShowProperty from './ShowProperty'
+import EditProperty from './EditProperty'
 
 function Property() {
   const { get, response, error } = useFetch()
@@ -120,13 +122,8 @@ function Property() {
                                     style={{ cursor: 'pointer' }}
                                   >
                                     <Dropdown.Menu>
-                                      <Dropdown.Item
-                                        key={`edit-${property.id}`}
-                                        as={Link}
-                                        to={`/properties/${property.id}/units/edit`}
-                                      >
-                                        Edit
-                                      </Dropdown.Item>
+                                      <EditProperty propertyId={property.id} />
+                                      <ShowProperty propertyId={property.id} />
                                     </Dropdown.Menu>
                                     <BsThreeDots />
                                   </Dropdown.Toggle>
