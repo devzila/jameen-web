@@ -25,39 +25,25 @@ export default function PropertyForm() {
   const { register, handleSubmit, control, reset } = useForm()
   const { get, post, response } = useFetch()
 
-  let properties_array = []
-  function trimProperties(properties) {
-    properties.forEach((element) => {
-      properties_array.push({ value: element.id, label: element.name })
-    })
-    return properties_array
-  }
-
   async function fetchProperties() {
-    try {
-      const api = await get('/v1/admin/options')
-      console.log('API Response:', api)
+    const api = await get('/v1/admin/options')
 
-      if (response.ok) {
-        const propertyUseTypesOptions = Object.entries(api.data.property_use_types).map(
-          ([key, value]) => ({
-            value: value,
-            label: key.charAt(0).toUpperCase() + key.slice(1),
-          }),
-        )
+    if (response.ok) {
+      console.log(api)
 
-        const propertyPaymentTermsOptions = Object.entries(api.data.property_payment_terms).map(
-          ([key, value]) => ({
-            value: value,
-            label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
-          }),
-        )
+      const propertyUseTypesOptions = Object.entries(api.property_use_types).map((element) => ({
+        value: element[1],
+        label: element[0],
+      }))
 
-        setUseTypeOptions(propertyUseTypesOptions)
-        setPaymentTermOptions(propertyPaymentTermsOptions)
-      }
-    } catch (error) {
-      console.error('Error fetching properties:', error)
+      const propertyPaymentTermsOptions = Object.entries(api.property_payment_terms).map(
+        ([key, value]) => ({
+          value: value,
+          label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
+        }),
+      )
+      setPaymentTermOptions(propertyPaymentTermsOptions)
+      setUseTypeOptions(propertyUseTypesOptions)
     }
   }
 
@@ -81,18 +67,15 @@ export default function PropertyForm() {
   }
 
   async function onSubmit(data) {
-    const assigned_properties_data =
-      data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
+    const body = { ...data, photo: { data: imageView } }
 
-    const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
+    const apiResponse = await post(`/v1/admin/premises/properties`, { property: body })
 
-    const apiResponse = await post(`/v1/admin/premises/properties`, { unit: body })
-
-    if (apiResponse.ok) {
-      toast('Unit added successfully')
+    if (response.ok) {
+      toast('Property added successfully')
+      setVisible(!visible)
       reset()
       setImageView('')
-      setVisible(!visible)
     } else {
       toast(apiResponse.data?.message)
     }
@@ -146,70 +129,7 @@ export default function PropertyForm() {
                 </div>
               </Row>
               <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Name</label>
-                    <Form.Control type="text" {...register('name')}></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>City</label>
-                    <Form.Control type="text" {...register('city')}></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Use Type</label>
-                    <Controller
-                      name="useType"
-                      render={({ field }) => (
-                        <Select
-                          isMulti
-                          className="basic-multi-select"
-                          classNamePrefix="select"
-                          {...field}
-                          options={useTypeOptions}
-                        />
-                      )}
-                      control={control}
-                    />
-                  </Form.Group>
-                </Col>
-
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Unit Count</label>
-                    <Form.Control type="text" {...register('unitCount')}></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Payment Term</label>
-                    <Controller
-                      name="paymentTerm"
-                      render={({ field }) => (
-                        <Select
-                          isMulti
-                          className="basic-multi-select"
-                          classNamePrefix="select"
-                          {...field}
-                          options={paymentTermOptions}
-                        />
-                      )}
-                      control={control}
-                    />
-                  </Form.Group>
-                </Col>
-
-                {/* Add more property fields as needed */}
-              </Row>
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
+                <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Avatar Image</label>
                     <Form.Control
@@ -221,6 +141,64 @@ export default function PropertyForm() {
                   </Form.Group>
                 </Col>
               </Row>
+              <Row>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Name</label>
+                    <Form.Control
+                      required
+                      placeholder="Full Name"
+                      type="text"
+                      {...register('name', { required: ' Name is required.' })}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>City</label>
+                    <Form.Control type="text" {...register('city')}></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="pr-1 mt-3" md="12">
+                  <Form.Group>
+                    <label>Use Type</label>
+                    <Controller
+                      name="use_type"
+                      render={({ field }) => (
+                        <Select
+                          {...field}
+                          options={useTypeOptions}
+                          value={useTypeOptions.find((c) => c.value === field.value)}
+                          onChange={(val) => field.onChange(val.value)}
+                        />
+                      )}
+                      control={control}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="pr-1 mt-3" md="12">
+                  <Form.Group>
+                    <label>Payment Term</label>
+                    <Controller
+                      name="payment_term"
+                      render={({ field }) => (
+                        <Select
+                          {...field}
+                          options={paymentTermOptions}
+                          value={paymentTermOptions.find((c) => c.value === field.value)}
+                          onChange={(val) => field.onChange(val.value)}
+                        />
+                      )}
+                      control={control}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+
               <div className="text-center">
                 <CModalFooter>
                   <Button
