@@ -28,7 +28,7 @@ const Residents = () => {
   }, [currentPage])
 
   async function loadInitialResidents() {
-    let endpoint = `/v1/admin/residents?page=${currentPage}`
+    let endpoint = `/v1/admin/members?page=${currentPage}`
     if (searchKeyword) {
       endpoint += `&q[username_eq]=${searchKeyword}`
     }
@@ -111,7 +111,13 @@ const Residents = () => {
                             {residents.gender.charAt(0).toUpperCase() + residents.gender.slice(1)}
                           </td>
                           <td className="pt-3">{residents.email}</td>
-                          <td className="pt-3">{residents.phone_number}</td>
+                          <td className="pt-3">
+                            {residents.phone_number
+                              .replace('(', ' ')
+                              .replace(')', ' ')
+                              .replace('.', ' ')
+                              .replace(/-/g, ' ')}
+                          </td>
 
                           <td>
                             <Dropdown key={residents.id}>

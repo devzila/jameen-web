@@ -17,7 +17,7 @@ import {
 
 export default function UserForm() {
   const [visible, setVisible] = useState(false)
-  const [imageView, setImageView] = useState('')
+  const [imageView, setImageView] = useState('https://bootdey.com/img/Content/avatar/avatar7.png')
   const [properties_data, setProperties_data] = useState([])
 
   const { register, handleSubmit, control, reset } = useForm()
@@ -128,9 +128,7 @@ export default function UserForm() {
                     }}
                     title="Avatar"
                     className="img-circle img-thumbnail isTooltip  "
-                    src={
-                      imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'
-                    }
+                    src={imageView}
                     data-original-title="Usuario"
                   />
                 </div>

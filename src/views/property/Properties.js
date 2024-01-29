@@ -104,17 +104,27 @@ function Property() {
                         <tbody>
                           {properties.map((property) => (
                             <tr key={property.id}>
-                              <td>
-                                <NavLink to={`/properties/${property.id}`}>{property.name}</NavLink>
+                              <td style={{ textTransform: 'capitalize' }}>
+                                <NavLink
+                                  style={{ color: '#00bfcc', textDecorationLine: 'none' }}
+                                  to={`/properties/${property.id}`}
+                                >
+                                  {property.name}
+                                </NavLink>
                               </td>
                               <td>{property.city}</td>
-                              <td>{property.use_type}</td>
+                              <td style={{ textTransform: 'uppercase' }}>{property.use_type}</td>
                               <td align="center">
-                                <NavLink to={`/properties/${property.id}/units`}>
+                                <NavLink
+                                  style={{ color: '#00bfcc', textDecorationLine: 'none' }}
+                                  to={`/properties/${property.id}/units`}
+                                >
                                   {property.unit_count}
                                 </NavLink>
                               </td>
-                              <td>{property.payment_term?.replace('_', ' ')}</td>
+                              <td style={{ textTransform: 'capitalize' }}>
+                                {property.payment_term?.replace('_', ' ')}
+                              </td>
                               <td>
                                 <Dropdown key={property.id}>
                                   <Dropdown.Toggle
@@ -139,7 +149,7 @@ function Property() {
                           className="d-flex justify-content-cente"
                           style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
                         >
-                          There is a technical issue in Backened
+                          There is a technical issue at Backend
                         </p>
                       )}
                     </div>
