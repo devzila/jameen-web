@@ -72,7 +72,7 @@ export default function EditResidents(props) {
     return properties_array
   }
   const loadResident = async () => {
-    const endpoint = await get(`/v1/admin/residents/${id}`)
+    const endpoint = await get(`/v1/admin/members/${id}`)
 
     if (response.ok) {
       setResident(endpoint.data)
@@ -91,7 +91,7 @@ export default function EditResidents(props) {
   }
   const onSubmit = async (data) => {
     const body = { ...data, avatar: { data: imageView } }
-    const endpoint = await put(`/v1/admin/residents/${id}`, { resident: body })
+    const endpoint = await put(`/v1/admin/members/${id}`, { member: body })
 
     if (response.ok) {
       toast('Resident Data Edited Successfully')

@@ -75,10 +75,9 @@ export default function AddResidents() {
 
   //Post Data
   async function onSubmit(data) {
-    const image_val = data.avatar[0] ?? ''
     const form_data = { ...data, avatar: { data: imageView } }
 
-    await post(`/v1/admin/residents`, { resident: form_data })
+    await post(`/v1/admin/members`, { member: form_data })
 
     if (response.ok) {
       toast('Resident added Successfully')
@@ -119,11 +118,12 @@ export default function AddResidents() {
                 style={{
                   width: '300px',
                   height: '300px',
+
                   marginTop: '2%',
                   marginLeft: '4%',
                   borderRadius: '50%',
                 }}
-                title=""
+                title="Avatar"
                 className="img-circle img-thumbnail isTooltip  "
                 src={imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'}
                 data-original-title="Usuario"

@@ -51,7 +51,7 @@ function Add() {
   }
 
   async function fetchUnits() {
-    const api = await get(`/v1/admin/premises/properties/${propertyId}/unit_types`)
+    const api = await get(`/v1/admin/premises/properties/${propertyId}/units`)
     if (response.ok && api.data) {
       setUnits_data(trimUnits(api))
     }

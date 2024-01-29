@@ -17,7 +17,6 @@ import {
 } from '@coreui/react'
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
-import { BsTerminal } from 'react-icons/bs'
 
 export default function AllocateUnit({ unitId, unitNo }) {
   const { register, handleSubmit, control, reset } = useForm()
@@ -29,7 +28,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
   const { propertyId } = useParams()
 
   async function loadInitialResidents() {
-    let endpoint = `/v1/admin/residents?limit=-1`
+    let endpoint = `/v1/admin/members?limit=-1`
 
     const initialResidents = await get(endpoint)
 
@@ -57,10 +56,11 @@ export default function AllocateUnit({ unitId, unitNo }) {
   }
 
   async function onSubmit(data) {
+    console.log(propertyId)
     const assigned_resident_data =
       data?.resident_ids?.length > 0 ? data.resident_ids.map((element) => element.value) : []
 
-    const body = { ...data, resident_ids: assigned_resident_data }
+    const body = { ...data, member_ids: assigned_resident_data }
 
     await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/allotment`, {
       allotment: body,
@@ -131,10 +131,10 @@ export default function AllocateUnit({ unitId, unitNo }) {
                 </Col>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label> Resident</label>
+                    <label>Resident</label>
 
                     <Controller
-                      name="resident_ids"
+                      name="member_ids"
                       render={({ field }) => (
                         <Select
                           isMulti

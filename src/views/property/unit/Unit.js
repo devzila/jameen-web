@@ -120,7 +120,7 @@ function Unit() {
                               <td className="pt-3">{unit.bedrooms_number}</td>
                               <td className="pt-3">{unit.bathrooms_number}</td>
                               <td className="pt-3">{unit.year_built}</td>
-                              <td className="pt-3">{PickOwner(unit.resident_units)}</td>
+                              <td className="pt-3">{PickOwner(unit.members_units)}</td>
                               <td className="pt-3">{unit.status}</td>
 
                               <td>
@@ -151,7 +151,7 @@ function Unit() {
                           className="d-flex justify-content-cente"
                           style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
                         >
-                          There is a technical issue in Backened
+                          There is a technical issue at Backend
                         </p>
                       )}
                     </div>

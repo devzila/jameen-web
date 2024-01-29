@@ -137,6 +137,7 @@ export default function AddVisitor() {
                 <Col className="pr-1 mt-3" md="4">
                   <Form.Group>
                     <label>Plate Number</label>
+
                     <Form.Control
                       placeholder="-   -   -   -   -   -   -   -   -   "
                       type="text"

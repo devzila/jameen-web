@@ -26,7 +26,7 @@ export default function ShowResidents(props) {
     loadResident()
   }, [])
   const loadResident = async () => {
-    const endpoint = await get(`/v1/admin/residents/${id}`)
+    const endpoint = await get(`/v1/admin/members/${id}`)
     if (response.ok) {
       setResident_data(endpoint.data)
     } else {
