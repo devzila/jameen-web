@@ -42,8 +42,8 @@ function Add() {
   function trimUnits(units) {
     if (units && units.data) {
       return units.data.map((e) => ({
-        value: e.id,
-        label: e.name,
+        value: e.unit_type.id,
+        label: e.unit_type.name,
       }))
     } else {
       return []
@@ -52,8 +52,10 @@ function Add() {
 
   async function fetchUnits() {
     const api = await get(`/v1/admin/premises/properties/${propertyId}/units`)
+    console.log(api)
     if (response.ok && api.data) {
       setUnits_data(trimUnits(api))
+      console.log(units_data)
     }
   }
 

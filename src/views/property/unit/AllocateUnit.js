@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
+import PropTypes, { element } from 'prop-types'
 import useFetch from 'use-http'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
 import { useParams } from 'react-router-dom'
@@ -17,15 +17,32 @@ import {
 } from '@coreui/react'
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
+import { cilDelete, cilNoteAdd } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 
 export default function AllocateUnit({ unitId, unitNo }) {
-  const { register, handleSubmit, control, reset } = useForm()
+  const { register, handleSubmit, setValue, control, reset } = useForm()
   const { post, get, response } = useFetch()
 
   const [residents, setResidents] = useState([])
+  const [inputField, setInputField] = useState([])
+  const [file_data, setFile_data] = useState('')
+  const [count, setCount] = useState(1)
   const [visible, setVisible] = useState(false)
 
   const { propertyId } = useParams()
+
+  //dynamic form
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'documents_attributes',
+  })
+
+  const Form_values = {
+    unit_no: '',
+  }
+
+  //resident api call
 
   async function loadInitialResidents() {
     let endpoint = `/v1/admin/members?limit=-1`
@@ -40,10 +57,13 @@ export default function AllocateUnit({ unitId, unitNo }) {
       toast('Unable to load residents')
     }
   }
+
+  //useEffext
   useEffect(() => {
     loadInitialResidents()
   }, [])
 
+  //resident dropdown
   let resident_array = []
   function trimResidents(obj) {
     obj.forEach((element) => {
@@ -55,10 +75,58 @@ export default function AllocateUnit({ unitId, unitNo }) {
     return resident_array
   }
 
+  //contract_array
+  const contract_array = [
+    { value: 1, label: 'Allotment' },
+    { value: 2, label: 'Moving In' },
+  ]
+  //base64
+
+  const handleFileSelection = (e, index) => {
+    try {
+      const selectedFile = e.target.files[0]
+
+      if (!selectedFile) {
+        throw new Error('No file selected')
+      }
+
+      const base64Result = readFileAsync(selectedFile)
+
+      setValue(`documents_attributes.${index}.file.data`, base64Result)
+      console.log(base64Result)
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
+
+  const readFileAsync = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+
+      reader.onload = function (event) {
+        resolve(event.target.result)
+      }
+
+      reader.onerror = function (error) {
+        reject(error)
+      }
+
+      reader.readAsDataURL(file)
+    })
+  }
+
+  //initially append
+  useEffect(() => {
+    setValue('documents_attributes', [{ name: '', description: '', file: { data: '' } }])
+  }, [setValue])
+
+  //submit function
+
   async function onSubmit(data) {
-    console.log(propertyId)
+    console.log(data)
     const assigned_resident_data =
-      data?.resident_ids?.length > 0 ? data.resident_ids.map((element) => element.value) : []
+      data?.member_ids?.length > 0 ? data.member_ids.map((element) => element.value) : []
+    console.log(assigned_resident_data)
 
     const body = { ...data, member_ids: assigned_resident_data }
 
@@ -106,28 +174,11 @@ export default function AllocateUnit({ unitId, unitNo }) {
           <CContainer>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
-                <div className="col text-center">
-                  <p className="text-center display-6" style={{ color: '#00bfcc' }}>
-                    JAMEEN
-                  </p>
-                </div>
-              </Row>
-
-              <Row>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <label>
-                      <b>Unit No: </b>
-                      {unitNo}
-                    </label>
-                    <Form.Control
-                      hidden
-                      placeholder="Name"
-                      defaultValue={unitNo}
-                      type="text"
-                      {...register('unit', { required: true })}
-                    ></Form.Control>
-                  </Form.Group>
+                <Col className="pr-1 mt-3" md="10">
+                  <label>
+                    <b>Unit No: </b>
+                    {unitNo}
+                  </label>
                 </Col>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
@@ -151,20 +202,101 @@ export default function AllocateUnit({ unitId, unitNo }) {
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-3 mt-3" md="12">
                   <Form.Group>
                     <label>Allocation Date</label>
                     <Form.Control
                       required
-                      placeholder="Description"
                       type="date"
                       {...register('allotment_date')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
+              <Col className="pr-1 mt-3" md="12">
+                <Form.Group>
+                  <label>Notes</label>
+                  <Form.Control
+                    required
+                    as="textarea"
+                    rows={3}
+                    placeholder="Notes"
+                    {...register('notes')}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
 
+              {fields.map((field, index) => (
+                <Row key={field.id}>
+                  <b className="mt-4"> </b>
+                  <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <b>Document Name</b>
+                      <Form.Control
+                        required
+                        placeholder=" Name"
+                        type="text"
+                        {...register(`documents_attributes.${index}.name`)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+
+                  <Col className="pr-1 mt-3 mb-2" md="6">
+                    <Form.Group>
+                      <label>
+                        <b>Document</b>
+                      </label>
+                      <Form.Control
+                        type="file"
+                        accept=".jpg, .jpeg, .png"
+                        {...register(`documents_attributes.${index}.file.data`)}
+                        onChange={(e) => handleFileSelection(e, index)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <label>Description</label>
+                      <Form.Control
+                        required
+                        placeholder="Description"
+                        type="text"
+                        {...register(`documents_attributes.${index}.description`)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    {fields.length > 1 && (
+                      <Col className="justify-content-center mt-2" md="4">
+                        <CIcon
+                          className="mt-3"
+                          onClick={() => remove(index)}
+                          icon={cilDelete}
+                          size="xl"
+                          style={{ '--ci-primary-color': 'red' }}
+                        />
+                      </Col>
+                    )}
+                  </Col>
+                </Row>
+              ))}
+              <Col className="m-3 d-flex justify-content-center">
+                <CButton
+                  style={{
+                    border: '0px',
+                    color: '#00bfcc',
+                    backgroundColor: 'white',
+                    boxShadow: '5px  5px 20px ',
+                    borderRadius: '26px',
+                  }}
+                  onClick={() => append({ name: '', description: '', file: { data: '' } })}
+                >
+                  <CIcon className="mt-1" icon={cilNoteAdd} />
+                  ADD More
+                </CButton>
+              </Col>
               <div className="text-center">
                 <CModalFooter>
                   <Button
