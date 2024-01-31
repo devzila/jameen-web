@@ -41,7 +41,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
   //resident api call
 
   async function loadInitialResidents() {
-    let endpoint = `/v1/admin/members?limit=-1`
+    let endpoint = `/v1/admin/premises/properties/${propertyId}/residents?limit=-1`
 
     const initialResidents = await get(endpoint)
 
@@ -107,7 +107,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
     console.log(data)
     //resident array
     const assigned_resident_data =
-      data?.member_ids?.length > 0 ? data.member_ids.map((element) => element.value) : []
+      data?.resident_ids?.length > 0 ? data.resident_ids.map((element) => element.value) : []
     console.log(assigned_resident_data)
 
     //filestobase64
@@ -117,7 +117,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
     data.documents_attributes.map((element, index) => (element.file.data = temp_base64[index]))
     console.log(data)
 
-    const body = { ...data, member_ids: assigned_resident_data }
+    const body = { ...data, resident_ids: assigned_resident_data }
     console.log(body)
 
     await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/allotment`, {
@@ -180,7 +180,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
                     <label>Resident</label>
 
                     <Controller
-                      name="member_ids"
+                      name="resident_ids"
                       render={({ field }) => (
                         <Select
                           isMulti
