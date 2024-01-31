@@ -17,17 +17,17 @@ import {
 } from '@coreui/react'
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
+
 import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 export default function AllocateUnit({ unitId, unitNo }) {
   const { register, handleSubmit, setValue, control, reset } = useForm()
   const { post, get, response } = useFetch()
+  const [temp_base64, setTemp_base64] = useState([])
 
   const [residents, setResidents] = useState([])
-  const [inputField, setInputField] = useState([])
-  const [file_data, setFile_data] = useState('')
-  const [count, setCount] = useState(1)
+
   const [visible, setVisible] = useState(false)
 
   const { propertyId } = useParams()
@@ -37,10 +37,6 @@ export default function AllocateUnit({ unitId, unitNo }) {
     control,
     name: 'documents_attributes',
   })
-
-  const Form_values = {
-    unit_no: '',
-  }
 
   //resident api call
 
@@ -75,45 +71,30 @@ export default function AllocateUnit({ unitId, unitNo }) {
     return resident_array
   }
 
-  //contract_array
-  const contract_array = [
-    { value: 1, label: 'Allotment' },
-    { value: 2, label: 'Moving In' },
-  ]
   //base64
-
+  //base64
   const handleFileSelection = (e, index) => {
-    try {
-      const selectedFile = e.target.files[0]
+    console.log(e)
+    console.log(index)
+    const selectedFile = e.target.files[0]
 
-      if (!selectedFile) {
-        throw new Error('No file selected')
-      }
-
-      const base64Result = readFileAsync(selectedFile)
-
-      setValue(`documents_attributes.${index}.file.data`, base64Result)
-      console.log(base64Result)
-    } catch (error) {
-      console.error('Error:', error)
-    }
-  }
-
-  const readFileAsync = (file) => {
-    return new Promise((resolve, reject) => {
+    if (selectedFile) {
       const reader = new FileReader()
 
-      reader.onload = function (event) {
-        resolve(event.target.result)
+      reader.onload = function (e) {
+        const temp_array64 = Array.from(temp_base64)
+        const base64Result = e.target.result
+        temp_array64[index] = base64Result
+        setTemp_base64(temp_array64)
+        console.log(temp_base64[0])
+
+        // setValue(`documents_attributes.${index}.file.data`, base64Result)
       }
 
-      reader.onerror = function (error) {
-        reject(error)
-      }
-
-      reader.readAsDataURL(file)
-    })
+      reader.readAsDataURL(selectedFile)
+    }
   }
+  console.log(temp_base64.length)
 
   //initially append
   useEffect(() => {
@@ -124,11 +105,20 @@ export default function AllocateUnit({ unitId, unitNo }) {
 
   async function onSubmit(data) {
     console.log(data)
+    //resident array
     const assigned_resident_data =
       data?.member_ids?.length > 0 ? data.member_ids.map((element) => element.value) : []
     console.log(assigned_resident_data)
 
+    //filestobase64
+    console.log(temp_base64.length)
+    temp_base64.map((x, index) => setValue(`documents_attributes.${index}.file.data`, x))
+
+    data.documents_attributes.map((element, index) => (element.file.data = temp_base64[index]))
+    console.log(data)
+
     const body = { ...data, member_ids: assigned_resident_data }
+    console.log(body)
 
     await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/allotment`, {
       allotment: body,
@@ -137,9 +127,14 @@ export default function AllocateUnit({ unitId, unitNo }) {
       toast('Unit Alloted : Operation Successful')
       reset()
       setVisible(!visible)
+      setTemp_base64([])
     } else {
       toast(response.data?.message)
     }
+  }
+  function handlClose() {
+    setVisible(!visible)
+    setTemp_base64([])
   }
 
   return (
@@ -155,7 +150,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
         type="button"
         className="btn btn-tertiary "
         data-mdb-ripple-init
-        onClick={() => setVisible(!visible)}
+        onClick={handlClose}
       >
         Allocate
       </button>
@@ -164,7 +159,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
         size="xl"
         visible={visible}
         backdrop="static"
-        onClose={() => setVisible(false)}
+        onClose={handlClose}
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
@@ -315,7 +310,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
                   <CButton
                     color="secondary"
                     style={{ border: '0px', color: 'white' }}
-                    onClick={() => setVisible(false)}
+                    onClick={handlClose}
                   >
                     Close
                   </CButton>

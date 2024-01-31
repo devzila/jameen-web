@@ -57,6 +57,7 @@ export default function UserForm() {
 
   //base64
   const handleFileSelection = (e) => {
+    console.log(e)
     const selectedFile = e.target.files[0]
 
     if (selectedFile) {
