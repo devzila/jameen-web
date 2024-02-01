@@ -105,20 +105,12 @@ function Property() {
                           {properties.map((property) => (
                             <tr key={property.id}>
                               <td style={{ textTransform: 'capitalize' }}>
-                                <NavLink
-                                  style={{ color: '#00bfcc', textDecorationLine: 'none' }}
-                                  to={`/properties/${property.id}`}
-                                >
-                                  {property.name}
-                                </NavLink>
+                                <NavLink to={`/properties/${property.id}`}>{property.name}</NavLink>
                               </td>
                               <td>{property.city}</td>
                               <td style={{ textTransform: 'uppercase' }}>{property.use_type}</td>
                               <td align="center">
-                                <NavLink
-                                  style={{ color: '#00bfcc', textDecorationLine: 'none' }}
-                                  to={`/properties/${property.id}/units`}
-                                >
+                                <NavLink to={`/properties/${property.id}/units`}>
                                   {property.unit_count}
                                 </NavLink>
                               </td>

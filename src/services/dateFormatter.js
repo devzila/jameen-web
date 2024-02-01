@@ -1,5 +1,7 @@
-export function formatdate(date) {
+export function formatdate(isoDate) {
   {
-    return date?.replace('T', ' ')?.replace('Z', ' ').slice(0, 19)
+    const date = new Date(isoDate)
+    const options = { day: '2-digit', month: 'short', year: 'numeric' }
+    return date.toLocaleDateString('en-US', options)
   }
 }

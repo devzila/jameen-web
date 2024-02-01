@@ -7,7 +7,11 @@ const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
   const auth = useContext(AuthContext)
 
-  console.log(currentLocation)
+  console.log(auth)
+  function extractLastPart(inputString) {
+    const parts = inputString?.split('/')
+    return parts[parts.length - 1]
+  }
 
   const getBreadcrumbs = (location) => {
     const breadcrumbs = []
@@ -29,14 +33,15 @@ const AppBreadcrumb = () => {
 
   return (
     <CBreadcrumb className="m-0 ms-2">
-      <CBreadcrumbItem href="/">Home</CBreadcrumbItem>
+      <CBreadcrumbItem href="/">HOME</CBreadcrumbItem>
       {breadcrumbs.map((breadcrumb, index) => {
         return (
           <CBreadcrumbItem
+            className="text-uppercase"
             {...(breadcrumb.active ? { active: true } : { href: breadcrumb.pathname })}
             key={index}
           >
-            {`${breadcrumb.name}, ${auth},  ${process.env.REACT_APP_API_URL}`}
+            {`${extractLastPart(breadcrumb?.name)}`}
           </CBreadcrumbItem>
         )
       })}

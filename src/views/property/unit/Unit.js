@@ -12,7 +12,7 @@ import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import CustomDivToggle from '../../../components/CustomDivToggle'
 import Add from './AddUnit'
 import Edit from './EditUnit'
-import Show from './ShowUnit'
+import Show from './ShowUnitModule/ShowUnit'
 import Delete from './DeleteUnit'
 import PickOwner from './PickOwner'
 import AllocateUnit from './AllocateUnit'
@@ -116,9 +116,20 @@ function Unit() {
                         <tbody>
                           {units.map((unit) => (
                             <tr key={unit.id}>
-                              <th className="pt-3" scope="row" style={{ color: '#666666' }}>
-                                {unit.unit_no}
+                              <th>
+                                <NavLink
+                                  style={{
+                                    border: 'none',
+                                    color: '#00bfcc',
+                                    marginLeft: '35%',
+                                    textDecorationLine: 'none',
+                                  }}
+                                  to={`/properties/${propertyId}/units/${unit.id}`}
+                                >
+                                  {unit.unit_no}
+                                </NavLink>
                               </th>
+
                               <td className="pt-3">{unit.bedrooms_number}</td>
                               <td className="pt-3">{unit.bathrooms_number}</td>
                               <td className="pt-3">{unit.year_built}</td>
