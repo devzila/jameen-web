@@ -126,7 +126,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
     if (response.ok) {
       toast('Unit Alloted : Operation Successful')
       reset()
-      setVisible(!visible)
+      setVisible(false)
       setTemp_base64([])
     } else {
       toast(response.data?.message)
