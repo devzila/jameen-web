@@ -24,6 +24,7 @@ function Add() {
   const [unitData, setUnitData] = useState({})
   const navigate = useNavigate()
   const [units_data, setUnits_data] = useState([])
+  const [buildings_data, setBuildings_data] = useState([])
 
   useEffect(() => {
     const inputs = document.querySelectorAll('.form-group input')
@@ -50,17 +51,43 @@ function Add() {
     }
   }
 
+  function trimBuildings(buildings) {
+    if (buildings && buildings.data) {
+      return buildings.data.map((e) => ({
+        value: e.unit_type.id,
+        label: e.unit_type.name,
+      }))
+    } else {
+      return []
+    }
+  }
+
+  async function fetchBuildings() {
+    const api = await get(`/v1/admin/premises/properties/${propertyId}/buildings`)
+    console.log(api)
+    console.log(api)
+    if (response.ok && api.data) {
+      setBuildings_data(trimBuildings(api))
+      console.log(units_data)
+    } else {
+      console.log(response)
+    }
+  }
+
   async function fetchUnits() {
     const api = await get(`/v1/admin/premises/properties/${propertyId}/units`)
     console.log(api)
     if (response.ok && api.data) {
       setUnits_data(trimUnits(api))
       console.log(units_data)
+    } else {
+      console.log(response)
     }
   }
 
   useEffect(() => {
     fetchUnits()
+    fetchBuildings()
   }, [])
 
   async function onSubmit(data) {
@@ -201,6 +228,27 @@ function Add() {
                       type="string"
                       {...register('internal_extension_number')}
                     ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="12">
+                  <Form.Group>
+                    <label>Building</label>
+
+                    <Controller
+                      name="building_id"
+                      render={({ field }) => (
+                        <Select
+                          type="text"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          {...field}
+                          value={buildings_data.find((c) => c.value === field.value)}
+                          onChange={(val) => field.onChange(val.value)}
+                          options={buildings_data}
+                        />
+                      )}
+                      control={control}
+                    />
                   </Form.Group>
                 </Col>
               </Row>

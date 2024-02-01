@@ -21,6 +21,7 @@ const Role = React.lazy(() => import('../views/settings/Role/Role'))
 const MovingOut = React.lazy(() => import('../views/settings/MovingOut'))
 
 const Allotment = React.lazy(() => import('../views/settings/Allotment'))
+const ShowUnit = React.lazy(() => import('../views/property/unit/ShowUnit'))
 
 const AppContent = () => {
   return (
@@ -34,7 +35,12 @@ const AppContent = () => {
           <Route path="properties" name="Properties" element={<Properties />} />
           <Route path="properties/:propertyId/add" name="Add" element={<Properties />} />
           <Route path="/properties/:propertyId" element={<Property />} />
-          <Route path="/properties/:propertyId/units" name="Unit" element={<Unit />} />
+          <Route path="/properties/:propertyId/units/*" name="Unit" element={<Unit />} />
+          <Route
+            path="/properties/:proprtyId/units/:unitsId"
+            name="ShowUnit"
+            element={<ShowUnit />}
+          />
           <Route path="/maintenance" name="Maintenance" element={<Maintenance />} />
           <Route path="/visitor" name="Visitor" element={<Visitor />} />
           <Route path="/operation" name="Operation" element={<Operation />} />

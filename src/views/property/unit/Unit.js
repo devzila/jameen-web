@@ -6,12 +6,14 @@ import { useParams } from 'react-router-dom'
 import Loading from 'src/components/loading/loading'
 import { Row, Col, Dropdown } from 'react-bootstrap'
 import Paginate from '../../../components/Pagination'
+import { NavLink, Link } from 'react-router-dom'
+
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import CustomDivToggle from '../../../components/CustomDivToggle'
-import Add from './Add'
-import Edit from './Edit'
-import Show from './Show'
-import Delete from './Delete'
+import Add from './AddUnit'
+import Edit from './EditUnit'
+import Show from './ShowUnit'
+import Delete from './DeleteUnit'
 import PickOwner from './PickOwner'
 import AllocateUnit from './AllocateUnit'
 
@@ -133,7 +135,18 @@ function Unit() {
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
                                     <Edit unitid={{ id: `${unit.id}` }} />
-                                    <Show unitid={{ id: `${unit.id}` }} />
+                                    <NavLink
+                                      style={{
+                                        border: 'none',
+                                        color: '#00bfcc',
+                                        marginLeft: '35%',
+                                        textDecorationLine: 'none',
+                                      }}
+                                      to={`/properties/${propertyId}/units/${unit.id}`}
+                                    >
+                                      Show
+                                    </NavLink>
+
                                     <Delete unitid={{ id: `${unit.id}` }} />
                                     {unit.status === 'unallotted' ? (
                                       <AllocateUnit unitId={unit.id} unitNo={unit.unit_no} />
