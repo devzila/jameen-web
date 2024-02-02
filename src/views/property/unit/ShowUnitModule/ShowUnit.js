@@ -31,7 +31,7 @@ export default function Showunit(propsd) {
     <>
       <CRow>
         <CCol md="4">
-          <CCard className=" p-4 m-4" style={{ border: '0px' }}>
+          <CCard className=" p-4 mx-3 my-3" style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -40,6 +40,7 @@ export default function Showunit(propsd) {
                 style={{ color: '#00bfcc' }}
               />
               <strong>Property Details</strong>
+              <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
               <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
@@ -88,7 +89,7 @@ export default function Showunit(propsd) {
 
       <CRow>
         <CCol md="4">
-          <CCard className=" p-4 m-4" style={{ border: '0px' }}>
+          <CCard className=" p-4 m-3" style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -97,6 +98,7 @@ export default function Showunit(propsd) {
                 style={{ color: '#00bfcc' }}
               />
               <strong>Building Details</strong>
+              <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
               <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
@@ -141,7 +143,7 @@ export default function Showunit(propsd) {
           </CCard>
         </CCol>
         <CCol md="8">
-          <CCard className=" p-4 m-4" style={{ border: '0px' }}>
+          <CCard className=" p-4 my-3 me-3" style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -150,6 +152,7 @@ export default function Showunit(propsd) {
                 style={{ color: '#00bfcc' }}
               />
               <strong>Unit Information</strong>
+              <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
               <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
@@ -225,6 +228,7 @@ export default function Showunit(propsd) {
                 style={{ color: '#00bfcc' }}
               />
               <strong>Lease Info.</strong>
+              <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
               <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
@@ -280,6 +284,7 @@ export default function Showunit(propsd) {
                 style={{ color: '#00bfcc' }}
               />
               <strong>Unit Billing Details</strong>
+              <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
               <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>

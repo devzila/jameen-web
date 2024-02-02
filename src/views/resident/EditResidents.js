@@ -76,6 +76,7 @@ export default function EditResidents(props) {
 
     if (response.ok) {
       setResident(endpoint.data)
+      console.log(resident)
       setValue('first_name', endpoint.data.first_name)
       setValue('last_name', endpoint.data.last_name)
       setValue('email', endpoint.data.email)
@@ -145,7 +146,13 @@ export default function EditResidents(props) {
                   }}
                   title="Avatar"
                   className="img-circle img-thumbnail isTooltip  "
-                  src={imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'}
+                  src={
+                    resident?.avatar
+                      ? resident.avatar
+                      : imageView
+                      ? imageView
+                      : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                  }
                   data-original-title="Usuario"
                 />
               </div>

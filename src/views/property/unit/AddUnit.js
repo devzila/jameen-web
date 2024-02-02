@@ -22,6 +22,7 @@ function Add() {
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
   const [unitData, setUnitData] = useState({})
+  const [errors, setErrors] = useState({})
   const navigate = useNavigate()
   const [units_data, setUnits_data] = useState([])
   const [buildings_data, setBuildings_data] = useState([])
@@ -52,10 +53,11 @@ function Add() {
   }
 
   function trimBuildings(buildings) {
-    if (buildings && buildings.data) {
-      return buildings.data.map((e) => ({
-        value: e.unit_type.id,
-        label: e.unit_type.name,
+    console.log(buildings)
+    if (buildings) {
+      return buildings.map((e) => ({
+        value: e?.id,
+        label: e?.name,
       }))
     } else {
       return []
@@ -67,7 +69,7 @@ function Add() {
     console.log(api)
     console.log(api)
     if (response.ok && api.data) {
-      setBuildings_data(trimBuildings(api))
+      setBuildings_data(trimBuildings(api.data))
       console.log(units_data)
     } else {
       console.log(response)
@@ -99,8 +101,13 @@ function Add() {
       setVisible(!visible)
       toast('Unit added successfully')
     } else {
+      setErrors(response.data.errors)
       toast(response.data?.message)
     }
+  }
+  function handleClose() {
+    setVisible(false)
+    setErrors({})
   }
 
   return (
@@ -120,7 +127,7 @@ function Add() {
         size="xl"
         visible={visible}
         backdrop="static"
-        onClose={() => setVisible(false)}
+        onClose={handleClose}
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
@@ -132,7 +139,10 @@ function Add() {
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Unit-Number</label>
+                    <label>
+                      Unit-Number
+                      <small className="text-danger"> *{errors ? errors.unit_no : null} </small>
+                    </label>
                     <Form.Control
                       defaultValue={unitData.no}
                       type="integer"
@@ -165,7 +175,10 @@ function Add() {
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Year Built</label>
+                    <label>
+                      Year Built{' '}
+                      <small className="text-danger "> *{errors ? errors.year_built : null} </small>
+                    </label>
 
                     <Form.Control
                       defaultValue={unitData.year_built}
@@ -178,7 +191,10 @@ function Add() {
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Unit Type</label>
+                    <label>
+                      Unit Type{' '}
+                      <small className="text-danger"> *{errors ? errors.unit_type : null} </small>
+                    </label>
 
                     <Controller
                       name="unit_type_id"
@@ -232,7 +248,10 @@ function Add() {
                 </Col>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>Building</label>
+                    <label>
+                      Building{' '}
+                      <small className="text-danger"> *{errors ? errors.building_id : null} </small>
+                    </label>
 
                     <Controller
                       name="building_id"
@@ -271,7 +290,7 @@ function Add() {
                   <CButton
                     color="secondary"
                     style={{ border: '0px', color: 'white' }}
-                    onClick={() => setVisible(false)}
+                    onClick={handleClose}
                   >
                     Close
                   </CButton>
