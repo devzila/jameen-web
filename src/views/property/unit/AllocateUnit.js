@@ -5,6 +5,7 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
 import { useParams } from 'react-router-dom'
+import Loading from 'src/components/loading/loading'
 
 import {
   CButton,
@@ -29,6 +30,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
   const [residents, setResidents] = useState([])
 
   const [visible, setVisible] = useState(false)
+  const [submitLoader, setSubmitLoader] = useState(false)
 
   const { propertyId } = useParams()
 
@@ -106,6 +108,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
   async function onSubmit(data) {
     console.log(data)
     //resident array
+    setSubmitLoader(true)
     const assigned_resident_data =
       data?.resident_ids?.length > 0 ? data.resident_ids.map((element) => element.value) : []
     console.log(assigned_resident_data)
@@ -126,14 +129,16 @@ export default function AllocateUnit({ unitId, unitNo }) {
     if (response.ok) {
       toast('Unit Alloted : Operation Successful')
       reset()
+      setSubmitLoader(false)
       setVisible(false)
       setTemp_base64([])
     } else {
+      setSubmitLoader(false)
       toast(response.data?.message)
     }
   }
   function handlClose() {
-    setVisible(!visible)
+    setVisible(false)
     setTemp_base64([])
   }
 
@@ -150,7 +155,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
         type="button"
         className="btn btn-tertiary "
         data-mdb-ripple-init
-        onClick={handlClose}
+        onClick={() => setVisible(true)}
       >
         Allocate
       </button>

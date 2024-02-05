@@ -117,6 +117,7 @@ function Unit() {
                           {units.map((unit) => (
                             <tr key={unit.id}>
                               <th>
+                                {console.log(unit)}
                                 <NavLink
                                   style={{
                                     border: 'none',

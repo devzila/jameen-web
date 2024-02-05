@@ -1,4 +1,5 @@
 function PickOwner(resObj) {
+  console.log(resObj)
   const ownerMatch = resObj?.filter((curRes) => {
     return curRes.association_type == 'owner'
   })
@@ -14,7 +15,12 @@ function PickOwner(resObj) {
     residentMatch?.length > 0
       ? residentMatch[0].resident.first_name + ' ' + residentMatch[0].resident.last_name
       : ''
-  return ownerName + '/' + residentName
+
+  if (ownerName == residentName) {
+    return ownerName
+  } else {
+    return ownerName + '/' + residentName
+  }
 }
 
 export default PickOwner

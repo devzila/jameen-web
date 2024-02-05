@@ -4,15 +4,18 @@ import useFetch from 'use-http'
 
 import { useParams, Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
+import { cilLineStyle, cilCloudDownload } from '@coreui/icons'
 import { freeSet } from '@coreui/icons'
 import { formatdate } from 'src/services/dateFormatter'
+import logo from '../../../../assets/images/avatars/default.png'
 
 export default function Showunit(propsd) {
   const { propertyId, unitId } = useParams()
-  const [unit, setUnit] = useState([])
-  const { get, response } = useFetch()
+  const [unit, setUnit] = useState({})
+  const [contract_info, setContract_info] = useState({})
+  const [member_info, setMember_info] = useState([])
 
-  const ReactImg = 'https://upload.wikimedia.org/wikipedia/commons/f/f3/Memphis_Tennessee-2014.jpg'
+  const { get, response } = useFetch()
 
   useEffect(() => {
     getUnitData()
@@ -20,12 +23,18 @@ export default function Showunit(propsd) {
   async function getUnitData() {
     let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
     setUnit(api.data)
-    console.log(api)
+    if (api.data.running_contracts[0]) {
+      setContract_info(api.data.running_contracts[0])
+
+      setMember_info(api.data.running_contracts[0].contract_members)
+    }
+    console.log(member_info)
 
     if (response.ok) {
       setUnit(api.data)
     }
   }
+  console.log(unit)
 
   return (
     <>
@@ -44,12 +53,12 @@ export default function Showunit(propsd) {
             </CListGroupItem>
             <CRow className="">
               <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
-                Status
+                Name
                 <CCardText
                   className="fw-normal"
                   style={{ color: 'black', textTransform: 'capitalize' }}
                 >
-                  {unit?.status || '-'}
+                  {unit?.property?.name || '-'}
                 </CCardText>
               </CCol>
               <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
@@ -86,7 +95,6 @@ export default function Showunit(propsd) {
         </CCol>
         <CCol md="6"></CCol>
       </CRow>
-
       <CRow>
         <CCol md="4">
           <CCard className=" p-4 m-3" style={{ border: '0px' }}>
@@ -217,6 +225,117 @@ export default function Showunit(propsd) {
         </CCol>
       </CRow>
 
+      {contract_info ? (
+        <CRow>
+          <CCol md="12">
+            <CCard className=" p-4 m-3" style={{ border: '0px' }}>
+              <CListGroupItem>
+                <CIcon
+                  icon={freeSet.cilLineStyle}
+                  size="lg"
+                  className="me-2"
+                  style={{ color: '#00bfcc' }}
+                />
+                <strong>Contract Info.</strong>
+                <hr style={{ color: '#C8C2C0' }} />
+              </CListGroupItem>
+              <CRow className="">
+                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                  Contract Type
+                  <CCardText
+                    className="fw-normal"
+                    style={{ color: 'black', textTransform: 'capitalize' }}
+                  >
+                    {contract_info.contract_type || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                  Notes
+                  <CCardText
+                    className="fw-normal"
+                    style={{ color: 'black', textTransform: 'capitalize' }}
+                  >
+                    {contract_info?.notes || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                  Start Date
+                  <CCardText
+                    className="fw-normal"
+                    style={{ color: 'black', textTransform: 'capitalize' }}
+                  >
+                    {contract_info?.start_date || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                  End Date
+                  <CCardText
+                    className="fw-normal"
+                    style={{ color: 'black', textTransform: 'capitalize' }}
+                  >
+                    {contract_info?.end_date || '-'}
+                  </CCardText>
+                </CCol>
+              </CRow>
+              <CRow></CRow>
+            </CCard>
+          </CCol>
+        </CRow>
+      ) : null}
+
+      <CRow>
+        <CCol md="12">
+          <CCard className=" p-4 m-3" style={{ border: '0px' }}>
+            <CListGroupItem>
+              <CIcon
+                icon={freeSet.cilUser}
+                size="lg"
+                className="me-2"
+                style={{ color: '#00bfcc' }}
+              />
+              <strong>Contract Members</strong>
+              <hr style={{ color: '#C8C2C0' }} />
+            </CListGroupItem>
+            {member_info.map((member_) => (
+              <CRow key={member_.member.id} className="">
+                <CCol className="p-4 mt-3 fw-light " style={{ color: '#00bfcc' }}>
+                  Name
+                  <CCardText
+                    className="fw-normal"
+                    style={{ color: 'black', textTransform: 'capitalize' }}
+                  >
+                    <img
+                      src={member_?.member.avatar || logo}
+                      alt="Profile"
+                      className="rounded-circle "
+                      style={{ width: '25px', height: '25px' }}
+                    />
+                    {' ' + member_?.member.name || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                  Type
+                  <CCardText
+                    className="fw-normal"
+                    style={{ color: 'black', textTransform: 'capitalize' }}
+                  >
+                    {member_?.member_type.replace('_', ' ') || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                  Username
+                  <CCardText className="fw-normal" style={{ color: 'black' }}>
+                    {member_?.member.username}
+                  </CCardText>
+                </CCol>
+              </CRow>
+            ))}
+
+            <CRow></CRow>
+          </CCard>
+        </CCol>
+      </CRow>
+
       <CRow>
         <CCol md="12">
           <CCard className=" p-4 m-3" style={{ border: '0px' }}>
@@ -227,47 +346,49 @@ export default function Showunit(propsd) {
                 className="me-2"
                 style={{ color: '#00bfcc' }}
               />
-              <strong>Lease Info.</strong>
+              <strong>Documents</strong>
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
-                Status
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {unit?.status || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
-                Lease No
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {unit?.year_built || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
-                Start Date
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {unit?.water_account_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
-                End Date
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {unit?.internal_extension_number || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
+            {unit?.running_contracts?.[0]?.documents?.map((document) => (
+              <CRow className="">
+                <CCol className="p-4 mt-3 fw-light " style={{ color: '#00bfcc' }}>
+                  Name
+                  <CCardText
+                    className="fw-normal"
+                    style={{ color: 'black', textTransform: 'capitalize' }}
+                  >
+                    {document.name || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                  Description
+                  <CCardText
+                    className="fw-normal"
+                    style={{ color: 'black', textTransform: 'capitalize' }}
+                  >
+                    {document?.description || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                  View
+                  <CCardText className="fw-normal ms-1" style={{ color: 'black' }}>
+                    <CIcon
+                      icon={freeSet.cilNotes}
+                      size="xl"
+                      onClick={() => window.open(document?.file, '_blank')}
+                    />
+                  </CCardText>
+                </CCol>
+                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                  Download
+                  <CCardText className="fw-normal ms-1" style={{ color: 'black' }}>
+                    <Link to={document.file} target="_self" download>
+                      <CIcon icon={freeSet.cilCloudDownload} size="xl" />
+                    </Link>
+                  </CCardText>
+                </CCol>
+              </CRow>
+            ))}
             <CRow></CRow>
           </CCard>
         </CCol>
