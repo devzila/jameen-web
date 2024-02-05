@@ -356,7 +356,7 @@ export default function Showunit(propsd) {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             {unit?.running_contracts?.[0]?.documents?.map((document) => (
-              <CRow key={document.name} className="">
+              <CRow key={document.id} className="">
                 <CCol className="p-4 mt-3 fw-light " style={{ color: '#00bfcc' }}>
                   Name
                   <CCardText
