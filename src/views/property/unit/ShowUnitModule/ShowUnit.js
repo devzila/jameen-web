@@ -22,11 +22,17 @@ export default function Showunit(propsd) {
   }, [])
   async function getUnitData() {
     let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
-    setUnit(api.data)
-    if (api.data.running_contracts[0]) {
-      setContract_info(api.data.running_contracts[0])
+    console.log(api)
 
-      setMember_info(api.data.running_contracts[0].contract_members)
+    setUnit(api.data)
+    if (api.data) {
+      setContract_info(api.data.running_contracts[0])
+      const contractMembers =
+        api.data.running_contracts &&
+        api.data.running_contracts[0] &&
+        api.data.running_contracts[0].contract_members
+
+      setMember_info(contractMembers || [])
     }
     console.log(member_info)
 
@@ -350,7 +356,7 @@ export default function Showunit(propsd) {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             {unit?.running_contracts?.[0]?.documents?.map((document) => (
-              <CRow className="">
+              <CRow key={document.name} className="">
                 <CCol className="p-4 mt-3 fw-light " style={{ color: '#00bfcc' }}>
                   Name
                   <CCardText
