@@ -102,95 +102,93 @@ export default function EditRoles({ roleId }) {
           </CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <CContainer>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              <Row>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <label>Name</label>
-                    <Form.Control
-                      placeholder="Name"
-                      type="text"
-                      {...register('name')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="pr-3 mt-3" md="12">
-                  <Form.Group>
-                    <label>Description</label>
-                    <Form.Control
-                      required
-                      placeholder="Description"
-                      type="text"
-                      {...register('description')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <CModalTitle className="pr-1 my-3" id="StaticBackdropExampleLabel">
-                Privileges
-              </CModalTitle>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <Row>
+              <Col className="pr-1 mt-3" md="12">
+                <Form.Group>
+                  <label>Name</label>
+                  <Form.Control placeholder="Name" type="text" {...register('name')}></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="pr-3 mt-3" md="12">
+                <Form.Group>
+                  <label>Description</label>
+                  <Form.Control
+                    required
+                    placeholder="Description"
+                    type="text"
+                    {...register('description')}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+            <CModalTitle className="pr-1 my-3" id="StaticBackdropExampleLabel">
+              Privileges
+            </CModalTitle>
 
-              <Row>
-                {Object.entries(privileges_data).map(([outer_keys, outer_values]) => (
-                  <Col md="6" key={outer_keys}>
-                    <div className="card" style={{ borderRadius: '0px' }}>
-                      <div
-                        className="card-header"
-                        style={{ backgroundColor: '#f3fbff', textTransform: 'capitalize' }}
-                      >
-                        {outer_keys}
-                      </div>
-                      {Object.entries(outer_values).map(([inner_keys, inner_values]) => (
-                        <div key={inner_keys} className="card-body p-1">
-                          <ul className="list-group list-group-flush">
-                            <li className="list-group-item" style={{ textTransform: 'capitalize' }}>
-                              {inner_keys.replace(/_/g, ' ')}
-                              <label className="checkbox">
-                                <input
-                                  type="checkbox"
-                                  {...register(`privileges.${outer_keys}.${inner_keys}`)}
-                                />
-                                <span className="default"></span>
-                              </label>
-                            </li>
-                          </ul>
-                        </div>
-                      ))}
+            <Row>
+              {Object.entries(privileges_data).map(([outer_keys, outer_values]) => (
+                <Col md="6" key={outer_keys}>
+                  <div className="card mt-2" style={{ borderRadius: '0px', border: '0px' }}>
+                    <div
+                      className="card-header"
+                      style={{
+                        backgroundColor: '#f3fbff',
+                        textTransform: 'capitalize',
+                        color: '#00bfcc',
+                      }}
+                    >
+                      {outer_keys}
                     </div>
-                  </Col>
-                ))}
-              </Row>
+                    {Object.entries(outer_values).map(([inner_keys, inner_values]) => (
+                      <div key={inner_keys} className="card-body p-1">
+                        <ul className="list-group list-group-flush">
+                          <li className="list-group-item" style={{ textTransform: 'capitalize' }}>
+                            {inner_keys.replace(/_/g, ' ')}
+                            <label className="checkbox">
+                              <input
+                                type="checkbox"
+                                {...register(`privileges.${outer_keys}.${inner_keys}`)}
+                              />
+                              <span className="default"></span>
+                            </label>
+                          </li>
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </Col>
+              ))}
+            </Row>
 
-              <div className="text-center">
-                <CModalFooter>
-                  <Button
-                    data-mdb-ripple-init
-                    type="submit"
-                    className="btn  btn-primary btn-block"
-                    style={{
-                      marginTop: '5px',
-                      color: 'white',
-                      backgroundColor: '#00bfcc',
-                      border: '0px',
-                    }}
-                  >
-                    Submit
-                  </Button>
-                  <CButton
-                    color="secondary"
-                    style={{ border: '0px', color: 'white' }}
-                    onClick={() => setVisible(false)}
-                  >
-                    Close
-                  </CButton>
-                </CModalFooter>
-              </div>
-            </Form>
-            <div className="clearfix"></div>
-          </CContainer>
+            <div className="text-center">
+              <CModalFooter>
+                <Button
+                  data-mdb-ripple-init
+                  type="submit"
+                  className="btn  btn-primary btn-block"
+                  style={{
+                    marginTop: '5px',
+                    color: 'white',
+                    backgroundColor: '#00bfcc',
+                    border: '0px',
+                  }}
+                >
+                  Submit
+                </Button>
+                <CButton
+                  color="secondary"
+                  style={{ border: '0px', color: 'white' }}
+                  onClick={() => setVisible(false)}
+                >
+                  Close
+                </CButton>
+              </CModalFooter>
+            </div>
+          </Form>
+          <div className="clearfix"></div>
         </CModalBody>
       </CModal>
     </div>

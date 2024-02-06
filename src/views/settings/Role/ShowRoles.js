@@ -70,109 +70,106 @@ export default function ShowRoles({ roleId }) {
           <CModalTitle id="StaticBackdropExampleLabel"> Information</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <CContainer>
-            <div className="container bootstrap snippets bootdey">
-              <div className="panel-body inf-content">
-                <div className="row">
-                  <div className="col">
-                    <br />
-                    <div className="table-responsive">
-                      <table className="mt-4 table table-user-information">
-                        <tbody>
-                          <tr>
-                            <td>
-                              <strong>
-                                <span className="glyphicon glyphicon-asterisk text-primary"></span>
-                                Name
-                              </strong>
-                            </td>
-                            <td className="text-primary text-black-50">{role?.name}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <strong>
-                                <span className="glyphicon glyphicon-user  text-primary"></span>
-                                Description
-                              </strong>
-                            </td>
-                            <td className="text-primary text-black-50">
-                              {role.description || '-'}
-                            </td>
-                          </tr>
+          <div className="container bootstrap snippets bootdey">
+            <div className="panel-body inf-content">
+              <div className="row">
+                <div className="col">
+                  <br />
+                  <div className="table-responsive">
+                    <table className="mt-4 table table-user-information">
+                      <tbody>
+                        <tr>
+                          <td>
+                            <strong>
+                              <span className="glyphicon glyphicon-asterisk text-primary"></span>
+                              Name
+                            </strong>
+                          </td>
+                          <td className="text-primary text-black-50">{role?.name}</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>
+                              <span className="glyphicon glyphicon-user  text-primary"></span>
+                              Description
+                            </strong>
+                          </td>
+                          <td className="text-primary text-black-50">{role.description || '-'}</td>
+                        </tr>
 
-                          <tr>
-                            <td>
-                              <strong>
-                                <span className="glyphicon glyphicon-calendar text-primary"></span>
-                                Created At
-                              </strong>
-                            </td>
-                            <td className="text-primary text-black-50">
-                              {formatdate(role.created_at)}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <strong>
-                                <span className="glyphicon glyphicon-calendar text-primary"></span>
-                                Modified
-                              </strong>
-                            </td>
-                            <td className="text-primary text-black-50">
-                              {formatdate(role.updated_at)}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                        <tr>
+                          <td>
+                            <strong>
+                              <span className="glyphicon glyphicon-calendar text-primary"></span>
+                              Created At
+                            </strong>
+                          </td>
+                          <td className="text-primary text-black-50">
+                            {formatdate(role.created_at)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>
+                              <span className="glyphicon glyphicon-calendar text-primary"></span>
+                              Modified
+                            </strong>
+                          </td>
+                          <td className="text-primary text-black-50">
+                            {formatdate(role.updated_at)}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
+              </div>
 
-                <CModalTitle className="pr-1 mt-3" id="StaticBackdropExampleLabel">
-                  Privileges
-                </CModalTitle>
+              <CModalTitle className="pr-1 mt-3" id="StaticBackdropExampleLabel">
+                Privileges
+              </CModalTitle>
 
-                <Row>
-                  {Object.entries(privileges_data).map(([outer_keys, outer_values]) => (
-                    <Col md="6" key={outer_keys}>
-                      <div className="card mt-1" style={{ borderRadius: '0px' }}>
-                        <div
-                          className="card-header"
-                          style={{ backgroundColor: '#f3fbff', textTransform: 'capitalize' }}
-                        >
-                          {outer_keys}
-                        </div>
-                        {Object.entries(outer_values).map(([inner_keys, inner_values]) => (
-                          <div key={inner_keys} className="card-body p-1">
-                            <ul className="list-group list-group-flush">
-                              <li
-                                className="list-group-item"
-                                style={{ textTransform: 'capitalize' }}
-                              >
-                                {inner_keys.replace(/_/g, ' ')}
-
-                                <p className="checkbox">{renderIcon(outer_keys.inner_keys)}</p>
-                              </li>
-                            </ul>
-                          </div>
-                        ))}
+              <Row>
+                {Object.entries(privileges_data).map(([outer_keys, outer_values]) => (
+                  <Col md="6" key={outer_keys}>
+                    <div className="card mt-1" style={{ borderRadius: '0px', border: '0px' }}>
+                      <div
+                        className="card-header"
+                        style={{
+                          backgroundColor: '#f3fbff',
+                          textTransform: 'capitalize',
+                          color: '#00bfcc',
+                        }}
+                      >
+                        {outer_keys}
                       </div>
-                    </Col>
-                  ))}
-                </Row>
+                      {Object.entries(outer_values).map(([inner_keys, inner_values]) => (
+                        <div key={inner_keys} className="card-body p-1">
+                          <ul className="list-group list-group-flush">
+                            <li className="list-group-item" style={{ textTransform: 'capitalize' }}>
+                              {inner_keys.replace(/_/g, ' ')}
 
-                <div className="text-center">
-                  <CModalFooter>
-                    <CButton color="secondary" onClick={() => setVisible(false)}>
-                      Close
-                    </CButton>
-                  </CModalFooter>
-                </div>
+                              <p className="checkbox">{renderIcon(outer_keys.inner_keys)}</p>
+                            </li>
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+
+              <div className="text-center">
+                <CModalFooter>
+                  <CButton color="secondary" onClick={() => setVisible(false)}>
+                    Close
+                  </CButton>
+                </CModalFooter>
               </div>
             </div>
+          </div>
 
-            <div className="clearfix"></div>
-          </CContainer>
+          <div className="clearfix"></div>
         </CModalBody>
       </CModal>
     </div>
