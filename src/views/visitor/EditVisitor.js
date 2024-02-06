@@ -1,5 +1,5 @@
 import React from 'react'
 
-export default function EditVIsitor() {
+export default function EditVisitor() {
   return <div>EditVIsitor</div>
 }
