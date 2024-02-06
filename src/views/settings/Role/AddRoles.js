@@ -21,17 +21,6 @@ export default function AddRoles() {
   const { register, handleSubmit, control, reset } = useForm()
   const { post, response } = useFetch()
 
-  //localstorage
-  const meta_data = localStorage.getItem('meta')
-  const parsed_meta_data = JSON.parse(meta_data)
-
-  const roles_data = parsed_meta_data.role_user_type
-
-  const rolesarray = Object.entries(roles_data).map((element) => ({
-    label: element[0].charAt(0).toUpperCase() + element[0].slice(1).replace(/_/g, ' '),
-    value: element[1],
-  }))
-
   //post method
   async function onSubmit(data) {
     await post(`/v1/admin/roles`, { role: data })
@@ -88,24 +77,6 @@ export default function AddRoles() {
                       type="text"
                       {...register('name', { required: true })}
                     ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <label>User Type</label>
-                    <Controller
-                      name="user_type"
-                      render={({ field }) => (
-                        <Select
-                          {...field}
-                          options={rolesarray}
-                          value={rolesarray.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
-                        />
-                      )}
-                      control={control}
-                      placeholder="Role"
-                    />
                   </Form.Group>
                 </Col>
               </Row>

@@ -21,27 +21,31 @@ import { cilX } from '@coreui/icons'
 //function
 
 export default function EditUser({ userId }) {
-  const [imageView, setImageView] = useState('')
+  const [imageView, setImageView] = useState(null)
   const { get, put, response } = useFetch()
 
   const [visible, setVisible] = useState(false)
   const { register, handleSubmit, setValue, control } = useForm()
 
   const [userData, setUserData] = useState({})
+  const [roles_data, setRoles_data] = useState([])
+
   const [properties_data, setProperties_data] = useState([])
 
   //roles
 
-  const meta_data = localStorage.getItem('meta')
-  const parsed_meta_data = JSON.parse(meta_data)
+  async function fetchRoles() {
+    const api = await get('/v1/admin/roles')
+    if (response.ok) {
+      setRoles_data(api.data)
+      console.log(api)
+    }
+  }
 
-  const roles_data = parsed_meta_data.role_user_type
-
-  const rolesarray = Object.entries(roles_data).map((element) => ({
-    label: element[0].charAt(0).toUpperCase() + element[0].slice(1).replace(/_/g, ' '),
-    value: element[1],
+  const rolesarray = roles_data.map((element) => ({
+    label: element.name.charAt(0).toUpperCase() + element.name.slice(1).replace(/_/g, ' '),
+    value: element.id,
   }))
-
   //properties
 
   let properties_array = []
@@ -71,6 +75,7 @@ export default function EditUser({ userId }) {
   useEffect(() => {
     getUserData()
     fetchProperties()
+    fetchRoles()
   }, [])
 
   //Get User Data
@@ -116,7 +121,11 @@ export default function EditUser({ userId }) {
   //Form submit ,post
   async function onSubmit(data) {
     const assigned_properties_data = data?.property_ids.map((element) => element.value)
-    const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
+    if (imageView) {
+      const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
+    } else {
+      const body = { ...data, property_ids: assigned_properties_data }
+    }
 
     await put(`/v1/admin/users/${userId}`, { user: body })
     if (response.ok) {

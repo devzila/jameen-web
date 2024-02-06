@@ -388,7 +388,7 @@ export default function Showunit(propsd) {
                 <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
                   Download
                   <CCardText className="fw-normal ms-1" style={{ color: 'black' }}>
-                    <Link to={document.file} target="_self" download>
+                    <Link to="#" target="_self" download>
                       <CIcon icon={freeSet.cilCloudDownload} size="xl" />
                     </Link>
                   </CCardText>

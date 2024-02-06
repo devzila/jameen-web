@@ -26,24 +26,6 @@ export default function EditRoles({ roleId }) {
   const { register, handleSubmit, control, watch, reset, setValue } = useForm()
   const { get, put, response } = useFetch()
 
-  const meta_data = localStorage.getItem('meta')
-  const parsed_meta_data = JSON.parse(meta_data)
-
-  const roles_data = parsed_meta_data.role_user_type
-
-  const rolesarray = Object.entries(roles_data).map((element) => ({
-    label: element[0]?.charAt(0).toUpperCase() + element[0].slice(1).replace(/_/g, ' '),
-    value: element[1],
-  }))
-
-  const roles_selected = (data) => {
-    if (data) {
-      const sliced_data = data?.charAt(0).toUpperCase() + data?.slice(1).replace('_', ' ')
-      const role = rolesarray.find((role) => role.label === sliced_data)
-      return role ? role.value : null
-    }
-  }
-
   async function loadInitialroles() {
     let endpoint = `/v1/admin/roles/${roleId}}`
 
@@ -54,7 +36,6 @@ export default function EditRoles({ roleId }) {
         setLoading(false)
         setValue('name', initialroles.data.name)
         setValue('description', initialroles.data.description)
-        setValue('user_type', roles_selected(initialroles.data?.user_type))
         setValue('privileges.users.create', initialroles.data.privileges.users.create)
         setValue('privileges.users.view', initialroles.data.privileges.users.view)
         setValue('privileges.users.delete', initialroles.data.privileges.users.delete)
@@ -132,24 +113,6 @@ export default function EditRoles({ roleId }) {
                       type="text"
                       {...register('name')}
                     ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <label>User Type</label>
-                    <Controller
-                      name="user_type"
-                      render={({ field }) => (
-                        <Select
-                          {...field}
-                          options={rolesarray}
-                          value={rolesarray.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
-                        />
-                      )}
-                      control={control}
-                      placeholder="Role"
-                    />
                   </Form.Group>
                 </Col>
               </Row>

@@ -5,6 +5,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 import CIcon from '@coreui/icons-react'
 import { cilCheck, cilX } from '@coreui/icons'
 import logo from '../../../assets/images/jameen-logo.png'
+import { formatdate } from 'src/services/dateFormatter'
 
 import {
   CButton,
@@ -100,25 +101,12 @@ export default function ShowRoles({ roleId }) {
                           <tr>
                             <td>
                               <strong>
-                                <span className="glyphicon glyphicon-user  text-primary"></span>
-                                User Type
-                              </strong>
-                            </td>
-                            <td className="text-primary text-black-50">
-                              {role.user_type?.charAt(0).toUpperCase() +
-                                role.user_type?.slice(1).replace(/_/g, ' ')}
-                            </td>
-                          </tr>
-
-                          <tr>
-                            <td>
-                              <strong>
                                 <span className="glyphicon glyphicon-calendar text-primary"></span>
                                 Created At
                               </strong>
                             </td>
                             <td className="text-primary text-black-50">
-                              {role.created_at?.replace('T', ' ').replace('Z', ' ').slice(0, 19)}
+                              {formatdate(role.created_at)}
                             </td>
                           </tr>
                           <tr>
@@ -129,7 +117,7 @@ export default function ShowRoles({ roleId }) {
                               </strong>
                             </td>
                             <td className="text-primary text-black-50">
-                              {role.updated_at?.replace('T', ' ').replace('Z', ' ').slice(0, 19)}
+                              {formatdate(role.updated_at)}
                             </td>
                           </tr>
                         </tbody>

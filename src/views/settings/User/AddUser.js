@@ -19,22 +19,22 @@ export default function UserForm() {
   const [visible, setVisible] = useState(false)
   const [imageView, setImageView] = useState('https://bootdey.com/img/Content/avatar/avatar7.png')
   const [properties_data, setProperties_data] = useState([])
+  const [roles_data, setRoles_data] = useState([])
 
   const { register, handleSubmit, control, reset } = useForm()
   const { get, post, response } = useFetch()
 
-  //localstorage
+  async function fetchRoles() {
+    const api = await get('/v1/admin/roles')
+    if (response.ok) {
+      setRoles_data(api.data)
+    }
+  }
 
-  const meta_data = localStorage.getItem('meta')
-  const parsed_meta_data = JSON.parse(meta_data)
-
-  const roles_data = parsed_meta_data.role_user_type
-
-  const rolesarray = Object.entries(roles_data).map((element) => ({
-    label: element[0].charAt(0).toUpperCase() + element[0].slice(1).replace(/_/g, ' '),
-    value: element[1],
+  const rolesarray = roles_data.map((element) => ({
+    label: element.name.charAt(0).toUpperCase() + element.name.slice(1).replace(/_/g, ' '),
+    value: element.id,
   }))
-  // Properties
 
   let properties_array = []
   function trimProperties(properties) {
@@ -53,6 +53,7 @@ export default function UserForm() {
 
   useEffect(() => {
     fetchProperties()
+    fetchRoles()
   }, [])
 
   //base64

@@ -13,6 +13,7 @@ import AddRoles from './AddRoles'
 import ShowRoles from './ShowRoles'
 import EditRoles from './EditRoles'
 import DeleteRoles from './DeleteRoles'
+import { formatdate } from 'src/services/dateFormatter'
 
 export default function Role() {
   const [pagination, setPagination] = useState(null)
@@ -99,7 +100,6 @@ export default function Role() {
                         <tr>
                           <th className="pt-3 pb-3 border-0">Name</th>
                           <th className="pt-3 pb-3 border-0">Description</th>
-                          <th className="pt-3 pb-3 border-0">User Type</th>
                           <th className="pt-3 pb-3 border-0">Created At </th>
                           <th className="pt-3 pb-3 border-0">Last Modified</th>
                         </tr>
@@ -112,16 +112,9 @@ export default function Role() {
                               {role.name}
                             </th>
                             <td className="pt-3">{role.description || '-'}</td>
-                            <td className="pt-3">
-                              {role.user_type?.charAt(0).toUpperCase() +
-                                role.user_type?.slice(1).replace(/_/g, ' ')}
-                            </td>
-                            <td className="pt-3">
-                              {role.created_at.replace('T', ' ').replace('Z', ' ').slice(0, 19)}
-                            </td>
-                            <td className="pt-3">
-                              {role.updated_at.replace('T', ' ').replace('Z', ' ').slice(0, 19)}
-                            </td>
+
+                            <td className="pt-3">{formatdate(role.created_at)}</td>
+                            <td className="pt-3">{formatdate(role.updated_at)}</td>
 
                             <td>
                               <Dropdown key={role.id}>
