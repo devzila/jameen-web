@@ -22,6 +22,7 @@ export default function EditRoles({ roleId }) {
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(true)
   const [errors, setErrors] = useState(false)
+  const [privileges_data, setPrivileges_data] = useState({})
 
   const { register, handleSubmit, control, watch, reset, setValue } = useForm()
   const { get, put, response } = useFetch()
@@ -45,6 +46,9 @@ export default function EditRoles({ roleId }) {
         setValue('privileges.maintenance.create', initialroles.data.privileges.maintenance.create)
         setValue('privileges.maintenance.delete', initialroles.data.privileges.maintenance.delete)
         setValue('privileges.settings.manage', initialroles.data.privileges.settings.manage)
+        if (initialroles.data.privileges) {
+          setPrivileges_data(initialroles.data.privileges)
+        }
       }
     } else {
       setErrors(true)
@@ -99,9 +103,6 @@ export default function EditRoles({ roleId }) {
         </CModalHeader>
         <CModalBody>
           <CContainer>
-            <p className="text-center display-6" style={{ color: '#00bfcc' }}>
-              JAMEEN
-            </p>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
                 <Col className="pr-1 mt-3" md="12">
@@ -133,102 +134,34 @@ export default function EditRoles({ roleId }) {
               </CModalTitle>
 
               <Row>
-                <Col md="6">
-                  <div className="card" style={{ borderRadius: '0px' }}>
-                    <div className="card-header " style={{ backgroundColor: '#f3fbff' }}>
-                      User
+                {Object.entries(privileges_data).map(([outer_keys, outer_values]) => (
+                  <Col md="6" key={outer_keys}>
+                    <div className="card" style={{ borderRadius: '0px' }}>
+                      <div
+                        className="card-header"
+                        style={{ backgroundColor: '#f3fbff', textTransform: 'capitalize' }}
+                      >
+                        {outer_keys}
+                      </div>
+                      {Object.entries(outer_values).map(([inner_keys, inner_values]) => (
+                        <div key={inner_keys} className="card-body p-1">
+                          <ul className="list-group list-group-flush">
+                            <li className="list-group-item" style={{ textTransform: 'capitalize' }}>
+                              {inner_keys.replace(/_/g, ' ')}
+                              <label className="checkbox">
+                                <input
+                                  type="checkbox"
+                                  {...register(`privileges.${outer_keys}.${inner_keys}`)}
+                                />
+                                <span className="default"></span>
+                              </label>
+                            </li>
+                          </ul>
+                        </div>
+                      ))}
                     </div>
-                    <div className="card-body">
-                      <ul className="list-group list-group-flush">
-                        <li className="list-group-item ">
-                          View
-                          <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.users.view')} />
-                            <span className="default"></span>
-                          </label>
-                        </li>
-                        <li className="list-group-item">
-                          Create
-                          <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.users.create')} />
-                            <span className="primary"></span>
-                          </label>
-                        </li>
-                        <li className="list-group-item">
-                          Delete
-                          <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.users.delete')} />
-                            <span className="success"></span>
-                          </label>
-                        </li>
-                        <li className="list-group-item">
-                          Update
-                          <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.users.update')} />
-                            <span className="info"></span>
-                          </label>
-                        </li>
-                        <li className="list-group-item">
-                          Add Notes
-                          <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.users.add_notes')} />
-                            <span className="warning"></span>
-                          </label>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </Col>
-                <Col className="" md="6">
-                  <div className="card" style={{ borderRadius: '0px' }}>
-                    <div className="card-header" style={{ backgroundColor: '#f3fbff' }}>
-                      Maintenance
-                    </div>
-                    <div className="card-body">
-                      <ul className="list-group list-group-flush">
-                        <li className="list-group-item">
-                          View
-                          <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.maintenance.view')} />
-                            <span className="default"></span>
-                          </label>
-                        </li>
-                        <li className="list-group-item">
-                          Create
-                          <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.maintenance.create')} />
-                            <span className=""></span>
-                          </label>
-                        </li>
-                        <li className="list-group-item">
-                          Delete
-                          <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.maintenance.delete')} />
-                            <span className="success"></span>
-                          </label>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </Col>
-                <Col md="6">
-                  <div className="card mt-1" style={{ borderRadius: '0px' }}>
-                    <div className="card-header " style={{ backgroundColor: '#f3fbff' }}>
-                      Setting
-                    </div>
-                    <div className="card-body">
-                      <ul className="list-group list-group-flush">
-                        <li className="list-group-item">
-                          Manage
-                          <label className="checkbox">
-                            <input type="checkbox" {...register('privileges.settings.manage')} />
-                            <span className="default"></span>
-                          </label>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </Col>
+                  </Col>
+                ))}
               </Row>
 
               <div className="text-center">

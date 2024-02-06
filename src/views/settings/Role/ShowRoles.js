@@ -20,6 +20,7 @@ export default function ShowRoles({ roleId }) {
   const [visible, setVisible] = useState(false)
   const [role, setRole] = useState([])
   const { get, response } = useFetch()
+  const [privileges_data, setPrivileges_data] = useState({})
 
   const renderIcon = (condition) =>
     condition ? <CIcon icon={cilCheck} size="xl" /> : <CIcon icon={cilX} size="xl" />
@@ -33,6 +34,7 @@ export default function ShowRoles({ roleId }) {
 
     if (response.ok) {
       setRole(api.data)
+      setPrivileges_data(api.data.privileges)
     }
   }
   function handleclose() {
@@ -69,9 +71,6 @@ export default function ShowRoles({ roleId }) {
         </CModalHeader>
         <CModalBody>
           <CContainer>
-            <p className="text-center display-6" style={{ color: '#00bfcc' }}>
-              JAMEEN
-            </p>
             <div className="container bootstrap snippets bootdey">
               <div className="panel-body inf-content">
                 <div className="row">
@@ -128,96 +127,40 @@ export default function ShowRoles({ roleId }) {
                     </div>
                   </div>
                 </div>
-                <Row>
-                  <CModalTitle className="pr-1 mt-3" id="StaticBackdropExampleLabel">
-                    Privileges
-                  </CModalTitle>
 
-                  <Col className="pr-3 mt-1" md="6">
-                    <div className="card" style={{ margin: '20px ' }}>
-                      <div className="card-header p-3">User</div>
-                      <div className="card-body">
-                        <ul className="list-group list-group-flush">
-                          <li className="list-group-item ">
-                            View
-                            <p className="checkbox">{renderIcon(role?.privileges?.users?.view)}</p>
-                          </li>
-                          <li className="list-group-item">
-                            Create
-                            <p className="checkbox">
-                              {renderIcon(role?.privileges?.users?.create)}
-                            </p>
-                          </li>
-                          <li className="list-group-item">
-                            Delete
-                            <p className="checkbox">
-                              {renderIcon(role?.privileges?.users?.delete)}
-                            </p>
-                          </li>
-                          <li className="list-group-item">
-                            Update
-                            <p className="checkbox">
-                              {renderIcon(role?.privileges?.users?.update)}
-                            </p>
-                          </li>
-                          <li className="list-group-item">
-                            Add Notes
-                            <p className="checkbox">
-                              {renderIcon(role?.privileges?.users?.add_notes)}
-                            </p>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </Col>
-                  <Col md="6" className="mt-1">
-                    <div className="card" style={{ margin: '20px ' }}>
-                      <div className="card-header p-3">Maintenance</div>
-                      <div className="card-body">
-                        <ul className="list-group list-group-flush">
-                          <li className="list-group-item">
-                            View
-                            <p className="checkbox">
-                              {renderIcon(role?.privileges?.maintenance?.view)}
-                            </p>
-                          </li>
-                          <li className="list-group-item">
-                            Create
-                            <p className="checkbox">
-                              {renderIcon(role?.privileges?.maintenance?.create)}
-                            </p>
-                          </li>
-                          <li className="list-group-item">
-                            Delete
-                            <p className="checkbox">
-                              {renderIcon(role?.privileges?.maintenance?.delete)}
-                            </p>
-                          </li>
-                          <div className="m-4 list-group-item">
-                            <label>
-                              <span className=" default"></span>
-                            </label>
+                <CModalTitle className="pr-1 mt-3" id="StaticBackdropExampleLabel">
+                  Privileges
+                </CModalTitle>
+
+                <Row>
+                  {Object.entries(privileges_data).map(([outer_keys, outer_values]) => (
+                    <Col md="6" key={outer_keys}>
+                      <div className="card mt-1" style={{ borderRadius: '0px' }}>
+                        <div
+                          className="card-header"
+                          style={{ backgroundColor: '#f3fbff', textTransform: 'capitalize' }}
+                        >
+                          {outer_keys}
+                        </div>
+                        {Object.entries(outer_values).map(([inner_keys, inner_values]) => (
+                          <div key={inner_keys} className="card-body p-1">
+                            <ul className="list-group list-group-flush">
+                              <li
+                                className="list-group-item"
+                                style={{ textTransform: 'capitalize' }}
+                              >
+                                {inner_keys.replace(/_/g, ' ')}
+
+                                <p className="checkbox">{renderIcon(outer_keys.inner_keys)}</p>
+                              </li>
+                            </ul>
                           </div>
-                        </ul>
+                        ))}
                       </div>
-                    </div>
-                  </Col>
-                  <Col>
-                    <div className="card" style={{ margin: '20px ' }}>
-                      <div className="card-header p-3">Settings</div>
-                      <div className="card-body">
-                        <ul className="list-group list-group-flush">
-                          <li className="list-group-item">
-                            Manage
-                            <p className="checkbox">
-                              {renderIcon(role?.privileges?.settings?.manage)}
-                            </p>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </Col>
+                    </Col>
+                  ))}
                 </Row>
+
                 <div className="text-center">
                   <CModalFooter>
                     <CButton color="secondary" onClick={() => setVisible(false)}>
