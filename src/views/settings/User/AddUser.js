@@ -17,7 +17,7 @@ import {
 
 export default function UserForm() {
   const [visible, setVisible] = useState(false)
-  const [imageView, setImageView] = useState('https://bootdey.com/img/Content/avatar/avatar7.png')
+  const [imageView, setImageView] = useState('')
   const [properties_data, setProperties_data] = useState([])
   const [roles_data, setRoles_data] = useState([])
 
@@ -28,6 +28,7 @@ export default function UserForm() {
     const api = await get('/v1/admin/roles')
     if (response.ok) {
       setRoles_data(api.data)
+      console.log(api)
     }
   }
 
@@ -130,7 +131,9 @@ export default function UserForm() {
                     }}
                     title="Avatar"
                     className="img-circle img-thumbnail isTooltip  "
-                    src={imageView}
+                    src={
+                      imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                    }
                     data-original-title="Usuario"
                   />
                 </div>

@@ -149,7 +149,7 @@ export default function ShowRoles({ roleId }) {
                             <li className="list-group-item" style={{ textTransform: 'capitalize' }}>
                               {inner_keys.replace(/_/g, ' ')}
 
-                              <p className="checkbox">{renderIcon(outer_keys.inner_keys)}</p>
+                              <p className="checkbox">{renderIcon(inner_values)}</p>
                             </li>
                           </ul>
                         </div>
