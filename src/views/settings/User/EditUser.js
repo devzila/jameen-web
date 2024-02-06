@@ -15,14 +15,12 @@ import {
   CContainer,
 } from '@coreui/react'
 import { Button, Form, Row, Col } from 'react-bootstrap'
-import CIcon from '@coreui/icons-react'
-import { cilX } from '@coreui/icons'
 
 //function
 
 export default function EditUser({ userId }) {
   const [imageView, setImageView] = useState(null)
-  const { get, put, response } = useFetch()
+  const { get, put, patch, response } = useFetch()
 
   const [visible, setVisible] = useState(false)
   const { register, handleSubmit, setValue, control } = useForm()
@@ -121,13 +119,10 @@ export default function EditUser({ userId }) {
   //Form submit ,post
   async function onSubmit(data) {
     const assigned_properties_data = data?.property_ids.map((element) => element.value)
-    if (imageView) {
-      const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
-    } else {
-      const body = { ...data, property_ids: assigned_properties_data }
-    }
+    console.log(data)
+    const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
 
-    await put(`/v1/admin/users/${userId}`, { user: body })
+    await patch(`/v1/admin/users/${userId}`, { user: body })
     if (response.ok) {
       toast('User Data Edited Successfully')
       setVisible(!visible)

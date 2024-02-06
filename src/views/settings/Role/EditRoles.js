@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import Select from 'react-select'
+import Select, { NonceProvider } from 'react-select'
 import PropTypes from 'prop-types'
 import '../../../scss/_roles.scss'
 
@@ -60,7 +60,6 @@ export default function EditRoles({ roleId }) {
     const api = await put(`/v1/admin/roles/${roleId}`, { role: data })
     if (response.ok) {
       toast('Roles Edited Successfully')
-      reset()
 
       setVisible(!visible)
     } else {
@@ -129,14 +128,16 @@ export default function EditRoles({ roleId }) {
                   </Form.Group>
                 </Col>
               </Row>
-              <CModalTitle className="pr-1 mt-3" id="StaticBackdropExampleLabel">
+              <CModalTitle className="pr-1 my-3" id="StaticBackdropExampleLabel">
                 Privileges
               </CModalTitle>
 
               <Row>
-                <Col className="pr-3 mt-1" md="6">
-                  <div className="card" style={{ margin: '20px ' }}>
-                    <div className="card-header p-3">User</div>
+                <Col md="6">
+                  <div className="card" style={{ borderRadius: '0px' }}>
+                    <div className="card-header " style={{ backgroundColor: '#f3fbff' }}>
+                      User
+                    </div>
                     <div className="card-body">
                       <ul className="list-group list-group-flush">
                         <li className="list-group-item ">
@@ -178,9 +179,11 @@ export default function EditRoles({ roleId }) {
                     </div>
                   </div>
                 </Col>
-                <Col className="mt-1" md="6">
-                  <div className="card" style={{ margin: '20px ' }}>
-                    <div className="card-header p-3">Maintenance</div>
+                <Col className="" md="6">
+                  <div className="card" style={{ borderRadius: '0px' }}>
+                    <div className="card-header" style={{ backgroundColor: '#f3fbff' }}>
+                      Maintenance
+                    </div>
                     <div className="card-body">
                       <ul className="list-group list-group-flush">
                         <li className="list-group-item">
@@ -194,7 +197,7 @@ export default function EditRoles({ roleId }) {
                           Create
                           <label className="checkbox">
                             <input type="checkbox" {...register('privileges.maintenance.create')} />
-                            <span className="primary"></span>
+                            <span className=""></span>
                           </label>
                         </li>
                         <li className="list-group-item">
@@ -204,18 +207,15 @@ export default function EditRoles({ roleId }) {
                             <span className="success"></span>
                           </label>
                         </li>
-                        <div className="m-4 list-group-item">
-                          <label>
-                            <span className=" default"></span>
-                          </label>
-                        </div>
                       </ul>
                     </div>
                   </div>
                 </Col>
-                <Col>
-                  <div className="card" style={{ margin: '20px ' }}>
-                    <div className="card-header p-3">Setting</div>
+                <Col md="6">
+                  <div className="card mt-1" style={{ borderRadius: '0px' }}>
+                    <div className="card-header " style={{ backgroundColor: '#f3fbff' }}>
+                      Setting
+                    </div>
                     <div className="card-body">
                       <ul className="list-group list-group-flush">
                         <li className="list-group-item">

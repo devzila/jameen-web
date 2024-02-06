@@ -26,7 +26,7 @@ export default function ShowRoles({ roleId }) {
 
   useEffect(() => {
     getUserData()
-  }, [])
+  }, [visible])
   async function getUserData() {
     let api = await get(`/v1/admin/roles/${roleId}`)
     setRole(api.data)
@@ -34,6 +34,9 @@ export default function ShowRoles({ roleId }) {
     if (response.ok) {
       setRole(api.data)
     }
+  }
+  function handleclose() {
+    setVisible(!visible)
   }
 
   return (
