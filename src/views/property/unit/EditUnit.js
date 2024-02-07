@@ -33,17 +33,18 @@ export default function Edit({ unitId, after_submit }) {
     try {
       const api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
       if (response.ok) {
-        console.log(unit.data)
+        console.log(api.data)
         const unit = api.data?.unit || {}
         setUnitData(unit)
-        setValue('unit_no', unit.unit_no || '')
-        setValue('bedrooms_number', unit.bedrooms_number || '')
-        setValue('bathrooms_number', unit.bathrooms_number || '')
-        setValue('year_built', unit.year_built || '')
-        setValue('status', unit.status || '')
-        setValue('electricity_account_number', unit.electricity_account_number || '')
-        setValue('water_account_number', unit.water_account_number || '')
-        setValue('internal_extension_number', unit.internal_extension_number || '')
+        setValue('unit_no', api.data.unit_no || '-')
+        setValue('bedrooms_number', api.data.bedrooms_number || '-')
+        setValue('bathrooms_number', api.data.bathrooms_number || '-')
+        setValue('year_built', api.data.year_built || '-')
+        setValue('status', api.data.status || '-')
+        setValue('electricity_account_number', api.data.electricity_account_number || '-')
+        setValue('water_account_number', api.data.water_account_number || '-')
+        setValue('internal_extension_number', api.data.internal_extension_number || '-')
+        setValue('unit_type_id', api.data.unit_type.id)
       } else {
         console.error(response)
       }

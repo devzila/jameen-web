@@ -148,7 +148,7 @@ function Unit() {
                                     <BsThreeDots />
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
-                                    <Edit unitd={unit.id} after_submit={refresh_data} />
+                                    <Edit unitId={unit.id} after_submit={refresh_data} />
                                     <NavLink
                                       style={{
                                         border: 'none',
