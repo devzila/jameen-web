@@ -31,7 +31,7 @@ export default function Role() {
     let endpoint = `/v1/admin/roles?page=${currentPage}`
 
     if (searchKeyword) {
-      endpoint += `&q[name_eq]=${searchKeyword}`
+      endpoint += `&q[name_cont]=${searchKeyword}`
     }
     let initialroles = await get(endpoint)
 
