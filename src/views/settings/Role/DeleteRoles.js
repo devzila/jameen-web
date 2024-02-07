@@ -14,7 +14,7 @@ import {
   CContainer,
 } from '@coreui/react'
 
-export default function DeleteRoles({ roleId }) {
+export default function DeleteRoles({ roleId, after_submit }) {
   const [visible, setVisible] = useState(false)
   const { delete: deleteReq, response } = useFetch()
 
@@ -22,6 +22,7 @@ export default function DeleteRoles({ roleId }) {
     const api = await deleteReq(`/v1/admin/roles/${roleId}`)
     if (response.ok) {
       toast('Role Deleted: Operation Successful')
+      after_submit()
       setVisible(!visible)
     } else {
       toast(response.data?.message)
@@ -95,4 +96,5 @@ export default function DeleteRoles({ roleId }) {
 
 DeleteRoles.propTypes = {
   roleId: PropTypes.number,
+  after_submit: PropTypes.func,
 }

@@ -14,8 +14,9 @@ import {
   CModalTitle,
   CContainer,
 } from '@coreui/react'
+import { propTypes } from 'react-bootstrap/esm/Image'
 
-export default function AddRoles() {
+export default function AddRoles({ after_submit }) {
   const [visible, setVisible] = useState(false)
 
   const { register, handleSubmit, control, reset } = useForm()
@@ -26,6 +27,7 @@ export default function AddRoles() {
     await post(`/v1/admin/roles`, { role: data })
     if (response.ok) {
       toast('New Role Added: Operation Successful')
+      after_submit()
       reset()
 
       setVisible(!visible)
@@ -125,4 +127,8 @@ export default function AddRoles() {
       </CModal>
     </div>
   )
+}
+
+AddRoles.propTypes = {
+  after_submit: propTypes.func,
 }

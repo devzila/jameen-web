@@ -18,7 +18,7 @@ import {
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
-export default function EditRoles({ roleId }) {
+export default function EditRoles({ roleId, after_submit }) {
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(true)
   const [errors, setErrors] = useState(false)
@@ -64,6 +64,7 @@ export default function EditRoles({ roleId }) {
     const api = await put(`/v1/admin/roles/${roleId}`, { role: data })
     if (response.ok) {
       toast('Roles Edited Successfully')
+      after_submit()
 
       setVisible(!visible)
     } else {
@@ -197,4 +198,5 @@ export default function EditRoles({ roleId }) {
 
 EditRoles.propTypes = {
   roleId: PropTypes.number,
+  after_submit: PropTypes.func,
 }

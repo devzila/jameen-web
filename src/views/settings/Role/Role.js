@@ -56,6 +56,10 @@ export default function Role() {
     setCurrentPage(e.selected + 1)
   }
 
+  const refresh_data = () => {
+    loadInitialroles()
+  }
+
   return (
     <div>
       <section style={{ width: '100%', padding: '0px' }}>
@@ -79,7 +83,7 @@ export default function Role() {
                   Search
                 </button>
               </div>
-              <AddRoles />
+              <AddRoles after_submit={refresh_data} />
             </div>
           </CContainer>
         </CNavbar>
@@ -122,9 +126,9 @@ export default function Role() {
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  <EditRoles roleId={role.id} />
+                                  <EditRoles roleId={role.id} after_submit={refresh_data} />
                                   <ShowRoles roleId={role.id} />
-                                  <DeleteRoles roleId={role.id} />
+                                  <DeleteRoles roleId={role.id} after_submit={refresh_data} />
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

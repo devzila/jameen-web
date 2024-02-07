@@ -126,6 +126,7 @@ export default function EditUser({ userId }) {
     if (response.ok) {
       toast('User Data Edited Successfully')
       setVisible(!visible)
+      after_submit()
     } else {
       toast(response.data?.message)
     }
@@ -351,4 +352,5 @@ export default function EditUser({ userId }) {
 
 EditUser.propTypes = {
   userId: PropTypes.number.isRequired,
+  after_submit: PropTypes.function,
 }
