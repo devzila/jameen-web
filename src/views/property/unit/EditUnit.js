@@ -33,9 +33,7 @@ export default function Edit({ unitId, after_submit }) {
     try {
       const api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
       if (response.ok) {
-        console.log(api.data)
-        const unit = api.data?.unit || {}
-        setUnitData(unit)
+        setUnitData(api.data)
         setValue('unit_no', api.data.unit_no || '-')
         setValue('bedrooms_number', api.data.bedrooms_number || '-')
         setValue('bathrooms_number', api.data.bathrooms_number || '-')
