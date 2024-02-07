@@ -18,7 +18,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 
 //function
 
-export default function EditUser({ userId }) {
+export default function EditUser({ userId, after_submit }) {
   const [imageView, setImageView] = useState(null)
   const { get, put, patch, response } = useFetch()
 
@@ -352,5 +352,5 @@ export default function EditUser({ userId }) {
 
 EditUser.propTypes = {
   userId: PropTypes.number.isRequired,
-  after_submit: PropTypes.function,
+  after_submit: PropTypes.func,
 }

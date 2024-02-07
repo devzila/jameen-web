@@ -49,6 +49,10 @@ function Index() {
     setCurrentPage(e.selected + 1)
   }
 
+  const refresh_data = () => {
+    loadInitialusers()
+  }
+
   return (
     <div>
       <section style={{ width: '100%', padding: '0px' }}>
@@ -72,7 +76,7 @@ function Index() {
                   Search
                 </button>
               </div>
-              <AddUser />
+              <AddUser after_submit={refresh_data} />
             </div>
           </CContainer>
         </CNavbar>
@@ -117,7 +121,7 @@ function Index() {
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  <EditUser userId={user.id} />
+                                  <EditUser userId={user.id} after_submit={refresh_data} />
                                   <ShowUser userId={user.id} />
                                 </Dropdown.Menu>
                               </Dropdown>

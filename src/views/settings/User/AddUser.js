@@ -4,6 +4,7 @@ import Select from 'react-select'
 import { toast } from 'react-toastify'
 import { useForm, Controller } from 'react-hook-form'
 import { Button, Form, Row, Col } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
 import {
   CButton,
@@ -15,7 +16,7 @@ import {
   CContainer,
 } from '@coreui/react'
 
-export default function UserForm() {
+export default function UserForm({ after_submit }) {
   const [visible, setVisible] = useState(false)
   const [imageView, setImageView] = useState('')
   const [properties_data, setProperties_data] = useState([])
@@ -28,6 +29,7 @@ export default function UserForm() {
     const api = await get('/v1/admin/roles')
     if (response.ok) {
       setRoles_data(api.data)
+
       console.log(api)
     }
   }
@@ -83,6 +85,7 @@ export default function UserForm() {
     await post(`/v1/admin/users`, { user: body })
     if (response.ok) {
       toast('user added Successfully')
+      after_submit()
       reset()
 
       setVisible(!visible)
@@ -300,4 +303,8 @@ export default function UserForm() {
       </CModal>
     </div>
   )
+}
+
+UserForm.propTypes = {
+  after_submit: PropTypes.func,
 }
