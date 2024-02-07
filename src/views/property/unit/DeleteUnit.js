@@ -5,17 +5,17 @@ import { toast } from 'react-toastify'
 import { Button, Modal } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
-function Delete({ unitid }) {
+function Delete({ unitId, after_submit }) {
   const { propertyId } = useParams()
   const { del, response } = useFetch()
   const [visible, setVisible] = useState(false)
   const navigate = useNavigate()
 
   const handleDelete = async () => {
-    const apiResponse = await del(`/v1/admin/premises/properties/${propertyId}/units/${unitid.id}`)
-    if (apiResponse.ok) {
+    const apiResponse = await del(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
+    if (response.ok) {
       toast('Unit deleted successfully')
-      navigate(`/properties/${propertyId}/units`)
+      after_submit()
     } else {
       toast(response.data?.message)
     }
@@ -58,9 +58,9 @@ function Delete({ unitid }) {
   )
 }
 Delete.propTypes = {
-  unitid: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-  }).isRequired,
+  unitId: PropTypes.number,
+
+  after_submit: PropTypes.func,
 }
 
 export default Delete

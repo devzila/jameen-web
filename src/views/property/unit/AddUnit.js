@@ -5,6 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
+import PropTypes from 'prop-types'
+
 import {
   CButton,
   CModal,
@@ -15,7 +17,7 @@ import {
   CContainer,
 } from '@coreui/react'
 
-function Add() {
+function Add({ after_submit }) {
   const { register, handleSubmit, control } = useForm()
   const { get, post, response, api } = useFetch()
 
@@ -99,6 +101,7 @@ function Add() {
     if (response.ok) {
       navigate(`/properties/${propertyId}/units`)
       setVisible(!visible)
+      after_submit()
       toast('Unit added successfully')
     } else {
       setErrors(response.data.errors)
@@ -306,3 +309,7 @@ function Add() {
 }
 
 export default Add
+
+Add.propTypes = {
+  after_submit: PropTypes.func,
+}

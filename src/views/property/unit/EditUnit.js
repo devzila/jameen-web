@@ -4,6 +4,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { useNavigate, useParams } from 'react-router-dom'
 import Select from 'react-select'
+import PropTypes from 'prop-types'
 import {
   CButton,
   CModal,
@@ -15,15 +16,13 @@ import {
 } from '@coreui/react'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
-export default function Edit(propsdata) {
+export default function Edit({ unitId, after_submit }) {
   const [visible, setVisible] = useState(false)
   const { register, handleSubmit, setValue, control } = useForm()
   const { propertyId } = useParams()
   const { get, put, response } = useFetch()
   const [unitData, setUnitData] = useState({})
   const [units_data, setUnits_data] = useState([])
-
-  const id = propsdata.unitid.id
 
   useEffect(() => {
     getUnitData()
@@ -32,8 +31,9 @@ export default function Edit(propsdata) {
 
   async function getUnitData() {
     try {
-      const api = await get(`/v1/admin/premises/properties/${propertyId}/units/${id}`)
+      const api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
       if (response.ok) {
+        console.log(unit.data)
         const unit = api.data?.unit || {}
         setUnitData(unit)
         setValue('unit_no', unit.unit_no || '')
@@ -68,9 +68,12 @@ export default function Edit(propsdata) {
   }
 
   async function onSubmit(data) {
-    const api = await put(`/v1/admin/premises/properties/${propertyId}/units/${id}`, { unit: data })
+    const api = await put(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`, {
+      unit: data,
+    })
     if (response.ok) {
       toast('Unit Data Edited Successfully')
+      after_submit()
       setVisible(false)
     } else {
       toast(response.data?.message || 'Failed to edit unit data')
@@ -244,4 +247,9 @@ export default function Edit(propsdata) {
       </div>
     </>
   )
+}
+
+Edit.propTypes = {
+  unitId: PropTypes.number,
+  after_submit: PropTypes.func,
 }

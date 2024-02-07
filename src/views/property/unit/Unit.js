@@ -58,7 +58,9 @@ function Unit() {
   const handlePageClick = (e) => {
     setCurrentPage(e.selected + 1)
   }
-
+  const refresh_data = () => {
+    loadInitialUnits()
+  }
   return (
     <>
       <div>
@@ -84,7 +86,7 @@ function Unit() {
                     Search
                   </button>
                 </div>
-                <Add />
+                <Add after_submit={refresh_data} />
               </div>
             </CContainer>
           </CNavbar>
@@ -146,7 +148,7 @@ function Unit() {
                                     <BsThreeDots />
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
-                                    <Edit unitid={{ id: `${unit.id}` }} />
+                                    <Edit unitd={unit.id} after_submit={refresh_data} />
                                     <NavLink
                                       style={{
                                         border: 'none',
@@ -159,7 +161,7 @@ function Unit() {
                                       Show
                                     </NavLink>
 
-                                    <Delete unitid={{ id: `${unit.id}` }} />
+                                    <Delete unitId={unit.id} after_submit={refresh_data} />
                                     {unit.status === 'unallotted' ? (
                                       <AllocateUnit unitId={unit.id} unitNo={unit.unit_no} />
                                     ) : null}
