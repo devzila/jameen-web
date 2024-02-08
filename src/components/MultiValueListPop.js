@@ -2,6 +2,7 @@ import React from 'react'
 import { CTooltip, CButton } from '@coreui/react'
 
 export default function MultiValueListPop(list) {
+  console.log(list)
   const list_values = list.prop.map((val) => val.name)
 
   return (

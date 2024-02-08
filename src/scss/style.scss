@@ -13,6 +13,9 @@ $enable-rtl: true;
 @import 'custom';
 
 * {
+  ::-webkit-scrollbar {
+    display: none;
+  }
   a {
     color: #00bfcc;
     text-decoration-line: none;

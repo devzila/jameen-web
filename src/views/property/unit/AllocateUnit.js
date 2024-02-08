@@ -22,7 +22,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
-export default function AllocateUnit({ unitId, unitNo }) {
+export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   const { register, handleSubmit, setValue, control, reset } = useForm()
   const { post, get, response } = useFetch()
   const [temp_base64, setTemp_base64] = useState([])
@@ -129,6 +129,7 @@ export default function AllocateUnit({ unitId, unitNo }) {
     if (response.ok) {
       toast('Unit Alloted : Operation Successful')
       reset()
+      after_submit()
       setSubmitLoader(false)
       setVisible(false)
       setTemp_base64([])
@@ -182,7 +183,9 @@ export default function AllocateUnit({ unitId, unitNo }) {
                 </Col>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>Resident</label>
+                    <label>
+                      Resident <small className="text-danger"> * </small>
+                    </label>
 
                     <Controller
                       name="resident_ids"
@@ -219,7 +222,6 @@ export default function AllocateUnit({ unitId, unitNo }) {
                 <Form.Group>
                   <label>Notes</label>
                   <Form.Control
-                    required
                     as="textarea"
                     rows={3}
                     placeholder="Notes"
@@ -260,7 +262,6 @@ export default function AllocateUnit({ unitId, unitNo }) {
                     <Form.Group>
                       <label>Description</label>
                       <Form.Control
-                        required
                         placeholder="Description"
                         type="text"
                         {...register(`documents_attributes.${index}.description`)}
@@ -332,4 +333,5 @@ export default function AllocateUnit({ unitId, unitNo }) {
 AllocateUnit.propTypes = {
   unitId: PropTypes.number,
   unitNo: PropTypes.number,
+  after_submit: PropTypes.func,
 }

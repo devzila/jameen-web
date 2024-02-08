@@ -155,7 +155,7 @@ function Add({ after_submit }) {
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>BedRoom-No</label>
+                    <label>Bedroom No.</label>
 
                     <Form.Control
                       defaultValue={unitData.bedrooms_number}
@@ -168,7 +168,7 @@ function Add({ after_submit }) {
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>BathRoom-Number</label>
+                    <label>Bathroom No.</label>
                     <Form.Control
                       defaultValue={unitData.bathrooms_number}
                       type="integer"
@@ -218,7 +218,7 @@ function Add({ after_submit }) {
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Electricity Account-No</label>
+                    <label>Electricity Account No.</label>
 
                     <Form.Control
                       defaultValue={unitData.electricity_account_number}
@@ -231,7 +231,7 @@ function Add({ after_submit }) {
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Water Account-No</label>
+                    <label>Water Account No.</label>
                     <Form.Control
                       defaultValue={unitData.water_account_number}
                       type="string"
@@ -241,7 +241,7 @@ function Add({ after_submit }) {
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Internal Extension number</label>
+                    <label>Internal Extension No.</label>
                     <Form.Control
                       defaultValue={unitData.internal_extension_number}
                       type="string"
@@ -252,7 +252,7 @@ function Add({ after_submit }) {
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>
-                      Building{' '}
+                      Building
                       <small className="text-danger"> *{errors ? errors.building_id : null} </small>
                     </label>
 

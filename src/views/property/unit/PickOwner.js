@@ -1,26 +1,45 @@
-function PickOwner(resObj) {
-  console.log(resObj)
-  const ownerMatch = resObj?.filter((curRes) => {
-    return curRes.association_type == 'owner'
-  })
-  const ownerName =
-    ownerMatch?.length > 0
-      ? ownerMatch[0].resident.first_name + ' ' + ownerMatch[0].resident.last_name
-      : ''
+import { CPopover, CButton } from '@coreui/react'
+import React from 'react'
 
-  const residentMatch = resObj?.filter((curRes) => {
-    return curRes.association_type == 'primary_resident'
-  })
-  const residentName =
-    residentMatch?.length > 0
-      ? residentMatch[0].resident.first_name + ' ' + residentMatch[0].resident.last_name
-      : ''
+function PickOwner(contract) {
+  const ownerNames = contract
+    ?.flatMap((x) =>
+      x.contract_members
+        ?.filter((member) => member.member_type === 'owner')
+        .map((x) => x.member.name),
+    )
+    .join(', ')
 
-  if (ownerName == residentName) {
-    return ownerName
-  } else {
-    return ownerName + '/' + residentName
-  }
+  const co_ownerNames = contract
+    ?.flatMap((x) =>
+      x.contract_members
+        ?.filter((member) => member.member_type === 'co_owner')
+        .map((x) => x.member.name),
+    )
+    .join(', ')
+  console.log(co_ownerNames)
+  const result = `Owner: ${ownerNames || 'NA'} \n Residents: ${co_ownerNames || '--'}`
+
+  return (
+    <div>
+      <CPopover
+        style={{ '--cui-popover-border-radius': '0px', '--cui-popover-padding-y': '25px' }}
+        content={result}
+        placement="right"
+        trigger={['hover', 'focus']}
+      >
+        <span className="d-inline-block" tabIndex={0}>
+          <CButton color="white">
+            {(ownerNames ? ownerNames : '-') +
+              '/' +
+              (co_ownerNames && co_ownerNames.length > 1
+                ? co_ownerNames.split(',')[0] + ',...'
+                : '-')}
+          </CButton>
+        </span>
+      </CPopover>
+    </div>
+  )
 }
 
 export default PickOwner

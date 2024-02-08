@@ -16,6 +16,7 @@ import Show from './ShowUnitModule/ShowUnit'
 import Delete from './DeleteUnit'
 import PickOwner from './PickOwner'
 import AllocateUnit from './AllocateUnit'
+import MultiValueListPop from 'src/components/MultiValueListPop'
 
 function Unit() {
   const { get, response, error } = useFetch()
@@ -33,7 +34,7 @@ function Unit() {
 
   useEffect(() => {
     loadInitialUnits()
-  }, [currentPage, searchKeyword, refresh])
+  }, [currentPage])
 
   async function loadInitialUnits() {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`
@@ -61,6 +62,24 @@ function Unit() {
   const refresh_data = () => {
     loadInitialUnits()
   }
+
+  function status_color(status) {
+    switch (status) {
+      case 'unallotted':
+        return 'rgb(0, 128, 0)'
+        break
+      case 'vacant':
+        return 'rgba(0, 120, 0,0.7)'
+        break
+      case 'occupied':
+        return 'grey'
+        break
+      default:
+        return 'white'
+    }
+  }
+
+  console.log(status_color('occupied'))
   return (
     <>
       <div>
@@ -105,42 +124,50 @@ function Unit() {
                           }}
                         >
                           <tr>
-                            <th className="pt-3 pb-3 border-0">Unit Number</th>
-                            <th className="pt-3 pb-3 border-0">BedRoom Number</th>
-                            <th className="pt-3 pb-3 border-0">BathRoom Number</th>
-                            <th className="pt-3 pb-3 border-0">Year Built</th>
-                            <th className="pt-3 pb-3 border-0">Owner/Resident</th>
-                            <th className="pt-3 pb-3 border-0">Status</th>
-                            <th className="pt-3 pb-3 border-0">Action </th>
+                            <th className="pt-3 pb-3 border-0  ">Unit Number</th>
+                            <th className="pt-3 pb-3 border-0  ">Bed/Bath Room </th>
+                            <th className="pt-3 pb-3 border-0  ">Year Built</th>
+                            <th className="pt-3 pb-3 border-0  ">Owner/Resident</th>
+                            <th className="pt-3 pb-3 border-0  ">Status</th>
+                            <th className="pt-3 pb-3 border-0 text-center ">Action </th>
                           </tr>
                         </thead>
 
                         <tbody>
                           {units.map((unit) => (
                             <tr key={unit.id}>
-                              <th>
-                                {console.log(unit)}
+                              <td className=" ">
                                 <NavLink
-                                  style={{
-                                    border: 'none',
-                                    color: '#00bfcc',
-                                    marginLeft: '35%',
-                                    textDecorationLine: 'none',
-                                  }}
+                                  className="mx-2"
                                   to={`/properties/${propertyId}/units/${unit.id}`}
                                 >
                                   {unit.unit_no}
                                 </NavLink>
-                              </th>
+                              </td>
 
-                              <td className="pt-3">{unit.bedrooms_number}</td>
-                              <td className="pt-3">{unit.bathrooms_number}</td>
-                              <td className="pt-3">{unit.year_built}</td>
-                              <td className="pt-3">{PickOwner(unit.members_units)}</td>
-                              <td className="pt-3">{unit.status}</td>
+                              <td className="pt-3  ">
+                                {unit.bedrooms_number + '  /  ' + unit.bathrooms_number}
+                              </td>
+                              <td className="pt-3  ">{unit.year_built}</td>
+                              <td className="pt-1   ">{PickOwner(unit.running_contracts)}</td>
+                              <td className="pt-1 ">
+                                <button
+                                  className="text-capitalize text-center "
+                                  style={{
+                                    backgroundColor: `${status_color(unit.status)}`,
+                                    border: '0px',
+                                    padding: '8px',
+                                    borderRadius: '10px',
+                                    color: 'white',
+                                    cursor: 'default',
+                                  }}
+                                >
+                                  {unit.status}
+                                </button>
+                              </td>
 
                               <td>
-                                <Dropdown key={unit.id}>
+                                <Dropdown key={unit.id} className=" text-center">
                                   <Dropdown.Toggle
                                     as={CustomDivToggle}
                                     style={{ cursor: 'pointer' }}
@@ -162,8 +189,13 @@ function Unit() {
                                     </NavLink>
 
                                     <Delete unitId={unit.id} after_submit={refresh_data} />
+
                                     {unit.status === 'unallotted' ? (
-                                      <AllocateUnit unitId={unit.id} unitNo={unit.unit_no} />
+                                      <AllocateUnit
+                                        unitId={unit.id}
+                                        unitNo={unit.unit_no}
+                                        after_submit={refresh_data}
+                                      />
                                     ) : null}
                                   </Dropdown.Menu>
                                 </Dropdown>
