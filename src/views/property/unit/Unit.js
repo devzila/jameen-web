@@ -79,7 +79,6 @@ function Unit() {
     }
   }
 
-  console.log(status_color('occupied'))
   return (
     <>
       <div>
@@ -152,14 +151,15 @@ function Unit() {
                               <td className="pt-1   ">{PickOwner(unit.running_contracts)}</td>
                               <td className="pt-1 ">
                                 <button
-                                  className="text-capitalize text-center "
+                                  className=" text-center "
                                   style={{
                                     backgroundColor: `${status_color(unit.status)}`,
                                     border: '0px',
-                                    padding: '8px',
-                                    borderRadius: '10px',
+                                    padding: '1px',
+                                    borderRadius: '6px',
                                     color: 'white',
                                     cursor: 'default',
+                                    width: '120px',
                                   }}
                                 >
                                   {unit.status}
