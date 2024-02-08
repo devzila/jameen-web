@@ -46,7 +46,7 @@ export default function Showunit(propsd) {
     <>
       <CRow>
         <CCol md="4">
-          <CCard className=" p-4 mx-3 my-3" style={{ border: '0px' }}>
+          <CCard className=" p-3 mx-3 my-3" style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -58,7 +58,7 @@ export default function Showunit(propsd) {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Name
                 <CCardText
                   className="fw-normal"
@@ -67,7 +67,7 @@ export default function Showunit(propsd) {
                   {unit?.property?.name || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Bedroom Number
                 <CCardText
                   className="fw-normal"
@@ -78,7 +78,7 @@ export default function Showunit(propsd) {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Bathroom Number
                 <CCardText
                   className="fw-normal"
@@ -87,7 +87,7 @@ export default function Showunit(propsd) {
                   {unit?.bathrooms_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Year Built
                 <CCardText
                   className="fw-normal"
@@ -115,7 +115,7 @@ export default function Showunit(propsd) {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Name
                 <CCardText
                   className="fw-normal"
@@ -124,7 +124,7 @@ export default function Showunit(propsd) {
                   {unit?.building?.name || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Description
                 <CCardText
                   className="fw-normal"
@@ -135,7 +135,7 @@ export default function Showunit(propsd) {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Bathroom Number
                 <CCardText
                   className="fw-normal"
@@ -144,7 +144,7 @@ export default function Showunit(propsd) {
                   {unit?.bathrooms_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Year Built
                 <CCardText
                   className="fw-normal"
@@ -157,7 +157,7 @@ export default function Showunit(propsd) {
           </CCard>
         </CCol>
         <CCol md="8">
-          <CCard className=" p-4 my-3 me-3" style={{ border: '0px' }}>
+          <CCard className=" p-3 my-3 me-3" style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -169,7 +169,7 @@ export default function Showunit(propsd) {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Name
                 <CCardText
                   className="fw-normal"
@@ -178,7 +178,7 @@ export default function Showunit(propsd) {
                   {unit?.unit_type?.name || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Use Type
                 <CCardText
                   className="fw-normal"
@@ -188,7 +188,7 @@ export default function Showunit(propsd) {
                 </CCardText>
               </CCol>
 
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Description
                 <CCardText
                   className="fw-normal"
@@ -199,7 +199,7 @@ export default function Showunit(propsd) {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Total Area (sq. ft.)
                 <CCardText
                   className="fw-normal"
@@ -208,7 +208,7 @@ export default function Showunit(propsd) {
                   {unit?.unit_type?.sqft || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Monthly Maintenance/sq. ft.
                 <CCardText
                   className="fw-normal"
@@ -217,7 +217,7 @@ export default function Showunit(propsd) {
                   {unit?.unit_type?.monthly_maintenance_amount_per_sqft || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Last Modified
                 <CCardText
                   className="fw-normal"
@@ -234,7 +234,7 @@ export default function Showunit(propsd) {
       {contract_info ? (
         <CRow>
           <CCol md="12">
-            <CCard className=" p-4 m-3" style={{ border: '0px' }}>
+            <CCard className=" p-3 m-3" style={{ border: '0px' }}>
               <CListGroupItem>
                 <CIcon
                   icon={freeSet.cilLineStyle}
@@ -246,7 +246,7 @@ export default function Showunit(propsd) {
                 <hr style={{ color: '#C8C2C0' }} />
               </CListGroupItem>
               <CRow className="">
-                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                   Contract Type
                   <CCardText
                     className="fw-normal"
@@ -255,7 +255,7 @@ export default function Showunit(propsd) {
                     {contract_info.contract_type || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                   Notes
                   <CCardText
                     className="fw-normal"
@@ -264,7 +264,7 @@ export default function Showunit(propsd) {
                     {contract_info?.notes || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                   Start Date
                   <CCardText
                     className="fw-normal"
@@ -273,7 +273,7 @@ export default function Showunit(propsd) {
                     {contract_info?.start_date || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                   End Date
                   <CCardText
                     className="fw-normal"
@@ -291,7 +291,7 @@ export default function Showunit(propsd) {
 
       <CRow>
         <CCol md="12">
-          <CCard className=" p-4 m-3" style={{ border: '0px' }}>
+          <CCard className=" p-3 m-3" style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilUser}
@@ -304,7 +304,7 @@ export default function Showunit(propsd) {
             </CListGroupItem>
             {member_info.map((member_) => (
               <CRow key={member_.member.id} className="">
-                <CCol className="p-4 mt-3 fw-light " style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light " style={{ color: '#00bfcc' }}>
                   Name
                   <CCardText
                     className="fw-normal"
@@ -319,7 +319,7 @@ export default function Showunit(propsd) {
                     {' ' + member_?.member.name || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                   Type
                   <CCardText
                     className="fw-normal"
@@ -328,7 +328,7 @@ export default function Showunit(propsd) {
                     {member_?.member_type.replace('_', ' ') || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                   Username
                   <CCardText className="fw-normal" style={{ color: 'black' }}>
                     {member_?.member.username}
@@ -344,7 +344,7 @@ export default function Showunit(propsd) {
 
       <CRow>
         <CCol md="12">
-          <CCard className=" p-4 m-3" style={{ border: '0px' }}>
+          <CCard className=" p-3 m-3" style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -357,7 +357,7 @@ export default function Showunit(propsd) {
             </CListGroupItem>
             {unit?.running_contracts?.[0]?.documents?.map((document) => (
               <CRow key={document.id} className="">
-                <CCol className="p-4 mt-3 fw-light " style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light " style={{ color: '#00bfcc' }}>
                   Name
                   <CCardText
                     className="fw-normal"
@@ -366,7 +366,7 @@ export default function Showunit(propsd) {
                     {document.name || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                   Description
                   <CCardText
                     className="fw-normal"
@@ -375,22 +375,14 @@ export default function Showunit(propsd) {
                     {document?.description || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light">
                   View
-                  <CCardText className="fw-normal ms-1" style={{ color: 'black' }}>
+                  <CCardText className="fw-normal ms-1" style={{ color: '#00bfcc' }}>
                     <CIcon
                       icon={freeSet.cilNotes}
                       size="xl"
                       onClick={() => window.open(document?.file, '_blank')}
                     />
-                  </CCardText>
-                </CCol>
-                <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
-                  Download
-                  <CCardText className="fw-normal ms-1" style={{ color: 'black' }}>
-                    <Link to="#" target="_self" download>
-                      <CIcon icon={freeSet.cilCloudDownload} size="xl" />
-                    </Link>
                   </CCardText>
                 </CCol>
               </CRow>
@@ -402,7 +394,7 @@ export default function Showunit(propsd) {
 
       <CRow>
         <CCol md="12">
-          <CCard className=" p-4 m-3" style={{ border: '0px' }}>
+          <CCard className=" p-3 m-3" style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -414,7 +406,7 @@ export default function Showunit(propsd) {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Electricity Account No.
                 <CCardText
                   className="fw-normal"
@@ -423,7 +415,7 @@ export default function Showunit(propsd) {
                   {unit?.electricity_account_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Water Account No.
                 <CCardText
                   className="fw-normal"
@@ -432,7 +424,7 @@ export default function Showunit(propsd) {
                   {unit?.water_account_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Internal Extension No.
                 <CCardText
                   className="fw-normal"
@@ -441,7 +433,7 @@ export default function Showunit(propsd) {
                   {unit?.internal_extension_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-4 mt-3 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Last Status Changed
                 <CCardText
                   className="fw-normal"

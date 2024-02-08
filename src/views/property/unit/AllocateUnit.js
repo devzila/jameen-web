@@ -184,7 +184,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>
-                      Resident <small className="text-danger"> * </small>
+                      Resident <small className="text-danger"> *</small>
                     </label>
 
                     <Controller
