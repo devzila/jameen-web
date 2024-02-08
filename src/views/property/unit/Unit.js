@@ -8,15 +8,15 @@ import { Row, Col, Dropdown } from 'react-bootstrap'
 import Paginate from '../../../components/Pagination'
 import { NavLink, Link } from 'react-router-dom'
 
-import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import { CNavbar, CContainer, CNavbarBrand, CCard } from '@coreui/react'
 import CustomDivToggle from '../../../components/CustomDivToggle'
 import Add from './AddUnit'
 import Edit from './EditUnit'
 import Show from './ShowUnitModule/ShowUnit'
 import Delete from './DeleteUnit'
-import PickOwner from './PickOwner'
+import PickOwner from './UnitFunctions/PickOwner'
 import AllocateUnit from './AllocateUnit'
-import MultiValueListPop from 'src/components/MultiValueListPop'
+import FilterAccordion from './UnitFunctions/FilterAccordioan'
 
 function Unit() {
   const { get, response, error } = useFetch()
@@ -87,7 +87,7 @@ function Unit() {
           <CNavbar expand="lg" colorScheme="light" className="bg-light">
             <CContainer fluid>
               <CNavbarBrand href="#">Unit</CNavbarBrand>
-              <div className="d-flex justify-content-end">
+              <div className="d-flex justify-content-end bg-light">
                 <div className="d-flex" role="search">
                   <input
                     onChange={(e) => setSearchKeyword(e.target.value)}
@@ -104,6 +104,7 @@ function Unit() {
                     Search
                   </button>
                 </div>
+                <FilterAccordion />
                 <Add after_submit={refresh_data} />
               </div>
             </CContainer>
@@ -124,7 +125,7 @@ function Unit() {
                         >
                           <tr>
                             <th className="pt-3 pb-3 border-0  ">Unit Number</th>
-                            <th className="pt-3 pb-3 border-0  ">Bed/Bath Room </th>
+                            <th className="pt-3 pb-3 border-0  ">Bed/Bath </th>
                             <th className="pt-3 pb-3 border-0  ">Year Built</th>
                             <th className="pt-3 pb-3 border-0  ">Owner/Resident</th>
                             <th className="pt-3 pb-3 border-0  ">Status</th>

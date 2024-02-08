@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Card, Dropdown, Row, Col } from 'react-bootstrap'
-import GridViewCard from './GridViewCard'
+import GridViewCard from './UnitFunctions/GridViewCard'
 
 const UnitGridView = ({ units }) => {
   return (

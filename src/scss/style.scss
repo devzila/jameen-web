@@ -20,4 +20,11 @@ $enable-rtl: true;
     color: #00bfcc;
     text-decoration-line: none;
   }
+  input {
+    border: 1px solid #00bfcc;
+  }
+
+  input:focus {
+    border: 1px solid; /* Thin border when input is focused */
+  }
 }
