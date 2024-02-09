@@ -61,7 +61,7 @@ function Property() {
                   <CFormInput
                     onChange={(e) => setSearchKeyword(e.target.value)}
                     type="search"
-                    className="me-0"
+                    className="me-0 custom_input"
                     placeholder="Search"
                   />
                   <CButton

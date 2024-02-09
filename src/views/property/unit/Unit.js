@@ -17,6 +17,7 @@ import Delete from './DeleteUnit'
 import PickOwner from './UnitFunctions/PickOwner'
 import AllocateUnit from './AllocateUnit'
 import FilterAccordion from './UnitFunctions/FilterAccordioan'
+import MovingInUnit from './MovingInUnit'
 
 function Unit() {
   const { get, response, error } = useFetch()
@@ -194,6 +195,13 @@ function Unit() {
 
                                     {unit.status === 'unallotted' ? (
                                       <AllocateUnit
+                                        unitId={unit.id}
+                                        unitNo={unit.unit_no}
+                                        after_submit={refresh_data}
+                                      />
+                                    ) : null}
+                                    {unit.status === 'vacant' ? (
+                                      <MovingInUnit
                                         unitId={unit.id}
                                         unitNo={unit.unit_no}
                                         after_submit={refresh_data}

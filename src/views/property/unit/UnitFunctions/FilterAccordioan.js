@@ -11,7 +11,7 @@ export default function FilterAccordion({ units_data }) {
   units_data = []
   return (
     <div>
-      <Dropdown data-bs-theme="light" autoClose={false}>
+      <Dropdown data-bs-theme="light" className="d-flex" autoClose={false}>
         <Dropdown.Toggle
           id="dropdown-button-light-example1"
           variant="secondary"
@@ -33,7 +33,7 @@ export default function FilterAccordion({ units_data }) {
             borderRadius: '0px',
             border: '0px',
             boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 12px',
-            width: '400px',
+            width: '20vw',
           }}
           variant="success"
         >
