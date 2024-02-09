@@ -158,7 +158,7 @@ function Unit() {
                                     backgroundColor: `${status_color(unit.status)}`,
                                     border: '0px',
                                     padding: '1px',
-                                    borderRadius: '6px',
+                                    borderRadius: '2px',
                                     color: 'white',
                                     cursor: 'default',
                                     width: '120px',
