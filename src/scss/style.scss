@@ -22,9 +22,13 @@ $enable-rtl: true;
   }
   input {
     border: 1px solid #00bfcc;
+    padding-block-start: 5px;
   }
+}
 
-  input:focus {
-    border: 1px solid; /* Thin border when input is focused */
-  }
+.custom_input:focus {
+}
+.custom_input {
+  border: 1px solid #00bfcc;
+  border-radius: 2px;
 }

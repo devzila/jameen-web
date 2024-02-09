@@ -116,7 +116,12 @@ function Add({ after_submit }) {
   return (
     <div>
       <button
-        style={{ backgroundColor: '#00bfcc', color: 'white', marginLeft: '4px' }}
+        style={{
+          backgroundColor: '#00bfcc',
+          color: 'white',
+          marginLeft: '4px',
+          borderRadius: '2px',
+        }}
         color="#00bfcc"
         type="button"
         className="btn  s-3"

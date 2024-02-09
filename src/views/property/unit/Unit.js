@@ -91,12 +91,13 @@ function Unit() {
                 <div className="d-flex" role="search">
                   <input
                     onChange={(e) => setSearchKeyword(e.target.value)}
-                    className="form-control me-2"
+                    className="form-control me-2 custom_input"
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
                   />
                   <button
+                    style={{ borderRadius: '2px' }}
                     onClick={loadInitialUnits}
                     className="btn btn-outline-success"
                     type="submit"

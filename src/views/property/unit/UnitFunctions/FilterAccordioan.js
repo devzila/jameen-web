@@ -18,7 +18,7 @@ export default function FilterAccordion({ units_data }) {
           className="mx-2 pe-5  text-start"
           style={{
             backgroundColor: 'white',
-            width: '250px',
+            width: '15vw',
             border: '1px solid #00bfcc',
             borderRadius: '2px',
           }}
@@ -32,15 +32,15 @@ export default function FilterAccordion({ units_data }) {
           style={{
             borderRadius: '0px',
             border: '0px',
-            boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+            boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 12px',
             width: '400px',
           }}
           variant="success"
         >
-          <Dropdown.Item className="btn btn-light">
+          <Dropdown.Item className="btn btn-teritary">
             <CIcon icon={cilSync} /> Reset Filter
           </Dropdown.Item>
-          <Dropdown.Item className="btn btn-light" href="#/action-3">
+          <Dropdown.Item className="btn btn-teritary" href="#/action-3">
             <label>Bedroom Number</label>
 
             <Controller
@@ -59,7 +59,7 @@ export default function FilterAccordion({ units_data }) {
               control={control}
             />
           </Dropdown.Item>
-          <Dropdown.Item className="btn btn-light" href="#/action-3">
+          <Dropdown.Item className="btn btn-teritary" href="#/action-3">
             <label>Unit Type</label>
             <Controller
               name="unit_type_id"
