@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilSync, freeSet } from '@coreui/icons'
 
-export default function FilterAccordion({ units_data }) {
+export default function FilterAccordion({ units_data, after_submit }) {
   const { control } = useForm()
   units_data = []
   return (
@@ -37,9 +37,18 @@ export default function FilterAccordion({ units_data }) {
           }}
           variant="success"
         >
-          <Dropdown.Item className="btn btn-teritary">
+          {/* <Dropdown.Item className="btn btn-teritary"> */}
+          <button
+            style={{
+              border: '0px',
+              float: 'left',
+              background: 'initial',
+            }}
+            onClick={after_submit}
+          >
             <CIcon icon={cilSync} /> Reset Filter
-          </Dropdown.Item>
+          </button>
+          {/* </Dropdown.Item> */}
           <Dropdown.Item className="btn btn-teritary" href="#/action-3">
             <label>Bedroom Number</label>
 
@@ -84,5 +93,6 @@ export default function FilterAccordion({ units_data }) {
 }
 
 FilterAccordion.propTypes = {
+  after_submit: PropTypes.func,
   units_data: PropTypes.array,
 }

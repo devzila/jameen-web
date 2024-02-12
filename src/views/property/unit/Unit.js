@@ -61,7 +61,10 @@ function Unit() {
     setCurrentPage(e.selected + 1)
   }
   const refresh_data = () => {
+    console.log('called')
     loadInitialUnits()
+
+    setSearchKeyword('')
   }
 
   function status_color(status) {
@@ -91,11 +94,13 @@ function Unit() {
               <div className="d-flex justify-content-end bg-light">
                 <div className="d-flex" role="search">
                   <input
+                    value={searchKeyword}
                     onChange={(e) => setSearchKeyword(e.target.value)}
                     className="form-control me-2 custom_input"
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
+                    on
                   />
                   <button
                     style={{ borderRadius: '2px' }}
@@ -106,7 +111,7 @@ function Unit() {
                     Search
                   </button>
                 </div>
-                <FilterAccordion />
+                <FilterAccordion after_submit={refresh_data} />
                 <Add after_submit={refresh_data} />
               </div>
             </CContainer>
