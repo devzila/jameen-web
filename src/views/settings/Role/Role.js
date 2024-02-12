@@ -70,14 +70,14 @@ export default function Role() {
               <div className="d-flex" role="search">
                 <input
                   onChange={(e) => setSearchKeyword(e.target.value)}
-                  className="form-control me-2 custom_input"
+                  className="form-control custom_input"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
                 />
                 <button
                   onClick={loadInitialroles}
-                  className="btn btn-outline-success"
+                  className="btn btn-outline-success custom_search_button"
                   type="submit"
                 >
                   Search

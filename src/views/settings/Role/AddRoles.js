@@ -41,7 +41,7 @@ export default function AddRoles({ after_submit }) {
     <div>
       <button
         type="button"
-        className="btn flex s-3 custom_add_buttons"
+        className="btn flex s-3 custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >

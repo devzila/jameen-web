@@ -41,7 +41,7 @@ function Unit() {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`
 
     if (searchKeyword) {
-      endpoint += `&q[unit_no_eq]=${searchKeyword}`
+      endpoint += `&q[unit_type_eq]=${searchKeyword}`
     }
 
     const initialUnits = await get(endpoint)
