@@ -15,7 +15,7 @@ export default function FilterAccordion({ units_data, after_submit }) {
         <Dropdown.Toggle
           id="dropdown-button-light-example1"
           variant="secondary"
-          className="mx-2 pe-5  text-start"
+          className="ms-2 text-start"
           style={{
             backgroundColor: 'white',
             width: '15vw',
@@ -28,10 +28,8 @@ export default function FilterAccordion({ units_data, after_submit }) {
         </Dropdown.Toggle>
 
         <Dropdown.Menu
-          className="p-2"
+          className="p-2 border-0 rounded-0"
           style={{
-            borderRadius: '0px',
-            border: '0px',
             boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 12px',
             width: '20vw',
           }}

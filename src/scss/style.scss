@@ -30,5 +30,27 @@ $enable-rtl: true;
 }
 .custom_input {
   border: 1px solid #00bfcc;
+  border-radius: 0px;
+}
+.custom_theme_button {
   border-radius: 2px;
+  background-color: #00bfcc;
+  color: white;
+  margin-left: 4px;
+  border: 0px;
+}
+.custom_theme_button:hover {
+  background-color: #00beccc2;
+  color: white;
+}
+
+.custom_grey_button {
+  border: 0px;
+  color: white;
+  border-radius: 2px;
+}
+
+.custom_search_button {
+  border-radius: 0px;
+  border-left: 0px;
 }

@@ -96,16 +96,15 @@ function Unit() {
                   <input
                     value={searchKeyword}
                     onChange={(e) => setSearchKeyword(e.target.value)}
-                    className="form-control me-2 custom_input"
+                    className="form-control me-0   custom_input"
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
                     on
                   />
                   <button
-                    style={{ borderRadius: '2px' }}
                     onClick={loadInitialUnits}
-                    className="btn btn-outline-success"
+                    className="btn btn-outline-success custom_search_button"
                     type="submit"
                   >
                     Search

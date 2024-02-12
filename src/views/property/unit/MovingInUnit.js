@@ -22,7 +22,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
-export default function MovingInUnit({ unitNo, unitId }) {
+export default function MovingInUnit({ unitNo, unitId, after_submit }) {
   const { register, handleSubmit, setValue, control, watch, reset } = useForm()
   const { post, get, response } = useFetch()
   const [temp_base64, setTemp_base64] = useState([])
