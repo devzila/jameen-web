@@ -49,7 +49,7 @@ export default function FilterAccordion({ units_data, after_submit }) {
             <CIcon icon={cilSync} /> Reset Filter
           </button>
           {/* </Dropdown.Item> */}
-          <Dropdown.Item className="btn btn-teritary" href="#/action-3">
+          <Dropdown.Item className="btn btn-teritary mt-2" href="#/action-3">
             <label>Bedroom Number</label>
 
             <Controller

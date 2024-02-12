@@ -129,7 +129,7 @@ export default function MovingInUnit({ unitNo, unitId }) {
     const body = { ...data, resident_ids: assigned_resident_data }
     console.log(body)
 
-    await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/movingIn`, {
+    await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/moving_in`, {
       allotment: body,
     })
     if (response.ok) {
