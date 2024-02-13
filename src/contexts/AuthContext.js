@@ -1,6 +1,8 @@
 import { createContext } from 'react'
 import { loadMetaData } from './../services/MetaDataLoader'
+
 export const AuthContext = createContext('')
+
 export const initialAuthState = {
   isAutheticated: localStorage.getItem('token') !== null,
   user: JSON.parse(localStorage.getItem('user')),

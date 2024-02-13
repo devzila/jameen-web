@@ -208,7 +208,11 @@ export default function ShowResidents(props) {
                 </div>
                 <div className="text-center">
                   <CModalFooter>
-                    <CButton color="secondary" onClick={() => setVisible(false)}>
+                    <CButton
+                      color="secondary "
+                      className="custom_grey_button"
+                      onClick={() => setVisible(false)}
+                    >
                       Close
                     </CButton>
                   </CModalFooter>

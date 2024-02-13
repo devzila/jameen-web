@@ -32,10 +32,27 @@ function Unit() {
   const [refresh, setRefresh] = useState(false)
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [unit_type, setUnit_type] = useState({})
 
   useEffect(() => {
     loadInitialUnits()
   }, [currentPage])
+
+  //
+  function getUniqueUnitTypes(initialUnits) {
+    return initialUnits.data?.reduce((uniqueTypes, data) => {
+      if (data && data.unit_type && data.unit_type.id && data.unit_type.name) {
+        const found = uniqueTypes.find((type) => type.id === data.unit_type.id)
+        if (!found) {
+          uniqueTypes.push({
+            value: data.unit_type.id,
+            label: data.unit_type.name,
+          })
+        }
+      }
+      return uniqueTypes
+    }, [])
+  }
 
   async function loadInitialUnits() {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`
@@ -50,6 +67,9 @@ function Unit() {
     if (response.ok) {
       setLoading(false)
       setUnits(initialUnits.data)
+
+      setUnit_type(getUniqueUnitTypes(initialUnits))
+
       setPagination(initialUnits.pagination)
     } else {
       setErrors(true)
@@ -83,6 +103,8 @@ function Unit() {
     }
   }
 
+  const handleFilter = (term) => {}
+
   return (
     <>
       <div>
@@ -110,7 +132,7 @@ function Unit() {
                     Search
                   </button>
                 </div>
-                <FilterAccordion after_submit={refresh_data} />
+                <FilterAccordion after_submit={refresh_data} units_type={unit_type} />
                 <Add after_submit={refresh_data} />
               </div>
             </CContainer>

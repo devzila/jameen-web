@@ -1,12 +1,8 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-
 import { CSidebar, CSidebarBrand, CSidebarNav, CSidebarToggler } from '@coreui/react'
-
 import { AppSidebarNav } from './AppSidebarNav'
-
 import logo from '../assets/images/jameen-logo.png'
-
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 
@@ -29,7 +25,8 @@ const AppSidebar = () => {
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
         <img src={logo} height={35} style={{ textAlign: 'left' }} alt="Jameen Logo" />
-        <p className="sidebar-brand-full"> Jameen </p>
+
+        <p className="sidebar-brand-full mx-2 my-0 "> Jameen </p>
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>

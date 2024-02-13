@@ -225,13 +225,13 @@ export default function Edit({ unitId, after_submit }) {
                     <Button
                       data-mdb-ripple-init
                       type="submit"
-                      className="btn btn-primary btn-block"
-                      style={{ marginTop: '5px', backgroundColor: '#00bfcc', border: 'none' }}
+                      className="btn btn-primary btn-block custom_theme_button"
                     >
                       Submit
                     </Button>
                     <CButton
-                      style={{ color: 'white', backgroundColor: 'gray', border: 'none' }}
+                      className="custom_grey_button"
+                      color="secondary"
                       onClick={() => setVisible(false)}
                     >
                       Close

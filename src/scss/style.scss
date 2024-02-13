@@ -49,6 +49,11 @@ $enable-rtl: true;
   border: 0px;
   color: white;
   border-radius: 2px;
+  background-color: gray;
+}
+.custom_grey_button:hover {
+  background-color: rgba(128, 128, 128, 0.849);
+  color: white;
 }
 
 .custom_search_button {

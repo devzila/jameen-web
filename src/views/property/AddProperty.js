@@ -84,15 +84,8 @@ export default function PropertyForm() {
   return (
     <div>
       <button
-        style={{
-          backgroundColor: '#00bfcc',
-          color: 'white',
-          marginLeft: '4px',
-          borderRadius: '2px',
-        }}
-        color="#00bfcc"
         type="button"
-        className="btn s-3"
+        className="btn s-3 custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
@@ -209,18 +202,13 @@ export default function PropertyForm() {
                   <Button
                     data-mdb-ripple-init
                     type="submit"
-                    className="btn  btn-primary btn-block"
-                    style={{
-                      marginTop: '5px',
-                      color: 'white',
-                      backgroundColor: '#00bfcc',
-                      border: '0px',
-                    }}
+                    className="btn  btn-primary btn-block custom_theme_button"
                   >
                     Submit
                   </Button>
                   <CButton
-                    color="secondary"
+                    className="custom_grey_button"
+                    color="secondary "
                     style={{ border: '0px', color: 'white' }}
                     onClick={() => setVisible(false)}
                   >
