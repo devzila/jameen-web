@@ -53,7 +53,6 @@ function Unit() {
       return uniqueTypes
     }, [])
   }
-
   async function loadInitialUnits() {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`
     // /unit_types

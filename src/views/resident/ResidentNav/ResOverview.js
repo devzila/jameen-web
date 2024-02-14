@@ -13,7 +13,6 @@ export default function ResOverview() {
 
   const [resident_data, setResident_data] = useState({})
   const [visible, setVisible] = useState(false)
-
   const { get, response } = useFetch()
 
   useEffect(() => {

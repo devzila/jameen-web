@@ -12,7 +12,6 @@ export default function FilterAccordion({ units_type, after_submit }) {
   const { watch } = useForm()
 
   const { control } = useForm()
-
   const unit_status = [
     { value: 'vacant', label: 'Vacant' },
     { value: 'allocated', label: 'Allocated' },
