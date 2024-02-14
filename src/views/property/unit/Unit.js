@@ -56,6 +56,7 @@ function Unit() {
 
   async function loadInitialUnits() {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`
+    // /unit_types
 
     if (searchKeyword) {
       endpoint += `&q[unit_type_eq]=${searchKeyword}`

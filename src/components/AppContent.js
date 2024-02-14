@@ -38,7 +38,6 @@ const AppContent = () => {
           <Route path="properties/:propertyId/add" name="Add" element={<Properties />} />
           <Route path="/properties/:propertyId" element={<Property />} />
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
-
           <Route
             path="/properties/:propertyId/units/:unitId"
             name="ShowUnit"
@@ -49,12 +48,8 @@ const AppContent = () => {
           <Route path="/operation" name="Operation" element={<Operation />} />
           <Route path="/news" name="News" element={<News />} />
           <Route path="/report" name="Report" element={<Report />} />
-          <Route path="/settings/*" name="Settings" element={<Settings />}>
-            <Route path="users" name="User" element={<User />} />
-            <Route path="roles" name="Role" element={<Role />} />
-            <Route path="allotment" name="Allotment" element={<Allotment />} />
-            <Route path="moving-out" name="Moving Out" element={<MovingOut />} />
-          </Route>
+          <Route path="/settings/*" name="Settings" element={<Settings />} />
+
           <Route path="*" element={<Page404 />} />
         </Routes>
       </Suspense>
