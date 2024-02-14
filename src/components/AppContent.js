@@ -38,10 +38,7 @@ const AppContent = () => {
           <Route path="properties/:propertyId/add" name="Add" element={<Properties />} />
           <Route path="/properties/:propertyId" element={<Property />} />
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
-<<<<<<< HEAD
-          origin/staging
-=======
->>>>>>> origin/staging
+
           <Route
             path="/properties/:propertyId/units/:unitId"
             name="ShowUnit"
