@@ -23,6 +23,7 @@ const Role = React.lazy(() => import('../views/settings/Role/Role'))
 const MovingOut = React.lazy(() => import('../views/settings/MovingOut'))
 const Allotment = React.lazy(() => import('../views/settings/Allotment'))
 const ShowUnit = React.lazy(() => import('../views/property/unit/ShowUnitModule/ShowUnit'))
+const ShowResidentPage = React.lazy(() => import('../views/resident/ResidentNav/ShowResidentPage'))
 
 const AppContent = () => {
   return (
@@ -32,10 +33,12 @@ const AppContent = () => {
           <Route path="/" exact={true} name="Dashboard" element={<Dashboard />} />
           <Route path="/finance" name="Finance" element={<Finance />} />
           <Route path="/resident" name="Resident" element={<Residents />} />
+          <Route path="/resident/:residentId/*" name="RView" element={<ShowResidentPage />} />
           <Route path="/unit" name="Unit" element={<Unit />} />
           <Route path="properties" name="Properties" element={<Properties />} />
           <Route path="properties/:propertyId/add" name="Add" element={<Properties />} />
           <Route path="/properties/:propertyId" element={<Property />} />
+<<<<<<< HEAD
           <Route
             path="/property/:propertyId/OverviewContent"
             name="OverviewContent"
@@ -47,6 +50,9 @@ const AppContent = () => {
             element={<Billiableitems />}
           />
           <Route path="/properties/:propertyId/units/*" name="Unit" element={<Unit />} />
+=======
+          <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
+>>>>>>> origin/staging
           <Route
             path="/properties/:propertyId/units/:unitId"
             name="ShowUnit"

@@ -27,6 +27,7 @@ export default function ShowResidents(props) {
   }, [])
   const loadResident = async () => {
     const endpoint = await get(`/v1/admin/members/${id}`)
+    console.log(endpoint)
     if (response.ok) {
       setResident_data(endpoint.data)
     } else {
@@ -208,7 +209,11 @@ export default function ShowResidents(props) {
                 </div>
                 <div className="text-center">
                   <CModalFooter>
-                    <CButton color="secondary" onClick={() => setVisible(false)}>
+                    <CButton
+                      color="secondary "
+                      className="custom_grey_button"
+                      onClick={() => setVisible(false)}
+                    >
                       Close
                     </CButton>
                   </CModalFooter>

@@ -22,7 +22,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
-export default function MovingInUnit({ unitNo, unitId }) {
+export default function MovingInUnit({ unitNo, unitId, after_submit }) {
   const { register, handleSubmit, setValue, control, watch, reset } = useForm()
   const { post, get, response } = useFetch()
   const [temp_base64, setTemp_base64] = useState([])
@@ -129,7 +129,7 @@ export default function MovingInUnit({ unitNo, unitId }) {
     const body = { ...data, resident_ids: assigned_resident_data }
     console.log(body)
 
-    await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/movingIn`, {
+    await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/moving_in`, {
       allotment: body,
     })
     if (response.ok) {

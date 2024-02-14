@@ -191,12 +191,12 @@ export default function EditProperty({ propertyId }) {
                       <Button
                         data-mdb-ripple-init
                         type="submit"
-                        className="btn btn-primary btn-block"
-                        style={{ marginTop: '5px', backgroundColor: '#00bfcc', border: 'none' }}
+                        className="btn btn-primary btn-block custom_theme_button"
                       >
                         Submit
                       </Button>
                       <CButton
+                        className="custom_grey_button"
                         style={{ color: 'white', backgroundColor: 'gray', border: 'none' }}
                         onClick={() => setVisible(false)}
                       >

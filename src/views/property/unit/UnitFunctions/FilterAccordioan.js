@@ -6,16 +6,19 @@ import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilSync, freeSet } from '@coreui/icons'
 
-export default function FilterAccordion({ units_data, after_submit }) {
+export default function FilterAccordion({ units_type, after_submit }) {
+  console.log(units_type)
+
+  const { watch } = useForm()
+
   const { control } = useForm()
-  units_data = []
   return (
     <div>
       <Dropdown data-bs-theme="light" className="d-flex" autoClose={false}>
         <Dropdown.Toggle
           id="dropdown-button-light-example1"
           variant="secondary"
-          className="mx-2 pe-5  text-start"
+          className="ms-2 text-start"
           style={{
             backgroundColor: 'white',
             width: '15vw',
@@ -28,10 +31,8 @@ export default function FilterAccordion({ units_data, after_submit }) {
         </Dropdown.Toggle>
 
         <Dropdown.Menu
-          className="p-2"
+          className="p-2 border-0 rounded-0"
           style={{
-            borderRadius: '0px',
-            border: '0px',
             boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 12px',
             width: '20vw',
           }}
@@ -49,7 +50,7 @@ export default function FilterAccordion({ units_data, after_submit }) {
             <CIcon icon={cilSync} /> Reset Filter
           </button>
           {/* </Dropdown.Item> */}
-          <Dropdown.Item className="btn btn-teritary" href="#/action-3">
+          <Dropdown.Item className="btn btn-teritary mt-2" href="#/action-3">
             <label>Bedroom Number</label>
 
             <Controller
@@ -60,9 +61,9 @@ export default function FilterAccordion({ units_data, after_submit }) {
                   className="basic-multi-select"
                   classNamePrefix="select"
                   {...field}
-                  value={units_data.find((c) => c.value === field.value)}
+                  value={units_type.find((c) => c.value === field.value)}
                   onChange={(val) => field.onChange(val.value)}
-                  options={units_data}
+                  options={units_type}
                 />
               )}
               control={control}
@@ -78,9 +79,9 @@ export default function FilterAccordion({ units_data, after_submit }) {
                   className="basic-multi-select"
                   classNamePrefix="select"
                   {...field}
-                  value={units_data.find((c) => c.value === field.value)}
+                  value={units_type.find((c) => c.value === field.value)}
                   onChange={(val) => field.onChange(val.value)}
-                  options={units_data}
+                  options={units_type}
                 />
               )}
               control={control}
@@ -94,5 +95,5 @@ export default function FilterAccordion({ units_data, after_submit }) {
 
 FilterAccordion.propTypes = {
   after_submit: PropTypes.func,
-  units_data: PropTypes.array,
+  units_type: PropTypes.array,
 }

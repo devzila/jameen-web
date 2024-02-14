@@ -4,6 +4,7 @@ import Select from 'react-select'
 import { toast } from 'react-toastify'
 import { useForm, Controller } from 'react-hook-form'
 import { Button, Form, Row, Col } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
 import {
   CButton,
@@ -39,10 +40,8 @@ export default function AddRoles({ after_submit }) {
   return (
     <div>
       <button
-        style={{ backgroundColor: '#00bfcc', color: 'white', marginLeft: '4px' }}
-        color="#00bfcc"
         type="button"
-        className="btn flex s-3"
+        className="btn flex s-3 custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
@@ -130,5 +129,5 @@ export default function AddRoles({ after_submit }) {
 }
 
 AddRoles.propTypes = {
-  after_submit: propTypes.func,
+  after_submit: PropTypes.func,
 }

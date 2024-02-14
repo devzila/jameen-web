@@ -97,10 +97,8 @@ export default function UserForm({ after_submit }) {
   return (
     <div>
       <button
-        style={{ backgroundColor: '#00bfcc', color: 'white', marginLeft: '4px' }}
-        color="#00bfcc"
         type="button"
-        className="btn flex s-3"
+        className="btn flex s-3 custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
@@ -288,8 +286,8 @@ export default function UserForm({ after_submit }) {
                     Submit
                   </Button>
                   <CButton
+                    className="custom_grey_button"
                     color="secondary"
-                    style={{ border: '0px', color: 'white' }}
                     onClick={() => setVisible(false)}
                   >
                     Close

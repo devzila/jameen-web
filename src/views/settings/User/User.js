@@ -29,7 +29,7 @@ function Index() {
   async function loadInitialusers() {
     let endpoint = `/v1/admin/users?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[username_eq]=${searchKeyword}`
+      endpoint += `&q[username_cont]=${searchKeyword}`
     }
     let initialusers = await get(endpoint)
 
@@ -63,14 +63,14 @@ function Index() {
               <div className="d-flex" role="search">
                 <input
                   onChange={(e) => setSearchKeyword(e.target.value)}
-                  className="form-control me-2"
+                  className="form-control  custom_input"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
                 />
                 <button
                   onClick={loadInitialusers}
-                  className="btn btn-outline-success"
+                  className="btn btn-outline-success custom_search_button"
                   type="submit"
                 >
                   Search

@@ -11,6 +11,7 @@ import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
+import { Link, NavLink } from 'react-router-dom'
 
 const Residents = () => {
   const { get, response } = useFetch()
@@ -58,14 +59,14 @@ const Residents = () => {
             <div className="d-flex" role="search">
               <input
                 onChange={(e) => setSearchKeyword(e.target.value)}
-                className="form-control me-2"
+                className="form-control  custom_input"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
               />
               <button
                 onClick={loadInitialResidents}
-                className="btn btn-outline-success"
+                className="btn btn-outline-success custom_search_button"
                 type="submit"
               >
                 Search
@@ -103,7 +104,9 @@ const Residents = () => {
                       {residents.map((residents) => (
                         <tr key={residents.id}>
                           <th className="pt-3" scope="row" style={{ color: '#666666' }}>
-                            {residents.first_name + ' ' + residents.last_name}
+                            <NavLink to={`/resident/${residents.id}/overview`}>
+                              {residents.first_name + ' ' + residents.last_name}
+                            </NavLink>
                           </th>
                           <td className="pt-3">{residents.dob}</td>
                           <td className="pt-3">{residents.username}</td>

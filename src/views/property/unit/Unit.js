@@ -32,16 +32,33 @@ function Unit() {
   const [refresh, setRefresh] = useState(false)
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [unit_type, setUnit_type] = useState({})
 
   useEffect(() => {
     loadInitialUnits()
   }, [currentPage])
 
+  //
+  function getUniqueUnitTypes(initialUnits) {
+    return initialUnits.data?.reduce((uniqueTypes, data) => {
+      if (data && data.unit_type && data.unit_type.id && data.unit_type.name) {
+        const found = uniqueTypes.find((type) => type.id === data.unit_type.id)
+        if (!found) {
+          uniqueTypes.push({
+            value: data.unit_type.id,
+            label: data.unit_type.name,
+          })
+        }
+      }
+      return uniqueTypes
+    }, [])
+  }
+
   async function loadInitialUnits() {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`
 
     if (searchKeyword) {
-      endpoint += `&q[unit_no_eq]=${searchKeyword}`
+      endpoint += `&q[unit_type_eq]=${searchKeyword}`
     }
 
     const initialUnits = await get(endpoint)
@@ -50,6 +67,9 @@ function Unit() {
     if (response.ok) {
       setLoading(false)
       setUnits(initialUnits.data)
+
+      setUnit_type(getUniqueUnitTypes(initialUnits))
+
       setPagination(initialUnits.pagination)
     } else {
       setErrors(true)
@@ -83,6 +103,8 @@ function Unit() {
     }
   }
 
+  const handleFilter = (term) => {}
+
   return (
     <>
       <div>
@@ -96,22 +118,21 @@ function Unit() {
                   <input
                     value={searchKeyword}
                     onChange={(e) => setSearchKeyword(e.target.value)}
-                    className="form-control me-2 custom_input"
+                    className="form-control me-0   custom_input"
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
                     on
                   />
                   <button
-                    style={{ borderRadius: '2px' }}
                     onClick={loadInitialUnits}
-                    className="btn btn-outline-success"
+                    className="btn btn-outline-success custom_search_button"
                     type="submit"
                   >
                     Search
                   </button>
                 </div>
-                <FilterAccordion after_submit={refresh_data} />
+                <FilterAccordion after_submit={refresh_data} units_type={unit_type} />
                 <Add after_submit={refresh_data} />
               </div>
             </CContainer>

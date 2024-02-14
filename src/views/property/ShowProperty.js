@@ -145,7 +145,7 @@ export default function ShowProperty({ propertyId }) {
               </div>
               <div className="text-center">
                 <CModalFooter>
-                  <CButton color="secondary" onClick={() => setVisible(false)}>
+                  <CButton className="custom_grey_button" onClick={() => setVisible(false)}>
                     Close
                   </CButton>
                 </CModalFooter>
