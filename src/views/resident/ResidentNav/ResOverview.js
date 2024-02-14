@@ -7,6 +7,7 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import logo from '../../../assets/images/avatars/default.png'
 import { formatdate } from 'src/services/dateFormatter'
+import { toast } from 'react-toastify'
 
 export default function ResOverview() {
   const { residentId } = useParams()
@@ -40,7 +41,7 @@ export default function ResOverview() {
           </CCard>
         </CCol>
         <CCol md="8">
-          <CCard className=" py-2 px-3 p my-3 me-3  border-0">
+          <CCard className=" pt-3 pb-1 px-3  my-3 me-3  border-0">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -302,7 +303,7 @@ export default function ResOverview() {
                 className="me-2"
                 style={{ color: '#00bfcc' }}
               />
-              <strong>resident_data?.illing Details</strong>
+              <strong>Invoice</strong>
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
