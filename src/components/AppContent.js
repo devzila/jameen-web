@@ -51,7 +51,7 @@ const AppContent = () => {
           <Route path="/properties/:propertyId/units/*" name="Unit" element={<Unit />} />
           =======
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
-          >>>>>>> origin/staging
+          origin/staging
           <Route
             path="/properties/:propertyId/units/:unitId"
             name="ShowUnit"
