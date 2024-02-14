@@ -1,7 +1,6 @@
 import { CCol, CCard, CListGroupItem, CCardImage, CRow, CCardText, CImage } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-
 import { useParams, Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
