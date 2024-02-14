@@ -9,6 +9,8 @@ const Residents = React.lazy(() => import('../views/resident/Residents'))
 const Unit = React.lazy(() => import('../views/property/unit/Unit'))
 const Properties = React.lazy(() => import('../views/property/Properties'))
 const Property = React.lazy(() => import('../views/property/Property'))
+const OverviewContent = React.lazy(() => import('../views/property/OverviewContent'))
+const Billiableitems = React.lazy(() => import('../views/property/Billiableitems'))
 const Maintenance = React.lazy(() => import('../views/maintenance/Maintenance'))
 const Visitor = React.lazy(() => import('../views/visitor/Visitor'))
 const Operation = React.lazy(() => import('../views/operation/Operation'))
@@ -19,7 +21,6 @@ const Page404 = React.lazy(() => import('../views/Page404'))
 const User = React.lazy(() => import('../views/settings/User/User'))
 const Role = React.lazy(() => import('../views/settings/Role/Role'))
 const MovingOut = React.lazy(() => import('../views/settings/MovingOut'))
-
 const Allotment = React.lazy(() => import('../views/settings/Allotment'))
 const ShowUnit = React.lazy(() => import('../views/property/unit/ShowUnitModule/ShowUnit'))
 const ShowResidentPage = React.lazy(() => import('../views/resident/ResidentNav/ShowResidentPage'))
@@ -37,7 +38,20 @@ const AppContent = () => {
           <Route path="properties" name="Properties" element={<Properties />} />
           <Route path="properties/:propertyId/add" name="Add" element={<Properties />} />
           <Route path="/properties/:propertyId" element={<Property />} />
+          <Route
+            path="/property/:propertyId/OverviewContent"
+            name="OverviewContent"
+            element={<OverviewContent />}
+          />
+          <Route
+            path="/property/:propertyId/unit_types/:unitTypeId/BilliableItems"
+            name="Biliableitems"
+            element={<Billiableitems />}
+          />
+          <Route path="/properties/:propertyId/units/*" name="Unit" element={<Unit />} />
+          =======
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
+          >>>>>>> origin/staging
           <Route
             path="/properties/:propertyId/units/:unitId"
             name="ShowUnit"
