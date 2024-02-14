@@ -38,7 +38,6 @@ const AppContent = () => {
           <Route path="properties" name="Properties" element={<Properties />} />
           <Route path="properties/:propertyId/add" name="Add" element={<Properties />} />
           <Route path="/properties/:propertyId" element={<Property />} />
-<<<<<<< HEAD
           <Route
             path="/property/:propertyId/OverviewContent"
             name="OverviewContent"
@@ -50,9 +49,9 @@ const AppContent = () => {
             element={<Billiableitems />}
           />
           <Route path="/properties/:propertyId/units/*" name="Unit" element={<Unit />} />
-=======
+          =======
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
->>>>>>> origin/staging
+          >>>>>>> origin/staging
           <Route
             path="/properties/:propertyId/units/:unitId"
             name="ShowUnit"
