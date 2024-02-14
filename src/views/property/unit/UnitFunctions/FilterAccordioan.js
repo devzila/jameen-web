@@ -12,6 +12,12 @@ export default function FilterAccordion({ units_type, after_submit }) {
   const { watch } = useForm()
 
   const { control } = useForm()
+
+  const unit_status = [
+    { value: 'vacant', label: 'Vacant' },
+    { value: 'allocated', label: 'Allocated' },
+    { value: 'occupied', label: 'Occupied' },
+  ]
   return (
     <div>
       <Dropdown data-bs-theme="light" className="d-flex" autoClose={false}>
@@ -51,19 +57,19 @@ export default function FilterAccordion({ units_type, after_submit }) {
           </button>
           {/* </Dropdown.Item> */}
           <Dropdown.Item className="btn btn-teritary mt-2" href="#/action-3">
-            <label>Bedroom Number</label>
+            <label>Unit Status</label>
 
             <Controller
-              name="unit_type_id"
+              name="unit_status"
               render={({ field }) => (
                 <Select
                   type="text"
                   className="basic-multi-select"
                   classNamePrefix="select"
                   {...field}
-                  value={units_type.find((c) => c.value === field.value)}
+                  value={unit_status.find((c) => c.value === field.value)}
                   onChange={(val) => field.onChange(val.value)}
-                  options={units_type}
+                  options={unit_status}
                 />
               )}
               control={control}
