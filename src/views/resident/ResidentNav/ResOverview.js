@@ -13,7 +13,6 @@ export default function ResOverview() {
 
   const [resident_data, setResident_data] = useState({})
   const [visible, setVisible] = useState(false)
-
   const { get, response } = useFetch()
 
   useEffect(() => {
@@ -21,7 +20,6 @@ export default function ResOverview() {
   }, [])
   const loadResident = async () => {
     const endpoint = await get(`/v1/admin/members/${residentId}`)
-    console.log(endpoint)
     if (response.ok) {
       setResident_data(endpoint.data)
     } else {

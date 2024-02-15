@@ -37,7 +37,6 @@ export default function Role() {
 
     if (response.ok) {
       if (initialroles.data) {
-        console.log(response)
         setLoading(false)
         setRoles(initialroles.data)
         setPagination(initialroles.pagination)

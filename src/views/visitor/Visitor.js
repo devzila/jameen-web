@@ -35,11 +35,8 @@ export default function Visitor() {
     }
     let initialVisitor = await get(endpoint)
 
-    console.log(initialVisitor)
-
     if (response.ok) {
       if (initialVisitor.data) {
-        console.log(response)
         setLoading(false)
         setVisitor(initialVisitor.data)
         setPagination(initialVisitor.pagination)

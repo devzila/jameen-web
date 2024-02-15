@@ -29,7 +29,6 @@ function Property() {
     let endpoint = `/v1/admin/premises/properties?page=${currentPage}&search=${searchTerm}`
 
     const initialProperties = await get(endpoint)
-    console.log(initialProperties)
     if (response.ok) {
       setLoading(false)
       setProperties(initialProperties.data)

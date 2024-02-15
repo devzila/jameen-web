@@ -60,7 +60,6 @@ export default function EditRoles({ roleId, after_submit }) {
   }, [])
 
   async function onSubmit(data) {
-    console.log(data)
     const api = await put(`/v1/admin/roles/${roleId}`, { role: data })
     if (response.ok) {
       toast('Roles Edited Successfully')

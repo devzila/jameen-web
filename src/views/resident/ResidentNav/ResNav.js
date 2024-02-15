@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, NavLink, useParams } from 'react-router-dom'
+import { Link, NavLink, Outlet, useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 export default function ResNav() {
@@ -22,6 +22,8 @@ export default function ResNav() {
             </div>
           </div>
         </div>
+        <Outlet />
+
         {/*<div className="clearfix">{children || <User />}</div>*/}
       </div>
     </div>

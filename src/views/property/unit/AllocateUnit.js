@@ -76,8 +76,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   //base64
   //base64
   const handleFileSelection = (e, index) => {
-    console.log(e)
-    console.log(index)
     const selectedFile = e.target.files[0]
 
     if (selectedFile) {
@@ -88,7 +86,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
         const base64Result = e.target.result
         temp_array64[index] = base64Result
         setTemp_base64(temp_array64)
-        console.log(temp_base64[0])
 
         // setValue(`documents_attributes.${index}.file.data`, base64Result)
       }
@@ -96,7 +93,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
       reader.readAsDataURL(selectedFile)
     }
   }
-  console.log(temp_base64.length)
 
   //initially append
   useEffect(() => {
@@ -106,22 +102,17 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   //submit function
 
   async function onSubmit(data) {
-    console.log(data)
     //resident array
     setSubmitLoader(true)
     const assigned_resident_data =
       data?.resident_ids?.length > 0 ? data.resident_ids.map((element) => element.value) : []
-    console.log(assigned_resident_data)
 
     //filestobase64
-    console.log(temp_base64.length)
     temp_base64.map((x, index) => setValue(`documents_attributes.${index}.file.data`, x))
 
     data.documents_attributes.map((element, index) => (element.file.data = temp_base64[index]))
-    console.log(data)
 
     const body = { ...data, resident_ids: assigned_resident_data }
-    console.log(body)
 
     await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/allotment`, {
       allotment: body,
@@ -332,6 +323,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
 }
 AllocateUnit.propTypes = {
   unitId: PropTypes.number,
-  unitNo: PropTypes.number,
+  unitNo: PropTypes.string,
   after_submit: PropTypes.func,
 }

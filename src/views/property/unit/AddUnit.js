@@ -55,7 +55,6 @@ function Add({ after_submit }) {
   }
 
   function trimBuildings(buildings) {
-    console.log(buildings)
     if (buildings) {
       return buildings.map((e) => ({
         value: e?.id,
@@ -68,24 +67,17 @@ function Add({ after_submit }) {
 
   async function fetchBuildings() {
     const api = await get(`/v1/admin/premises/properties/${propertyId}/buildings`)
-    console.log(api)
-    console.log(api)
     if (response.ok && api.data) {
       setBuildings_data(trimBuildings(api.data))
-      console.log(units_data)
     } else {
-      console.log(response)
     }
   }
 
   async function fetchUnits() {
     const api = await get(`/v1/admin/premises/properties/${propertyId}/units`)
-    console.log(api)
     if (response.ok && api.data) {
       setUnits_data(trimUnits(api))
-      console.log(units_data)
     } else {
-      console.log(response)
     }
   }
 
@@ -117,11 +109,11 @@ function Add({ after_submit }) {
     <div>
       <button
         type="button"
-        className="btn s-3 custom_theme_button"
+        className="btn s-3 custom_theme_button "
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Add Unit
+        Add
       </button>
       <CModal
         alignment="center"

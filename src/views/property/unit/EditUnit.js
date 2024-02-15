@@ -44,11 +44,9 @@ export default function Edit({ unitId, after_submit }) {
         setValue('internal_extension_number', api.data.internal_extension_number || '-')
         setValue('unit_type_id', api.data.unit_type.id)
       } else {
-        console.error(response)
+        toast('Unable to load data.')
       }
-    } catch (error) {
-      console.error(error)
-    }
+    } catch (e) {}
   }
 
   async function fetchUnits() {

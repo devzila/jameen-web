@@ -17,7 +17,6 @@ function PickOwner(contract) {
         .map((x) => x.member.name),
     )
     .join(', ')
-  console.log(co_ownerNames)
   const result = `Owner: ${ownerNames || 'NA'} \n Residents: ${co_ownerNames || '--'}`
 
   return (

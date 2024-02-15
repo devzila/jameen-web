@@ -1,30 +1,55 @@
-import React from 'react'
-import { Dropdown, DropdownButton } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { Dropdown } from 'react-bootstrap'
 import { useForm, Controller } from 'react-hook-form'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilSync, freeSet } from '@coreui/icons'
 
-export default function FilterAccordion({ units_type, after_submit }) {
-  console.log(units_type)
+export default function FilterAccordion({ units_type, filter_callback }) {
+  const [status_query, setStatus_query] = useState('')
+  const [unit_query, setUnit_query] = useState('')
 
-  const { watch } = useForm()
+  const [visible_, setVisible_] = useState(true)
+
+  useEffect(() => {
+    queries_function()
+  }, [status_query, unit_query])
 
   const { control } = useForm()
-
   const unit_status = [
-    { value: 'vacant', label: 'Vacant' },
-    { value: 'allocated', label: 'Allocated' },
-    { value: 'occupied', label: 'Occupied' },
+    { value: 1, label: 'Vacant' },
+    { value: 2, label: 'Occupied' },
+    { value: 0, label: 'Unallotted' },
   ]
+
+  const handle_reset = () => {
+    setUnit_query(null)
+    setStatus_query(null)
+  }
+  const handleunit_status = (val) => {
+    const query = `&q[status_eq]=${val.value}`
+    setStatus_query(query)
+    filter_callback(query)
+  }
+
+  const handleunit_type = (val) => {
+    const query = `&q[unit_type_id_eq]=${val.value}`
+    setUnit_query(query)
+  }
+
+  const queries_function = () => {
+    filter_callback(unit_query + status_query)
+    setVisible_(false)
+  }
+
   return (
     <div>
-      <Dropdown data-bs-theme="light" className="d-flex" autoClose={false}>
+      <Dropdown data-bs-theme="light" className="d-flex" autoClose="outside">
         <Dropdown.Toggle
-          id="dropdown-button-light-example1"
+          id=" d-inline mx-2"
           variant="secondary"
-          className="ms-2 text-start"
+          className="ms-2 text-start h-100 w-100"
           style={{
             backgroundColor: 'white',
             width: '15vw',
@@ -51,7 +76,7 @@ export default function FilterAccordion({ units_type, after_submit }) {
               float: 'left',
               background: 'initial',
             }}
-            onClick={after_submit}
+            onClick={handle_reset}
           >
             <CIcon icon={cilSync} /> Reset Filter
           </button>
@@ -67,8 +92,7 @@ export default function FilterAccordion({ units_type, after_submit }) {
                   className="basic-multi-select"
                   classNamePrefix="select"
                   {...field}
-                  value={unit_status.find((c) => c.value === field.value)}
-                  onChange={(val) => field.onChange(val.value)}
+                  onChange={(val) => handleunit_status(val)}
                   options={unit_status}
                 />
               )}
@@ -85,8 +109,7 @@ export default function FilterAccordion({ units_type, after_submit }) {
                   className="basic-multi-select"
                   classNamePrefix="select"
                   {...field}
-                  value={units_type.find((c) => c.value === field.value)}
-                  onChange={(val) => field.onChange(val.value)}
+                  onChange={(val) => handleunit_type(val)}
                   options={units_type}
                 />
               )}
@@ -100,6 +123,6 @@ export default function FilterAccordion({ units_type, after_submit }) {
 }
 
 FilterAccordion.propTypes = {
-  after_submit: PropTypes.func,
+  filter_callback: PropTypes.func,
   units_type: PropTypes.array,
 }

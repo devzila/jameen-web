@@ -7,7 +7,6 @@ const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
   const auth = useContext(AuthContext)
 
-  console.log(auth)
   function extractLastPart(inputString) {
     const parts = inputString?.split('/')
     return parts[parts.length - 1]
