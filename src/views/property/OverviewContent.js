@@ -64,7 +64,7 @@ export default function OverviewContent(propsd) {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-2 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Name
                 <CCardText
                   className="fw-normal"
@@ -73,7 +73,7 @@ export default function OverviewContent(propsd) {
                   {property?.name || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-2 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 City
                 <CCardText
                   className="fw-normal"
@@ -84,7 +84,7 @@ export default function OverviewContent(propsd) {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-2 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Use Type
                 <CCardText
                   className="fw-normal"
