@@ -9,6 +9,8 @@ const Residents = React.lazy(() => import('../views/resident/Residents'))
 const Unit = React.lazy(() => import('../views/property/unit/Unit'))
 const Properties = React.lazy(() => import('../views/property/Properties'))
 const Property = React.lazy(() => import('../views/property/Property'))
+const OverviewContent = React.lazy(() => import('../views/property/OverviewContent'))
+const BillableItems = React.lazy(() => import('../views/property/BilliableItems'))
 const Maintenance = React.lazy(() => import('../views/maintenance/Maintenance'))
 const Visitor = React.lazy(() => import('../views/visitor/Visitor'))
 const Operation = React.lazy(() => import('../views/operation/Operation'))
@@ -34,7 +36,7 @@ const AppContent = () => {
           <Route path="/resident" name="Resident" element={<Residents />} />
           <Route path="/resident/:residentId/*" name="RView" element={<ShowResidentPage />} />
           <Route path="/unit" name="Unit" element={<Unit />} />
-          <Route path="properties" name="Properties" element={<Properties />} />
+          <Route path="/properties" name="Properties" element={<Properties />} />
           <Route path="properties/:propertyId/add" name="Add" element={<Properties />} />
           <Route path="/properties/:propertyId" element={<Property />} />
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
@@ -42,6 +44,16 @@ const AppContent = () => {
             path="/properties/:propertyId/units/:unitId"
             name="ShowUnit"
             element={<ShowUnit />}
+          />
+          <Route
+            path="/property/:propertyId/OverviewContent"
+            name="OverviewContent"
+            element={<OverviewContent />}
+          />
+          <Route
+            path="/property/:propertyId/BillableItems"
+            name="BilliableItems"
+            element={<BillableItems />}
           />
           <Route path="/maintenance" name="Maintenance" element={<Maintenance />} />
           <Route path="/visitor" name="Visitor" element={<Visitor />} />

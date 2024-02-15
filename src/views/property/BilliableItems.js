@@ -77,6 +77,6 @@ export default function BillableItems() {
 }
 
 BillableItems.propTypes = {
-  propertyId: PropTypes.string.isRequired,
-  unitTypeId: PropTypes.string.isRequired,
+  propertyId: PropTypes.number.isRequired,
+  unitTypeId: PropTypes.number.isRequired,
 }

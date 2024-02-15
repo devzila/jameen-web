@@ -20,6 +20,7 @@ function Property() {
   const [properties, setProperties] = useState([])
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [refresh, setRefresh] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState('')
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -45,6 +46,13 @@ function Property() {
   const handlePageClick = (e) => {
     setCurrentPage(e.selected + 1)
   }
+  const refresh_data = () => {
+    console.log('called')
+    loadInitialProperties()
+
+    setSearchKeyword('')
+  }
+
 
   return (
     <>
@@ -123,7 +131,7 @@ function Property() {
                                     style={{ cursor: 'pointer' }}
                                   >
                                     <Dropdown.Menu>
-                                      <EditProperty propertyId={property.id} />
+                                      <EditProperty propertyId={property.id} after_submit={refresh_data}/>
                                       <ShowProperty propertyId={property.id} />
                                     </Dropdown.Menu>
                                     <BsThreeDots />
