@@ -16,7 +16,7 @@ export default function FilterAccordion({ units_type, filter_callback }) {
     queries_function()
   }, [status_query, unit_query])
 
-  const { control } = useForm()
+  const { control, watch, setValue } = useForm()
   const unit_status = [
     { value: 1, label: 'Vacant' },
     { value: 2, label: 'Occupied' },
@@ -26,6 +26,8 @@ export default function FilterAccordion({ units_type, filter_callback }) {
   const handle_reset = () => {
     setUnit_query(null)
     setStatus_query(null)
+    setValue('unit_status', null)
+    setValue('unit_type_id', null)
   }
   const handleunit_status = (val) => {
     const query = `&q[status_eq]=${val.value}`
