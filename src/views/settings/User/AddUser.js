@@ -29,8 +29,6 @@ export default function UserForm({ after_submit }) {
     const api = await get('/v1/admin/roles')
     if (response.ok) {
       setRoles_data(api.data)
-
-      console.log(api)
     }
   }
 
@@ -61,7 +59,6 @@ export default function UserForm({ after_submit }) {
 
   //base64
   const handleFileSelection = (e) => {
-    console.log(e)
     const selectedFile = e.target.files[0]
 
     if (selectedFile) {

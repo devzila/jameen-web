@@ -20,7 +20,6 @@ export default function ResOverview() {
   }, [])
   const loadResident = async () => {
     const endpoint = await get(`/v1/admin/members/${residentId}`)
-    console.log(endpoint)
     if (response.ok) {
       setResident_data(endpoint.data)
     } else {

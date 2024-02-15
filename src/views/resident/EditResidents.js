@@ -76,7 +76,6 @@ export default function EditResidents(props) {
 
     if (response.ok) {
       setResident(endpoint.data)
-      console.log(resident)
       setValue('first_name', endpoint.data.first_name)
       setValue('last_name', endpoint.data.last_name)
       setValue('email', endpoint.data.email)

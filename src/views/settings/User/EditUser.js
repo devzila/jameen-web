@@ -36,7 +36,6 @@ export default function EditUser({ userId, after_submit }) {
     const api = await get('/v1/admin/roles')
     if (response.ok) {
       setRoles_data(api.data)
-      console.log(api)
     }
   }
 
@@ -119,7 +118,6 @@ export default function EditUser({ userId, after_submit }) {
   //Form submit ,post
   async function onSubmit(data) {
     const assigned_properties_data = data?.property_ids.map((element) => element.value)
-    console.log(data)
     const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
 
     await patch(`/v1/admin/users/${userId}`, { user: body })

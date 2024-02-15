@@ -29,8 +29,6 @@ export default function PropertyForm() {
     const api = await get('/v1/admin/options')
 
     if (response.ok) {
-      console.log(api)
-
       const propertyUseTypesOptions = Object.entries(api.property_use_types).map((element) => ({
         value: element[1],
         label: element[0],

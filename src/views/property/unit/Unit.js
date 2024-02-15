@@ -2,17 +2,15 @@ import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import '../../../scss/_custom.scss'
 import { BsThreeDots } from 'react-icons/bs'
-import { useParams } from 'react-router-dom'
 import Loading from 'src/components/loading/loading'
 import { Row, Col, Dropdown } from 'react-bootstrap'
 import Paginate from '../../../components/Pagination'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 
-import { CNavbar, CContainer, CNavbarBrand, CCard } from '@coreui/react'
+import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import CustomDivToggle from '../../../components/CustomDivToggle'
 import Add from './AddUnit'
 import Edit from './EditUnit'
-import Show from './ShowUnitModule/ShowUnit'
 import Delete from './DeleteUnit'
 import PickOwner from './UnitFunctions/PickOwner'
 import AllocateUnit from './AllocateUnit'
@@ -32,43 +30,47 @@ function Unit() {
   const [refresh, setRefresh] = useState(false)
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [unit_type, setUnit_type] = useState({})
+  const [unit_type, setUnit_type] = useState([])
 
   useEffect(() => {
     loadInitialUnits()
+    loadUnitTypes()
   }, [currentPage])
 
-  //
-  function getUniqueUnitTypes(initialUnits) {
-    return initialUnits.data?.reduce((uniqueTypes, data) => {
-      if (data && data.unit_type && data.unit_type.id && data.unit_type.name) {
-        const found = uniqueTypes.find((type) => type.id === data.unit_type.id)
-        if (!found) {
-          uniqueTypes.push({
-            value: data.unit_type.id,
-            label: data.unit_type.name,
-          })
-        }
-      }
-      return uniqueTypes
-    }, [])
+  async function loadUnitTypes() {
+    let endpoint = await get(`/v1/admin/premises/properties/${propertyId}/unit_types`)
+
+    if (response.ok) {
+      const temp_unit = await endpoint.data.map((data) => ({
+        label: data.name,
+        value: data.id,
+      }))
+      setUnit_type(temp_unit)
+    } else {
+      setUnit_type([])
+    }
   }
-  async function loadInitialUnits() {
+
+  async function loadInitialUnits(queries) {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`
+
+    if (queries) {
+      endpoint += queries
+    }
+
     // /unit_types
 
     if (searchKeyword) {
-      endpoint += `&q[unit_type_eq]=${searchKeyword}`
+      endpoint += `&q[unit_no_eq]=${searchKeyword}`
     }
 
     const initialUnits = await get(endpoint)
 
-    console.log(initialUnits)
     if (response.ok) {
+      setErrors(false)
+
       setLoading(false)
       setUnits(initialUnits.data)
-
-      setUnit_type(getUniqueUnitTypes(initialUnits))
 
       setPagination(initialUnits.pagination)
     } else {
@@ -81,10 +83,7 @@ function Unit() {
     setCurrentPage(e.selected + 1)
   }
   const refresh_data = () => {
-    console.log('called')
     loadInitialUnits()
-
-    setSearchKeyword('')
   }
 
   function status_color(status) {
@@ -103,7 +102,10 @@ function Unit() {
     }
   }
 
-  const handleFilter = (term) => {}
+  function filter_callback(queries) {
+    loadInitialUnits(queries)
+    setSearchKeyword('')
+  }
 
   return (
     <>
@@ -114,25 +116,24 @@ function Unit() {
             <CContainer fluid>
               <CNavbarBrand href="#">Unit</CNavbarBrand>
               <div className="d-flex justify-content-end bg-light">
-                <div className="d-flex" role="search">
+                <div className="d-flex  " role="search">
                   <input
                     value={searchKeyword}
                     onChange={(e) => setSearchKeyword(e.target.value)}
-                    className="form-control me-0   custom_input"
+                    className="form-control me-0 custom_input  "
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
-                    on
                   />
                   <button
                     onClick={loadInitialUnits}
-                    className="btn btn-outline-success custom_search_button"
+                    className="btn btn-outline-success custom_search_button "
                     type="submit"
                   >
                     Search
                   </button>
                 </div>
-                <FilterAccordion after_submit={refresh_data} units_type={unit_type} />
+                <FilterAccordion filter_callback={filter_callback} units_type={unit_type} />
                 <Add after_submit={refresh_data} />
               </div>
             </CContainer>
