@@ -345,57 +345,7 @@ export default function Showunit(propsd) {
                 className="me-2"
                 style={{ color: '#00bfcc' }}
               />
-              <strong>Documents</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-            {unit?.running_contracts?.[0]?.documents?.map((document) => (
-              <CRow key={document.id} className="">
-                <CCol className="p-3 mt-0 fw-light " style={{ color: '#00bfcc' }}>
-                  Name
-                  <CCardText
-                    className="fw-normal"
-                    style={{ color: 'black', textTransform: 'capitalize' }}
-                  >
-                    {document.name || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                  Description
-                  <CCardText
-                    className="fw-normal"
-                    style={{ color: 'black', textTransform: 'capitalize' }}
-                  >
-                    {document?.description || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light">
-                  View
-                  <CCardText className="fw-normal ms-1" style={{ color: '#00bfcc' }}>
-                    <CIcon
-                      icon={freeSet.cilNotes}
-                      size="xl"
-                      onClick={() => window.open(document?.file, '_blank')}
-                    />
-                  </CCardText>
-                </CCol>
-              </CRow>
-            ))}
-            <CRow></CRow>
-          </CCard>
-        </CCol>
-      </CRow>
-
-      <CRow>
-        <CCol md="12">
-          <CCard className=" p-3 m-3" style={{ border: '0px' }}>
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Unit Billing Details</strong>
+              <strong>Invoices</strong>
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
