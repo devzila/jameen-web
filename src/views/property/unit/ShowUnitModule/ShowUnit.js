@@ -172,7 +172,7 @@ export default function Showunit(propsd) {
       </CRow>
       <CRow>
         <CCol md="12">
-          <CCard className=" p-4 mt-3" style={{ border: '0px' }}>
+          <CCard className=" p-4 mt-1" style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
