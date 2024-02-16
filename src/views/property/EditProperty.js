@@ -38,7 +38,7 @@ export default function EditProperty({ propertyId }) {
         setValue('name', api.data.name)
         setValue('city', api.data.city)
         setValue('use_type', api.data.use_type)
-        setValue('unit_count', api.data.unit_count)
+        setValue('unit_counts', api.data.unit_counts)
         setValue('payment_term', api.data.payment_term)
 
         setPropertyData(api.data)
@@ -168,7 +168,7 @@ export default function EditProperty({ propertyId }) {
                         <Form.Control
                           placeholder="Unit Count"
                           type="text"
-                          {...register('unit_count')}
+                          {...register('unit_counts')}
                         />
                       </Form.Group>
                     </Col>
