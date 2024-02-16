@@ -27,7 +27,7 @@ export default function Nav({ children }) {
             <NavLink to="/settings/integrations"> Integrations </NavLink>
           </div>
           <div>
-            <NavLink to="/settings/workflow_settings"> Workflow </NavLink>
+            <NavLink to="/settings/workflow"> Workflow </NavLink>
           </div>
         </div>
       </div>

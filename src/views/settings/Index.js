@@ -9,6 +9,9 @@ export default function Index() {
   const Allotment = React.lazy(() => import('./Allotment'))
   const MovingOut = React.lazy(() => import('./MovingOut'))
 
+  const Integrations = React.lazy(() => import('./Intergrations'))
+  const WorkFlow = React.lazy(() => import('./Workflow'))
+
   return (
     <>
       <Nav />
@@ -18,6 +21,9 @@ export default function Index() {
           <Route path="users" name="User" element={<User />} />
           <Route path="allotment" name="Allotment" element={<Allotment />} />
           <Route path="moving-out" name="MovingOut" element={<MovingOut />} />
+          <Route path="integrations" name="Integrations" element={<Integrations />} />
+          <Route path="moving-out" name="MovingOut" element={<MovingOut />} />
+          <Route path="workflow" name="Workflow" element={<WorkFlow />} />
         </Routes>
       </CContainer>
     </>
