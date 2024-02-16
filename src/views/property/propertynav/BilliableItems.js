@@ -20,7 +20,7 @@ export default function BillableItems() {
   async function fetchBillableItems() {
     try {
       const billableItemsData = await get(
-        `/v1/admin/premises/properties/${propertyIdId}/unit_types/${unitTypeId}/billable_items`,
+        `/v1/admin/premises/properties/${propertyId}/unit_types/${unitTypeId}/billable_items`,
       )
       console.log(billableItemsData)
       if (billableItemsData && billableItemsData.data) {

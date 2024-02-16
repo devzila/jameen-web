@@ -31,9 +31,9 @@ export default function Property({ children }) {
           </div>
           <div>
             <NavLink
-              to={`/property/${propertyId}/BillableItems`}
-              className={activeTab === 'billableItems' ? 'active' : ''}
-              onClick={() => setActiveTab('billableItems')}
+              to={`/property/${propertyId}/PropertyUnitTypes`}
+              className={activeTab === 'PropertyUnitTypes' ? 'active' : ''}
+              onClick={() => setActiveTab('PropertyUnitTypes')}
             >
               Unit Types
             </NavLink>
@@ -68,9 +68,6 @@ export default function Property({ children }) {
           </div>
           <div>
             <NavLink to="/#">Invoice Setting </NavLink>
-          </div>
-          <div>
-            <NavLink to="/#">Notes </NavLink>
           </div>
         </div>
       </div>

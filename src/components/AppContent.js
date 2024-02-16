@@ -11,7 +11,9 @@ const Properties = React.lazy(() => import('../views/property/Properties'))
 const Property = React.lazy(() => import('../views/property/Property'))
 const OverviewContent = React.lazy(() => import('../views/property/propertynav/OverviewContent'))
 const PropertyUnit = React.lazy(() => import('../views/property/propertynav/PropertyUnit'))
-const BilliableItems = React.lazy(() => import('../views/property/propertynav/BilliableItems'))
+const PropertyUnitTypes = React.lazy(() =>
+  import('../views/property/propertynav/PropertyUnitTypes'),
+)
 const ParkingLot = React.lazy(() => import('../views/property/propertynav/ParkingLot'))
 const Documents = React.lazy(() => import('../views/property/propertynav/Documents'))
 const Billing = React.lazy(() => import('../views/property/propertynav/Billing'))
@@ -61,9 +63,9 @@ const AppContent = () => {
             element={<PropertyUnit />}
           />
           <Route
-            path="/property/:propertyId/BillableItems"
-            name="BilliableItems"
-            element={<BilliableItems />}
+            path="/property/:propertyId/PropertyUnitTypes"
+            name="PropertyUnitTypes"
+            element={<PropertyUnitTypes />}
           />
           <Route
             path="/property/:propertyId/ParkingLot"
