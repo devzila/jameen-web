@@ -13,7 +13,13 @@ const DefaultLayout = () => {
         <Login />
       ) : (
         <div>
-          <Provider url={process.env.REACT_APP_API_URL} options={options}>
+          <Provider
+            url={process.env.REACT_APP_API_URL}
+            options={{
+              ...options,
+              ...{ headers: { Authorization: localStorage.getItem('token') } },
+            }}
+          >
             <AppSidebar />
             <div className="wrapper d-flex flex-column min-vh-100 bg-light">
               <AppHeader />
