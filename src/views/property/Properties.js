@@ -53,7 +53,6 @@ function Property() {
     setSearchKeyword('')
   }
 
-
   return (
     <>
       <div>
@@ -118,7 +117,7 @@ function Property() {
                               <td style={{ textTransform: 'uppercase' }}>{property.use_type}</td>
                               <td align="center">
                                 <NavLink to={`/properties/${property.id}/units`}>
-                                  {property.unit_count}
+                                  {property.units_count}
                                 </NavLink>
                               </td>
                               <td style={{ textTransform: 'capitalize' }}>
@@ -131,7 +130,10 @@ function Property() {
                                     style={{ cursor: 'pointer' }}
                                   >
                                     <Dropdown.Menu>
-                                      <EditProperty propertyId={property.id} after_submit={refresh_data}/>
+                                      <EditProperty
+                                        propertyId={property.id}
+                                        after_submit={refresh_data}
+                                      />
                                       <ShowProperty propertyId={property.id} />
                                     </Dropdown.Menu>
                                     <BsThreeDots />

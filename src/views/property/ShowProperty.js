@@ -126,7 +126,7 @@ export default function ShowProperty({ propertyId }) {
                               Unit Count
                             </strong>
                           </td>
-                          <td className="text-primary text-black-50">{property?.unit_count}</td>
+                          <td className="text-primary text-black-50">{property?.unit_counts}</td>
                         </tr>
                         <tr>
                           <td>
