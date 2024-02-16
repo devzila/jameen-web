@@ -69,9 +69,6 @@ export default function Property({ children }) {
           <div>
             <NavLink to="/#">Invoice Setting </NavLink>
           </div>
-          <div>
-            <NavLink to="/#">Notes </NavLink>
-          </div>
         </div>
       </div>
       {activeTab === 'overview' && <OverviewContent />}

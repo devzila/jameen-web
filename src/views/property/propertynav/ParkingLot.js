@@ -19,9 +19,7 @@ export default function ParkingLot() {
 
   async function fetchParkingLot() {
     try {
-      const parkingLotData = await get(
-        `/v1/admin/premises/properties/${propertyId}/ParkingLot`,
-      )
+      const parkingLotData = await get(`/v1/admin/premises/properties/${propertyId}/ParkingLot`)
       console.log(parkingLotData)
       if (parkingLotData && parkingLotData.data) {
         setParkingLot(parkingLotData.data)
