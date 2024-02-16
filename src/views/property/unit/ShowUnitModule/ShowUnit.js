@@ -43,7 +43,7 @@ export default function Showunit(propsd) {
     <>
       <CRow>
         <CCol md="4">
-          <CCard className=" p-3 mx-3 my-3" style={{ border: '0px' }}>
+          <CCard className=" p-3  my-3" style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -97,7 +97,7 @@ export default function Showunit(propsd) {
           </CCard>
         </CCol>
         <CCol md="8">
-          <CCard className=" p-3 my-3 me-3" style={{ border: '0px' }}>
+          <CCard className=" p-3 my-3 " style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -171,8 +171,8 @@ export default function Showunit(propsd) {
         </CCol>
       </CRow>
       <CRow>
-        <CCol md="4">
-          <CCard className=" p-4 m-3" style={{ border: '0px' }}>
+        <CCol md="12">
+          <CCard className=" p-4 mt-1" style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -202,8 +202,7 @@ export default function Showunit(propsd) {
                   {unit?.building?.description || '-'}
                 </CCardText>
               </CCol>
-            </CRow>
-            <CRow>
+
               <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Bathroom Number
                 <CCardText
@@ -225,62 +224,65 @@ export default function Showunit(propsd) {
             </CRow>
           </CCard>
         </CCol>
-        <CCol md="8">
-          <CCard className=" p-3 mt-3" style={{ border: '0px' }}>
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilUser}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Contract Members</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-            {member_info.map((member_) => (
-              <CRow key={member_.member.id} className="">
-                <CCol className="p-3 mt-0 fw-light " style={{ color: '#00bfcc' }}>
-                  Name
-                  <CCardText
-                    className="fw-normal"
-                    style={{ color: 'black', textTransform: 'capitalize' }}
-                  >
-                    <img
-                      src={member_?.member.avatar || logo}
-                      alt="Profile"
-                      className="rounded-circle "
-                      style={{ width: '25px', height: '25px' }}
-                    />
-                    {' ' + member_?.member.name || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                  Type
-                  <CCardText
-                    className="fw-normal"
-                    style={{ color: 'black', textTransform: 'capitalize' }}
-                  >
-                    {member_?.member_type.replace('_', ' ') || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                  Username
-                  <CCardText className="fw-normal" style={{ color: 'black' }}>
-                    {member_?.member.username}
-                  </CCardText>
-                </CCol>
-              </CRow>
-            ))}
 
-            <CRow></CRow>
-          </CCard>
-        </CCol>
+        {member_info && member_info[0] ? (
+          <CCol md="12">
+            <CCard className=" p-3 mt-3 border-0">
+              <CListGroupItem>
+                <CIcon
+                  icon={freeSet.cilUser}
+                  size="lg"
+                  className="me-2"
+                  style={{ color: '#00bfcc' }}
+                />
+                <strong>Contract Members</strong>
+                <hr style={{ color: '#C8C2C0' }} />
+              </CListGroupItem>
+              {member_info.map((member_) => (
+                <CRow key={member_.member.id} className="">
+                  <CCol className="p-3 mt-0 fw-light " style={{ color: '#00bfcc' }}>
+                    Name
+                    <CCardText
+                      className="fw-normal"
+                      style={{ color: 'black', textTransform: 'capitalize' }}
+                    >
+                      <img
+                        src={member_?.member.avatar || logo}
+                        alt="Profile"
+                        className="rounded-circle "
+                        style={{ width: '25px', height: '25px' }}
+                      />
+                      {' ' + member_?.member.name || '-'}
+                    </CCardText>
+                  </CCol>
+                  <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+                    Type
+                    <CCardText
+                      className="fw-normal"
+                      style={{ color: 'black', textTransform: 'capitalize' }}
+                    >
+                      {member_?.member_type.replace('_', ' ') || '-'}
+                    </CCardText>
+                  </CCol>
+                  <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+                    Username
+                    <CCardText className="fw-normal" style={{ color: 'black' }}>
+                      {member_?.member.username}
+                    </CCardText>
+                  </CCol>
+                </CRow>
+              ))}
+
+              <CRow></CRow>
+            </CCard>
+          </CCol>
+        ) : null}
       </CRow>
 
       {contract_info ? (
         <CRow>
           <CCol md="12">
-            <CCard className=" p-3 m-3" style={{ border: '0px' }}>
+            <CCard className=" p-3 mt-3" style={{ border: '0px' }}>
               <CListGroupItem>
                 <CIcon
                   icon={freeSet.cilLineStyle}
@@ -337,7 +339,7 @@ export default function Showunit(propsd) {
 
       <CRow>
         <CCol md="12">
-          <CCard className=" p-3 m-3" style={{ border: '0px' }}>
+          <CCard className=" p-3 mt-3" style={{ border: '0px' }}>
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -345,57 +347,7 @@ export default function Showunit(propsd) {
                 className="me-2"
                 style={{ color: '#00bfcc' }}
               />
-              <strong>Documents</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-            {unit?.running_contracts?.[0]?.documents?.map((document) => (
-              <CRow key={document.id} className="">
-                <CCol className="p-3 mt-0 fw-light " style={{ color: '#00bfcc' }}>
-                  Name
-                  <CCardText
-                    className="fw-normal"
-                    style={{ color: 'black', textTransform: 'capitalize' }}
-                  >
-                    {document.name || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                  Description
-                  <CCardText
-                    className="fw-normal"
-                    style={{ color: 'black', textTransform: 'capitalize' }}
-                  >
-                    {document?.description || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light">
-                  View
-                  <CCardText className="fw-normal ms-1" style={{ color: '#00bfcc' }}>
-                    <CIcon
-                      icon={freeSet.cilNotes}
-                      size="xl"
-                      onClick={() => window.open(document?.file, '_blank')}
-                    />
-                  </CCardText>
-                </CCol>
-              </CRow>
-            ))}
-            <CRow></CRow>
-          </CCard>
-        </CCol>
-      </CRow>
-
-      <CRow>
-        <CCol md="12">
-          <CCard className=" p-3 m-3" style={{ border: '0px' }}>
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Unit Billing Details</strong>
+              <strong>Invoices</strong>
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
