@@ -1,81 +1,32 @@
-import React, { useState } from 'react'
-import { NavLink, useParams } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import OverviewContent from './propertynav/OverviewContent'
+import React, { Suspense } from 'react'
+import { Navigate, Route, Routes, Link, Outlet } from 'react-router-dom'
+import { CContainer, CSpinner } from '@coreui/react'
+import PropertyNav from './propertynav/PropertyNav'
 
-export default function Property({ children }) {
-  const { propertyId, unitTypeId } = useParams()
-  const [activeTab, setActiveTab] = useState('overview')
-
+export default function Property() {
+  const OverviewContent = React.lazy(() => import('../property/propertynav/OverviewContent'))
+  const PropertyUnit = React.lazy(() => import('../property/propertynav/PropertyUnit'))
+  const PropertyUnitTypes = React.lazy(() => import('../property/propertynav/PropertyUnitTypes'))
+  const ParkingLot = React.lazy(() => import('../property/propertynav/ParkingLot'))
+  const Documents = React.lazy(() => import('../property/propertynav/Documents'))
+  const Billing = React.lazy(() => import('../property/propertynav/Billing'))
   return (
-    <div className="body-box-new section new-settings-box" style={{ border: 'none' }}>
-      <div className="new-settings-menu">
-        <div className="menu-list">
-          <div>
-            <NavLink
-              to={`/property/${propertyId}/OverviewContent`}
-              className={activeTab === 'overview' ? 'active' : ''}
-              onClick={() => setActiveTab('overview')}
-            >
-              Overview
-            </NavLink>
-          </div>
-          <div>
-            <NavLink
-              to={`/property/${propertyId}/PropertyUnit`}
-              className={activeTab === 'unit' ? 'active' : ''}
-              onClick={() => setActiveTab('units')}
-            >
-              unit
-            </NavLink>
-          </div>
-          <div>
-            <NavLink
-              to={`/property/${propertyId}/PropertyUnitTypes`}
-              className={activeTab === 'PropertyUnitTypes' ? 'active' : ''}
-              onClick={() => setActiveTab('PropertyUnitTypes')}
-            >
-              Unit Types
-            </NavLink>
-          </div>
-          <div>
-            <NavLink
-              to={`/property/${propertyId}/ParkingLot`}
-              className={activeTab === 'parkingLot' ? 'active' : ''}
-              onClick={() => setActiveTab('parkingLot')}
-            >
-              Parking Lot
-            </NavLink>
-          </div>
-          <div>
-            <NavLink
-              to={`/property/${propertyId}/Documents`}
-              className={activeTab === 'Documents' ? 'active' : ''}
-              onClick={() => setActiveTab('Documents')}
-            >
-              Documents
-            </NavLink>
-          </div>
-
-          <div>
-            <NavLink
-              to={`/property/${propertyId}/Billing`}
-              className={activeTab === 'Billing' ? 'active' : ''}
-              onClick={() => setActiveTab('Billing')}
-            >
-              Billing
-            </NavLink>
-          </div>
-          <div>
-            <NavLink to="/#">Invoice Setting </NavLink>
-          </div>
-        </div>
-      </div>
-      {activeTab === 'overview' && <OverviewContent />}
-    </div>
+    <>
+      <PropertyNav />
+      <CContainer lg>
+        <Routes>
+          <Route path="OverviewContent" name="OverviewContent" element={<OverviewContent />} />
+          <Route path="PropertyUnit" name="PropertyUnit" element={<PropertyUnit />} />
+          <Route
+            path="PropertyUnitTypes"
+            name="PropertyUnitTypes"
+            element={<PropertyUnitTypes />}
+          />
+          <Route path="ParkingLot" name="ParkingLot" element={<ParkingLot />} />
+          <Route path="Documents" name="Documents" element={<Documents />} />
+          <Route path="Billing" name="Billing" element={<Billing />} />
+        </Routes>
+      </CContainer>
+    </>
   )
-}
-
-Property.propTypes = {
-  children: PropTypes.node,
 }
