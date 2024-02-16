@@ -7,7 +7,7 @@ import CIcon from '@coreui/icons-react'
 import { cilLineStyle, cilCloudDownload } from '@coreui/icons'
 import { freeSet } from '@coreui/icons'
 import { formatdate } from 'src/services/dateFormatter'
-import logo from '../../assets/images/avatars/default.png'
+import logo from '../../../assets/images/avatars/default.png'
 
 export default function OverviewContent(propsd) {
   const { propertyId } = useParams()
@@ -73,7 +73,7 @@ export default function OverviewContent(propsd) {
                   {property?.name || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-2 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 City
                 <CCardText
                   className="fw-normal"
@@ -82,9 +82,7 @@ export default function OverviewContent(propsd) {
                   {property?.city || '-'}
                 </CCardText>
               </CCol>
-            </CRow>
-            <CRow>
-              <CCol className="p-2 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Use Type
                 <CCardText
                   className="fw-normal"
@@ -103,23 +101,7 @@ export default function OverviewContent(propsd) {
                 </CCardText>
               </CCol>
             </CRow>
-          </CCard>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol md="4">
-          <CCard className=" p-4 m-3" style={{ border: '0px' }}>
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Property Details</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-            <CRow className="">
+            <CRow>
               <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Overdue Days
                 <CCardText
@@ -138,17 +120,6 @@ export default function OverviewContent(propsd) {
                   {property?.invoice_no_prefix || '-'}
                 </CCardText>
               </CCol>
-            </CRow>
-            <CRow>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Invoice Seq No
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {property?.invoice_sequence_no || '-'}
-                </CCardText>
-              </CCol>
               <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
                 Invoice Day
                 <CCardText
@@ -158,77 +129,13 @@ export default function OverviewContent(propsd) {
                   {property?.invoice_day || '-'}
                 </CCardText>
               </CCol>
-            </CRow>
-          </CCard>
-        </CCol>
-        <CCol md="8">
-          <CCard className=" p-3 my-3 me-3" style={{ border: '0px' }}>
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>property Information</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-            <CRow className="">
               <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Vat No
+                Created At
                 <CCardText
                   className="fw-normal"
                   style={{ color: 'black', textTransform: 'capitalize' }}
                 >
-                  {property?.vat_no || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Post Or Pre Invoice
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {property?.post_or_pre_invoice || '-'}
-                </CCardText>
-              </CCol>
-
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Unit Count
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {property?.unit_count || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Total Area (sq. ft.)
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {property?.sqft || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Monthly Maintenance/sq. ft.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {property?.monthly_maintenance_amount_per_sqft || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Last Modified
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {formatdate(property?.updated_at) || '-'}
+                  {property?.created_at || '-'}
                 </CCardText>
               </CCol>
             </CRow>

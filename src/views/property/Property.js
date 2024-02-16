@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import OverviewContent from './OverviewContent'
+import OverviewContent from './propertynav/OverviewContent'
 
 export default function Property({ children }) {
   const { propertyId, unitTypeId } = useParams()
@@ -22,27 +22,55 @@ export default function Property({ children }) {
           </div>
           <div>
             <NavLink
+              to={`/property/${propertyId}/PropertyUnit`}
+              className={activeTab === 'unit' ? 'active' : ''}
+              onClick={() => setActiveTab('units')}
+            >
+              unit
+            </NavLink>
+          </div>
+          <div>
+            <NavLink
               to={`/property/${propertyId}/BillableItems`}
               className={activeTab === 'billableItems' ? 'active' : ''}
               onClick={() => setActiveTab('billableItems')}
             >
-              Billable Items
+              Unit Types
             </NavLink>
           </div>
           <div>
-            <NavLink to="/settings/allotment"> Parking Lot </NavLink>
+            <NavLink
+              to={`/property/${propertyId}/ParkingLot`}
+              className={activeTab === 'parkingLot' ? 'active' : ''}
+              onClick={() => setActiveTab('parkingLot')}
+            >
+              Parking Lot
+            </NavLink>
           </div>
           <div>
-            <NavLink to="/settings/moving-out">Documents </NavLink>
+            <NavLink
+              to={`/property/${propertyId}/Documents`}
+              className={activeTab === 'Documents' ? 'active' : ''}
+              onClick={() => setActiveTab('Documents')}
+            >
+              Documents
+            </NavLink>
+          </div>
+
+          <div>
+            <NavLink
+              to={`/property/${propertyId}/Billing`}
+              className={activeTab === 'Billing' ? 'active' : ''}
+              onClick={() => setActiveTab('Billing')}
+            >
+              Billing
+            </NavLink>
           </div>
           <div>
-            <NavLink to="/settings/moving-out">Billing </NavLink>
+            <NavLink to="/#">Invoice Setting </NavLink>
           </div>
           <div>
-            <NavLink to="/settings/moving-out">Invoice Setting </NavLink>
-          </div>
-          <div>
-            <NavLink to="/settings/moving-out">Notes </NavLink>
+            <NavLink to="/#">Notes </NavLink>
           </div>
         </div>
       </div>

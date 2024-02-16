@@ -9,8 +9,12 @@ const Residents = React.lazy(() => import('../views/resident/Residents'))
 const Unit = React.lazy(() => import('../views/property/unit/Unit'))
 const Properties = React.lazy(() => import('../views/property/Properties'))
 const Property = React.lazy(() => import('../views/property/Property'))
-const OverviewContent = React.lazy(() => import('../views/property/OverviewContent'))
-const BillableItems = React.lazy(() => import('../views/property/BilliableItems'))
+const OverviewContent = React.lazy(() => import('../views/property/propertynav/OverviewContent'))
+const PropertyUnit = React.lazy(() => import('../views/property/propertynav/PropertyUnit'))
+const BilliableItems = React.lazy(() => import('../views/property/propertynav/BilliableItems'))
+const ParkingLot = React.lazy(() => import('../views/property/propertynav/ParkingLot'))
+const Documents = React.lazy(() => import('../views/property/propertynav/Documents'))
+const Billing = React.lazy(() => import('../views/property/propertynav/Billing'))
 const Maintenance = React.lazy(() => import('../views/maintenance/Maintenance'))
 const Visitor = React.lazy(() => import('../views/visitor/Visitor'))
 const Operation = React.lazy(() => import('../views/operation/Operation'))
@@ -40,6 +44,7 @@ const AppContent = () => {
           <Route path="properties/:propertyId/add" name="Add" element={<Properties />} />
           <Route path="/properties/:propertyId" element={<Property />} />
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
+
           <Route
             path="/properties/:propertyId/units/:unitId"
             name="ShowUnit"
@@ -51,17 +56,33 @@ const AppContent = () => {
             element={<OverviewContent />}
           />
           <Route
+            path="/property/:propertyId/PropertyUnit"
+            name="PropertyUnit"
+            element={<PropertyUnit />}
+          />
+          <Route
             path="/property/:propertyId/BillableItems"
             name="BilliableItems"
-            element={<BillableItems />}
+            element={<BilliableItems />}
           />
+          <Route
+            path="/property/:propertyId/ParkingLot"
+            name="ParkingLot"
+            element={<ParkingLot />}
+          />
+          <Route path="/property/:propertyId/Documents" name="Documents" element={<Documents />} />
+          <Route path="/property/:propertyId/Billing" name="Billing" element={<Billing />} />
           <Route path="/maintenance" name="Maintenance" element={<Maintenance />} />
           <Route path="/visitor" name="Visitor" element={<Visitor />} />
           <Route path="/operation" name="Operation" element={<Operation />} />
           <Route path="/news" name="News" element={<News />} />
           <Route path="/report" name="Report" element={<Report />} />
-          <Route path="/settings/*" name="Settings" element={<Settings />} />
-
+          <Route path="/settings/*" name="Settings" element={<Settings />}>
+            <Route path="users" name="User" element={<User />} />
+            <Route path="roles" name="Role" element={<Role />} />
+            <Route path="allotment" name="Allotment" element={<Allotment />} />
+            <Route path="moving-out" name="Moving Out" element={<MovingOut />} />
+          </Route>
           <Route path="*" element={<Page404 />} />
         </Routes>
       </Suspense>
