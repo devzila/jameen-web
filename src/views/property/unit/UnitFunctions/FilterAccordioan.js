@@ -16,7 +16,7 @@ export default function FilterAccordion({ units_type, filter_callback }) {
     queries_function()
   }, [status_query, unit_query])
 
-  const { control, watch, setValue } = useForm()
+  const { control, watch, reset, setValue } = useForm()
   const unit_status = [
     { value: 1, label: 'Vacant' },
     { value: 2, label: 'Occupied' },
@@ -24,18 +24,22 @@ export default function FilterAccordion({ units_type, filter_callback }) {
   ]
 
   const handle_reset = () => {
-    setUnit_query(null)
-    setStatus_query(null)
     setValue('unit_status', null)
     setValue('unit_type_id', null)
+    setUnit_query(null)
+    setStatus_query(null)
   }
+
   const handleunit_status = (val) => {
+    setValue('unit_status', watch('unit_status')?.value)
+
     const query = `&q[status_eq]=${val.value}`
     setStatus_query(query)
-    filter_callback(query)
   }
 
   const handleunit_type = (val) => {
+    setValue('unit_type_id', watch('unit_type_id')?.value)
+
     const query = `&q[unit_type_id_eq]=${val.value}`
     setUnit_query(query)
   }
@@ -108,7 +112,7 @@ export default function FilterAccordion({ units_type, filter_callback }) {
               render={({ field }) => (
                 <Select
                   type="text"
-                  className="basic-multi-select"
+                  className="basic-single"
                   classNamePrefix="select"
                   {...field}
                   onChange={(val) => handleunit_type(val)}
