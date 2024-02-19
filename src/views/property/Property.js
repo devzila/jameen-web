@@ -15,13 +15,9 @@ export default function Property() {
       <PropertyNav />
       <CContainer lg>
         <Routes>
-          <Route path="OverviewContent" name="OverviewContent" element={<OverviewContent />} />
-          <Route path="PropertyUnit" name="PropertyUnit" element={<PropertyUnit />} />
-          <Route
-            path="PropertyUnitTypes"
-            name="PropertyUnitTypes"
-            element={<PropertyUnitTypes />}
-          />
+          <Route path="overview" name="Overview" element={<OverviewContent />} />
+          <Route path="Unit" name="Unit" element={<PropertyUnit />} />
+          <Route path="unit-type" name="Unit Types" element={<PropertyUnitTypes />} />
           <Route path="ParkingLot" name="ParkingLot" element={<ParkingLot />} />
           <Route path="Documents" name="Documents" element={<Documents />} />
           <Route path="Billing" name="Billing" element={<Billing />} />
