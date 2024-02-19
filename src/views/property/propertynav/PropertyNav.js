@@ -7,7 +7,9 @@ export default function PropertyNav() {
       <div className="new-settings-menu">
         <div className="menu-list">
           <div>
-            <NavLink to="OverviewContent"> Overview </NavLink>
+            <NavLink end to="OverviewContent">
+              Overview
+            </NavLink>
           </div>
           <div>
             <NavLink to="PropertyUnit">Unit</NavLink>

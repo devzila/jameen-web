@@ -11,6 +11,7 @@ import CustomDivToggle from '../../components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@coreui/react'
 import ShowProperty from './ShowProperty'
 import EditProperty from './EditProperty'
+import OverviewContent from './propertynav/OverviewContent'
 
 function Property() {
   const { get, response, error } = useFetch()
@@ -47,7 +48,6 @@ function Property() {
     setCurrentPage(e.selected + 1)
   }
   const refresh_data = () => {
-    console.log('called')
     loadInitialProperties()
 
     setSearchKeyword('')
@@ -111,7 +111,9 @@ function Property() {
                           {properties.map((property) => (
                             <tr key={property.id}>
                               <td style={{ textTransform: 'capitalize' }}>
-                                <NavLink to={`/properties/${property.id}`}>{property.name}</NavLink>
+                                <NavLink to={`/properties/${property.id}/OverviewContent`}>
+                                  {property.name}
+                                </NavLink>
                               </td>
                               <td>{property.city}</td>
                               <td style={{ textTransform: 'uppercase' }}>{property.use_type}</td>
