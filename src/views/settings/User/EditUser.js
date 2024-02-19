@@ -43,6 +43,8 @@ export default function EditUser({ userId, after_submit }) {
     label: element.name.charAt(0).toUpperCase() + element.name.slice(1).replace(/_/g, ' '),
     value: element.id,
   }))
+
+  console.log(rolesarray)
   //properties
 
   let properties_array = []
