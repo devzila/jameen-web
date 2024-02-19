@@ -110,7 +110,7 @@ const PropertyUnitType = () => {
                           <td className="pt-3">{unit_type.sqft}</td>
                           <td className="pt-3"> {unit_type.monthly_maintenance_amount_per_sqft}</td>
                           <td>
-                            <NavLink to="billableitems">illableitems </NavLink>
+                            <NavLink to="billableitems">Billableitems </NavLink>
                           </td>
 
                           <td>
