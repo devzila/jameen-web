@@ -22,7 +22,6 @@ export default function OverviewContent(propsd) {
   }, [])
   async function getPropertyData() {
     let api = await get(`/v1/admin/premises/properties/${propertyId}`)
-    console.log(api)
 
     if (api.data && api.data.running_contracts) {
       setProperty(api.data)
@@ -39,7 +38,6 @@ export default function OverviewContent(propsd) {
       setProperty(api.data)
     }
   }
-  console.log(property)
 
   return (
     <>
