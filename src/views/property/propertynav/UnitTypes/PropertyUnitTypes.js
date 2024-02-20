@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
 
-import Paginate from '../../../components/Pagination'
+import Paginate from '../../../../components/Pagination'
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 
@@ -102,9 +102,7 @@ const PropertyUnitType = () => {
                       {unit_type.map((unit_type) => (
                         <tr key={unit_type.id}>
                           <th className="pt-3" scope="row" style={{ color: '#666666' }}>
-                            <NavLink to={`/resident/${unit_type.id}/overview`}>
-                              {unit_type.name}
-                            </NavLink>
+                            <NavLink to={`${unit_type.id}/billableitems`}>{unit_type.name}</NavLink>
                           </th>
                           <td className="pt-3 text-capitalize">{unit_type.use_type}</td>
                           <td className="pt-3">{unit_type.sqft}</td>

@@ -13,7 +13,7 @@ export default function PropertyNav() {
             <NavLink to="unit">Unit</NavLink>
           </div>
           <div>
-            <NavLink to="unit-type"> Unit Types </NavLink>
+            <NavLink to="unit-types"> Unit Types </NavLink>
           </div>
           <div>
             <NavLink to="ParkingLot"> Parking Lot </NavLink>
