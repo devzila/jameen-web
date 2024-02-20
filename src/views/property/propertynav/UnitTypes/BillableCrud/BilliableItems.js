@@ -209,11 +209,9 @@ export default function BillableItems() {
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  {/* <EditResidents id={billableItems.id} /> */}
                                   <EditBillable
                                     id={billableItems.id}
                                     after_submit={reload_callback}
-                                    unittypeID={unittypeID}
                                   />
                                 </Dropdown.Menu>
                               </Dropdown>

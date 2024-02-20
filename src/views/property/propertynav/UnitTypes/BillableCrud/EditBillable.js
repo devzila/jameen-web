@@ -17,11 +17,11 @@ import {
   CContainer,
 } from '@coreui/react'
 
-export default function EditBillable({ after_submit, id, unittypeID }) {
+export default function EditBillable({ after_submit, id }) {
   const { register, handleSubmit, control, setValue } = useForm()
   const { get, put, response } = useFetch()
 
-  const { propertyId } = useParams()
+  const { propertyId, unittypeID } = useParams()
   const [visible, setVisible] = useState(false)
   const [unitData, setUnitData] = useState({})
   const [errors, setErrors] = useState({})
