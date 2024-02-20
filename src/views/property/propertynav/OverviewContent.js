@@ -44,7 +44,7 @@ export default function OverviewContent(propsd) {
       <CRow>
         <CCol md="4">
           <CCard className=" p-5  m-3 border-0  " style={{ backgroundColor: '#00bfcc' }}>
-            <div className="d-flex align-items-center justify-content-center h-100 ">
+            <div className="d-flex align-items-center justify-content-center h-100  ">
               <img className="rounded-circle w-50 " src={property.avatar || logo} />
             </div>
           </CCard>

@@ -35,7 +35,6 @@ const AppContent = () => {
           <Route path="/resident/:residentId/*" name="RView" element={<ShowResidentPage />} />
           <Route path="/unit" name="Unit" element={<Unit />} />
           <Route path="/properties" name="Properties" element={<Properties />} />
-          <Route path="properties/:propertyId/add" name="Add" element={<Properties />} />
           <Route path="/properties/:propertyId/*" element={<Property />} />
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
 

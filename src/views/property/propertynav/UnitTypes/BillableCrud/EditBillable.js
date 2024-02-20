@@ -17,11 +17,11 @@ import {
   CContainer,
 } from '@coreui/react'
 
-export default function EditBillable({ after_submit, id }) {
+export default function EditBillable({ after_submit, id, unittypeID }) {
   const { register, handleSubmit, control, setValue } = useForm()
-  const { get, post, response, api } = useFetch()
+  const { get, put, response } = useFetch()
 
-  const { propertyId, unittypeID } = useParams()
+  const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
   const [unitData, setUnitData] = useState({})
   const [errors, setErrors] = useState({})
@@ -56,8 +56,8 @@ export default function EditBillable({ after_submit, id }) {
 
   async function onSubmit(data) {
     console.log(data)
-    const apiResponse = await post(
-      `/v1/admin/premises/properties/${propertyId}/unit_types/${unittypeID}/billable_items`,
+    const apiResponse = await put(
+      `/v1/admin/premises/properties/${propertyId}/unit_types/${unittypeID}/billable_items/${id}`,
       {
         billable_item: data,
       },
@@ -224,4 +224,5 @@ export default function EditBillable({ after_submit, id }) {
 EditBillable.propTypes = {
   after_submit: PropTypes.func,
   id: PropTypes.number,
+  unittypeID: PropTypes.number,
 }
