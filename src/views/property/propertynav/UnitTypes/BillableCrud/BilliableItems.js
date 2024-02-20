@@ -73,7 +73,6 @@ export default function BillableItems() {
 
   function reload_callback() {
     fetchBillableItems()
-    setSearchKeyword('')
   }
 
   return (
