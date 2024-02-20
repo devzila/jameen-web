@@ -106,15 +106,14 @@ const PropertyUnitType = () => {
                         <th className="pt-3 pb-3 border-0">Use Type</th>
                         <th className="pt-3 pb-3 border-0">Area </th>
                         <th className="pt-3 pb-3 border-0">Maintenace/sqft</th>
-                        <th className="pt-3 pb-3 border-0">Billabale Items</th>
                       </tr>
                     </thead>
 
                     <tbody>
                       {unit_type.map((unit_type) => (
                         <>
-                          <tr key={unit_type.id}>
-                            <th className="pt-3" scope="row" style={{ color: '#666666' }}>
+                          <tr scope="row" key={unit_type.id}>
+                            <th className="pt-3" style={{ color: '#666666' }}>
                               <NavLink to={`${unit_type.id}/billableitems`}>
                                 {unit_type.name}
                               </NavLink>
@@ -124,36 +123,7 @@ const PropertyUnitType = () => {
                             <td className="pt-3">
                               {unit_type.monthly_maintenance_amount_per_sqft}
                             </td>
-                            <td>
-                              <button
-                                style={{
-                                  backgroundColor: 'white',
-                                  marginLeft: '4px',
-                                  width: '90%',
-                                  border: 'none',
-                                  color: '#00bfcc',
-                                }}
-                                type="button"
-                                className="btn btn-tertiary"
-                                data-mdb-ripple-init
-                                onClick={() => setVisible(!visible)}
-                              >
-                                Billable Items
-                              </button>
-                            </td>
-
-                            <td>
-                              <Dropdown key={unit_type.id}>
-                                <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                  <BsThreeDots />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  {/* <EditResidents id={unit_type.id} /> */}
-                                </Dropdown.Menu>
-                              </Dropdown>
-                            </td>
                           </tr>
-                          <BillableItems unittypeID={unit_type.id} show={visible} />
                         </>
                       ))}
                     </tbody>

@@ -21,10 +21,14 @@ export default function Property() {
           <Route path="overview" name="Overview" element={<OverviewContent />} />
           <Route path="Unit" name="Unit" element={<PropertyUnit />} />
           <Route path="unit-types" name="Unit Types" element={<PropertyUnitTypes />} />
+          <Route
+            path="unit-types/:unittypeID/billableitems"
+            name="Billable Items"
+            element={<BillableItems />}
+          />
           <Route path="ParkingLot" name="ParkingLot" element={<ParkingLot />} />
           <Route path="Documents" name="Documents" element={<Documents />} />
           <Route path="Billing" name="Billing" element={<Billing />} />
-          <Route path="unit-types/:unittypeID/billableitems" element={<BillableItems />} />
         </Routes>
       </CContainer>
     </>
