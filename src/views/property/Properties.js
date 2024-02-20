@@ -111,7 +111,7 @@ function Property() {
                           {properties.map((property) => (
                             <tr key={property.id}>
                               <td style={{ textTransform: 'capitalize' }}>
-                                <NavLink to={`/properties/${property.id}/OverviewContent`}>
+                                <NavLink to={`/properties/${property.id}/overview`}>
                                   {property.name}
                                 </NavLink>
                               </td>
