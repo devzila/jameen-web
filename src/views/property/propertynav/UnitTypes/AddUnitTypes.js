@@ -16,7 +16,6 @@ import {
   CModalTitle,
   CContainer,
 } from '@coreui/react'
-import { propTypes } from 'react-bootstrap/esm/Image'
 
 export default function AddUnitTypes({ after_submit, unittypeID }) {
   const { register, handleSubmit, control } = useForm()
@@ -24,20 +23,27 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
 
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
-  const [unitData, setUnitData] = useState({})
   const [errors, setErrors] = useState({})
-  const navigate = useNavigate()
-  const [units_data, setUnits_data] = useState([])
+  const [unit_type, setUnit_type] = useState()
 
-  const billable_array = [
-    { value: 'fixed', label: 'Fixed' },
-    { value: 'percentage', label: 'Percentage' },
-  ]
+  function fetchLocalData() {
+    const temp_use_type = JSON.parse(localStorage.getItem('meta'))
+
+    const temp2_unit_type = Object.entries(temp_use_type.property_use_types).map((x) => ({
+      value: x[1],
+      label: x[0],
+    }))
+    setUnit_type(temp2_unit_type)
+  }
+
+  React.useEffect(() => {
+    fetchLocalData()
+  }, [])
 
   async function onSubmit(data) {
     console.log(data)
-    const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/unit_types/`, {
-      unit_types: data,
+    const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/unit_types`, {
+      unit_type: data,
     })
     if (response.ok) {
       setVisible(!visible)
@@ -72,7 +78,7 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add Item</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Add </CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
@@ -102,17 +108,22 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
                       Area (sqft.)
                       <small className="text-danger ">*{errors ? errors.sqft : null}</small>
                     </label>
-                    <Form.Control type="integer" {...register('monthly_amount')}></Form.Control>
+                    <Form.Control type="integer" {...register('sqft')}></Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>
-                      VAT Percentage
-                      <small className="text-danger ">*{errors ? errors.vat_percent : null}</small>
+                      Monthly Maintenace Amout / SQFT.
+                      <small className="text-danger ">
+                        *{errors ? errors.monthly_maintenance_amount_per_sqft : null}
+                      </small>
                     </label>
 
-                    <Form.Control type="integer" {...register('vat_percent')}></Form.Control>
+                    <Form.Control
+                      type="integer"
+                      {...register('monthly_maintenance_amount_per_sqft')}
+                    ></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
@@ -120,21 +131,21 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>
-                      Unit Type
-                      <small className="text-danger"> *{errors ? errors.building_id : null} </small>
+                      Use Type
+                      <small className="text-danger"> *{errors ? errors.use_type : null} </small>
                     </label>
 
                     <Controller
-                      name="billable_type"
+                      name="unit_type"
                       render={({ field }) => (
                         <Select
                           type="text"
                           className="basic-multi-select"
                           classNamePrefix="select"
                           {...field}
-                          value={billable_array.find((c) => c.value === field.value)}
+                          value={unit_type.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
-                          options={billable_array}
+                          options={unit_type}
                         />
                       )}
                       control={control}

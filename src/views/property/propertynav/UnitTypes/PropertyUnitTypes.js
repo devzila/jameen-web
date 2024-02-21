@@ -18,6 +18,7 @@ import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col, Accordion } from 'react-bootstrap'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import BillableItems from './BillableCrud/BilliableItems'
+import AddUnitTypes from './AddUnitTypes'
 
 const PropertyUnitType = () => {
   const { get, response } = useFetch()
@@ -84,6 +85,7 @@ const PropertyUnitType = () => {
                 Search
               </button>
             </div>
+            <AddUnitTypes after_submit={loadInitialUnitsTypes} />
           </div>
         </CContainer>
       </CNavbar>
@@ -112,7 +114,7 @@ const PropertyUnitType = () => {
                     <tbody>
                       {unit_type.map((unit_type) => (
                         <>
-                          <tr scope="row" key={unit_type.id}>
+                          <tr key={unit_type.id}>
                             <th className="pt-3" style={{ color: '#666666' }}>
                               <NavLink to={`${unit_type.id}/billableitems`}>
                                 {unit_type.name}

@@ -16,7 +16,7 @@ import {
 } from '@coreui/react'
 import { freeSet } from '@coreui/icons'
 import Loading from 'src/components/loading/loading'
-import { Dropdown, Row, Col } from 'react-bootstrap'
+import { Dropdown, Row, Col, Card } from 'react-bootstrap'
 import Paginate from '../../../../../components/Pagination'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import AddBillable from './AddBillable'
@@ -77,19 +77,9 @@ export default function BillableItems() {
   return (
     <>
       <CCol>
-        <CNavbar expand="lg" colorScheme="light" className="bg-light">
-          <CContainer fluid>
-            <CNavbarBrand href="/billableItems">Billable Items</CNavbarBrand>
-
-            <div className="d-flex justify-content-end">
-              <div className="d-flex" role="search"></div>
-              <AddBillable after_submit={reload_callback} unittypeID={unittypeID} />
-            </div>
-          </CContainer>
-        </CNavbar>
         <CRow>
           <CCol md="12">
-            <CCard className=" p-3 my-2" style={{ border: '0px' }}>
+            <CCard className=" p-3 mt-2" style={{ border: '0px' }}>
               <CListGroupItem>
                 <CIcon
                   icon={freeSet.cilLineStyle}
@@ -136,8 +126,8 @@ export default function BillableItems() {
                   </CCardText>
                 </CCol>
               </CRow>
-              <CRow>
-                <CCol className="mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CRow className="mt-3">
+                <CCol className="mt-0 fw-light col-3" style={{ color: '#00bfcc' }}>
                   Description
                   <CCardText
                     className="fw-normal"
@@ -146,7 +136,7 @@ export default function BillableItems() {
                     {unittype?.description || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className=" mt-0 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className=" mt-0 fw-light col-3" style={{ color: '#00bfcc' }}>
                   Created At
                   <CCardText
                     className="fw-normal"
@@ -155,7 +145,7 @@ export default function BillableItems() {
                     {formatdate(unittype?.created_at) || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className=" mt-0 fw-light " style={{ color: '#00bfcc' }}>
+                <CCol className=" mt-0 fw-light col-3" style={{ color: '#00bfcc' }}>
                   Modified On
                   <CCardText
                     className="fw-normal"
@@ -169,6 +159,15 @@ export default function BillableItems() {
           </CCol>
         </CRow>
         <div>
+          <Card className="border-0 mt-3 p-2 rounded-2">
+            <div className="d-flex  ms-2 justify-content-between">
+              <div className="fs-4 border-0">Billable Items</div>
+              <div className=" me-4 border-0">
+                <AddBillable after_submit={reload_callback} unittypeID={unittypeID} />
+              </div>
+            </div>
+          </Card>
+
           <div className="mask d-flex align-items-center h-100">
             <div className="w-100">
               <div className="row justify-content-center">
