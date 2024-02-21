@@ -40,7 +40,6 @@ export default function BillableItems() {
     fetchBillableItems()
     fetchUnittype()
   }, [propertyId, unittypeID])
-  console.log('Unit Type ID:', propertyId)
 
   async function fetchBillableItems() {
     try {
