@@ -168,10 +168,7 @@ function Unit() {
                           {units.map((unit) => (
                             <tr key={unit.id}>
                               <td className=" ">
-                                <NavLink
-                                  className="mx-2"
-                                  to={`/properties/${propertyId}/units/${unit.id}`}
-                                >
+                                <NavLink className="mx-2" to={`${unit.id}`}>
                                   {unit.unit_no}
                                 </NavLink>
                               </td>

@@ -1,134 +1,198 @@
 import React, { useState, useEffect } from 'react'
-import { CCol, CCard, CListGroupItem, CCardImage, CRow, CCardText, CImage } from '@coreui/react'
-import useFetch from 'use-http'
-import PropTypes from 'prop-types'
+import { useFetch } from 'use-http'
+import { toast } from 'react-toastify'
+import Paginate from '../../../components/Pagination'
+import Loading from 'src/components/loading/loading'
+import CustomDivToggle from 'src/components/CustomDivToggle'
+import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import { BsThreeDots } from 'react-icons/bs'
+import { Dropdown, Row, Col } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
-import CIcon from '@coreui/icons-react'
-import { freeSet } from '@coreui/icons'
-import logo from '../../../assets/images/avatars/default.png'
 
-export default function Billings() {
-  const [billings, setBillings] = useState([])
-  const { get } = useFetch()
-  const { propertyId, unitTypeId } = useParams()
+const Finance = () => {
+  const [invoices, setInvoices] = useState([])
+  const [pagination, setPagination] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [errors, setErrors] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  const { propertyId } = useParams()
+
+  const [searchKeyword, setSearchKeyword] = useState(null)
+  const { get, response } = useFetch()
 
   useEffect(() => {
-    fetchBillings()
-  }, [propertyId, unitTypeId])
+    loadInitialinvoices()
+  }, [currentPage])
 
-  async function fetchBillings() {
-    try {
-      const billingsData = await get(`/v1/admin/premises/properties/${propertyId}/billings`)
-      console.log(billingsData)
-      if (billingsData && billingsData.data) {
-        setBillings(billingsData.data)
+  async function loadInitialinvoices() {
+    let endpoint = `/v1/admin/premises/properties/${propertyId}/invoices?page=${currentPage}`
+    if (searchKeyword) {
+      endpoint += `&q[_cont]=${searchKeyword}`
+    }
+    let initial_invoices = await get(endpoint)
+    console.log(initial_invoices)
+
+    if (response.ok) {
+      if (initial_invoices.data) {
+        setLoading(false)
+        setInvoices(initial_invoices.data)
+        setPagination(initial_invoices.pagination)
+        console.log(initial_invoices)
       }
-    } catch (error) {
-      console.error('Error fetching billable items:', error)
+    } else if (response.ok) {
+      setErrors(true)
+      setLoading(false)
+      toast('else id executed')
+    }
+  }
+
+  function handlePageClick(e) {
+    setCurrentPage(e.selected + 1)
+  }
+
+  function status_color(status) {
+    switch (status) {
+      case 'pending':
+        return 'rgb(255, 68, 51)'
+      case 'vacant':
+        return 'rgba(0, 120, 0,0.7)'
+        break
+      case 'occupied':
+        return 'grey'
+        break
+      default:
+        return 'white'
     }
   }
 
   return (
     <>
-      <CRow>
-        <CCol md="4">
-          <CCard className=" p-5  m-3 border-0  " style={{ backgroundColor: '#00bfcc' }}>
-            <div className="d-flex align-items-center justify-content-center h-100 ">
-              <img className="rounded-circle w-50 " src={billings.avatar || logo} />
+      <div>
+        <section style={{ width: '100%', padding: '0px' }}>
+          <CNavbar expand="lg" colorScheme="light" className="bg-light">
+            <CContainer fluid>
+              <CNavbarBrand href="#">Invoices</CNavbarBrand>
+              <div className="d-flex justify-content-end">
+                <div className="d-flex" role="search">
+                  <input
+                    onChange={(e) => setSearchKeyword(e.target.value)}
+                    className="form-control  custom_input"
+                    type="search"
+                    placeholder="Search"
+                    aria-label="Search"
+                  />
+                  <button
+                    onClick={loadInitialinvoices}
+                    className="btn btn-outline-success custom_search_button"
+                    type="submit"
+                  >
+                    Search
+                  </button>
+                </div>
+              </div>
+            </CContainer>
+          </CNavbar>
+          <div>
+            <div className="mask d-flex align-items-center h-100">
+              <div className="container">
+                <div className="row justify-content-center">
+                  <div className="col-12">
+                    <div className="table-responsive bg-white">
+                      <table className="table mb-0">
+                        <thead
+                          style={{
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            overFlow: 'hidden',
+                          }}
+                        >
+                          <tr>
+                            <th className="pt-3 pb-3 border-0">Invoice No.</th>
+                            <th className="pt-3 pb-3 border-0">Amount</th>
+                            <th className="pt-3 pb-3 border-0">Invoice Date</th>
+                            <th className="pt-3 pb-3 border-0">From/TO</th>
+                            <th className="pt-3 pb-3 border-0">Status </th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          {invoices.map((invoice) => (
+                            <tr key={invoice.id}>
+                              <th className="pt-3" scope="row" style={{ color: '#666666' }}>
+                                {invoice.number}
+                              </th>
+                              <td className="pt-3">{invoice.amount}</td>
+                              <td className="pt-3">{invoice.invoice_date}</td>
+                              <td className="pt-3">
+                                {invoice.period_from + '/' + invoice.period_to}
+                              </td>
+                              <td className="pt-3">
+                                <button
+                                  className=" text-center "
+                                  style={{
+                                    backgroundColor: `${status_color(invoice.status)}`,
+                                    border: '0px',
+                                    padding: '1px',
+                                    borderRadius: '2px',
+                                    color: 'white',
+                                    cursor: 'default',
+                                    width: '120px',
+                                  }}
+                                >
+                                  {invoice.status}
+                                </button>
+                              </td>
+
+                              <td>
+                                <Dropdown key={invoice.id}>
+                                  <Dropdown.Toggle
+                                    as={CustomDivToggle}
+                                    style={{ cursor: 'pointer' }}
+                                  >
+                                    <BsThreeDots />
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu>
+                                    {/* <ShowUser userId={invoice.id} /> */}
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      {loading && <Loading />}
+                      {errors == true ? toast('We are facing a technical issue at our end.') : null}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </CCard>
-        </CCol>
-        <CCol md="8">
-          <CCard className=" p-3 my-3 me-3" style={{ border: '0px' }}>
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>billings</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-2 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Name
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {billings?.name || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                City
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {billings?.city || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Use Type
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {billings?.use_type || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Payment Term
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {billings?.payment_term || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Overdue Days
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {billings?.invoice_overdue_days || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Invoice No Prefix
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {billings?.invoice_no_prefix || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Invoice Day
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {billings?.invoice_day || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Created At
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {billings?.created_at || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-          </CCard>
-        </CCol>
-      </CRow>
+          </div>
+          <br></br>
+          <CNavbar
+            colorScheme="light"
+            className="bg-light d-flex justify-content-center"
+            placement="fixed-bottom"
+          >
+            <Row>
+              <Col md="12">
+                {pagination ? (
+                  <Paginate
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={pagination.per_page}
+                    pageCount={pagination.total_pages}
+                    forcePage={currentPage - 1}
+                  />
+                ) : (
+                  <br />
+                )}
+              </Col>
+            </Row>
+          </CNavbar>
+        </section>
+      </div>
     </>
   )
 }
+export default Finance

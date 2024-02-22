@@ -8,7 +8,7 @@ const Finance = React.lazy(() => import('../views/finance/Finance'))
 const Residents = React.lazy(() => import('../views/resident/Residents'))
 const Unit = React.lazy(() => import('../views/property/unit/Unit'))
 const Properties = React.lazy(() => import('../views/property/Properties'))
-const Property = React.lazy(() => import('../views/property/Property'))
+const PropertyRoutes = React.lazy(() => import('../views/property/PropertyRoutes'))
 const Maintenance = React.lazy(() => import('../views/maintenance/Maintenance'))
 const Visitor = React.lazy(() => import('../views/visitor/Visitor'))
 const Operation = React.lazy(() => import('../views/operation/Operation'))
@@ -35,7 +35,7 @@ const AppContent = () => {
           <Route path="/resident/:residentId/*" name="RView" element={<ShowResidentPage />} />
           <Route path="/unit" name="Unit" element={<Unit />} />
           <Route path="/properties" name="Properties" element={<Properties />} />
-          <Route path="/properties/:propertyId/*" element={<Property />} />
+          <Route path="/properties/:propertyId/*" element={<PropertyRoutes />} />
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
 
           <Route

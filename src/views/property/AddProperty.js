@@ -3,6 +3,7 @@ import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
+import PropTypes from 'prop-types'
 
 import {
   CButton,
@@ -16,7 +17,7 @@ import {
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
-export default function PropertyForm() {
+export default function PropertyForm({ after_submit }) {
   const [visible, setVisible] = useState(false)
   const [imageView, setImageView] = useState('')
   const [useTypeOptions, setUseTypeOptions] = useState([])
@@ -69,9 +70,12 @@ export default function PropertyForm() {
 
     const apiResponse = await post(`/v1/admin/premises/properties`, { property: body })
 
+    console.log(response)
+
     if (response.ok) {
       toast('Property added successfully')
       setVisible(!visible)
+      after_submit()
       reset()
       setImageView('')
     } else {
@@ -83,7 +87,7 @@ export default function PropertyForm() {
     <div>
       <button
         type="button"
-        className="btn s-3 custom_theme_button"
+        className="btn s-3 custom_theme_button "
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
@@ -149,10 +153,26 @@ export default function PropertyForm() {
                     ></Form.Control>
                   </Form.Group>
                 </Col>
+
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>City</label>
-                    <Form.Control type="text" {...register('city')}></Form.Control>
+                    <Form.Control
+                      placeholder="City"
+                      type="text"
+                      {...register('city')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="12">
+                  <Form.Group>
+                    <label>Address</label>
+                    <Form.Control
+                      required
+                      placeholder="Address"
+                      type="text"
+                      {...register('address')}
+                    ></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
@@ -221,4 +241,8 @@ export default function PropertyForm() {
       </CModal>
     </div>
   )
+}
+
+PropertyForm.propTypes = {
+  after_submit: PropTypes.func,
 }

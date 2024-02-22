@@ -9,8 +9,10 @@ import { freeSet } from '@coreui/icons'
 import { formatdate } from 'src/services/dateFormatter'
 import logo from '../../../../assets/images/avatars/default.png'
 
-export default function Showunit(propsd) {
+export default function Showunit() {
   const { propertyId, unitId } = useParams()
+  console.log(unitId)
+
   const [unit, setUnit] = useState({})
   const [contract_info, setContract_info] = useState({})
   const [member_info, setMember_info] = useState([])
@@ -22,6 +24,7 @@ export default function Showunit(propsd) {
   }, [])
   async function getUnitData() {
     let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
+    console.log(api)
 
     setUnit(api.data)
     if (api.data) {

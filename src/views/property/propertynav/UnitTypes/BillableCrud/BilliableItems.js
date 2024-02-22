@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-
 import useFetch from 'use-http'
 import PropTypes from 'prop-types'
 import { useParams, NavLink } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import {
   CNavbar,

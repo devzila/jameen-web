@@ -26,10 +26,12 @@ function Property() {
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
 
-  const loadInitialProperties = async (searchTerm = '') => {
-    let endpoint = `/v1/admin/premises/properties?page=${currentPage}&search=${searchTerm}`
+  const loadInitialProperties = async () => {
+    let endpoint = `/v1/admin/premises/properties?page=${currentPage}&search=${searchKeyword}`
 
     const initialProperties = await get(endpoint)
+    console.log(initialProperties)
+
     if (response.ok) {
       setLoading(false)
       setProperties(initialProperties.data)
@@ -78,7 +80,7 @@ function Property() {
                     Search
                   </CButton>
                   <br></br>
-                  <AddProperty />
+                  <AddProperty after_submit={refresh_data} />
                 </CForm>
               </div>
             </CContainer>
