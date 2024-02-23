@@ -41,87 +41,52 @@ export default function Documents() {
         <CCol md="8">
           <CCard className=" p-3 my-3 me-3" style={{ border: '0px' }}>
             <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
               <strong>Documents</strong>
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-2 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-2 mt-0 fw-light theme_color">
                 Name
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {documents?.name || '-'}
-                </CCardText>
+                <CCardText className="fw-normal text-black">{documents?.name || '-'}</CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 City
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {documents?.city || '-'}
-                </CCardText>
+                <CCardText className="fw-normal text-black">{documents?.city || '-'}</CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Use Type
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {documents?.use_type || '-'}
-                </CCardText>
+                <CCardText className="fw-normal text-black">{documents?.use_type || '-'}</CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Payment Term
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black">
                   {documents?.payment_term || '-'}
                 </CCardText>
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Overdue Days
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black">
                   {documents?.invoice_overdue_days || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Invoice No Prefix
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black">
                   {documents?.invoice_no_prefix || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Invoice Day
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black">
                   {documents?.invoice_day || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Created At
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black">
                   {documents?.created_at || '-'}
                 </CCardText>
               </CCol>

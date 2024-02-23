@@ -60,7 +60,7 @@ export default function Showunit() {
           <CCard className=" p-3  my-3 border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-              <strong>Property Details</strong>
+              <strong className="text-black">Property Details</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
             <CRow className="">
@@ -97,7 +97,7 @@ export default function Showunit() {
           <CCard className=" p-3 my-3 border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-              <strong>Unit Information</strong>
+              <strong className="text-black">Unit Information</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
             <CRow className="">
@@ -149,7 +149,7 @@ export default function Showunit() {
           <CCard className=" p-4 mt-1 border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-              <strong>Building Details</strong>
+              <strong className="text-black">Building Details</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
             <CRow className="">
@@ -187,7 +187,7 @@ export default function Showunit() {
             <CCard className=" p-3 mt-3 border-0 theme_color">
               <CListGroupItem>
                 <CIcon icon={freeSet.cilUser} size="lg" className="me-2" />
-                <strong>Contract Members</strong>
+                <strong className="text-black">Contract Members</strong>
                 <hr className="text-secondary" />
               </CListGroupItem>
               {member_info.map((member_) => (
@@ -231,7 +231,7 @@ export default function Showunit() {
             <CCard className=" p-3 mt-3 border-0 theme_color">
               <CListGroupItem>
                 <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-                <strong>Contract Info.</strong>
+                <strong className="text-black">Contract Info.</strong>
                 <hr className="text-secondary" />
               </CListGroupItem>
               <CRow className="">
@@ -271,7 +271,7 @@ export default function Showunit() {
           <CCard className=" p-3 my-3 border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-              <strong>Invoices</strong>
+              <strong className="text-black">Invoices</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
             <CRow className="">
