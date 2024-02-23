@@ -5,7 +5,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 import CIcon from '@coreui/icons-react'
 import { cilCheck, cilX } from '@coreui/icons'
 import logo from '../../../assets/images/jameen-logo.png'
-import { formatdate } from 'src/services/dateFormatter'
+import { formatdate } from 'src/services/CommonFunctions'
 
 import {
   CButton,

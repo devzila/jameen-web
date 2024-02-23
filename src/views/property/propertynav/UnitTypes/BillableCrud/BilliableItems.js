@@ -24,7 +24,7 @@ import EditBillable from './EditBillable'
 import CIcon from '@coreui/icons-react'
 import { BsThreeDots } from 'react-icons/bs'
 
-import { formatdate } from 'src/services/dateFormatter'
+import { formatdate } from 'src/services/CommonFunctions'
 
 export default function BillableItems() {
   const [billableItems, setBillableItems] = useState([])

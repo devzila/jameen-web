@@ -5,7 +5,7 @@ import { useParams, Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import logo from '../../../assets/images/avatars/default.png'
-import { formatdate } from 'src/services/dateFormatter'
+import { formatdate } from 'src/services/CommonFunctions'
 import { toast } from 'react-toastify'
 
 export default function ResOverview() {

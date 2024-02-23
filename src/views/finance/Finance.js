@@ -8,6 +8,7 @@ import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import ShowInvoices from './ShowInvoices'
+import { status_color } from 'src/services/CommonFunctions'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -47,21 +48,6 @@ const Finance = () => {
 
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
-  }
-
-  function status_color(status) {
-    switch (status) {
-      case 'pending':
-        return 'rgb(255, 68, 51)'
-      case 'vacant':
-        return 'rgba(0, 120, 0,0.7)'
-        break
-      case 'occupied':
-        return 'grey'
-        break
-      default:
-        return 'white'
-    }
   }
 
   return (

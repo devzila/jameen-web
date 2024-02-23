@@ -6,7 +6,7 @@ import { useParams, Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { cilLineStyle, cilCloudDownload } from '@coreui/icons'
 import { freeSet } from '@coreui/icons'
-import { formatdate } from 'src/services/dateFormatter'
+import { formatdate } from 'src/services/CommonFunctions'
 import logo from '../../../assets/images/avatars/default.png'
 
 export default function OverviewContent(propsd) {
