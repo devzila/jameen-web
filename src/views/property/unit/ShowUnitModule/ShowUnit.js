@@ -61,7 +61,7 @@ export default function Showunit() {
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
               <strong>Property Details</strong>
-              <hr style={{ color: '#C8C2C0' }} />
+              <hr className="text-secondary" />
             </CListGroupItem>
             <CRow className="">
               <CCol className="p-3 mt-0 fw-light">
@@ -98,7 +98,7 @@ export default function Showunit() {
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
               <strong>Unit Information</strong>
-              <hr style={{ color: '#C8C2C0' }} />
+              <hr className="text-secondary" />
             </CListGroupItem>
             <CRow className="">
               <CCol className="p-3 mt-0 fw-light">
@@ -150,7 +150,7 @@ export default function Showunit() {
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
               <strong>Building Details</strong>
-              <hr style={{ color: '#C8C2C0' }} />
+              <hr className="text-secondary" />
             </CListGroupItem>
             <CRow className="">
               <CCol className="p-3 mt-0 fw-light">
@@ -188,7 +188,7 @@ export default function Showunit() {
               <CListGroupItem>
                 <CIcon icon={freeSet.cilUser} size="lg" className="me-2" />
                 <strong>Contract Members</strong>
-                <hr style={{ color: '#C8C2C0' }} />
+                <hr className="text-secondary" />
               </CListGroupItem>
               {member_info.map((member_) => (
                 <CRow key={member_.member.id} className="">
@@ -232,7 +232,7 @@ export default function Showunit() {
               <CListGroupItem>
                 <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
                 <strong>Contract Info.</strong>
-                <hr style={{ color: '#C8C2C0' }} />
+                <hr className="text-secondary" />
               </CListGroupItem>
               <CRow className="">
                 <CCol className="p-3 mt-0 fw-light">
@@ -272,7 +272,7 @@ export default function Showunit() {
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
               <strong>Invoices</strong>
-              <hr style={{ color: '#C8C2C0' }} />
+              <hr className="text-secondary" />
             </CListGroupItem>
             <CRow className="">
               <CCol className="p-3 mt-0 fw-light">
@@ -314,19 +314,19 @@ export default function Showunit() {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light">
+              <CCol className="p-3 mt-0 fw-light col-3">
                 Amount
                 <CCardText className="fw-normal text-black font-monospace ">
                   {invoices[0]?.amount || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light">
+              <CCol className="p-3 mt-0 fw-light col-3">
                 VAT
                 <CCardText className="fw-normal text-black font-monospace ">
                   {invoices[0]?.vat_amount || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light">
+              <CCol className="p-3 mt-0 fw-light col-3">
                 Total
                 <CCardText className="fw-normal text-black font-monospace ">
                   {invoices[0]?.vat_amount || '-'}
