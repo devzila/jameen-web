@@ -50,7 +50,7 @@ export default function ResOverview() {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 First Name
                 <CCardText
                   className="fw-normal"
@@ -59,7 +59,7 @@ export default function ResOverview() {
                   {resident_data?.first_name || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Last Name
                 <CCardText
                   className="fw-normal"
@@ -68,7 +68,7 @@ export default function ResOverview() {
                   {resident_data?.last_name || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Gender
                 <CCardText
                   className="fw-normal"
@@ -77,7 +77,7 @@ export default function ResOverview() {
                   {resident_data?.gender || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Username
                 <CCardText
                   className="fw-normal"
@@ -88,7 +88,7 @@ export default function ResOverview() {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Email
                 <CCardText
                   className="fw-normal"
@@ -97,7 +97,7 @@ export default function ResOverview() {
                   {resident_data?.email || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Phone No.
                 <CCardText
                   className="fw-normal"
@@ -106,7 +106,7 @@ export default function ResOverview() {
                   {resident_data?.phone_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 D.OB.
                 <CCardText
                   className="fw-normal"
@@ -134,7 +134,7 @@ export default function ResOverview() {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-2 px-2 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-2 px-2 mt-0 fw-light theme_color">
                 ⊙ Last Changes
                 <CCardText
                   className="fw-normal ps-3"
@@ -147,7 +147,7 @@ export default function ResOverview() {
             </CRow>
 
             <CRow>
-              <CCol className="p-2 mt-0 px-2 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-2 mt-0 px-2 fw-light theme_color">
                 ⊙ Created On
                 <CCardText
                   className="fw-normal ms-3"
@@ -172,7 +172,7 @@ export default function ResOverview() {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 VAT No.
                 <CCardText
                   className="fw-normal"
@@ -181,7 +181,7 @@ export default function ResOverview() {
                   {resident_data?.property?.vat_no || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Invoice Prefix
                 <CCardText
                   className="fw-normal"
@@ -191,7 +191,7 @@ export default function ResOverview() {
                 </CCardText>
               </CCol>
 
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Email
                 <CCardText
                   className="fw-normal"
@@ -202,7 +202,7 @@ export default function ResOverview() {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Username
                 <CCardText
                   className="fw-normal"
@@ -211,7 +211,7 @@ export default function ResOverview() {
                   {resident_data?.username || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Phone No.
                 <CCardText
                   className="fw-normal"
@@ -220,7 +220,7 @@ export default function ResOverview() {
                   {resident_data?.phone_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 D.O.B.
                 <CCardText
                   className="fw-normal"
@@ -248,7 +248,7 @@ export default function ResOverview() {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Name
                 <CCardText
                   className="fw-normal"
@@ -257,7 +257,7 @@ export default function ResOverview() {
                   {resident_data?.property?.name || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 City
                 <CCardText
                   className="fw-normal"
@@ -266,7 +266,7 @@ export default function ResOverview() {
                   {resident_data?.property?.city || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Address
                 <CCardText
                   className="fw-normal"
@@ -275,7 +275,7 @@ export default function ResOverview() {
                   {resident_data?.property?.address || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Use Type
                 <CCardText
                   className="fw-normal"
@@ -304,7 +304,7 @@ export default function ResOverview() {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Electricity Account No.
                 <CCardText
                   className="fw-normal"
@@ -313,7 +313,7 @@ export default function ResOverview() {
                   {resident_data?.electricity_account_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Water Account No.
                 <CCardText
                   className="fw-normal"
@@ -322,7 +322,7 @@ export default function ResOverview() {
                   {resident_data?.water_account_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Internal Extension No.
                 <CCardText
                   className="fw-normal"
@@ -331,7 +331,7 @@ export default function ResOverview() {
                   {resident_data?.internal_extension_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light theme_color">
                 Last Status Changed
                 <CCardText
                   className="fw-normal"

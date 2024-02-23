@@ -38,15 +38,8 @@ export default function ShowResidents(props) {
   return (
     <div>
       <button
-        style={{
-          backgroundColor: 'white',
-          marginLeft: '4px',
-          width: '90%',
-          border: 'none',
-          color: '#00bfcc',
-        }}
         type="button"
-        className="btn btn-tertiary "
+        className="tooltip_button "
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
@@ -209,11 +202,7 @@ export default function ShowResidents(props) {
                 </div>
                 <div className="text-center">
                   <CModalFooter>
-                    <CButton
-                      color="secondary "
-                      className="custom_grey_button"
-                      onClick={() => setVisible(false)}
-                    >
+                    <CButton className="custom_grey_button" onClick={() => setVisible(false)}>
                       Close
                     </CButton>
                   </CModalFooter>

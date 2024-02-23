@@ -224,12 +224,7 @@ export default function PropertyForm({ after_submit }) {
                   >
                     Submit
                   </Button>
-                  <CButton
-                    className="custom_grey_button"
-                    color="secondary "
-                    style={{ border: '0px', color: 'white' }}
-                    onClick={() => setVisible(false)}
-                  >
+                  <CButton className="custom_grey_button" onClick={() => setVisible(false)}>
                     Close
                   </CButton>
                 </CModalFooter>

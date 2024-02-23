@@ -33,15 +33,8 @@ export default function ShowProperty({ propertyId }) {
   return (
     <div>
       <button
-        style={{
-          color: '#00bfcc',
-          backgroundColor: 'white',
-          marginLeft: '4px',
-          width: '90%',
-          border: 'none',
-        }}
         type="button"
-        className="btn btn-tertiary "
+        className="tooltip_button "
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
