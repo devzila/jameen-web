@@ -181,11 +181,7 @@ export default function EditProperty({ propertyId }) {
                   {/* Additional fields can be added based on your property structure */}
                   <div className="text-center">
                     <CModalFooter>
-                      <Button
-                        data-mdb-ripple-init
-                        type="submit"
-                        className="btn btn-primary btn-block custom_theme_button"
-                      >
+                      <Button data-mdb-ripple-init type="submit" className=" custom_theme_button">
                         Submit
                       </Button>
                       <CButton
