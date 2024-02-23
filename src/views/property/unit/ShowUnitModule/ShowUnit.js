@@ -57,25 +57,20 @@ export default function Showunit() {
     <>
       <CRow>
         <CCol md="4">
-          <CCard className=" p-3  my-3 border-0">
+          <CCard className=" p-3  my-3 border-0 theme_color">
             <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
               <strong>Property Details</strong>
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Name
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.property?.name || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Bedroom Number
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.bedrooms_number || '-'}
@@ -83,13 +78,13 @@ export default function Showunit() {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Bathroom Number
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.bathrooms_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Year Built
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.year_built || '-'}
@@ -99,32 +94,27 @@ export default function Showunit() {
           </CCard>
         </CCol>
         <CCol md="8">
-          <CCard className=" p-3 my-3 border-0">
+          <CCard className=" p-3 my-3 border-0 theme_color">
             <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
               <strong>Unit Information</strong>
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Name
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.unit_type?.name || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Use Type
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.unit_type?.use_type || '-'}
                 </CCardText>
               </CCol>
 
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Description
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.unit_type?.description || '-'}
@@ -132,19 +122,19 @@ export default function Showunit() {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Total Area (sq. ft.)
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.unit_type?.sqft || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Monthly Maintenance/sq. ft.
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.unit_type?.monthly_maintenance_amount_per_sqft || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Last Modified
                 <CCardText className="fw-normal text-black text-capitalize">
                   {formatdate(unit?.unit_type?.updated_at) || '-'}
@@ -156,38 +146,33 @@ export default function Showunit() {
       </CRow>
       <CRow>
         <CCol md="12">
-          <CCard className=" p-4 mt-1 border-0">
+          <CCard className=" p-4 mt-1 border-0 theme_color">
             <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
               <strong>Building Details</strong>
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Name
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.building?.name || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Description
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.building?.description || '-'}
                 </CCardText>
               </CCol>
 
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Bathroom Number
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.bathrooms_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Year Built
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.year_built || '-'}
@@ -199,20 +184,15 @@ export default function Showunit() {
 
         {member_info && member_info[0] ? (
           <CCol md="12">
-            <CCard className=" p-3 mt-3 border-0">
+            <CCard className=" p-3 mt-3 border-0 theme_color">
               <CListGroupItem>
-                <CIcon
-                  icon={freeSet.cilUser}
-                  size="lg"
-                  className="me-2"
-                  style={{ color: '#00bfcc' }}
-                />
+                <CIcon icon={freeSet.cilUser} size="lg" className="me-2" />
                 <strong>Contract Members</strong>
                 <hr style={{ color: '#C8C2C0' }} />
               </CListGroupItem>
               {member_info.map((member_) => (
                 <CRow key={member_.member.id} className="">
-                  <CCol className="p-3 mt-0 fw-light " style={{ color: '#00bfcc' }}>
+                  <CCol className="p-3 mt-0 fw-light ">
                     Name
                     <CCardText className="fw-normal text-black text-capitalize">
                       <img
@@ -224,18 +204,15 @@ export default function Showunit() {
                       {' ' + member_?.member.name || '-'}
                     </CCardText>
                   </CCol>
-                  <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+                  <CCol className="p-3 mt-0 fw-light">
                     Type
                     <CCardText className="fw-normal text-black text-capitalize">
                       {member_?.member_type.replace('_', ' ') || '-'}
                     </CCardText>
                   </CCol>
-                  <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+                  <CCol className="p-3 mt-0 fw-light">
                     Username
-                    <CCardText
-                      className="fw-normal text-black text-capitalize"
-                      style={{ color: 'black' }}
-                    >
+                    <CCardText className="fw-normal text-black text-capitalize">
                       {member_?.member.username}
                     </CCardText>
                   </CCol>
@@ -251,37 +228,32 @@ export default function Showunit() {
       {contract_info ? (
         <CRow>
           <CCol md="12">
-            <CCard className=" p-3 mt-3 border-0">
+            <CCard className=" p-3 mt-3 border-0 theme_color">
               <CListGroupItem>
-                <CIcon
-                  icon={freeSet.cilLineStyle}
-                  size="lg"
-                  className="me-2"
-                  style={{ color: '#00bfcc' }}
-                />
+                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
                 <strong>Contract Info.</strong>
                 <hr style={{ color: '#C8C2C0' }} />
               </CListGroupItem>
               <CRow className="">
-                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light">
                   Contract Type
                   <CCardText className="fw-normal text-black text-capitalize">
                     {contract_info.contract_type || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light">
                   Notes
                   <CCardText className="fw-normal text-black text-capitalize">
                     {contract_info?.notes || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light">
                   Start Date
                   <CCardText className="fw-normal text-black text-capitalize">
                     {contract_info?.start_date || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+                <CCol className="p-3 mt-0 fw-light">
                   End Date
                   <CCardText className="fw-normal text-black text-capitalize">
                     {contract_info?.end_date || '-'}
@@ -296,25 +268,20 @@ export default function Showunit() {
 
       <CRow>
         <CCol md="12">
-          <CCard className=" p-3 my-3 border-0">
+          <CCard className=" p-3 my-3 border-0 theme_color">
             <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
               <strong>Invoices</strong>
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Invoice No.
                 <CCardText className="fw-normal text-black text-capitalize">
                   {invoices[0]?.number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Status
                 <CCardText className="fw-normal text-black text-capitalize">
                   <button
@@ -333,13 +300,13 @@ export default function Showunit() {
                   </button>
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Invoice Date
                 <CCardText className="fw-normal text-black text-capitalize   text-capitalize">
                   {invoices[0]?.invoice_date || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Invoice Period
                 <CCardText className="fw-normal text-black text-capitalize">
                   {invoices[0]?.period_from + '/' + invoices[0]?.period_to || '-'}
@@ -347,16 +314,22 @@ export default function Showunit() {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Amount
-                <CCardText className="fw-normal text-black text-capitalize">
+                <CCardText className="fw-normal text-black font-monospace ">
                   {invoices[0]?.amount || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                Amount
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {invoices[0]?.amount || '-'}
+              <CCol className="p-3 mt-0 fw-light">
+                VAT
+                <CCardText className="fw-normal text-black font-monospace ">
+                  {invoices[0]?.vat_amount || '-'}
+                </CCardText>
+              </CCol>
+              <CCol className="p-3 mt-0 fw-light">
+                Total
+                <CCardText className="fw-normal text-black font-monospace ">
+                  {invoices[0]?.vat_amount || '-'}
                 </CCardText>
               </CCol>
             </CRow>
