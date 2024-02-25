@@ -8,6 +8,7 @@ import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
+import PickOwner from '../unit/UnitFunctions/PickOwner'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -109,9 +110,13 @@ const Finance = () => {
                         >
                           <tr>
                             <th className="pt-3 pb-3 border-0">Invoice No.</th>
-                            <th className="pt-3 pb-3 border-0">Amount</th>
+                            <th className="pt-3 pb-3 border-0">Unit No.</th>
+
+                            <th className="pt-3 pb-3 border-0">Total Amount</th>
+                            <th className="pt-3 pb-3 border-0">Owner/Resident</th>
+
                             <th className="pt-3 pb-3 border-0">Invoice Date</th>
-                            <th className="pt-3 pb-3 border-0">From/TO</th>
+                            <th className="pt-3 pb-3 border-0">Period</th>
                             <th className="pt-3 pb-3 border-0">Status </th>
                           </tr>
                         </thead>
@@ -122,7 +127,12 @@ const Finance = () => {
                               <th className="pt-3" scope="row" style={{ color: '#666666' }}>
                                 {invoice.number}
                               </th>
-                              <td className="pt-3">{invoice.amount}</td>
+                              <td className="pt-3">{invoice?.unit_contract?.unit?.unit_no}</td>
+                              <td className="pt-3">{invoice.total_amount}</td>
+                              <td className="pt-3">
+                                {PickOwner(invoice?.unit_contract?.unit_contract)}
+                              </td>
+
                               <td className="pt-3">{invoice.invoice_date}</td>
                               <td className="pt-3">
                                 {invoice.period_from + '/' + invoice.period_to}

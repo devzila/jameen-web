@@ -9,6 +9,7 @@ import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import ShowInvoices from './ShowInvoices'
 import { status_color } from 'src/services/CommonFunctions'
+import PickOwner from '../property/unit/UnitFunctions/PickOwner'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -27,8 +28,9 @@ const Finance = () => {
   async function loadInitialinvoices() {
     let endpoint = `/v1/admin/invoices?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[_cont]=${searchKeyword}`
+      endpoint += `&q[number_cont]=${searchKeyword}`
     }
+    console.log(endpoint)
     let initial_invoices = await get(endpoint)
     console.log(initial_invoices)
 
@@ -93,9 +95,13 @@ const Finance = () => {
                         >
                           <tr>
                             <th className="pt-3 pb-3 border-0">Invoice No.</th>
-                            <th className="pt-3 pb-3 border-0">Amount</th>
+                            <th className="pt-3 pb-3 border-0">Unit No.</th>
+
+                            <th className="pt-3 pb-3 border-0">Total Amount</th>
+                            <th className="pt-3 pb-3 border-0">Owner/Resident</th>
+
                             <th className="pt-3 pb-3 border-0">Invoice Date</th>
-                            <th className="pt-3 pb-3 border-0">From/TO</th>
+                            <th className="pt-3 pb-3 border-0">Period</th>
                             <th className="pt-3 pb-3 border-0">Status </th>
                           </tr>
                         </thead>
@@ -106,20 +112,21 @@ const Finance = () => {
                               <th className="pt-3" scope="row" style={{ color: '#666666' }}>
                                 {invoice.number}
                               </th>
-                              <td className="pt-3">{invoice.amount}</td>
+                              <td className="pt-3">{invoice?.unit_contract?.unit?.unit_no}</td>
+                              <td className="pt-3">{invoice.total_amount}</td>
+                              <td className="pt-3">
+                                {PickOwner(invoice?.unit_contract?.unit_contract)}
+                              </td>
+
                               <td className="pt-3">{invoice.invoice_date}</td>
                               <td className="pt-3">
                                 {invoice.period_from + '/' + invoice.period_to}
                               </td>
                               <td className="pt-3">
                                 <button
-                                  className=" text-center "
+                                  className=" text-center border-0  rounded-0 text-white"
                                   style={{
                                     backgroundColor: `${status_color(invoice.status)}`,
-                                    border: '0px',
-                                    padding: '1px',
-                                    borderRadius: '2px',
-                                    color: 'white',
                                     cursor: 'default',
                                     width: '120px',
                                   }}

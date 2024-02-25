@@ -109,7 +109,7 @@ function Add({ after_submit }) {
     <div>
       <button
         type="button"
-        className="btn s-3 custom_theme_button "
+        className="s-3 custom_theme_button "
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >

@@ -285,14 +285,10 @@ export default function Showunit() {
                 Status
                 <CCardText className="fw-normal text-black text-capitalize">
                   <button
-                    className=" text-center "
+                    className=" text-center border-0 p-1 rounded-1 text-white"
                     style={{
                       backgroundColor: `${status_color(invoices[0]?.status)}`,
-                      border: '0px',
-                      padding: '1px',
-                      borderRadius: '2px',
-                      color: 'white',
-                      cursor: 'default',
+
                       width: '120px',
                     }}
                   >
@@ -309,7 +305,7 @@ export default function Showunit() {
               <CCol className="p-3 mt-0 fw-light">
                 Invoice Period
                 <CCardText className="fw-normal text-black text-capitalize">
-                  {invoices[0]?.period_from + '/' + invoices[0]?.period_to || '-'}
+                  {invoices[0]?.period_from || '-' + '/' + (invoices[0]?.period_to || '-')}
                 </CCardText>
               </CCol>
             </CRow>

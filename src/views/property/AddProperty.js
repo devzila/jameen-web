@@ -203,6 +203,7 @@ export default function PropertyForm({ after_submit }) {
                       name="payment_term"
                       render={({ field }) => (
                         <Select
+                          classNamePrefix="react-select"
                           {...field}
                           options={paymentTermOptions}
                           value={paymentTermOptions.find((c) => c.value === field.value)}
