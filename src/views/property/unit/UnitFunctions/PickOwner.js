@@ -22,6 +22,7 @@ function PickOwner(contract) {
   return (
     <div>
       <CPopover
+        className="border-0 p-0 m-0"
         style={{ '--cui-popover-border-radius': '0px', '--cui-popover-padding-y': '25px' }}
         content={result}
         placement="right"
