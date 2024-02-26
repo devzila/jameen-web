@@ -144,6 +144,14 @@ const Finance = () => {
                                     <BsThreeDots />
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
+                                    <button
+                                      type="button"
+                                      class="btn  w-100 rounded-0 btn-success "
+                                      data-mdb-ripple-init
+                                    >
+                                      Payment
+                                    </button>
+
                                     {/* <ShowUser userId={invoice.id} /> */}
                                   </Dropdown.Menu>
                                 </Dropdown>
