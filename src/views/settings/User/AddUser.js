@@ -272,13 +272,7 @@ export default function UserForm({ after_submit }) {
                   <Button
                     data-mdb-ripple-init
                     type="submit"
-                    className="btn  btn-primary btn-block"
-                    style={{
-                      marginTop: '5px',
-                      color: 'white',
-                      backgroundColor: '#00bfcc',
-                      border: '0px',
-                    }}
+                    className="btn custom_theme_button btn-primary btn-block"
                   >
                     Submit
                   </Button>

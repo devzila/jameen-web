@@ -5,7 +5,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 import CIcon from '@coreui/icons-react'
 import { cilCheck, cilX } from '@coreui/icons'
 import logo from '../../../assets/images/jameen-logo.png'
-import { formatdate } from 'src/services/dateFormatter'
+import { formatdate } from 'src/services/CommonFunctions'
 
 import {
   CButton,
@@ -44,15 +44,8 @@ export default function ShowRoles({ roleId }) {
   return (
     <div>
       <button
-        style={{
-          color: '#00bfcc',
-          backgroundColor: 'white',
-          marginLeft: '4px',
-          width: '90%',
-          border: 'none',
-        }}
         type="button"
-        className="btn btn-tertiary "
+        className="tooltip_button "
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
@@ -132,7 +125,7 @@ export default function ShowRoles({ roleId }) {
               <Row>
                 {Object.entries(privileges_data).map(([outer_keys, outer_values]) => (
                   <Col md="6" key={outer_keys}>
-                    <div className="card mt-1" style={{ borderRadius: '0px', border: '0px' }}>
+                    <div className="card mt-1 rounded-0 border-0">
                       <div
                         className="card-header"
                         style={{
@@ -146,7 +139,7 @@ export default function ShowRoles({ roleId }) {
                       {Object.entries(outer_values).map(([inner_keys, inner_values]) => (
                         <div key={inner_keys} className="card-body p-1">
                           <ul className="list-group list-group-flush">
-                            <li className="list-group-item" style={{ textTransform: 'capitalize' }}>
+                            <li className="list-group-item text-capitalize">
                               {inner_keys.replace(/_/g, ' ')}
 
                               <p className="checkbox">{renderIcon(inner_values)}</p>
@@ -161,7 +154,7 @@ export default function ShowRoles({ roleId }) {
 
               <div className="text-center">
                 <CModalFooter>
-                  <CButton color="secondary" onClick={() => setVisible(false)}>
+                  <CButton className="custom_grey_button" onClick={() => setVisible(false)}>
                     Close
                   </CButton>
                 </CModalFooter>

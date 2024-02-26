@@ -46,10 +46,9 @@ export default function AddVisitor() {
   return (
     <div>
       <button
-        style={{ backgroundColor: '#00bfcc', color: 'white', marginLeft: '4px' }}
         color="#00bfcc"
         type="button"
-        className="btn flex s-3"
+        className=" btn flex s-3 custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
@@ -199,24 +198,10 @@ export default function AddVisitor() {
 
               <div className="mt-5 text-center">
                 <CModalFooter>
-                  <Button
-                    data-mdb-ripple-init
-                    type="submit"
-                    className="btn  btn-primary btn-block"
-                    style={{
-                      marginTop: '5px',
-                      color: 'white',
-                      backgroundColor: '#00bfcc',
-                      border: '0px',
-                    }}
-                  >
+                  <Button data-mdb-ripple-init type="submit" className="custom_theme_button">
                     Submit
                   </Button>
-                  <CButton
-                    color="secondary"
-                    style={{ border: '0px', color: 'white' }}
-                    onClick={() => setVisible(false)}
-                  >
+                  <CButton className="custom_grey_button" onClick={() => setVisible(false)}>
                     Close
                   </CButton>
                 </CModalFooter>

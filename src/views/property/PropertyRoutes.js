@@ -5,7 +5,7 @@ import PropertyNav from './propertynav/PropertyNav'
 import OverviewContent from '../property/propertynav/OverviewContent'
 
 export default function Property() {
-  const PropertyUnits = React.lazy(() => import('./propertynav/PropertyUnits'))
+  const PropertyUnit = React.lazy(() => import('../property/propertynav/PropertyUnits'))
   const PropertyUnitTypes = React.lazy(() => import('./propertynav/UnitTypes/PropertyUnitTypes'))
   const ParkingLot = React.lazy(() => import('../property/propertynav/ParkingLot'))
   const Documents = React.lazy(() => import('../property/propertynav/Documents'))
@@ -19,7 +19,7 @@ export default function Property() {
       <CContainer lg>
         <Routes>
           <Route path="overview" name="Overview" element={<OverviewContent />} />
-          <Route path="unit" name="Unit" element={<PropertyUnits />} />
+          <Route path="Unit" name="Unit" element={<PropertyUnit />} />
           <Route path="unit-types" name="Unit Types" element={<PropertyUnitTypes />} />
           <Route path="ParkingLot" name="ParkingLot" element={<ParkingLot />} />
           <Route path="Documents" name="Documents" element={<Documents />} />

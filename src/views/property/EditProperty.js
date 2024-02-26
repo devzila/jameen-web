@@ -104,15 +104,8 @@ export default function EditProperty({ propertyId }) {
     <>
       <div>
         <button
-          style={{
-            backgroundColor: 'white',
-            marginLeft: '4px',
-            width: '90%',
-            border: 'none',
-            color: '#00bfcc',
-          }}
           type="button"
-          className="btn btn-tertiary "
+          className="tooltip_button "
           data-mdb-ripple-init
           onClick={() => setVisible(!visible)}
         >
@@ -188,11 +181,7 @@ export default function EditProperty({ propertyId }) {
                   {/* Additional fields can be added based on your property structure */}
                   <div className="text-center">
                     <CModalFooter>
-                      <Button
-                        data-mdb-ripple-init
-                        type="submit"
-                        className="btn btn-primary btn-block custom_theme_button"
-                      >
+                      <Button data-mdb-ripple-init type="submit" className=" custom_theme_button">
                         Submit
                       </Button>
                       <CButton

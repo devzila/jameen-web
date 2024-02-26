@@ -6,10 +6,19 @@ import Paginate from '../../../../components/Pagination'
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 
-import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import {
+  CNavbar,
+  CContainer,
+  CNavbarBrand,
+  CAccordionBody,
+  CAccordion,
+  CAccordionHeader,
+} from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
-import { Dropdown, Row, Col } from 'react-bootstrap'
+import { Dropdown, Row, Col, Accordion } from 'react-bootstrap'
 import { Link, NavLink, useParams } from 'react-router-dom'
+import BillableItems from './BillableCrud/BilliableItems'
+import AddUnitTypes from './AddUnitTypes'
 
 const PropertyUnitType = () => {
   const { get, response } = useFetch()
@@ -19,6 +28,10 @@ const PropertyUnitType = () => {
   const [loading, setLoading] = useState(true)
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+
+  const [visible, setVisible] = useState(false)
+
+  const [showBillable, setShowBillable] = useState(false)
 
   const [unit_type, setUnit_types] = useState([])
   const [searchKeyword, setSearchKeyword] = useState(null)
@@ -72,6 +85,7 @@ const PropertyUnitType = () => {
                 Search
               </button>
             </div>
+            <AddUnitTypes after_submit={loadInitialUnitsTypes} />
           </div>
         </CContainer>
       </CNavbar>
@@ -94,34 +108,25 @@ const PropertyUnitType = () => {
                         <th className="pt-3 pb-3 border-0">Use Type</th>
                         <th className="pt-3 pb-3 border-0">Area </th>
                         <th className="pt-3 pb-3 border-0">Maintenace/sqft</th>
-                        <th className="pt-3 pb-3 border-0">Billabale Items</th>
                       </tr>
                     </thead>
 
                     <tbody>
                       {unit_type.map((unit_type) => (
-                        <tr key={unit_type.id}>
-                          <th className="pt-3" scope="row" style={{ color: '#666666' }}>
-                            <NavLink to={`${unit_type.id}/billableitems`}>{unit_type.name}</NavLink>
-                          </th>
-                          <td className="pt-3 text-capitalize">{unit_type.use_type}</td>
-                          <td className="pt-3">{unit_type.sqft}</td>
-                          <td className="pt-3"> {unit_type.monthly_maintenance_amount_per_sqft}</td>
-                          <td>
-                            <NavLink to="billableitems">Billableitems </NavLink>
-                          </td>
-
-                          <td>
-                            <Dropdown key={unit_type.id}>
-                              <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                <BsThreeDots />
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                {/* <EditResidents id={unit_type.id} /> */}
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </td>
-                        </tr>
+                        <>
+                          <tr key={unit_type.id}>
+                            <th className="pt-3" style={{ color: '#666666' }}>
+                              <NavLink to={`${unit_type.id}/billableitems`}>
+                                {unit_type.name}
+                              </NavLink>
+                            </th>
+                            <td className="pt-3 text-capitalize">{unit_type.use_type}</td>
+                            <td className="pt-3">{unit_type.sqft}</td>
+                            <td className="pt-3">
+                              {unit_type.monthly_maintenance_amount_per_sqft}
+                            </td>
+                          </tr>
+                        </>
                       ))}
                     </tbody>
                   </table>

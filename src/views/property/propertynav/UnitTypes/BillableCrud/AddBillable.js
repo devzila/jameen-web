@@ -18,11 +18,11 @@ import {
 } from '@coreui/react'
 import { propTypes } from 'react-bootstrap/esm/Image'
 
-export default function AddBillable({ after_submit }) {
+export default function AddBillable({ after_submit, unittypeID }) {
   const { register, handleSubmit, control } = useForm()
   const { get, post, response, api } = useFetch()
 
-  const { propertyId, unittypeID } = useParams()
+  const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
   const [unitData, setUnitData] = useState({})
   const [errors, setErrors] = useState({})
@@ -178,4 +178,5 @@ export default function AddBillable({ after_submit }) {
 
 AddBillable.propTypes = {
   after_submit: PropTypes.func,
+  unittypeID: PropTypes.number,
 }

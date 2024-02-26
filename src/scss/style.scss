@@ -26,7 +26,35 @@ $enable-rtl: true;
   }
 }
 
-.custom_input:focus {
+input:focus,
+.form-control:focus {
+  box-shadow: none;
+  border-color: gray;
+}
+
+.react-select__input:focus {
+  border-color: gray;
+  box-shadow: none;
+}
+
+.modal-content {
+  box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.37);
+  border-radius: 4px;
+}
+.modal {
+  background: rgba(255, 255, 255, 0.15);
+
+  // backdrop-filter: blur(1px);
+}
+
+.modal-content,
+.form-control {
+  border-radius: 2px;
+}
+
+label {
+  color: grey;
+  font-size: 13px;
 }
 .custom_input {
   border: 1px solid #00bfcc;
@@ -59,4 +87,23 @@ $enable-rtl: true;
 .custom_search_button {
   border-radius: 0px;
   border-left: 0px;
+}
+
+.theme_color {
+  color: #00bfcc;
+}
+.tooltip_button {
+  color: #00bfcc;
+  background-color: white;
+  margin-left: 4px;
+  width: 90%;
+  border: none;
+}
+
+.tooltip_button:hover {
+  background-color: rgba(0, 0, 0, 0.034);
+}
+
+.react-select-container {
+  color: pink;
 }

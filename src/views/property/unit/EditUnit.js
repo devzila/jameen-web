@@ -81,15 +81,8 @@ export default function Edit({ unitId, after_submit }) {
     <>
       <div>
         <button
-          style={{
-            backgroundColor: 'white',
-            marginLeft: '4px',
-            width: '90%',
-            border: 'none',
-            color: '#00bfcc',
-          }}
           type="button"
-          className="btn btn-tertiary"
+          className="tooltip_button"
           data-mdb-ripple-init
           onClick={() => setVisible(!visible)}
         >

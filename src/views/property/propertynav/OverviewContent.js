@@ -6,7 +6,7 @@ import { useParams, Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { cilLineStyle, cilCloudDownload } from '@coreui/icons'
 import { freeSet } from '@coreui/icons'
-import { formatdate } from 'src/services/dateFormatter'
+import { formatdate } from 'src/services/CommonFunctions'
 import logo from '../../../assets/images/avatars/default.png'
 
 export default function OverviewContent(propsd) {
@@ -44,95 +44,66 @@ export default function OverviewContent(propsd) {
       <CRow>
         <CCol md="4">
           <CCard className=" p-5  m-3 border-0  " style={{ backgroundColor: '#00bfcc' }}>
-            <div className="d-flex align-items-center justify-content-center h-100 ">
+            <div className="d-flex align-items-center justify-content-center h-100  ">
               <img className="rounded-circle w-50 " src={property.avatar || logo} />
             </div>
           </CCard>
         </CCol>
         <CCol md="8">
-          <CCard className=" p-3 my-3 me-3" style={{ border: '0px' }}>
+          <CCard className=" p-3 my-3 me-3 border-0 theme_color">
             <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Overview</strong>
-              <hr style={{ color: '#C8C2C0' }} />
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
+              <strong className="text-black">Overview</strong>
+              <hr className="text-secondary" />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-2 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-2 mt-0 fw-light">
                 Name
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black text-capitalize">
                   {property?.name || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 City
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black text-capitalize">
                   {property?.city || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Use Type
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black text-capitalize">
                   {property?.use_type || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Payment Term
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black text-capitalize">
                   {property?.payment_term || '-'}
                 </CCardText>
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Overdue Days
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black text-capitalize">
                   {property?.invoice_overdue_days || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Invoice No Prefix
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black text-capitalize">
                   {property?.invoice_no_prefix || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Invoice Day
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black text-capitalize">
                   {property?.invoice_day || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Created At
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black text-capitalize">
                   {property?.created_at || '-'}
                 </CCardText>
               </CCol>
@@ -143,51 +114,34 @@ export default function OverviewContent(propsd) {
 
       <CRow>
         <CCol md="12">
-          <CCard className=" p-3 m-3" style={{ border: '0px' }}>
+          <CCard className=" p-3 m-3 border-0 theme_color">
             <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>property Billing Details</strong>
-              <hr style={{ color: '#C8C2C0' }} />
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+              <strong className="text-black">property Billing Details</strong>
+              <hr className="text-secondary" />
             </CListGroupItem>
             <CRow className="">
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Electricity Account No.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black text-capitalize">
                   {property?.electricity_account_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Water Account No.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black text-capitalize">
                   {property?.water_account_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Internal Extension No.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black text-capitalize">
                   {property?.internal_extension_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light" style={{ color: '#00bfcc' }}>
+              <CCol className="p-3 mt-0 fw-light">
                 Last Status Changed
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
+                <CCardText className="fw-normal text-black text-capitalize">
                   {property?.year_built || '-'}
                 </CCardText>
               </CCol>

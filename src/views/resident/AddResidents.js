@@ -91,7 +91,7 @@ export default function AddResidents() {
     <div>
       <button
         type="button"
-        className="btn flex s-3 custom_theme_button"
+        className=" flex s-3 custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >

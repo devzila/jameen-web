@@ -135,15 +135,8 @@ export default function EditUser({ userId, after_submit }) {
     <>
       <div>
         <button
-          style={{
-            backgroundColor: 'white',
-            marginLeft: '4px',
-            width: '90%',
-            border: 'none',
-            color: '#00bfcc',
-          }}
           type="button"
-          className="btn btn-tertiary "
+          className="tooltip_button "
           data-mdb-ripple-init
           onClick={() => setVisible(!visible)}
         >
@@ -324,18 +317,10 @@ export default function EditUser({ userId, after_submit }) {
 
                 <div className="text-center">
                   <CModalFooter>
-                    <Button
-                      data-mdb-ripple-init
-                      type="submit"
-                      className="btn  btn-primary btn-block"
-                      style={{ marginTop: '5px', backgroundColor: '#00bfcc', border: 'none' }}
-                    >
+                    <Button data-mdb-ripple-init type="submit" className="custom_theme_button">
                       Submit
                     </Button>
-                    <CButton
-                      style={{ color: 'white', backgroundColor: 'gray', border: 'none' }}
-                      onClick={() => setVisible(false)}
-                    >
+                    <CButton className="custom_grey_button" onClick={() => setVisible(false)}>
                       Close
                     </CButton>
                   </CModalFooter>

@@ -17,51 +17,34 @@ import {
   CContainer,
 } from '@coreui/react'
 
-export default function EditBillable({ after_submit, id }) {
-  const { register, handleSubmit, control, setValue } = useForm()
-  const { get, put, response } = useFetch()
+export default function AddUnitTypes({ after_submit, unittypeID }) {
+  const { register, handleSubmit, control } = useForm()
+  const { get, post, response, api } = useFetch()
 
-  const { propertyId, unittypeID } = useParams()
+  const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
-  const [unitData, setUnitData] = useState({})
   const [errors, setErrors] = useState({})
-  const navigate = useNavigate()
-  const [billable_data, setBillable_data] = useState({})
+  const [unit_type, setUnit_type] = useState()
 
-  const billable_array = [
-    { value: 'fixed', label: 'Fixed' },
-    { value: 'percentage', label: 'Percentage' },
-  ]
+  function fetchLocalData() {
+    const temp_use_type = JSON.parse(localStorage.getItem('meta'))
 
-  useEffect(() => {
-    fetchBillableItems()
-  }, [propertyId, visible])
-
-  async function fetchBillableItems() {
-    try {
-      const billableItemsData = await get(
-        `/v1/admin/premises/properties/${propertyId}/unit_types/${unittypeID}/billable_items/${id}}`,
-      )
-      console.log(billableItemsData)
-      if (response.ok) {
-        setBillable_data(billableItemsData.data)
-        setValue('billable_type', billable_data.billable_type)
-
-        console.log(billable_data)
-      }
-    } catch (error) {
-      console.error('Error fetching billable items:', error)
-    }
+    const temp2_unit_type = Object.entries(temp_use_type.property_use_types).map((x) => ({
+      value: x[1],
+      label: x[0],
+    }))
+    setUnit_type(temp2_unit_type)
   }
+
+  React.useEffect(() => {
+    fetchLocalData()
+  }, [])
 
   async function onSubmit(data) {
     console.log(data)
-    const apiResponse = await put(
-      `/v1/admin/premises/properties/${propertyId}/unit_types/${unittypeID}/billable_items/${id}`,
-      {
-        billable_item: data,
-      },
-    )
+    const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/unit_types`, {
+      unit_type: data,
+    })
     if (response.ok) {
       setVisible(!visible)
       after_submit()
@@ -75,19 +58,17 @@ export default function EditBillable({ after_submit, id }) {
     setVisible(false)
     setErrors({})
   }
-  console.log(billable_data)
 
   return (
     <div>
       <button
         type="button"
-        className="tooltip_button"
+        className="btn s-3 custom_theme_button "
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Edit
+        Add
       </button>
-
       <CModal
         alignment="center"
         size="xl"
@@ -97,7 +78,7 @@ export default function EditBillable({ after_submit, id }) {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add Item</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Add </CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
@@ -109,22 +90,14 @@ export default function EditBillable({ after_submit, id }) {
                       Name
                       <small className="text-danger"> *{errors ? errors.name : null} </small>
                     </label>
-                    <Form.Control
-                      defaultValue={billable_data.name}
-                      type="integer"
-                      {...register('name')}
-                    ></Form.Control>
+                    <Form.Control type="text" {...register('name')}></Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Description</label>
 
-                    <Form.Control
-                      type="text"
-                      defaultValue={billable_data.description}
-                      {...register('description')}
-                    ></Form.Control>
+                    <Form.Control type="text" {...register('description')}></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
@@ -132,29 +105,24 @@ export default function EditBillable({ after_submit, id }) {
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>
-                      Monthly Amount
-                      <small className="text-danger ">
-                        *{errors ? errors.monthly_amount : null}
-                      </small>
+                      Area (sqft.)
+                      <small className="text-danger ">*{errors ? errors.sqft : null}</small>
                     </label>
-                    <Form.Control
-                      type="number"
-                      defaultValue={billable_data.monthly_amount}
-                      {...register('monthly_amount')}
-                    ></Form.Control>
+                    <Form.Control type="integer" {...register('sqft')}></Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>
-                      VAT Percentage
-                      <small className="text-danger ">*{errors ? errors.vat_percent : null}</small>
+                      Monthly Maintenace Amout / SQFT.
+                      <small className="text-danger ">
+                        *{errors ? errors.monthly_maintenance_amount_per_sqft : null}
+                      </small>
                     </label>
 
                     <Form.Control
                       type="integer"
-                      defaultValue={billable_data.vat_percent}
-                      {...register('vat_percent')}
+                      {...register('monthly_maintenance_amount_per_sqft')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -163,21 +131,21 @@ export default function EditBillable({ after_submit, id }) {
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>
-                      Billable Type
-                      <small className="text-danger"> *{errors ? errors.building_id : null} </small>
+                      Use Type
+                      <small className="text-danger"> *{errors ? errors.use_type : null} </small>
                     </label>
 
                     <Controller
-                      name="billable_type"
+                      name="unit_type"
                       render={({ field }) => (
                         <Select
                           type="text"
                           className="basic-multi-select"
                           classNamePrefix="select"
                           {...field}
-                          value={billable_array.find((c) => c.value === field.value)}
+                          value={unit_type.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
-                          options={billable_array}
+                          options={unit_type}
                         />
                       )}
                       control={control}
@@ -214,8 +182,7 @@ export default function EditBillable({ after_submit, id }) {
   )
 }
 
-EditBillable.propTypes = {
+AddUnitTypes.propTypes = {
   after_submit: PropTypes.func,
-  id: PropTypes.number,
   unittypeID: PropTypes.number,
 }

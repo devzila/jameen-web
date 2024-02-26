@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import PropTypes from 'prop-types'
-import { formatdate } from 'src/services/dateFormatter'
+import { formatdate } from 'src/services/CommonFunctions'
 
 import {
   CButton,
@@ -33,15 +33,8 @@ export default function ShowUser({ userId }) {
   return (
     <div>
       <button
-        style={{
-          color: '#00bfcc',
-          backgroundColor: 'white',
-          marginLeft: '4px',
-          width: '90%',
-          border: 'none',
-        }}
         type="button"
-        className="btn btn-tertiary "
+        className="tooltip_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >

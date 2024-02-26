@@ -57,7 +57,7 @@ export default function Visitor() {
 
   return (
     <div>
-      <section style={{ width: '100%', padding: '0px' }}>
+      <section className="w-100 p-0">
         <CNavbar expand="lg" colorScheme="light" className="bg-light">
           <CContainer fluid>
             <CNavbarBrand href="#">Visitors</CNavbarBrand>

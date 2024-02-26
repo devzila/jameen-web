@@ -13,7 +13,7 @@ import AddRoles from './AddRoles'
 import ShowRoles from './ShowRoles'
 import EditRoles from './EditRoles'
 import DeleteRoles from './DeleteRoles'
-import { formatdate } from 'src/services/dateFormatter'
+import { formatdate } from 'src/services/CommonFunctions'
 
 export default function Role() {
   const [pagination, setPagination] = useState(null)
