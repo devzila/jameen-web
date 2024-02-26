@@ -15,6 +15,8 @@
     "test:debug": "react-scripts --inspect-brk test --runInBand"
   },
   "dependencies": {
+    "@atlaskit/inline-edit": "^13.0.7",
+    "@atlaskit/textfield": "^6.0.1",
     "@coreui/coreui": "^4.2.1",
     "@coreui/icons": "^2.1.0",
     "@coreui/icons-react": "^2.1.0",
