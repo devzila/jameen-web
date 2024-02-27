@@ -92,13 +92,13 @@ export default function Showunit() {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light">
+              <CCol className="mt-0 fw-light">
                 Bathroom Number
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.bathrooms_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light">
+              <CCol className=" mt-0 fw-light">
                 Year Built
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.year_built || '-'}
@@ -158,8 +158,9 @@ export default function Showunit() {
           </CCard>
         </CCol>
       </CRow>
+
       <CRow>
-        <CCol md="12">
+        {/* <CCol md="12">
           <CCard className=" p-4 mt-1 border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
@@ -194,7 +195,7 @@ export default function Showunit() {
               </CCol>
             </CRow>
           </CCard>
-        </CCol>
+        </CCol> */}
 
         {member_info && member_info[0] ? (
           <CCol md="12">
@@ -281,7 +282,7 @@ export default function Showunit() {
       ) : null}
 
       <CCol md="4">
-        <CCard className="shadow-lg border-0 rounded-0  my-3 ">
+        <CCard className="shadow-lg border-0 rounded-2  my-3 pt-0 ">
           <CCard className="px-3 pt-3  border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
@@ -289,20 +290,20 @@ export default function Showunit() {
               <hr className="text-secondary" />
             </CListGroupItem>
           </CCard>
-          <CCardBody>
+          <CCardBody className="pt-0">
             <CRow>
               <CCol md="6">
                 <strong className="text-black fs-5 ">
                   Invoice No. : {invoices[0]?.number || '-'}
                 </strong>
               </CCol>
-              <CCol md="6" className="d-flex justify-content-end align-items-center">
+              <CCol md="6" className="d-flex justify-content-end align-items-start">
                 <button
                   className=" text-center border-0 p-1  mx-2 rounded-0 text-white"
                   style={{
                     backgroundColor: `${status_color(invoices[0]?.status)}`,
 
-                    width: '120px',
+                    width: '110px',
                   }}
                 >
                   {invoices[0]?.status || '-'}
@@ -333,8 +334,10 @@ export default function Showunit() {
             <CCardText className="fw-normal text-black font-monospace ">
               Total:{invoices[0]?.vat_amount || '-'}
             </CCardText>
-            <CButton className="btn-light custom_theme_button">Pay</CButton>
-            <CButton className="btn-light custom_grey_button mx-2">Decline</CButton>
+            <div className="d-flex justify-content-end">
+              <CButton className="btn-light custom_theme_button">Pay</CButton>
+              <CButton className="btn-light custom_grey_button mx-2">Decline</CButton>
+            </div>
           </CCardBody>
         </CCard>
       </CCol>
