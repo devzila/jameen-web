@@ -16,16 +16,16 @@ export default function PropertyNav() {
             <NavLink to="unit-types"> Unit Types </NavLink>
           </div>
           <div>
+            <NavLink to="Buildings"> Buildings </NavLink>
+          </div>
+          <div>
             <NavLink to="ParkingLot"> Parking Lot </NavLink>
           </div>
           <div>
-            <NavLink to="Documents"> Documents </NavLink>
+            <NavLink to="Documents"> Invoices </NavLink>
           </div>
           <div>
-            <NavLink to="Billing"> Billing </NavLink>
-          </div>
-          <div>
-            <NavLink to="/*"> Invoice Setting </NavLink>
+            <NavLink to="Billing"> Templates </NavLink>
           </div>
         </div>
       </div>
