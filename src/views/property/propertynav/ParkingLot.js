@@ -132,6 +132,8 @@ function ParkingLot() {
                           <tr>
                             <th className="border-0">Id</th>
                             <th className="border-0">Parking Number</th>
+                            <th className="border-0">Unit Number</th>
+                            <th className="border-0">Vechile Number</th>
                             <th className="border-0">ACTIONS</th>
                           </tr>
                         </thead>
@@ -152,6 +154,8 @@ function ParkingLot() {
                                   parking.parking_number
                                 )}
                               </td>
+                              <td>{parking.unit.unit_no}</td>
+                              <td>{parking.vehicle?.registration_no}</td>
                               <td>
                                 {editable[parking.id] ? (
                                   <>
