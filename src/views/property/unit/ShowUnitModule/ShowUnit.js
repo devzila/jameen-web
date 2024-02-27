@@ -92,13 +92,13 @@ export default function Showunit() {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light">
+              <CCol className="mt-0 fw-light">
                 Bathroom Number
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.bathrooms_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light">
+              <CCol className=" mt-0 fw-light">
                 Year Built
                 <CCardText className="fw-normal text-black text-capitalize">
                   {unit?.year_built || '-'}
@@ -158,8 +158,9 @@ export default function Showunit() {
           </CCard>
         </CCol>
       </CRow>
+
       <CRow>
-        <CCol md="12">
+        {/* <CCol md="12">
           <CCard className=" p-4 mt-1 border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
@@ -194,7 +195,7 @@ export default function Showunit() {
               </CCol>
             </CRow>
           </CCard>
-        </CCol>
+        </CCol> */}
 
         {member_info && member_info[0] ? (
           <CCol md="12">
@@ -281,7 +282,7 @@ export default function Showunit() {
       ) : null}
 
       <CCol md="4">
-        <CCard className="shadow-lg border-0 rounded-1  my-3 pt-0 ">
+        <CCard className="shadow-lg border-0 rounded-2  my-3 pt-0 ">
           <CCard className="px-3 pt-3  border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
