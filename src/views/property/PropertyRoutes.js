@@ -8,6 +8,7 @@ import Showunit from './unit/ShowUnitModule/ShowUnit'
 export default function Property() {
   const PropertyUnit = React.lazy(() => import('../property/propertynav/PropertyUnits'))
   const PropertyUnitTypes = React.lazy(() => import('./propertynav/UnitTypes/PropertyUnitTypes'))
+  const Buildings = React.lazy(() => import('../property/propertynav/Buildings'))
   const ParkingLot = React.lazy(() => import('../property/propertynav/ParkingLot'))
   const Documents = React.lazy(() => import('../property/propertynav/Documents'))
   const Billing = React.lazy(() => import('../property/propertynav/Billing'))
@@ -25,6 +26,7 @@ export default function Property() {
 
           <Route path="unit-types" name="Unit Types" element={<PropertyUnitTypes />} />
           <Route path="ParkingLot" name="ParkingLot" element={<ParkingLot />} />
+          <Route path="Buildings" name="Buildings" element={<Buildings />} />
           <Route path="Documents" name="Documents" element={<Documents />} />
           <Route path="Billing" name="Billing" element={<Billing />} />
           <Route path="unit-types/:unittypeID/billableitems" element={<BillableItems />} />
