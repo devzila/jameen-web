@@ -11,7 +11,7 @@ import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@
 
 function ParkingLot() {
   const { propertyId } = useParams()
-  const { get, response, error } = useFetch()
+  const { get, put, response, error } = useFetch()
 
   useEffect(() => {}, [])
 
@@ -68,18 +68,12 @@ function ParkingLot() {
   }
 
   const saveChanges = async (id) => {
-    const parking = parkingLot.find((item) => item.id === id)
-    try {
-      await fetch(`/v1/admin/premises/properties/${propertyId}/parkings/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(parking),
-      })
+    const parking_ = parkingLot.find((item) => item.id === id)
+
+    await put(`/v1/admin/premises/properties/${propertyId}/parkings/${id}`, { parking: parking_ })
+
+    if (response.ok) {
       toggleEditable(id)
-    } catch (error) {
-      console.error('Error updating parking lot data:', error)
     }
   }
 
@@ -116,7 +110,7 @@ function ParkingLot() {
                     Search
                   </CButton>
                   <br></br>
-                   {/* <AddParkingLot />  */}
+                  {/* <AddParkingLot />  */}
                 </CForm>
               </div>
             </CContainer>
