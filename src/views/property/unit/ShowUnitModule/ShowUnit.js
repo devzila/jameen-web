@@ -333,8 +333,10 @@ export default function Showunit() {
             <CCardText className="fw-normal text-black font-monospace ">
               Total:{invoices[0]?.vat_amount || '-'}
             </CCardText>
-            <CButton className="btn-light custom_theme_button">Pay</CButton>
-            <CButton className="btn-light custom_grey_button mx-2">Decline</CButton>
+            <div className="d-flex justify-content-end">
+              <CButton className="btn-light custom_theme_button">Pay</CButton>
+              <CButton className="btn-light custom_grey_button mx-2">Decline</CButton>
+            </div>
           </CCardBody>
         </CCard>
       </CCol>
