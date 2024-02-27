@@ -66,6 +66,7 @@ function Unit() {
     }
 
     const initialUnits = await get(endpoint)
+    console.log(initialUnits)
 
     if (response.ok) {
       setErrors(false)

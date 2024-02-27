@@ -40,7 +40,7 @@ export default function Showunit() {
 
   async function getUnitInvoices() {
     let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/invoices`)
-    console.log(api)
+    console.log(api.data)
 
     if (response.ok) {
       setInvoices(api.data)
@@ -49,7 +49,7 @@ export default function Showunit() {
 
   async function getUnitData() {
     let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
-    console.log(api)
+    console.log(api.data.id)
 
     setUnit(api.data)
     if (api.data) {
@@ -280,72 +280,64 @@ export default function Showunit() {
         </CRow>
       ) : null}
 
-      <CRow>
-        <CCol md="12">
-          <CCard className="p-3 my-3 border-0 theme_color">
+      <CCol md="4">
+        <CCard className="shadow-lg border-0 rounded-0  my-3 ">
+          <CCard className="p-3  border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
               <strong className="text-black">Invoices</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
-
-            <CCol md="4">
-              <CCard className="shadow-lg border-1 rounded-0  p-2   border-0  ">
-                <CCardBody>
-                  <CRow>
-                    <CCol md="6">
-                      <CCardTitle className="text-black ">
-                        Invoice No. : {invoices[0]?.number || '-'}
-                      </CCardTitle>
-                    </CCol>
-                    <CCol md="6" className="d-flex justify-content-end align-items-center">
-                      <button
-                        className=" text-center border-0 p-1  mx-2 rounded-0 text-white"
-                        style={{
-                          backgroundColor: `${status_color(invoices[0]?.status)}`,
-
-                          width: '120px',
-                        }}
-                      >
-                        {invoices[0]?.status || '-'}
-                      </button>
-                    </CCol>
-                  </CRow>
-                  <CCardText className="mt-2">
-                    Invoice Date : {invoices[0]?.invoice_date || '-'}
-                  </CCardText>
-
-                  <CCardText>
-                    Invoice Period :
-                    {' ' +
-                      (invoices[0]?.period_from || '-') +
-                      '/' +
-                      (invoices[0]?.period_to || '-')}
-                  </CCardText>
-                  <CCardText className="mt-2 ">
-                    <CRow>
-                      <CCol className="d-flex align-items-center">Owner/Resident:</CCol>
-                      <CCol>{PickOwner(invoices?.unit_contract?.unit_contract) || '-'}</CCol>
-                    </CRow>
-                  </CCardText>
-                  <CCardText className="fw-normal text-black font-monospace ">
-                    Amount: {invoices[0]?.amount || '-'}
-                  </CCardText>
-                  <CCardText className="fw-normal text-black font-monospace ">
-                    VAT : {invoices[0]?.vat_amount || '-'}
-                  </CCardText>
-
-                  <CCardText className="fw-normal text-black font-monospace ">
-                    Total:{invoices[0]?.vat_amount || '-'}
-                  </CCardText>
-                  <CButton className="btn-light custom_theme_button">Pay</CButton>
-                  <CButton className="btn-light custom_grey_button mx-2">Decline</CButton>
-                </CCardBody>
-              </CCard>
-            </CCol>
           </CCard>
-        </CCol>
-      </CRow>
+          <CCardBody>
+            <CRow>
+              <CCol md="6">
+                <CCardTitle className="text-black  fs-5">
+                  Invoice No. : {invoices[0]?.number || '-'}
+                </CCardTitle>
+              </CCol>
+              <CCol md="6" className="d-flex justify-content-end align-items-center">
+                <button
+                  className=" text-center border-0 p-1  mx-2 rounded-0 text-white"
+                  style={{
+                    backgroundColor: `${status_color(invoices[0]?.status)}`,
+
+                    width: '120px',
+                  }}
+                >
+                  {invoices[0]?.status || '-'}
+                </button>
+              </CCol>
+            </CRow>
+            <CCardText className="mt-2">
+              Invoice Date : {invoices[0]?.invoice_date || '-'}
+            </CCardText>
+
+            <CCardText>
+              Invoice Period :
+              {' ' + (invoices[0]?.period_from || '-') + '/' + (invoices[0]?.period_to || '-')}
+            </CCardText>
+            <CCardText className="mt-2 ">
+              <CRow>
+                <CCol className="d-flex align-items-center">Owner/Resident:</CCol>
+                {/* <CCol>{6PickOwner(invoices[0]?.unit_contract) || '-'}</CCol> */}
+              </CRow>
+            </CCardText>
+            <CCardText className="fw-normal text-black font-monospace ">
+              Amount: {invoices[0]?.amount || '-'}
+            </CCardText>
+            <CCardText className="fw-normal text-black font-monospace ">
+              VAT : {invoices[0]?.vat_amount || '-'}
+            </CCardText>
+
+            <CCardText className="fw-normal text-black font-monospace ">
+              Total:{invoices[0]?.vat_amount || '-'}
+            </CCardText>
+            <CButton className="btn-light custom_theme_button">Pay</CButton>
+            <CButton className="btn-light custom_grey_button mx-2">Decline</CButton>
+          </CCardBody>
+        </CCard>
+      </CCol>
     </>
   )
 }
