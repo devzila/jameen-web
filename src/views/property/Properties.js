@@ -5,7 +5,6 @@ import { Dropdown } from 'react-bootstrap'
 import { NavLink, Link } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 import { BsThreeDots } from 'react-icons/bs'
-import Paginate from 'src/components/Pagination'
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@coreui/react'
@@ -19,7 +18,6 @@ function Property() {
   useEffect(() => {}, [])
 
   const [properties, setProperties] = useState([])
-  const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [refresh, setRefresh] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState('')
@@ -27,7 +25,7 @@ function Property() {
   const [loading, setLoading] = useState(true)
 
   const loadInitialProperties = async () => {
-    let endpoint = `/v1/admin/premises/properties?page=${currentPage}&search=${searchKeyword}`
+    let endpoint = `/v1/admin/premises/properties?search=${searchKeyword}`
 
     const initialProperties = await get(endpoint)
     console.log(initialProperties)
@@ -35,7 +33,6 @@ function Property() {
     if (response.ok) {
       setLoading(false)
       setProperties(initialProperties.data)
-      setPagination(initialProperties.pagination)
     } else {
       setErrors(true)
       setLoading(false)
@@ -164,26 +161,6 @@ function Property() {
             </div>
           </div>
           <br></br>
-          <CNavbar
-            colorScheme="light"
-            className="bg-light d-flex justify-content-center"
-            placement="fixed-bottom"
-          >
-            <Row>
-              <Col md="12">
-                {pagination ? (
-                  <Paginate
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={pagination.per_page}
-                    pageCount={pagination.total_pages}
-                    forcePage={currentPage - 1}
-                  />
-                ) : (
-                  <br />
-                )}
-              </Col>
-            </Row>
-          </CNavbar>
         </section>
       </div>
     </>
