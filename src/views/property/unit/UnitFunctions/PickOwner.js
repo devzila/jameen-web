@@ -2,6 +2,7 @@ import { CPopover, CButton } from '@coreui/react'
 import React from 'react'
 
 function PickOwner(contract) {
+  console.log(contract)
   const ownerNames = contract
     ?.flatMap((x) =>
       x.contract_members
@@ -22,6 +23,7 @@ function PickOwner(contract) {
   return (
     <div>
       <CPopover
+        className="border-0 "
         style={{ '--cui-popover-border-radius': '0px', '--cui-popover-padding-y': '25px' }}
         content={result}
         placement="right"

@@ -15,10 +15,10 @@ export default function ResNav() {
               <NavLink to="notes">Notes</NavLink>
             </div>
             <div>
-              <NavLink to="/#"> History </NavLink>
+              <NavLink to="vehicles"> Vehicles </NavLink>
             </div>
             <div>
-              <NavLink to="/#"> Notes </NavLink>
+              <NavLink to="/#"> History </NavLink>
             </div>
           </div>
         </div>
