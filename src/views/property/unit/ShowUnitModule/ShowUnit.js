@@ -282,7 +282,7 @@ export default function Showunit() {
 
       <CCol md="4">
         <CCard className="shadow-lg border-0 rounded-0  my-3 ">
-          <CCard className="p-3  border-0 theme_color">
+          <CCard className="px-3 pt-3  border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
               <strong className="text-black">Invoices</strong>
@@ -292,9 +292,9 @@ export default function Showunit() {
           <CCardBody>
             <CRow>
               <CCol md="6">
-                <CCardTitle className="text-black  fs-5">
+                <strong className="text-black fs-5 ">
                   Invoice No. : {invoices[0]?.number || '-'}
-                </CCardTitle>
+                </strong>
               </CCol>
               <CCol md="6" className="d-flex justify-content-end align-items-center">
                 <button
