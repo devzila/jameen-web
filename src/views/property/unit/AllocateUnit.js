@@ -138,7 +138,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
     <div>
       <button
         type="button"
-        className="tooltip_button "
+        className="tooltip_button mt-5"
         data-mdb-ripple-init
         onClick={() => setVisible(true)}
       >
