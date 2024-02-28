@@ -13,12 +13,14 @@ export function status_color(status) {
   switch (status) {
     case 'pending':
       return 'rgb(255, 68, 51)'
-    case 'vacant':
+    case 'due':
       return 'rgba(0, 120, 0,0.7)'
-      break
-    case 'occupied':
+
+    case 'paid':
+      return 'green'
+
+    case 'cancelled':
       return 'grey'
-      break
     default:
       return 'white'
   }

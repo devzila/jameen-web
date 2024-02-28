@@ -18,7 +18,7 @@ export default function ResNav() {
               <NavLink to="vehicles"> Vehicles </NavLink>
             </div>
             <div>
-              <NavLink to="/#"> History </NavLink>
+              <NavLink to="history"> History </NavLink>
             </div>
           </div>
         </div>
