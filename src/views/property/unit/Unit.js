@@ -178,7 +178,11 @@ function Unit() {
                                 {unit.bedrooms_number + '  /  ' + unit.bathrooms_number}
                               </td>
                               <td className="pt-3  ">{unit.year_built}</td>
-                              <td className="pt-1   ">{PickOwner(unit.running_contracts)}</td>
+                              <td className="pt-1   ">
+                                {unit.running_contracts[0]?.contract_members
+                                  ? PickOwner(unit.running_contracts[0]?.contract_members)
+                                  : '-'}
+                              </td>
                               <td className="pt-1 ">
                                 <button
                                   className=" text-center "

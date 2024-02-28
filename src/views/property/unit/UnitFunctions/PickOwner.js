@@ -4,19 +4,13 @@ import React from 'react'
 function PickOwner(contract) {
   console.log(contract)
   const ownerNames = contract
-    ?.flatMap((x) =>
-      x.contract_members
-        ?.filter((member) => member.member_type === 'owner')
-        .map((x) => x.member.name),
-    )
+    ?.filter((member) => member.member_type === 'owner')
+    .map((x) => x.member.name)
     .join(', ')
 
   const co_ownerNames = contract
-    ?.flatMap((x) =>
-      x.contract_members
-        ?.filter((member) => member.member_type === 'co_owner')
-        .map((x) => x.member.name),
-    )
+    ?.filter((member) => member.member_type === 'co_owner')
+    .map((x) => x.member.name)
     .join(', ')
   const result = `Owner: ${ownerNames || 'NA'} \n Residents: ${co_ownerNames || 'NA'}`
 
