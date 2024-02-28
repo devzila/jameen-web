@@ -22,11 +22,17 @@ export default function PropertyNav() {
             <NavLink to="ParkingLot"> Parking Lot </NavLink>
           </div>
           <div>
-            <NavLink to="Documents"> Invoices </NavLink>
+            <NavLink to="Allotment"> Allotment </NavLink>
           </div>
           <div>
-            <NavLink to="Billing"> Templates </NavLink>
+            <NavLink to="MovingIn"> Moving in </NavLink>
           </div>
+          <div>
+            <NavLink to="Billing"> Invoices </NavLink>
+          </div>
+          {/* <div>
+            <NavLink to="/*"> Templates </NavLink>
+          </div> */}
         </div>
       </div>
     </div>
