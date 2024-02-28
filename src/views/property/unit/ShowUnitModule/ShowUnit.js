@@ -200,11 +200,52 @@ export default function Showunit() {
         {member_info && member_info[0] ? (
           <CCol md="12">
             <CCard className=" p-3 mt-3 border-0 theme_color">
-              <CListGroupItem>
+              {/* <CListGroupItem>
                 <CIcon icon={freeSet.cilUser} size="lg" className="me-2" />
                 <strong className="text-black">Contract Members</strong>
                 <hr className="text-secondary" />
-              </CListGroupItem>
+              </CListGroupItem> */}
+              {contract_info ? (
+                <CRow>
+                  <CCol md="12">
+                    <CCard className="  border-0 theme_color">
+                      <CListGroupItem>
+                        <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
+                        <strong className="text-black">Contract Info.</strong>
+                        <hr className="text-secondary" />
+                      </CListGroupItem>
+                      <CRow className="">
+                        <CCol className="p-3 mt-0 fw-light">
+                          Contract Type
+                          <CCardText className="fw-normal text-black text-capitalize">
+                            {contract_info.contract_type || '-'}
+                          </CCardText>
+                        </CCol>
+                        <CCol className="p-3 mt-0 fw-light">
+                          Notes
+                          <CCardText className="fw-normal text-black text-capitalize">
+                            {contract_info?.notes || '-'}
+                          </CCardText>
+                        </CCol>
+                        <CCol className="p-3 mt-0 fw-light">
+                          Start Date
+                          <CCardText className="fw-normal text-black text-capitalize">
+                            {contract_info?.start_date || '-'}
+                          </CCardText>
+                        </CCol>
+                        <CCol className="p-3 mt-0 fw-light">
+                          End Date
+                          <CCardText className="fw-normal text-black text-capitalize">
+                            {contract_info?.end_date || '-'}
+                          </CCardText>
+                        </CCol>
+                      </CRow>
+                      <CRow></CRow>
+                    </CCard>
+                  </CCol>
+                </CRow>
+              ) : null}
+
               {member_info.map((member_) => (
                 <CRow key={member_.member.id} className="">
                   <CCol className="p-3 mt-0 fw-light ">
@@ -239,47 +280,6 @@ export default function Showunit() {
           </CCol>
         ) : null}
       </CRow>
-
-      {contract_info ? (
-        <CRow>
-          <CCol md="12">
-            <CCard className=" p-3 mt-3 border-0 theme_color">
-              <CListGroupItem>
-                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-                <strong className="text-black">Contract Info.</strong>
-                <hr className="text-secondary" />
-              </CListGroupItem>
-              <CRow className="">
-                <CCol className="p-3 mt-0 fw-light">
-                  Contract Type
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {contract_info.contract_type || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light">
-                  Notes
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {contract_info?.notes || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light">
-                  Start Date
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {contract_info?.start_date || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light">
-                  End Date
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {contract_info?.end_date || '-'}
-                  </CCardText>
-                </CCol>
-              </CRow>
-              <CRow></CRow>
-            </CCard>
-          </CCol>
-        </CRow>
-      ) : null}
 
       <CRow>
         <CCol md="12">
@@ -331,7 +331,9 @@ export default function Showunit() {
                       <CCol md="4" className="d-flex align-items-center">
                         Owner/Resident:
                       </CCol>
-                      {/* <CCol md='8'>{6PickOwner(invoices[0]?.unit_contract) || '-'}</CCol> */}
+                      <CCol md="8">
+                        {/* {invoices[0].runPickOwner(invoices[0]?.unit_contract) || '-'} */}
+                      </CCol>
                     </CRow>
                   </CCardText>
                   <CCardText className="m-0">
