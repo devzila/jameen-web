@@ -33,7 +33,7 @@ function PropertyCardView({ property }) {
           <CCard className=" p-3 mt-3 mt-0 border-0 theme_color">
             <CRow>
               {property.map((property) => (
-                <CCol md="4">
+                <CCol key= {property.id} md="4">
                   <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
                     <CCardText className=" m-0">
                       <CRow>
