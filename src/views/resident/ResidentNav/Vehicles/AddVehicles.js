@@ -51,7 +51,7 @@ export default function AddBillable({ after_submit, residentId }) {
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Add
+        Add Vehicles
       </button>
       <CModal
         alignment="center"

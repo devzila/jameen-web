@@ -146,7 +146,7 @@ const Finance = () => {
                                   <Dropdown.Menu>
                                     <button
                                       type="button"
-                                      class="btn  w-100 rounded-0 btn-success "
+                                      className="btn  w-100 rounded-0 btn-success "
                                       data-mdb-ripple-init
                                     >
                                       Payment

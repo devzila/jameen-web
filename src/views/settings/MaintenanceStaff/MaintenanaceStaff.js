@@ -67,7 +67,7 @@ export default function MaintenanceStaff() {
     <>
       <CCol>
         <div>
-          <Card className="border-0 mt-3 p-2 rounded-0">
+          <Card className="border-0 mt-3 p-2 rounded-1">
             <div className="d-flex  ms-2 justify-content-between">
               <div className="fs-4 border-0">Maintenance Staff</div>
               <div className=" me-4 border-0">
