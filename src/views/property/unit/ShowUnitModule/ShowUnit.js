@@ -1,34 +1,17 @@
-import {
-  CCol,
-  CCard,
-  CListGroupItem,
-  CCardImage,
-  CRow,
-  CCardText,
-  CImage,
-  CCardBody,
-  CCardTitle,
-  CCardSubtitle,
-  CCardLink,
-  CButton,
-} from '@coreui/react'
+import { CCol, CCard, CListGroupItem, CRow, CCardText, CCardBody, CButton } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
-import { cilLineStyle, cilCloudDownload } from '@coreui/icons'
 import { freeSet } from '@coreui/icons'
 import { formatdate, status_color } from 'src/services/CommonFunctions'
-import logo from '../../../../assets/images/avatars/default.png'
 import PickOwner from '../UnitFunctions/PickOwner'
 
 export default function Showunit() {
   const { propertyId, unitId } = useParams()
 
   const [unit, setUnit] = useState({})
-  const [contract_info, setContract_info] = useState({})
-  const [member_info, setMember_info] = useState([])
 
   const [invoices, setInvoices] = useState({})
   const { get, response } = useFetch()
@@ -44,6 +27,7 @@ export default function Showunit() {
 
     if (response.ok) {
       setInvoices(api.data)
+      console.log(invoices)
     }
   }
 
@@ -53,13 +37,6 @@ export default function Showunit() {
 
     setUnit(api.data)
     if (api.data) {
-      setContract_info(api.data.running_contracts[0])
-      const contractMembers =
-        api.data.running_contracts &&
-        api.data.running_contracts[0] &&
-        api.data.running_contracts[0].contract_members
-
-      setMember_info(contractMembers || [])
     }
 
     if (response.ok) {
@@ -69,7 +46,7 @@ export default function Showunit() {
 
   return (
     <>
-      <CCard className=" p-3  my-3 border-0 ">
+      <CCard className="   my-3 border-0 ">
         <CRow>
           <CCol md="4">
             <CCard className=" p-3  my-3 border-0 theme_color">
@@ -198,91 +175,90 @@ export default function Showunit() {
             </CRow>
           </CCard>
         </CCol> */}
-        <CRow>
-          <CCol md="12">
-            <CCard className=" p-3 mt-3 mt-0 border-0 ">
-              <CListGroupItem>
-                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
-                <strong className="text-black">Contract Info.</strong>
-                <hr className="text-secondary" />
-              </CListGroupItem>
-              <CRow>
-                {unit.running_contracts
-                  ? unit.running_contracts.map((contract) => (
-                      <CCol md="4" key={contract.id}>
-                        <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
-                          <CCardBody className="pt-0 mt-1">
+
+        <CCol md="12" className="m-0">
+          <CCard className=" p-3 mt-3 mt-0 border-0 ">
+            <CListGroupItem>
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+              <strong className="text-black">Contract Info.</strong>
+              <hr className="text-secondary" />
+            </CListGroupItem>
+            <CRow>
+              {unit.running_contracts
+                ? unit.running_contracts.map((contract) => (
+                    <CCol md="4" key={contract.id}>
+                      <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
+                        <CCardBody className="pt-0 mt-1">
+                          <CRow>
+                            <CCol md="12" className="theme_color">
+                              Contract
+                            </CCol>
+                          </CRow>
+                          <CRow>
+                            <CCol md="4"> Type :</CCol>
+                            <CCol md="8" className="text-capitalize">
+                              {contract.contract_type.replace('_', ' ') || '-'}
+                            </CCol>
+                          </CRow>
+
+                          <CCardText className=" m-0">
+                            <CRow>
+                              <CCol md="4">Start Date:</CCol>
+                              <CCol md="8">{contract.start_date || '-'}</CCol>
+                            </CRow>
+                          </CCardText>
+
+                          <CCardText className="m-0">
+                            <CRow>
+                              <CCol md="4"> End Date: </CCol>
+                              <CCol md="8">{contract.end_date || '-'}</CCol>
+                            </CRow>
                             <CRow>
                               <CCol md="12" className="theme_color">
-                                Contract
+                                Contract Members
                               </CCol>
                             </CRow>
+                          </CCardText>
+
+                          {contract.contract_members
+                            ? contract.contract_members.map((members, index) => (
+                                <CCardText key={index} className="m-0  ps-1">
+                                  <CRow>
+                                    <CCol md="4" className="d-flex align-items-center">
+                                      {index + 1 + '.'} Name:
+                                    </CCol>
+                                    <CCol md="8">{members.member.name || '-'}</CCol>
+                                  </CRow>
+                                  <CRow>
+                                    <CCol md="4" className="d-flex align-items-center">
+                                      Type
+                                    </CCol>
+                                    <CCol md="8" className="text-capitalize">
+                                      {members.member_type.replace('_', ' ') || '-'}
+                                    </CCol>
+                                  </CRow>
+                                </CCardText>
+                              ))
+                            : null}
+
+                          <CCardText className=" m-0">
                             <CRow>
-                              <CCol md="4"> Type :</CCol>
-                              <CCol md="8" className="text-capitalize">
-                                {contract.contract_type.replace('_', ' ') || '-'}
+                              <CCol md="4">Notes : </CCol>
+                              <CCol md="8" className="text-wrap ">
+                                <abbr data-toggle="tooltip" title={contract.nots || null}>
+                                  {contract.notes.slice(0, 15) + '...' || '-'}
+                                </abbr>
                               </CCol>
                             </CRow>
-
-                            <CCardText className=" m-0">
-                              <CRow>
-                                <CCol md="4">Start Date:</CCol>
-                                <CCol md="8">{contract.start_date || '-'}</CCol>
-                              </CRow>
-                            </CCardText>
-
-                            <CCardText className="m-0">
-                              <CRow>
-                                <CCol md="4"> End Date: </CCol>
-                                <CCol md="8">{contract.end_date || '-'}</CCol>
-                              </CRow>
-                              <CRow>
-                                <CCol md="12" className="theme_color">
-                                  Contract Members
-                                </CCol>
-                              </CRow>
-                            </CCardText>
-
-                            {contract.contract_members
-                              ? contract.contract_members.map((members, index) => (
-                                  <CCardText key={index} className="m-0  ps-1">
-                                    <CRow>
-                                      <CCol md="4" className="d-flex align-items-center">
-                                        {index + 1 + '.'} Name:
-                                      </CCol>
-                                      <CCol md="8">{members.member.name || '-'}</CCol>
-                                    </CRow>
-                                    <CRow>
-                                      <CCol md="4" className="d-flex align-items-center">
-                                        Type
-                                      </CCol>
-                                      <CCol md="8" className="text-capitalize">
-                                        {members.member_type.replace('_', ' ') || '-'}
-                                      </CCol>
-                                    </CRow>
-                                  </CCardText>
-                                ))
-                              : null}
-
-                            <CCardText className=" m-0">
-                              <CRow>
-                                <CCol md="4">Notes : </CCol>
-                                <CCol md="8" className="text-wrap ">
-                                  <abbr data-toggle="tooltip" title={contract.nots || null}>
-                                    {contract.notes.slice(0, 15) + '...' || '-'}
-                                  </abbr>
-                                </CCol>
-                              </CRow>
-                            </CCardText>
-                          </CCardBody>
-                        </CCard>
-                      </CCol>
-                    ))
-                  : null}
-              </CRow>
-            </CCard>
-          </CCol>
-        </CRow>
+                          </CCardText>
+                        </CCardBody>
+                      </CCard>
+                    </CCol>
+                  ))
+                : null}
+            </CRow>
+          </CCard>
+        </CCol>
       </CRow>
 
       <CRow>
@@ -293,79 +269,84 @@ export default function Showunit() {
               <strong className="text-black">Invoices</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
-            <CCol md="4">
-              <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
-                <CCardBody className="pt-0">
-                  <CRow>
-                    <CCol className="d-flex justify-content-end mt-2">
-                      <button
-                        className=" text-center border-0 p-1  mx-2 rounded-0 text-white "
-                        style={{
-                          backgroundColor: `${status_color(invoices[0]?.status)}`,
 
-                          width: '110px',
-                        }}
-                      >
-                        {invoices[0]?.status || '-'}
-                      </button>
-                    </CCol>
-                  </CRow>
-                  <CRow>
-                    <CCol md="4">Invoice No :</CCol>
-                    <CCol md="8">{invoices[0]?.number || '-'}</CCol>
-                  </CRow>
+            {invoices.length >= 1
+              ? invoices.map((invoice) => (
+                  <CCol key={invoice.id} md="4">
+                    <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
+                      <CCardBody className="pt-0">
+                        <CRow>
+                          <CCol className="d-flex justify-content-end mt-2">
+                            <button
+                              className=" text-center border-0 p-1  mx-2 rounded-0 text-white "
+                              style={{
+                                backgroundColor: `${status_color(invoice?.status)}`,
 
-                  <CCardText className=" m-0">
-                    <CRow>
-                      <CCol md="4">Invoice Date :</CCol>
-                      <CCol md="8">{invoices[0]?.invoice_date || '-'}</CCol>
-                    </CRow>
-                  </CCardText>
+                                width: '110px',
+                              }}
+                            >
+                              {invoice?.status || '-'}
+                            </button>
+                          </CCol>
+                        </CRow>
+                        <CRow>
+                          <CCol md="4">Invoice No :</CCol>
+                          <CCol md="8">{invoice?.number || '-'}</CCol>
+                        </CRow>
 
-                  <CCardText className="m-0">
-                    <CRow>
-                      <CCol md="4"> Invoice Period : </CCol>
-                      <CCol md="8">
-                        {(invoices[0]?.period_from || '-') + '/' + (invoices[0]?.period_to || '-')}
-                      </CCol>
-                    </CRow>
-                  </CCardText>
-                  <CCardText className=" m-0">
-                    <CRow>
-                      <CCol md="4" className="d-flex align-items-center">
-                        Owner/Resident:
-                      </CCol>
-                      <CCol md="8">
-                        {/* {invoices[0].runPickOwner(invoices[0]?.unit_contract) || '-'} */}
-                      </CCol>
-                    </CRow>
-                  </CCardText>
-                  <CCardText className="m-0">
-                    <CRow>
-                      <CCol md="4"> Amount: </CCol>
-                      <CCol md="8">{invoices[0]?.amount || '-'}</CCol>
-                    </CRow>
-                  </CCardText>
-                  <CCardText className="m-0">
-                    <CRow>
-                      <CCol md="4"> VAT: </CCol>
-                      <CCol md="8">{invoices[0]?.vat_amount || '-'}</CCol>
-                    </CRow>
-                  </CCardText>
+                        <CCardText className=" m-0">
+                          <CRow>
+                            <CCol md="4">Invoice Date :</CCol>
+                            <CCol md="8">{invoice?.invoice_date || '-'}</CCol>
+                          </CRow>
+                        </CCardText>
 
-                  <CCardText className="m-0">
-                    <CRow>
-                      <CCol md="4"> Total </CCol>
-                      <CCol md="8">{invoices[0]?.total_amount || '-'}</CCol>
-                    </CRow>
-                  </CCardText>
-                  <div className="d-flex justify-content-end">
-                    <CButton className="btn-light custom_theme_button">Pay</CButton>
-                    <CButton className="btn-light custom_grey_button mx-2">Decline</CButton>
-                  </div>
-                </CCardBody>
-              </CCard>
-            </CCol>
+                        <CCardText className="m-0">
+                          <CRow>
+                            <CCol md="4"> Invoice Period : </CCol>
+                            <CCol md="8">
+                              {(invoice?.period_from || '-') + '/' + (invoice?.period_to || '-')}
+                            </CCol>
+                          </CRow>
+                        </CCardText>
+                        <CCardText className=" m-0">
+                          <CRow>
+                            <CCol md="4" className="d-flex align-items-center">
+                              Owner/Resident:
+                            </CCol>
+                            <CCol md="8">
+                              {/* {invoice.runPickOwner(invoice?.unit_contract) || '-'} */}
+                            </CCol>
+                          </CRow>
+                        </CCardText>
+                        <CCardText className="m-0">
+                          <CRow>
+                            <CCol md="4"> Amount: </CCol>
+                            <CCol md="8">{invoice?.amount || '-'}</CCol>
+                          </CRow>
+                        </CCardText>
+                        <CCardText className="m-0">
+                          <CRow>
+                            <CCol md="4"> VAT: </CCol>
+                            <CCol md="8">{invoice?.vat_amount || '-'}</CCol>
+                          </CRow>
+                        </CCardText>
+
+                        <CCardText className="m-0">
+                          <CRow>
+                            <CCol md="4"> Total </CCol>
+                            <CCol md="8">{invoice?.total_amount || '-'}</CCol>
+                          </CRow>
+                        </CCardText>
+                        <div className="d-flex justify-content-end">
+                          <CButton className="btn-light custom_theme_button">Pay</CButton>
+                          <CButton className="btn-light custom_grey_button mx-2">Decline</CButton>
+                        </div>
+                      </CCardBody>
+                    </CCard>
+                  </CCol>
+                ))
+              : null}
           </CCard>
         </CCol>
       </CRow>

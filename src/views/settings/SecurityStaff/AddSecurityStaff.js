@@ -51,7 +51,7 @@ export default function AddSecurityStaff({ after_submit }) {
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Add
+        Add Staff
       </button>
       <CModal
         alignment="center"

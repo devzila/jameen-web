@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import useFetch from 'use-http'
-import { useForm, Controller } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types'
@@ -17,12 +16,11 @@ import {
 } from '@coreui/react'
 
 export default function AddMaintenanceStaff({ after_submit }) {
-  const { register, handleSubmit, control } = useForm()
-  const { get, post, response, api } = useFetch()
+  const { register, handleSubmit } = useForm()
+  const { post, response } = useFetch()
 
   const [visible, setVisible] = useState(false)
   const [errors, setErrors] = useState({})
-  const navigate = useNavigate()
 
   async function onSubmit(data) {
     console.log(data)

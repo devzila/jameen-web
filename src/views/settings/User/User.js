@@ -8,7 +8,7 @@ import Paginate from '../../../components/Pagination'
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 
-import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import { CNavbar, CContainer, CNavbarBrand, CCard } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 
@@ -56,38 +56,40 @@ function Index() {
 
   return (
     <div>
-      <section style={{ width: '100%', padding: '0px' }}>
-        <CNavbar expand="lg" colorScheme="light" className="bg-light">
-          <CContainer fluid>
-            <CNavbarBrand href="#">User</CNavbarBrand>
-            <div className="d-flex justify-content-end">
-              <div className="d-flex" role="search">
-                <input
-                  onChange={(e) => setSearchKeyword(e.target.value)}
-                  className="form-control  custom_input"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button
-                  onClick={loadInitialusers}
-                  className="btn btn-outline-success custom_search_button"
-                  type="submit"
-                >
-                  Search
-                </button>
-              </div>
-              <AddUser after_submit={refresh_data} />
-            </div>
-          </CContainer>
-        </CNavbar>
+      <section>
         <div>
-          <div className="mask d-flex align-items-center h-100">
-            <div className="container">
+          <div className="mask d-flex align-items-center h-100 mt-3 ">
+            <div className="w-100">
               <div className="row justify-content-center">
                 <div className="col-12">
+                  <CNavbar expand="lg" colorScheme="light" className="bg-white">
+                    <CContainer fluid>
+                      <CNavbarBrand href="#">User</CNavbarBrand>
+                      <div className="d-flex justify-content-end">
+                        <div className="d-flex" role="search">
+                          <input
+                            onChange={(e) => setSearchKeyword(e.target.value)}
+                            className="form-control  custom_input"
+                            type="search"
+                            placeholder="Search"
+                            aria-label="Search"
+                          />
+                          <button
+                            onClick={loadInitialusers}
+                            className="btn btn-outline-success custom_search_button"
+                            type="submit"
+                          >
+                            Search
+                          </button>
+                        </div>
+                        <AddUser after_submit={refresh_data} />
+                      </div>
+                    </CContainer>
+                  </CNavbar>
+                  <hr className="p-0 m-0 text-secondary" />
+
                   <div className="table-responsive bg-white">
-                    <table className="table mb-0">
+                    <table className="table mb-1">
                       <thead
                         style={{
                           textOverflow: 'ellipsis',

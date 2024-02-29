@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import PropTypes from 'prop-types'
-import { useParams, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-import {
-  CNavbar,
-  CContainer,
-  CNavbarBrand,
-  CCol,
-  CCard,
-  CListGroupItem,
-  CRow,
-  CCardText,
-} from '@coreui/react'
-import { freeSet } from '@coreui/icons'
+import { CNavbar, CCol } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
 import { Dropdown, Row, Col, Card } from 'react-bootstrap'
 import Paginate from '../../../components/Pagination'
@@ -23,16 +13,13 @@ import AddSecurityStaff from './AddSecurityStaff'
 import EditSecurityStaff from './EditSecurityStaff'
 import { BsThreeDots } from 'react-icons/bs'
 
-import { formatdate } from 'src/services/CommonFunctions'
-
 export default function SecurityStaff() {
   const [securityStaff, setSecurityStaff] = useState([])
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const { get, response } = useFetch()
-  const [unittype, setUnittype] = useState({})
+  const { get } = useFetch()
 
   useEffect(() => {
     fetchSecurityStaff()
@@ -63,72 +50,76 @@ export default function SecurityStaff() {
     <>
       <CCol>
         <div>
-          <Card className="border-0 mt-3 p-2 rounded-0">
-            <div className="d-flex  ms-2 justify-content-between">
-              <div className="fs-4 border-0">Security Staff</div>
-              <div className=" me-4 border-0">
+          <Card className="border-0 mt-3 py-2 rounded-0">
+            <div className="d-flex ms-2 justify-content-between">
+              <div className="fs-5 border-0 d-flex align-items-center">Security Staff</div>
+              <div className=" mx-2 border-0 ">
                 <AddSecurityStaff after_submit={reload_callback} />
               </div>
             </div>
-          </Card>
+            <hr className=" text-secondary" />
 
-          <div className="mask d-flex align-items-center h-100 mt-1">
-            <div className="w-100">
-              <div className="row justify-content-center">
-                <div className="col-12">
-                  <div className="table-responsive bg-white">
-                    <table className="table mb-0">
-                      <thead
-                        style={{
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                          overFlow: 'hidden',
-                        }}
-                      >
-                        <tr>
-                          <th className="pt-3 pb-3 border-0">Name</th>
-                          <th className="pt-3 pb-3 border-0">Status</th>
-                          <th className="pt-3 pb-3 border-0">Email </th>
-                          <th className="pt-3 pb-3 border-0">Mobile No.</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {securityStaff.map((securityStaff) => (
-                          <tr key={securityStaff.id}>
-                            <th className="pt-3 " scope="row" style={{ color: '#666666' }}>
-                              <NavLink>{securityStaff.name}</NavLink>
-                            </th>
-                            <td className="pt-3 text-capitalize">
-                              {securityStaff.active ? 'Active' : 'Not Active' || '-'}
-                            </td>
-                            <td className="pt-3 text-capitalize">{securityStaff.email || '-'}</td>
-                            <td className="pt-3"> {securityStaff.mobile_number || '-'}</td>
-
-                            <td>
-                              <Dropdown key={securityStaff.id}>
-                                <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                  <BsThreeDots />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  <EditSecurityStaff
-                                    id={securityStaff.id}
-                                    after_submit={reload_callback}
-                                  />
-                                </Dropdown.Menu>
-                              </Dropdown>
-                            </td>
+            <div className="mask d-flex align-items-center h-100 mt-1">
+              <div className="w-100">
+                <div className="row justify-content-center">
+                  <div className="col-12">
+                    <div className="table-responsive bg-white">
+                      <table className="table mb-1">
+                        <thead
+                          style={{
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            overFlow: 'hidden',
+                          }}
+                        >
+                          <tr>
+                            <th className="pt-1 border-0">Name</th>
+                            <th className="pt-1 border-0">Status</th>
+                            <th className="pt-1 border-0">Email </th>
+                            <th className="pt-1 border-0">Mobile No.</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    {loading && <Loading />}
-                    {errors && toast('Unable To Load data')}
+                        </thead>
+
+                        <tbody>
+                          {securityStaff.map((securityStaff) => (
+                            <tr key={securityStaff.id}>
+                              <th className="pt-3 " scope="row" style={{ color: '#666666' }}>
+                                <NavLink>{securityStaff.name}</NavLink>
+                              </th>
+                              <td className="pt-3 text-capitalize">
+                                {securityStaff.active ? 'Active' : 'Not Active' || '-'}
+                              </td>
+                              <td className="pt-3 text-capitalize">{securityStaff.email || '-'}</td>
+                              <td className="pt-3"> {securityStaff.mobile_number || '-'}</td>
+
+                              <td>
+                                <Dropdown key={securityStaff.id}>
+                                  <Dropdown.Toggle
+                                    as={CustomDivToggle}
+                                    style={{ cursor: 'pointer' }}
+                                  >
+                                    <BsThreeDots />
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu>
+                                    <EditSecurityStaff
+                                      id={securityStaff.id}
+                                      after_submit={reload_callback}
+                                    />
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      {loading && <Loading />}
+                      {errors && toast('Unable To Load data')}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </Card>
         </div>
         <br></br>
         <CNavbar

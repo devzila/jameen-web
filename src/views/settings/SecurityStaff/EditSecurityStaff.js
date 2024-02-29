@@ -22,7 +22,6 @@ export default function EditSecurityStaff({ after_submit, id }) {
 
   const [visible, setVisible] = useState(false)
   const [errors, setErrors] = useState({})
-  const navigate = useNavigate()
 
   useEffect(() => {
     fetchSecurityStaff()
@@ -45,7 +44,7 @@ export default function EditSecurityStaff({ after_submit, id }) {
 
   async function onSubmit(data) {
     console.log(data)
-    const apiResponse = await put(`/v1/admin/security_staffs/${id}`, {
+    await put(`/v1/admin/security_staffs/${id}`, {
       security_staff: data,
     })
     if (response.ok) {

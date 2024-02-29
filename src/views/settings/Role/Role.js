@@ -61,38 +61,40 @@ export default function Role() {
 
   return (
     <div>
-      <section style={{ width: '100%', padding: '0px' }}>
-        <CNavbar expand="lg" colorScheme="light" className="bg-light">
-          <CContainer fluid>
-            <CNavbarBrand href="#">Role</CNavbarBrand>
-            <div className="d-flex justify-content-end">
-              <div className="d-flex" role="search">
-                <input
-                  onChange={(e) => setSearchKeyword(e.target.value)}
-                  className="form-control custom_input"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button
-                  onClick={loadInitialroles}
-                  className="btn btn-outline-success custom_search_button"
-                  type="submit"
-                >
-                  Search
-                </button>
-              </div>
-              <AddRoles after_submit={refresh_data} />
-            </div>
-          </CContainer>
-        </CNavbar>
+      <section>
         <div>
-          <div className="mask d-flex align-items-center h-100">
+          <div className="mask d-flex align-items-center h-100 mt-3">
             <div className="container">
               <div className="row justify-content-center">
                 <div className="col-12">
+                  <CNavbar expand="lg" colorScheme="light" className="bg-white">
+                    <CContainer fluid>
+                      <CNavbarBrand href="#">Role</CNavbarBrand>
+                      <div className="d-flex justify-content-end">
+                        <div className="d-flex" role="search">
+                          <input
+                            onChange={(e) => setSearchKeyword(e.target.value)}
+                            className="form-control custom_input"
+                            type="search"
+                            placeholder="Search"
+                            aria-label="Search"
+                          />
+                          <button
+                            onClick={loadInitialroles}
+                            className="btn btn-outline-success custom_search_button"
+                            type="submit"
+                          >
+                            Search
+                          </button>
+                        </div>
+                        <AddRoles after_submit={refresh_data} />
+                      </div>
+                    </CContainer>
+                  </CNavbar>
+                  <hr className="p-0 m-0 text-secondary" />
+
                   <div className="table-responsive bg-white">
-                    <table className="table mb-0">
+                    <table className="table mb-1">
                       <thead
                         style={{
                           textOverflow: 'ellipsis',
