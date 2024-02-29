@@ -33,6 +33,27 @@ function PropertyCardView({ property }) {
               {property.map((property) => (
                 <CCol key={property.id} md="4">
                   <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
+                    <div className="position-absolute top-0 end-0">
+                      <Dropdown key={property.id} className=" text-center">
+                        <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
+                          <Dropdown.Menu>
+                            <EditProperty propertyId={property.id} />
+                            <NavLink
+                              style={{
+                                border: 'none',
+                                color: '#00bfcc',
+                                marginLeft: '4%',
+                                textDecorationLine: 'none',
+                              }}
+                              to={`/properties/${property.id}/overview`}
+                            >
+                              Show
+                            </NavLink>
+                          </Dropdown.Menu>
+                          <BsThreeDots className="float-end" />
+                        </Dropdown.Toggle>
+                      </Dropdown>
+                    </div>
                     <CCardText className=" m-5 text-center">
                       <CRow>
                         <CCol className="position-relative">
@@ -54,27 +75,6 @@ function PropertyCardView({ property }) {
                             }
                             data-original-title="Property"
                           />
-                          <div className="position-absolute top-0 end-0">
-                            <Dropdown key={property.id} className=" text-center">
-                              <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                <Dropdown.Menu>
-                                  <EditProperty propertyId={property.id} />
-                                  <NavLink
-                                    style={{
-                                      border: 'none',
-                                      color: '#00bfcc',
-                                      marginLeft: '4%',
-                                      textDecorationLine: 'none',
-                                    }}
-                                    to={`/properties/${property.id}/overview`}
-                                  >
-                                    Show
-                                  </NavLink>
-                                </Dropdown.Menu>
-                                <BsThreeDots />
-                              </Dropdown.Toggle>
-                            </Dropdown>
-                          </div>
                         </CCol>
                       </CRow>
                     </CCardText>
