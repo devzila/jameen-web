@@ -14,10 +14,10 @@ export default function Nav() {
             <NavLink to="/settings/users">User</NavLink>
           </div>
           <div>
-            <NavLink to="/settings/security">Security</NavLink>
+            <NavLink to="/settings/security">Security Staff</NavLink>
           </div>
           <div>
-            <NavLink to="/settings/maintenance">Maintenance</NavLink>
+            <NavLink to="/settings/maintenance">Maintenance Staff</NavLink>
           </div>
 
           <div>

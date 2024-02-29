@@ -50,7 +50,7 @@ export default function SecurityStaff() {
     <>
       <CCol>
         <div>
-          <Card className="border-0 mt-3 p-2 rounded-0">
+          <Card className="border-0 mt-3 py-2 rounded-0">
             <div className="d-flex ms-2 justify-content-between">
               <div className="fs-5 border-0 d-flex align-items-center">Security Staff</div>
               <div className=" mx-2 border-0 ">
@@ -64,7 +64,7 @@ export default function SecurityStaff() {
                 <div className="row justify-content-center">
                   <div className="col-12">
                     <div className="table-responsive bg-white">
-                      <table className="table mb-0">
+                      <table className="table mb-1">
                         <thead
                           style={{
                             textOverflow: 'ellipsis',

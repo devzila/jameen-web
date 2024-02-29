@@ -54,14 +54,14 @@ export default function MaintenanceStaff() {
     <>
       <CCol>
         <div>
-          <Card className="border-0 mt-3 p-2 rounded-1">
+          <Card className="border-0 mt-3 py-2 rounded-1">
             <div className="d-flex  ms-2 justify-content-between">
               <div className="fs-5 border-0 d-flex align-items-center">Maintenance Staff</div>
               <div className=" mx-2 border-0">
                 <AddMaintenanceStaff after_submit={reload_callback} />
               </div>
             </div>
-            <hr className="  text-secondary" />
+            <hr className=" px-0 mx-0 text-secondary" />
 
             <div className="mask d-flex align-items-center h-100 ">
               <div className="w-100">
