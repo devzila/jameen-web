@@ -35,12 +35,12 @@ function PropertyCardView({ property }) {
               {property.map((property) => (
                 <CCol md="4">
                   <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
-                  <CCardText className=" m-0">
-                        <CRow>
-                          <CCol md="4"> </CCol>
-                          <CCol md="8">{property?.avatar || '-'}</CCol>
-                        </CRow>
-                      </CCardText>
+                    <CCardText className=" m-0">
+                      <CRow>
+                        <CCol md="4"> </CCol>
+                        <CCol md="8">{property?.avatar || '-'}</CCol>
+                      </CRow>
+                    </CCardText>
                     <CCardBody className="pt-0">
                       <CRow>
                         <CCol className="d-flex justify-content-end "></CCol>
