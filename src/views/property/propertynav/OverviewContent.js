@@ -1,10 +1,9 @@
-import { CCol, CCard, CListGroupItem, CCardImage, CRow, CCardText, CImage } from '@coreui/react'
+import { CCol, CCard, CListGroupItem, CRow, CCardText } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
-import { cilLineStyle, cilCloudDownload } from '@coreui/icons'
 import { freeSet } from '@coreui/icons'
 import { formatdate } from 'src/services/CommonFunctions'
 import logo from '../../../assets/images/avatars/default.png'

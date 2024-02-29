@@ -22,7 +22,7 @@ const MovingOut = React.lazy(() => import('../views/settings/MovingOut'))
 
 const Allotment = React.lazy(() => import('../views/settings/Allotment'))
 const ShowUnit = React.lazy(() => import('../views/property/unit/ShowUnitModule/ShowUnit'))
-const ShowResidentPage = React.lazy(() => import('../views/resident/ResidentNav/ShowResidentPage'))
+const ResidentRoutes = React.lazy(() => import('../views/resident/ResidentNav/ResidentRoutes'))
 
 const AppContent = () => {
   return (
@@ -32,7 +32,7 @@ const AppContent = () => {
           <Route path="/" exact={true} name="Dashboard" element={<Dashboard />} />
           <Route path="/finance" name="Finance" element={<Finance />} />
           <Route path="/resident" name="Resident" element={<Residents />} />
-          <Route path="/resident/:residentId/*" name="RView" element={<ShowResidentPage />} />
+          <Route path="/resident/:residentId/*" name="RView" element={<ResidentRoutes />} />
           <Route path="/unit" name="Unit" element={<Unit />} />
           <Route path="/properties" name="Properties" element={<Properties />} />
           <Route path="/properties/:propertyId/*" element={<PropertyRoutes />} />

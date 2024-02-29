@@ -6,12 +6,12 @@ import OverviewContent from '../property/propertynav/OverviewContent'
 import Showunit from './unit/ShowUnitModule/ShowUnit'
 
 export default function Property() {
-  const PropertyUnit = React.lazy(() => import('../property/propertynav/PropertyUnits'))
+  const PropertyUnit = React.lazy(() => import('../property/unit/Unit'))
   const PropertyUnitTypes = React.lazy(() => import('./propertynav/UnitTypes/PropertyUnitTypes'))
   const Buildings = React.lazy(() => import('../property/propertynav/Buildings'))
   const ParkingLot = React.lazy(() => import('../property/propertynav/ParkingLot'))
-  const Allotment = React.lazy(() => import('../property/propertynav/Allotment'))
-  const MovingIn = React.lazy(() => import('../property/propertynav/MovingIn'))
+  const Allotment = React.lazy(() => import('./unit/AllocateUnit'))
+  const MovingIn = React.lazy(() => import('./propertynav/MovingIn/MovingIn'))
   const Documents = React.lazy(() => import('../property/propertynav/Documents'))
   const Billing = React.lazy(() => import('../property/propertynav/Billing'))
   const BillableItems = React.lazy(() =>

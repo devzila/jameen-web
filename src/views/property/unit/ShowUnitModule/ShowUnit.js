@@ -69,95 +69,97 @@ export default function Showunit() {
 
   return (
     <>
-      <CRow>
-        <CCol md="4">
-          <CCard className=" p-3  my-3 border-0 theme_color">
-            <CListGroupItem>
-              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-              <strong className="text-black">Property Details</strong>
-              <hr className="text-secondary" />
-            </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-3 mt-0 fw-light">
-                Name
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.property?.name || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light">
-                Bedroom Number
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.bedrooms_number || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol className="mt-0 fw-light">
-                Bathroom Number
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.bathrooms_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className=" mt-0 fw-light">
-                Year Built
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.year_built || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-          </CCard>
-        </CCol>
-        <CCol md="8">
-          <CCard className=" p-3 my-3 border-0 theme_color">
-            <CListGroupItem>
-              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-              <strong className="text-black">Unit Information</strong>
-              <hr className="text-secondary" />
-            </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-3 mt-0 fw-light">
-                Name
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.unit_type?.name || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light">
-                Use Type
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.unit_type?.use_type || '-'}
-                </CCardText>
-              </CCol>
+      <CCard className=" p-3  my-3 border-0 ">
+        <CRow>
+          <CCol md="4">
+            <CCard className=" p-3  my-3 border-0 theme_color">
+              <CListGroupItem>
+                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
+                <strong className="text-black">Property Details</strong>
+                <hr className="text-secondary" />
+              </CListGroupItem>
+              <CRow className="">
+                <CCol className="p-3 mt-0 fw-light">
+                  Name
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.property?.name || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-3 mt-0 fw-light">
+                  Bedroom Number
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.bedrooms_number || '-'}
+                  </CCardText>
+                </CCol>
+              </CRow>
+              <CRow>
+                <CCol className="mt-0 fw-light">
+                  Bathroom Number
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.bathrooms_number || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className=" mt-0 fw-light">
+                  Year Built
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.year_built || '-'}
+                  </CCardText>
+                </CCol>
+              </CRow>
+            </CCard>
+          </CCol>
+          <CCol md="8">
+            <CCard className=" p-3 my-3 border-0 theme_color">
+              <CListGroupItem>
+                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
+                <strong className="text-black">Unit Information</strong>
+                <hr className="text-secondary" />
+              </CListGroupItem>
+              <CRow className="">
+                <CCol className="p-3 mt-0 fw-light">
+                  Name
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.unit_type?.name || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-3 mt-0 fw-light">
+                  Use Type
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.unit_type?.use_type || '-'}
+                  </CCardText>
+                </CCol>
 
-              <CCol className="p-3 mt-0 fw-light">
-                Description
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.unit_type?.description || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol className="p-3 mt-0 fw-light">
-                Total Area (sq. ft.)
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.unit_type?.sqft || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light">
-                Monthly Maintenance/sq. ft.
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.unit_type?.monthly_maintenance_amount_per_sqft || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light">
-                Last Modified
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {formatdate(unit?.unit_type?.updated_at) || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-          </CCard>
-        </CCol>
-      </CRow>
+                <CCol className="p-3 mt-0 fw-light">
+                  Description
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.unit_type?.description || '-'}
+                  </CCardText>
+                </CCol>
+              </CRow>
+              <CRow>
+                <CCol className="p-3 mt-0 fw-light">
+                  Total Area (sq. ft.)
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.unit_type?.sqft || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-3 mt-0 fw-light">
+                  Monthly Maintenance/sq. ft.
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.unit_type?.monthly_maintenance_amount_per_sqft || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-3 mt-0 fw-light">
+                  Last Modified
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {formatdate(unit?.unit_type?.updated_at) || '-'}
+                  </CCardText>
+                </CCol>
+              </CRow>
+            </CCard>
+          </CCol>
+        </CRow>
+      </CCard>
 
       <CRow>
         {/* <CCol md="12">
@@ -283,9 +285,9 @@ export default function Showunit() {
 
       <CRow>
         <CCol md="12">
-          <CCard className=" p-3 mt-3 mt-0 border-0 theme_color">
+          <CCard className=" p-3 mt-3 mt-0 border-0 ">
             <CListGroupItem>
-              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
               <strong className="text-black">Invoices</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
@@ -293,9 +295,9 @@ export default function Showunit() {
               <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
                 <CCardBody className="pt-0">
                   <CRow>
-                    <CCol className="d-flex justify-content-end ">
+                    <CCol className="d-flex justify-content-end mt-2">
                       <button
-                        className=" text-center border-0 p-1  mx-2 rounded-0 text-white"
+                        className=" text-center border-0 p-1  mx-2 rounded-0 text-white "
                         style={{
                           backgroundColor: `${status_color(invoices[0]?.status)}`,
 
