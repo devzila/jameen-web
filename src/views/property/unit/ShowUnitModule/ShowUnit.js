@@ -49,7 +49,7 @@ export default function Showunit() {
 
   async function getUnitData() {
     let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
-    console.log(api.data.id)
+    console.log(api.data)
 
     setUnit(api.data)
     if (api.data) {
@@ -198,89 +198,87 @@ export default function Showunit() {
             </CRow>
           </CCard>
         </CCol> */}
-
-        {member_info && member_info[0] ? (
+        <CRow>
           <CCol md="12">
-            <CCard className=" p-3 mt-3 border-0 theme_color">
-              {/* <CListGroupItem>
-                <CIcon icon={freeSet.cilUser} size="lg" className="me-2" />
-                <strong className="text-black">Contract Members</strong>
+            <CCard className=" p-3 mt-3 mt-0 border-0 ">
+              <CListGroupItem>
+                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+                <strong className="text-black">Contract Info.</strong>
                 <hr className="text-secondary" />
-              </CListGroupItem> */}
-              {contract_info ? (
-                <CRow>
-                  <CCol md="12">
-                    <CCard className="  border-0 theme_color">
-                      <CListGroupItem>
-                        <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-                        <strong className="text-black">Contract Info.</strong>
-                        <hr className="text-secondary" />
-                      </CListGroupItem>
-                      <CRow className="">
-                        <CCol className="p-3 mt-0 fw-light">
-                          Contract Type
-                          <CCardText className="fw-normal text-black text-capitalize">
-                            {contract_info.contract_type || '-'}
-                          </CCardText>
-                        </CCol>
-                        <CCol className="p-3 mt-0 fw-light">
-                          Notes
-                          <CCardText className="fw-normal text-black text-capitalize">
-                            {contract_info?.notes || '-'}
-                          </CCardText>
-                        </CCol>
-                        <CCol className="p-3 mt-0 fw-light">
-                          Start Date
-                          <CCardText className="fw-normal text-black text-capitalize">
-                            {contract_info?.start_date || '-'}
-                          </CCardText>
-                        </CCol>
-                        <CCol className="p-3 mt-0 fw-light">
-                          End Date
-                          <CCardText className="fw-normal text-black text-capitalize">
-                            {contract_info?.end_date || '-'}
-                          </CCardText>
-                        </CCol>
-                      </CRow>
-                      <CRow></CRow>
-                    </CCard>
-                  </CCol>
-                </CRow>
-              ) : null}
+              </CListGroupItem>
+              <CRow>
+                {unit.running_contracts
+                  ? unit.running_contracts.map((contract) => (
+                      <CCol md="4" key={contract.id}>
+                        <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
+                          <CCardBody className="pt-0 mt-1">
+                            <CRow>
+                              <CCol md="6">Contract Type :</CCol>
+                              <CCol md="6" className="text-capitalize">
+                                {contract.contract_type.replace('_', ' ') || '-'}
+                              </CCol>
+                            </CRow>
 
-              {member_info.map((member_) => (
-                <CRow key={member_.member.id} className="">
-                  <CCol className="p-3 mt-0 fw-light ">
-                    Name
-                    <CCardText className="fw-normal text-black text-capitalize">
-                      <img
-                        src={member_?.member.avatar || logo}
-                        alt="Profile"
-                        className="rounded-circle "
-                        style={{ width: '25px', height: '25px' }}
-                      />
-                      {' ' + member_?.member.name || '-'}
-                    </CCardText>
-                  </CCol>
-                  <CCol className="p-3 mt-0 fw-light">
-                    Type
-                    <CCardText className="fw-normal text-black text-capitalize">
-                      {member_?.member_type.replace('_', ' ') || '-'}
-                    </CCardText>
-                  </CCol>
-                  <CCol className="p-3 mt-0 fw-light">
-                    Username
-                    <CCardText className="fw-normal text-black text-capitalize">
-                      {member_?.member.username}
-                    </CCardText>
-                  </CCol>
-                </CRow>
-              ))}
+                            <CCardText className=" m-0">
+                              <CRow>
+                                <CCol md="5">Start Date:</CCol>
+                                <CCol md="7">{contract.start_date || '-'}</CCol>
+                              </CRow>
+                            </CCardText>
 
-              <CRow></CRow>
+                            <CCardText className="m-0">
+                              <CRow>
+                                <CCol md="5"> End Date: </CCol>
+                                <CCol md="7">{contract.end_date || '-'}</CCol>
+                              </CRow>
+                              <CRow>
+                                <CCol md="12" className="theme_color">
+                                  {' '}
+                                  Contract Members{' '}
+                                </CCol>
+                              </CRow>
+                            </CCardText>
+
+                            {contract.contract_members
+                              ? contract.contract_members.map((members, index) => (
+                                  <CCardText key={index} className="m-0  ps-1">
+                                    <CRow>
+                                      <CCol md="4" className="d-flex align-items-center">
+                                        {index + 1 + '.'} Name:
+                                      </CCol>
+                                      <CCol md="8">{members.member.name || '-'}</CCol>
+                                    </CRow>
+                                    <CRow>
+                                      <CCol md="4" className="d-flex align-items-center">
+                                        Type
+                                      </CCol>
+                                      <CCol md="8" className="text-capitalize">
+                                        {members.member_type.replace('_', ' ') || '-'}
+                                      </CCol>
+                                    </CRow>
+                                  </CCardText>
+                                ))
+                              : null}
+
+                            <CCardText className=" m-0">
+                              <CRow>
+                                <CCol md="4">Notes : </CCol>
+                                <CCol md="8" className="text-wrap ">
+                                  <abbr data-toggle="tooltip" title={contract.nots || null}>
+                                    {contract.notes.slice(0, 15) + '...' || '-'}
+                                  </abbr>
+                                </CCol>
+                              </CRow>
+                            </CCardText>
+                          </CCardBody>
+                        </CCard>
+                      </CCol>
+                    ))
+                  : null}
+              </CRow>
             </CCard>
           </CCol>
-        ) : null}
+        </CRow>
       </CRow>
 
       <CRow>
