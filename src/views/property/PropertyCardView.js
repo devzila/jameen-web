@@ -83,45 +83,65 @@ function PropertyCardView({ property }) {
                         <CCol className="d-flex justify-content-end "></CCol>
                       </CRow>
                       <CRow>
-                        <CCol md="4">Name:</CCol>
-                        <CCol md="8">{property?.name || '-'}</CCol>
+                        <CCol md="4" className="text-secondary">
+                          Name:
+                        </CCol>
+                        <CCol md="8" className="text-black">
+                          {property?.name || '-'}
+                        </CCol>
                       </CRow>
 
                       <CCardText className=" m-0">
                         <CRow>
-                          <CCol md="4"> City :</CCol>
-                          <CCol md="8">{property?.city || '-'}</CCol>
+                          <CCol md="4" className="text-secondary">
+                            {' '}
+                            City :
+                          </CCol>
+                          <CCol md="8" className="text-black">
+                            {property?.city || '-'}
+                          </CCol>
                         </CRow>
                       </CCardText>
 
                       <CCardText className="m-0">
                         <CRow>
-                          <CCol md="4"> Use Type : </CCol>
-                          <CCol md="8">{property?.use_type || '-'}</CCol>
+                          <CCol md="4" className="text-secondary">
+                            {' '}
+                            Use Type :{' '}
+                          </CCol>
+                          <CCol md="8" className="text-black">
+                            {property?.use_type || '-'}
+                          </CCol>
                         </CRow>
                       </CCardText>
                       <CCardText className=" m-0">
                         <CRow>
-                          <CCol md="4" className="d-flex align-items-center">
+                          <CCol md="4" className="text-secondary">
                             Payment:
                           </CCol>
-                          <CCol md="8">{property?.payment_term || '-'}</CCol>
+                          <CCol md="8" className="text-black">
+                            {property?.payment_term || '-'}
+                          </CCol>
                         </CRow>
                       </CCardText>
                       <CCardText className=" m-0">
                         <CRow>
-                          <CCol md="4" className="d-flex align-items-center">
+                          <CCol md="4" className="text-secondary">
                             Build Count:
                           </CCol>
-                          <CCol md="8">{property?.buildings_count || '-'}</CCol>
+                          <CCol md="8" className="text-black">
+                            {property?.buildings_count || '-'}
+                          </CCol>
                         </CRow>
                       </CCardText>
                       <CCardText className=" m-0">
                         <CRow>
-                          <CCol md="4" className="d-flex align-items-center">
+                          <CCol md="4" className="text-secondary">
                             Unit-Type Count:
                           </CCol>
-                          <CCol md="8">{property?.unit_types_count || '-'}</CCol>
+                          <CCol md="8" className="text-black">
+                            {property?.unit_types_count || '-'}
+                          </CCol>
                         </CRow>
                       </CCardText>
                     </CCardBody>
