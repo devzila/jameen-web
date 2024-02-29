@@ -63,7 +63,11 @@ function Property() {
       <div>
         {error && error.Error}
         <section style={{ width: '100%', padding: '0px' }}>
-          <CNavbar expand="lg" colorScheme="light" className="bg-light">
+          
+          <div>
+            <div className="mask d-flex align-items-center h-100">
+              <div className="container">
+              <CNavbar expand="lg" colorScheme="light" className="bg-white">
             <CContainer fluid>
               <CNavbarBrand href="#">Property</CNavbarBrand>
 
@@ -94,9 +98,6 @@ function Property() {
               </div>
             </CContainer>
           </CNavbar>
-          <div>
-            <div className="mask d-flex align-items-center h-100">
-              <div className="container">
                 <div className="row justify-content-center">
                   <div className="col-16">
                     {isCardView ? (
