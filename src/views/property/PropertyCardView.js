@@ -126,20 +126,20 @@ function PropertyCardView({ property }) {
                       </CCardText>
                       <CCardText className=" m-0">
                         <CRow>
-                          <CCol md="4" className="text-secondary">
-                            Build Count:
+                          <CCol md="5" className="text-secondary">
+                            Building Count:
                           </CCol>
-                          <CCol md="8" className="text-black">
+                          <CCol md="7" className="text-black">
                             {property?.buildings_count || '-'}
                           </CCol>
                         </CRow>
                       </CCardText>
                       <CCardText className=" m-0">
                         <CRow>
-                          <CCol md="4" className="text-secondary">
+                          <CCol md="5" className="text-secondary">
                             Unit-Type Count:
                           </CCol>
-                          <CCol md="8" className="text-black">
+                          <CCol md="7" className="text-black">
                             {property?.unit_types_count || '-'}
                           </CCol>
                         </CRow>
