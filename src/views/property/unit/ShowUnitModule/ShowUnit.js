@@ -213,28 +213,32 @@ export default function Showunit() {
                         <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
                           <CCardBody className="pt-0 mt-1">
                             <CRow>
-                              <CCol md="6">Contract Type :</CCol>
-                              <CCol md="6" className="text-capitalize">
+                              <CCol md="12" className="theme_color">
+                                Contract
+                              </CCol>
+                            </CRow>
+                            <CRow>
+                              <CCol md="4"> Type :</CCol>
+                              <CCol md="8" className="text-capitalize">
                                 {contract.contract_type.replace('_', ' ') || '-'}
                               </CCol>
                             </CRow>
 
                             <CCardText className=" m-0">
                               <CRow>
-                                <CCol md="5">Start Date:</CCol>
-                                <CCol md="7">{contract.start_date || '-'}</CCol>
+                                <CCol md="4">Start Date:</CCol>
+                                <CCol md="8">{contract.start_date || '-'}</CCol>
                               </CRow>
                             </CCardText>
 
                             <CCardText className="m-0">
                               <CRow>
-                                <CCol md="5"> End Date: </CCol>
-                                <CCol md="7">{contract.end_date || '-'}</CCol>
+                                <CCol md="4"> End Date: </CCol>
+                                <CCol md="8">{contract.end_date || '-'}</CCol>
                               </CRow>
                               <CRow>
                                 <CCol md="12" className="theme_color">
-                                  {' '}
-                                  Contract Members{' '}
+                                  Contract Members
                                 </CCol>
                               </CRow>
                             </CCardText>
