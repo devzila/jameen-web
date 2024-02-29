@@ -1,34 +1,17 @@
-import {
-  CCol,
-  CCard,
-  CListGroupItem,
-  CCardImage,
-  CRow,
-  CCardText,
-  CImage,
-  CCardBody,
-  CCardTitle,
-  CCardSubtitle,
-  CCardLink,
-  CButton,
-} from '@coreui/react'
+import { CCol, CCard, CListGroupItem, CRow, CCardText, CCardBody, CButton } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
-import { cilLineStyle, cilCloudDownload } from '@coreui/icons'
 import { freeSet } from '@coreui/icons'
 import { formatdate, status_color } from 'src/services/CommonFunctions'
-import logo from '../../../../assets/images/avatars/default.png'
 import PickOwner from '../UnitFunctions/PickOwner'
 
 export default function Showunit() {
   const { propertyId, unitId } = useParams()
 
   const [unit, setUnit] = useState({})
-  const [contract_info, setContract_info] = useState({})
-  const [member_info, setMember_info] = useState([])
 
   const [invoices, setInvoices] = useState({})
   const { get, response } = useFetch()
@@ -53,13 +36,6 @@ export default function Showunit() {
 
     setUnit(api.data)
     if (api.data) {
-      setContract_info(api.data.running_contracts[0])
-      const contractMembers =
-        api.data.running_contracts &&
-        api.data.running_contracts[0] &&
-        api.data.running_contracts[0].contract_members
-
-      setMember_info(contractMembers || [])
     }
 
     if (response.ok) {
@@ -198,6 +174,7 @@ export default function Showunit() {
             </CRow>
           </CCard>
         </CCol> */}
+
         <CRow>
           <CCol md="12">
             <CCard className=" p-3 mt-3 mt-0 border-0 ">
