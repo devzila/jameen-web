@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Card, Button, Col, Dropdown } from 'react-bootstrap'
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { BsThreeDots } from 'react-icons/bs'
+import { NavLink } from 'react-router-dom'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import EditProperty from './EditProperty'
 import ShowProperty from './ShowProperty'
@@ -32,120 +33,122 @@ function PropertyCardView({ property }) {
             <CRow>
               {property.map((property) => (
                 <CCol key={property.id} md="4">
-                  <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
-                    <div className="position-absolute top-0 end-0">
-                      <Dropdown key={property.id} className=" text-center">
-                        <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                          <Dropdown.Menu>
-                            <EditProperty propertyId={property.id} />
-                            <NavLink
+                  <Link to={`/properties/${property.id}/overview`}>
+                    <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
+                      <div className="position-absolute top-0 end-0">
+                        <Dropdown key={property.id} className=" text-center">
+                          <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
+                            <Dropdown.Menu>
+                              <EditProperty propertyId={property.id} />
+                              <NavLink
+                                style={{
+                                  border: 'none',
+                                  color: '#00bfcc',
+                                  marginLeft: '4%',
+                                  textDecorationLine: 'none',
+                                }}
+                                to={`/properties/${property.id}/overview`}
+                              >
+                                Show
+                              </NavLink>
+                            </Dropdown.Menu>
+                            <BsThreeDots className="float-end" />
+                          </Dropdown.Toggle>
+                        </Dropdown>
+                      </div>
+                      <CCardText className=" m-5 text-center">
+                        <CRow>
+                          <CCol className="position-relative">
+                            <img
+                              alt="Avatar Image"
                               style={{
-                                border: 'none',
-                                color: '#00bfcc',
-                                marginLeft: '4%',
-                                textDecorationLine: 'none',
+                                width: '150px',
+                                height: '150px',
+                                borderRadius: '50%',
+                                display: 'flex',
+                                margin: '0px auto',
                               }}
-                              to={`/properties/${property.id}/overview`}
-                            >
-                              Show
-                            </NavLink>
-                          </Dropdown.Menu>
-                          <BsThreeDots className="float-end" />
-                        </Dropdown.Toggle>
-                      </Dropdown>
-                    </div>
-                    <CCardText className=" m-5 text-center">
-                      <CRow>
-                        <CCol className="position-relative">
-                          <img
-                            alt="Avatar Image"
-                            style={{
-                              width: '150px',
-                              height: '150px',
-                              borderRadius: '50%',
-                              display: 'flex',
-                              margin: '0px auto',
-                            }}
-                            title="Avatar"
-                            className="img-circle img-thumbnail isTooltip d-flex align-items-center"
-                            src={
-                              property.avatar
-                                ? property.avatar
-                                : 'https://bootdey.com/img/Content/avatar/avatar7.png'
-                            }
-                            data-original-title="Property"
-                          />
-                        </CCol>
-                      </CRow>
-                    </CCardText>
-                    <CCardBody className="pt-0">
-                      <CRow>
-                        <CCol className="d-flex justify-content-end "></CCol>
-                      </CRow>
-                      <CRow>
-                        <CCol md="4" className="text-secondary">
-                          Name:
-                        </CCol>
-                        <CCol md="8" className="text-black">
-                          {property?.name || '-'}
-                        </CCol>
-                      </CRow>
+                              title="Avatar"
+                              className="img-circle img-thumbnail isTooltip d-flex align-items-center"
+                              src={
+                                property.avatar
+                                  ? property.avatar
+                                  : 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJ1aWxkaW5nc3xlbnwwfHwwfHx8MA%3D%3D'
+                              }
+                              data-original-title="Property"
+                            />
+                          </CCol>
+                        </CRow>
+                      </CCardText>
+                      <CCardBody className="pt-0">
+                        <CRow>
+                          <CCol className="d-flex justify-content-end "></CCol>
+                        </CRow>
+                        <CRow>
+                          <CCol md="4" className="text-secondary">
+                            Name:
+                          </CCol>
+                          <CCol md="8" className="text-black">
+                            {property?.name || '-'}
+                          </CCol>
+                        </CRow>
 
-                      <CCardText className=" m-0">
-                        <CRow>
-                          <CCol md="4" className="text-secondary">
-                            {' '}
-                            City :
-                          </CCol>
-                          <CCol md="8" className="text-black">
-                            {property?.city || '-'}
-                          </CCol>
-                        </CRow>
-                      </CCardText>
+                        <CCardText className=" m-0">
+                          <CRow>
+                            <CCol md="4" className="text-secondary">
+                              {' '}
+                              City :
+                            </CCol>
+                            <CCol md="8" className="text-black">
+                              {property?.city || '-'}
+                            </CCol>
+                          </CRow>
+                        </CCardText>
 
-                      <CCardText className="m-0">
-                        <CRow>
-                          <CCol md="4" className="text-secondary">
-                            {' '}
-                            Use Type :{' '}
-                          </CCol>
-                          <CCol md="8" className="text-black">
-                            {property?.use_type || '-'}
-                          </CCol>
-                        </CRow>
-                      </CCardText>
-                      <CCardText className=" m-0">
-                        <CRow>
-                          <CCol md="4" className="text-secondary">
-                            Payment:
-                          </CCol>
-                          <CCol md="8" className="text-black">
-                            {property?.payment_term || '-'}
-                          </CCol>
-                        </CRow>
-                      </CCardText>
-                      <CCardText className=" m-0">
-                        <CRow>
-                          <CCol md="5" className="text-secondary">
-                            Building Count:
-                          </CCol>
-                          <CCol md="7" className="text-black">
-                            {property?.buildings_count || '-'}
-                          </CCol>
-                        </CRow>
-                      </CCardText>
-                      <CCardText className=" m-0">
-                        <CRow>
-                          <CCol md="5" className="text-secondary">
-                            Unit-Type Count:
-                          </CCol>
-                          <CCol md="7" className="text-black">
-                            {property?.unit_types_count || '-'}
-                          </CCol>
-                        </CRow>
-                      </CCardText>
-                    </CCardBody>
-                  </CCard>
+                        <CCardText className="m-0">
+                          <CRow>
+                            <CCol md="4" className="text-secondary">
+                              {' '}
+                              Use Type :{' '}
+                            </CCol>
+                            <CCol md="8" className="text-black">
+                              {property?.use_type || '-'}
+                            </CCol>
+                          </CRow>
+                        </CCardText>
+                        <CCardText className=" m-0">
+                          <CRow>
+                            <CCol md="4" className="text-secondary">
+                              Payment:
+                            </CCol>
+                            <CCol md="8" className="text-black">
+                              {property?.payment_term || '-'}
+                            </CCol>
+                          </CRow>
+                        </CCardText>
+                        <CCardText className=" m-0">
+                          <CRow>
+                            <CCol md="5" className="text-secondary">
+                              Building Count:
+                            </CCol>
+                            <CCol md="7" className="text-black">
+                              {property?.buildings_count || '-'}
+                            </CCol>
+                          </CRow>
+                        </CCardText>
+                        <CCardText className=" m-0">
+                          <CRow>
+                            <CCol md="5" className="text-secondary">
+                              Unit-Type Count:
+                            </CCol>
+                            <CCol md="7" className="text-black">
+                              {property?.unit_types_count || '-'}
+                            </CCol>
+                          </CRow>
+                        </CCardText>
+                      </CCardBody>
+                    </CCard>
+                  </Link>
                 </CCol>
               ))}
             </CRow>
