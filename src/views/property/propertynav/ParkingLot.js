@@ -208,11 +208,9 @@ function ParkingLot() {
               </div>
             </div>
           </div>
-          <br></br>
           <CNavbar
             colorScheme="light"
             className="bg-light d-flex justify-content-center"
-            placement="fixed-bottom"
           >
             <Row>
               <Col md="12">
