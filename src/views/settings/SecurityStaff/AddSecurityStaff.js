@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types'
+import Select from 'react-select'
 
 import {
   CButton,
@@ -17,10 +18,12 @@ import {
 } from '@coreui/react'
 
 export default function AddSecurityStaff({ after_submit }) {
-  const { register, handleSubmit, control } = useForm()
-  const { get, post, response, api } = useFetch()
+  const { register, handleSubmit, control, reset } = useForm()
+  const { get, post, response } = useFetch()
 
   const [visible, setVisible] = useState(false)
+  const [properties_data, setProperties_data] = useState([])
+
   const [errors, setErrors] = useState({})
   const navigate = useNavigate()
 
@@ -32,6 +35,7 @@ export default function AddSecurityStaff({ after_submit }) {
     if (response.ok) {
       setVisible(!visible)
       after_submit()
+      reset()
       toast('Item added successfully')
     } else {
       setErrors(response.data.errors)
@@ -42,6 +46,25 @@ export default function AddSecurityStaff({ after_submit }) {
     setVisible(false)
     setErrors({})
   }
+
+  let properties_array = []
+  function trimProperties(properties) {
+    properties.forEach((element) => {
+      properties_array.push({ value: element.id, label: element.name })
+    })
+    return properties_array
+  }
+  //fetch properties
+  async function fetchProperties() {
+    const api = await get('/v1/admin/premises/properties')
+    if (response.ok) {
+      setProperties_data(trimProperties(api.data))
+    }
+  }
+
+  useEffect(() => {
+    fetchProperties()
+  }, [])
 
   return (
     <div>
@@ -130,6 +153,27 @@ export default function AddSecurityStaff({ after_submit }) {
                     </label>
 
                     <Form.Control type="text" {...register('mobile_number')}></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="12">
+                  <Form.Group>
+                    <label>Assigned Properties</label>
+
+                    <Controller
+                      name="property_ids"
+                      render={({ field }) => (
+                        <Select
+                          isMulti
+                          type="text"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          {...field}
+                          options={properties_data}
+                        />
+                      )}
+                      control={control}
+                      placeholder="Assigned Properties"
+                    />
                   </Form.Group>
                 </Col>
               </Row>
