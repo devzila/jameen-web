@@ -195,23 +195,23 @@ export default function Showunit() {
                             </CCol>
                           </CRow>
                           <CRow>
-                            <CCol md="4"> Type :</CCol>
-                            <CCol md="8" className="text-capitalize">
+                            <CCol> Type :</CCol>
+                            <CCol className="text-capitalize">
                               {contract.contract_type.replace('_', ' ') || '-'}
                             </CCol>
                           </CRow>
 
                           <CCardText className=" m-0">
                             <CRow>
-                              <CCol md="4">Start Date:</CCol>
-                              <CCol md="8">{contract.start_date || '-'}</CCol>
+                              <CCol>Start Date:</CCol>
+                              <CCol>{contract.start_date || '-'}</CCol>
                             </CRow>
                           </CCardText>
 
                           <CCardText className="m-0">
                             <CRow>
-                              <CCol md="4"> End Date: </CCol>
-                              <CCol md="8">{contract.end_date || '-'}</CCol>
+                              <CCol> End Date: </CCol>
+                              <CCol>{contract.end_date || '-'}</CCol>
                             </CRow>
                             <CRow>
                               <CCol md="12" className="theme_color">
@@ -224,17 +224,12 @@ export default function Showunit() {
                             ? contract.contract_members.map((members, index) => (
                                 <CCardText key={index} className="m-0  ps-1">
                                   <CRow>
-                                    <CCol md="4" className="d-flex align-items-center">
+                                    <CCol className="d-flex align-items-center opacity-75">
                                       {index + 1 + '.'} Name:
                                     </CCol>
-                                    <CCol md="8">{members.member.name || '-'}</CCol>
-                                  </CRow>
-                                  <CRow>
-                                    <CCol md="4" className="d-flex align-items-center">
-                                      Type
-                                    </CCol>
-                                    <CCol md="8" className="text-capitalize">
-                                      {members.member_type.replace('_', ' ') || '-'}
+                                    <CCol>
+                                      {members.member.name + ' ' || '-'}(
+                                      {members.member_type.replace('_', ' ') || '-'})
                                     </CCol>
                                   </CRow>
                                 </CCardText>
@@ -243,8 +238,8 @@ export default function Showunit() {
 
                           <CCardText className=" m-0">
                             <CRow>
-                              <CCol md="4">Notes : </CCol>
-                              <CCol md="8" className="text-wrap ">
+                              <CCol>Notes : </CCol>
+                              <CCol className="text-wrap ">
                                 <abbr data-toggle="tooltip" title={contract.nots || null}>
                                   {contract.notes.slice(0, 15) + '...' || '-'}
                                 </abbr>
@@ -290,52 +285,50 @@ export default function Showunit() {
                           </CCol>
                         </CRow>
                         <CRow>
-                          <CCol md="4">Invoice No :</CCol>
-                          <CCol md="8">{invoice?.number || '-'}</CCol>
+                          <CCol>Invoice No :</CCol>
+                          <CCol>{invoice?.number || '-'}</CCol>
                         </CRow>
 
                         <CCardText className=" m-0">
                           <CRow>
-                            <CCol md="4">Invoice Date :</CCol>
-                            <CCol md="8">{invoice?.invoice_date || '-'}</CCol>
+                            <CCol>Invoice Date :</CCol>
+                            <CCol>{invoice?.invoice_date || '-'}</CCol>
                           </CRow>
                         </CCardText>
 
                         <CCardText className="m-0">
                           <CRow>
-                            <CCol md="4"> Invoice Period : </CCol>
-                            <CCol md="8">
+                            <CCol> Invoice Period : </CCol>
+                            <CCol>
                               {(invoice?.period_from || '-') + '/' + (invoice?.period_to || '-')}
                             </CCol>
                           </CRow>
                         </CCardText>
                         <CCardText className=" m-0">
                           <CRow>
-                            <CCol md="4" className="d-flex align-items-center">
-                              Owner/Resident:
-                            </CCol>
-                            <CCol md="8">
+                            <CCol className="d-flex align-items-center">Owner/Resident:</CCol>
+                            <CCol>
                               {/* {invoice.runPickOwner(invoice?.unit_contract) || '-'} */}
                             </CCol>
                           </CRow>
                         </CCardText>
                         <CCardText className="m-0">
                           <CRow>
-                            <CCol md="4"> Amount: </CCol>
-                            <CCol md="8">{invoice?.amount || '-'}</CCol>
+                            <CCol> Amount: </CCol>
+                            <CCol>{invoice?.amount || '-'}</CCol>
                           </CRow>
                         </CCardText>
                         <CCardText className="m-0">
                           <CRow>
-                            <CCol md="4"> VAT: </CCol>
-                            <CCol md="8">{invoice?.vat_amount || '-'}</CCol>
+                            <CCol> VAT: </CCol>
+                            <CCol>{invoice?.vat_amount || '-'}</CCol>
                           </CRow>
                         </CCardText>
 
                         <CCardText className="m-0">
                           <CRow>
-                            <CCol md="4"> Total </CCol>
-                            <CCol md="8">{invoice?.total_amount || '-'}</CCol>
+                            <CCol> Total </CCol>
+                            <CCol>{invoice?.total_amount || '-'}</CCol>
                           </CRow>
                         </CCardText>
                         <div className="d-flex justify-content-end">
