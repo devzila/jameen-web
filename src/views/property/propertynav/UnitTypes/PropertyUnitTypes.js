@@ -65,33 +65,33 @@ const PropertyUnitType = () => {
 
   return (
     <div>
-      <CNavbar expand="lg" colorScheme="light" className="bg-light">
-        <CContainer fluid>
-          <CNavbarBrand href="/unit_type">Unit Types</CNavbarBrand>
-          <div className="d-flex justify-content-end">
-            <div className="d-flex" role="search">
-              <input
-                onChange={(e) => setSearchKeyword(e.target.value)}
-                className="form-control  custom_input"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button
-                onClick={loadInitialUnitsTypes}
-                className="btn btn-outline-success custom_search_button"
-                type="submit"
-              >
-                Search
-              </button>
-            </div>
-            <AddUnitTypes after_submit={loadInitialUnitsTypes} />
-          </div>
-        </CContainer>
-      </CNavbar>
       <div>
-        <div className="mask d-flex align-items-center h-100">
+        <div className="mask d-flex align-items-center h-100 mt-2">
           <div className="container">
+            <CNavbar expand="lg" colorScheme="light" className="bg-white">
+              <CContainer fluid>
+                <CNavbarBrand href="/unit_type">Unit Types</CNavbarBrand>
+                <div className="d-flex justify-content-end">
+                  <div className="d-flex" role="search">
+                    <input
+                      onChange={(e) => setSearchKeyword(e.target.value)}
+                      className="form-control  custom_input"
+                      type="search"
+                      placeholder="Search"
+                      aria-label="Search"
+                    />
+                    <button
+                      onClick={loadInitialUnitsTypes}
+                      className="btn btn-outline-success custom_search_button"
+                      type="submit"
+                    >
+                      Search
+                    </button>
+                  </div>
+                  <AddUnitTypes after_submit={loadInitialUnitsTypes} />
+                </div>
+              </CContainer>
+            </CNavbar>
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="table-responsive bg-white">
@@ -138,10 +138,7 @@ const PropertyUnitType = () => {
           </div>
         </div>
       </div>
-      <CNavbar
-        colorScheme="light"
-        className="bg-light d-flex justify-content-center"
-      >
+      <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
         <Row>
           <Col md="12">
             {pagination ? (

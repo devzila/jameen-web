@@ -41,15 +41,15 @@ export default function OverviewContent(propsd) {
   return (
     <>
       <CRow>
-        <CCol md="4">
-          <CCard className=" p-5  m-3 border-0  " style={{ backgroundColor: '#00bfcc' }}>
+        <CCol className="mt-2" md="4">
+          <CCard className=" p-3 my-3  h-100 " style={{ backgroundColor: '#00bfcc' }}>
             <div className="d-flex align-items-center justify-content-center h-100  ">
               <img className="rounded-circle w-50 " src={property.avatar || logo} />
             </div>
           </CCard>
         </CCol>
-        <CCol md="8">
-          <CCard className=" p-3 my-3 me-3 border-0 theme_color">
+        <CCol className="mt-2" md="8">
+          <CCard className=" p-3 my-3  h-100  border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
               <strong className="text-black">Overview</strong>
@@ -113,7 +113,7 @@ export default function OverviewContent(propsd) {
 
       <CRow>
         <CCol md="12">
-          <CCard className=" p-3 m-3 border-0 theme_color">
+          <CCard className=" p-3 my-3 mt-4 border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
               <strong className="text-black">property Billing Details</strong>
