@@ -85,64 +85,34 @@ function PropertyCardView({ property }) {
                           <CCol className="d-flex justify-content-end "></CCol>
                         </CRow>
                         <CRow>
-                          <CCol md="4" className="text-secondary">
-                            Name:
-                          </CCol>
                           <CCol md="8" className="text-black">
                             {property?.name || '-'}
+                            <br></br>
+                            <CCol className="text-secondary">
+                              {property?.address || '-'}
+                              <span className="mx-1"></span>
+                              {property?.city}
+                            </CCol>
                           </CCol>
                         </CRow>
-
-                        <CCardText className=" m-0">
+                        <br></br>
+                        <CCardText className=" m-1">
                           <CRow>
-                            <CCol md="4" className="text-secondary">
-                              {' '}
-                              City :
+                            <CCol md="4" className="text-black">
+                              {property?.buildings_count || '-'} Building
                             </CCol>
                             <CCol md="8" className="text-black">
-                              {property?.city || '-'}
+                              {property?.unit_types_count || '-'} unit types
                             </CCol>
                           </CRow>
                         </CCardText>
-
                         <CCardText className="m-0">
                           <CRow>
-                            <CCol md="4" className="text-secondary">
-                              {' '}
-                              Use Type :{' '}
-                            </CCol>
-                            <CCol md="8" className="text-black">
+                            <CCol md="4" className="text-black">
                               {property?.use_type || '-'}
                             </CCol>
-                          </CRow>
-                        </CCardText>
-                        <CCardText className=" m-0">
-                          <CRow>
-                            <CCol md="4" className="text-secondary">
-                              Payment:
-                            </CCol>
                             <CCol md="8" className="text-black">
-                              {property?.payment_term || '-'}
-                            </CCol>
-                          </CRow>
-                        </CCardText>
-                        <CCardText className=" m-0">
-                          <CRow>
-                            <CCol md="5" className="text-secondary">
-                              Building Count:
-                            </CCol>
-                            <CCol md="7" className="text-black">
-                              {property?.buildings_count || '-'}
-                            </CCol>
-                          </CRow>
-                        </CCardText>
-                        <CCardText className=" m-0">
-                          <CRow>
-                            <CCol md="5" className="text-secondary">
-                              Unit-Type Count:
-                            </CCol>
-                            <CCol md="7" className="text-black">
-                              {property?.unit_types_count || '-'}
+                              {property?.payment_term || '-'} payment
                             </CCol>
                           </CRow>
                         </CCardText>
