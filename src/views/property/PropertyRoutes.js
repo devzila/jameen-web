@@ -13,7 +13,7 @@ export default function Property() {
   const PropUnitAllotment = React.lazy(() => import('./propertynav/Allotment/PropUnitAllotment'))
   const MovingIn = React.lazy(() => import('./propertynav/MovingIn/PropUnitMovingIn'))
   const Documents = React.lazy(() => import('../property/propertynav/Documents'))
-  const Billing = React.lazy(() => import('../property/propertynav/Billing'))
+  const Invoices = React.lazy(() => import('./propertynav/Invoices'))
   const BillableItems = React.lazy(() =>
     import('./propertynav/UnitTypes/BillableCrud/BilliableItems'),
   )
@@ -32,7 +32,7 @@ export default function Property() {
           <Route path="MovingIn" name="MovingIn" element={<MovingIn />} />
           <Route path="Buildings" name="Buildings" element={<Buildings />} />
           <Route path="Documents" name="Documents" element={<Documents />} />
-          <Route path="Billing" name="Billing" element={<Billing />} />
+          <Route path="Invoices" name="Invoices" element={<Invoices />} />
           <Route path="unit-types/:unittypeID/billableitems" element={<BillableItems />} />
         </Routes>
       </CContainer>
