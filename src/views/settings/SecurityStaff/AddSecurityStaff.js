@@ -28,9 +28,14 @@ export default function AddSecurityStaff({ after_submit }) {
   const navigate = useNavigate()
 
   async function onSubmit(data) {
+    const assigned_properties_data =
+      data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
+
+    const body = { ...data, property_ids: assigned_properties_data }
+
     console.log(data)
     const apiResponse = await post(`/v1/admin/security_staffs`, {
-      security_staff: data,
+      security_staff: body,
     })
     if (response.ok) {
       setVisible(!visible)

@@ -42,7 +42,7 @@ function PropertyCardView({ property }) {
                               alt="Avatar Image"
                               style={{
                                 width: '100%',
-                                height: '400px',
+                                height: '250px',
                                 borderRadius: '0px',
                                 display: 'block',
                                 margin: '0 auto',
@@ -60,7 +60,7 @@ function PropertyCardView({ property }) {
                         </CRow>
                       </CCardText>
                       <div className="position-absolute top-0 end-0">
-                        <Dropdown key={property.id} className=" text-center">
+                        <Dropdown key={property.id} className=" text-center p-3">
                           <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
                             <Dropdown.Menu>
                               <EditProperty propertyId={property.id} />

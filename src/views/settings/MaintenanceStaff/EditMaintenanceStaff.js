@@ -45,8 +45,12 @@ export default function EditMaintenanceStaff({ after_submit, id }) {
 
   async function onSubmit(data) {
     console.log(data)
+    const assigned_properties_data =
+      data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
+
+    const body = { ...data, property_ids: assigned_properties_data }
     const apiResponse = await put(`/v1/admin/security_staffs/${id}`, {
-      security_staff: data,
+      security_staff: body,
     })
     if (response.ok) {
       setVisible(!visible)
