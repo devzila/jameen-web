@@ -28,7 +28,7 @@ export default function PropertyNav() {
             <NavLink to="MovingIn"> Moving in </NavLink>
           </div>
           <div>
-            <NavLink to="Billing"> Invoices </NavLink>
+            <NavLink to="Invoices"> Invoices </NavLink>
           </div>
           {/* <div>
             <NavLink to="/*"> Templates </NavLink>

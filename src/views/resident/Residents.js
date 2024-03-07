@@ -52,7 +52,7 @@ const Residents = () => {
 
   return (
     <div>
-      <CNavbar expand="lg" colorScheme="light" className="bg-light">
+      <CNavbar expand="lg" colorScheme="light" className="bg-white">
         <CContainer fluid>
           <CNavbarBrand href="/residents">Residents</CNavbarBrand>
           <div className="d-flex justify-content-end">
@@ -78,7 +78,7 @@ const Residents = () => {
       </CNavbar>
       <div>
         <div className="mask d-flex align-items-center h-100">
-          <div className="container">
+          <div className="w-100">
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="table-responsive bg-white">

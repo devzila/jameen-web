@@ -70,33 +70,33 @@ const Finance = () => {
   return (
     <>
       <div>
-        <section style={{ width: '100%', padding: '0px' }}>
-          <CNavbar expand="lg" colorScheme="light" className="bg-light">
-            <CContainer fluid>
-              <CNavbarBrand href="#">Invoices</CNavbarBrand>
-              <div className="d-flex justify-content-end">
-                <div className="d-flex" role="search">
-                  <input
-                    onChange={(e) => setSearchKeyword(e.target.value)}
-                    className="form-control  custom_input"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                  />
-                  <button
-                    onClick={loadInitialinvoices}
-                    className="btn btn-outline-success custom_search_button"
-                    type="submit"
-                  >
-                    Search
-                  </button>
-                </div>
-              </div>
-            </CContainer>
-          </CNavbar>
+        <section className="w-100 p-0 mt-2">
           <div>
             <div className="mask d-flex align-items-center h-100">
               <div className="container">
+                <CNavbar expand="lg" colorScheme="light" className="bg-white">
+                  <CContainer fluid>
+                    <CNavbarBrand href="#">Invoices</CNavbarBrand>
+                    <div className="d-flex justify-content-end">
+                      <div className="d-flex" role="search">
+                        <input
+                          onChange={(e) => setSearchKeyword(e.target.value)}
+                          className="form-control  custom_input"
+                          type="search"
+                          placeholder="Search"
+                          aria-label="Search"
+                        />
+                        <button
+                          onClick={loadInitialinvoices}
+                          className="btn btn-outline-success custom_search_button"
+                          type="submit"
+                        >
+                          Search
+                        </button>
+                      </div>
+                    </div>
+                  </CContainer>
+                </CNavbar>
                 <div className="row justify-content-center">
                   <div className="col-12">
                     <div className="table-responsive bg-white">

@@ -113,37 +113,37 @@ function Unit() {
     <>
       <div>
         {error && error.Error}
-        <section style={{ width: '100%', padding: '0px' }}>
-          <CNavbar expand="lg" colorScheme="light" className="bg-light">
-            <CContainer fluid>
-              <CNavbarBrand href="#">Unit</CNavbarBrand>
-              <div className="d-flex justify-content-end bg-light">
-                <div className="d-flex  " role="search">
-                  <input
-                    value={searchKeyword}
-                    onChange={(e) => setSearchKeyword(e.target.value)}
-                    className="form-control me-0 custom_input  "
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                  />
-                  <button
-                    onClick={loadInitialUnits}
-                    className="btn btn-outline-success custom_search_button "
-                    type="submit"
-                  >
-                    Search
-                  </button>
-                </div>
-                <FilterAccordion filter_callback={filter_callback} units_type={unit_type} />
-                <Add after_submit={refresh_data} />
-              </div>
-            </CContainer>
-          </CNavbar>
-
+        <section className="w-100 p-0 mt-2">
           <div>
             <div className="mask d-flex align-items-center h-100">
               <div className="container">
+                <CNavbar expand="lg" colorScheme="light" className="bg-white">
+                  <CContainer fluid>
+                    <CNavbarBrand href="#">Unit</CNavbarBrand>
+                    <div className="d-flex justify-content-end bg-light">
+                      <div className="d-flex  " role="search">
+                        <input
+                          value={searchKeyword}
+                          onChange={(e) => setSearchKeyword(e.target.value)}
+                          className="form-control me-0 custom_input  "
+                          type="search"
+                          placeholder="Search"
+                          aria-label="Search"
+                        />
+                        <button
+                          onClick={loadInitialUnits}
+                          className="btn btn-outline-success custom_search_button "
+                          type="submit"
+                        >
+                          Search
+                        </button>
+                      </div>
+                      <FilterAccordion filter_callback={filter_callback} units_type={unit_type} />
+                      <Add after_submit={refresh_data} />
+                    </div>
+                  </CContainer>
+                </CNavbar>
+
                 <div className="row justify-content-center">
                   <div className="col-16">
                     <div className="table-responsive bg-white">
@@ -260,10 +260,7 @@ function Unit() {
               </div>
             </div>
           </div>
-          <CNavbar
-            colorScheme="light"
-            className="bg-light d-flex justify-content-center"
-          >
+          <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
             <Row>
               <Col md="12">
                 {pagination ? (
