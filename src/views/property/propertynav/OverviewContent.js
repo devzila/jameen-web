@@ -41,15 +41,25 @@ export default function OverviewContent(propsd) {
   return (
     <>
       <CRow>
-        <CCol className="mt-2" md="4">
-          <CCard className=" p-3 my-3  h-100 " style={{ backgroundColor: '#00bfcc' }}>
-            <div className="d-flex align-items-center justify-content-center h-100  ">
-              <img className="rounded-circle w-50 " src={property.avatar || logo} />
+        <CCol className="mt-3" md="4">
+          <CCard className=" shadow-lg border-0 rounded-2 mb-3  p-0 my-3 " style={{ backgroundColor: '#00bfcc' }}>
+            <div className="d-flex align-items-center justify-content-center">
+              <img
+                className="img-thumbnail isTooltip"
+                style={{
+                  width: '100%',
+                  height: '250px',
+                  borderRadius: '0px',
+                  display: 'block',
+                  margin: '0 auto',
+                }}
+                src={property.photo || logo}
+              />
             </div>
           </CCard>
         </CCol>
-        <CCol className="mt-2" md="8">
-          <CCard className=" p-3 my-3  h-100  border-0 theme_color">
+        <CCol className="mt-3" md="8">
+          <CCard className=" p-3 my-3 mb-3   border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
               <strong className="text-black">Overview</strong>
@@ -113,7 +123,7 @@ export default function OverviewContent(propsd) {
 
       <CRow>
         <CCol md="12">
-          <CCard className=" p-3 my-3 mt-4 border-0 theme_color">
+          <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
               <strong className="text-black">property Billing Details</strong>

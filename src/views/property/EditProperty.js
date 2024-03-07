@@ -155,16 +155,6 @@ export default function EditProperty({ propertyId }) {
                         />
                       </Form.Group>
                     </Col>
-                    <Col className="pr-1 mt-3" md="6">
-                      <Form.Group>
-                        <label>Unit Count</label>
-                        <Form.Control
-                          placeholder="Unit Count"
-                          type="text"
-                          {...register('unit_counts')}
-                        />
-                      </Form.Group>
-                    </Col>
                   </Row>
                   <Row>
                     <Col className="pr-1 mt-3" md="12">

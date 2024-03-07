@@ -35,7 +35,7 @@ function PropertyCardView({ property }) {
                 <CCol key={property.id} md="4">
                   <Link to={`/properties/${property.id}/overview`}>
                     <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
-                      <CCardText className="card" style={{ width: '25rem' }}>
+                      <CCardText className="card">
                         <CRow>
                           <CCol className="position-relative text-center">
                             <img
@@ -50,8 +50,8 @@ function PropertyCardView({ property }) {
                               title="Avatar"
                               className="img-thumbnail isTooltip"
                               src={
-                                property.avatar
-                                  ? property.avatar
+                                property.photo
+                                  ? property.photo
                                   : 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJ1aWxkaW5nc3xlbnwwfHwwfHx8MA%3D%3D'
                               }
                               data-original-title="Property"

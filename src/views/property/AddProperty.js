@@ -23,7 +23,7 @@ export default function PropertyForm({ after_submit }) {
   const [useTypeOptions, setUseTypeOptions] = useState([])
   const [paymentTermOptions, setPaymentTermOptions] = useState([])
 
-  const { register, handleSubmit, control, reset } = useForm()
+  const { register, handleSubmit, control, watch, reset } = useForm()
   const { get, post, response } = useFetch()
 
   async function fetchProperties() {
@@ -46,6 +46,8 @@ export default function PropertyForm({ after_submit }) {
     }
   }
 
+  const avatar_obj = watch('avatar')
+
   useEffect(() => {
     fetchProperties()
   }, [])
@@ -66,7 +68,7 @@ export default function PropertyForm({ after_submit }) {
   }
 
   async function onSubmit(data) {
-    const body = { ...data, photo: { data: imageView } }
+    const body = { ...data, avatar: { data: imageView } }
 
     const apiResponse = await post(`/v1/admin/premises/properties`, { property: body })
 
@@ -110,11 +112,11 @@ export default function PropertyForm({ after_submit }) {
               <Row>
                 <div className="col text-center">
                   <img
-                    alt="Avatar Image"
+                    alt=""
                     style={{
                       width: '300px',
                       height: '300px',
-                      objectFit: 'cover',
+                      
                       marginTop: '2%',
                       marginLeft: '4%',
                       borderRadius: '50%',
