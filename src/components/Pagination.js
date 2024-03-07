@@ -6,16 +6,16 @@ export default function Paginate({ forcePage, pageCount, pageRangeDisplayed, onP
     <ReactPaginate
       breakLabel="..."
       nextLabel=">>>"
-      breakClassName="page-item"
-      breakLinkClassName="btn btn-outline-info mx-1 "
-      containerClassName="pagination justify-content-center "
-      pageClassName="page-item"
-      pageLinkClassName="btn btn-outline-info mx-1 "
-      previousClassName="page-item"
-      previousLinkClassName="btn btn-outline-info mx-1 "
-      nextClassName="page-item"
-      nextLinkClassName="btn btn-outline-info mx-1 "
-      activeClassName="active"
+      breakClassName="page-item "
+      breakLinkClassName="btn mx-1 "
+      containerClassName=" d-flex align-items-end list-unstyled text-light  "
+      pageClassName=" text-light custom_grey_button mx-1 "
+      pageLinkClassName="btn mx-1 text-light  shadow-lg border-0 "
+      previousClassName="page-item border-0"
+      previousLinkClassName="btn text-dark border-0 "
+      nextClassName="page-item  "
+      nextLinkClassName="btn border-0  text-dark  "
+      activeClassName=" custom_background_color text-light border-0"
       onPageChange={onPageChange}
       pageRangeDisplayed={pageRangeDisplayed}
       pageCount={pageCount}
