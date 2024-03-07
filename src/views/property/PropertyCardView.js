@@ -35,6 +35,30 @@ function PropertyCardView({ property }) {
                 <CCol key={property.id} md="4">
                   <Link to={`/properties/${property.id}/overview`}>
                     <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
+                      <CCardText className="card" style={{ width: '25rem' }}>
+                        <CRow>
+                          <CCol className="position-relative text-center">
+                            <img
+                              alt="Avatar Image"
+                              style={{
+                                width: '100%',
+                                height: '400px',
+                                borderRadius: '0px',
+                                display: 'block',
+                                margin: '0 auto',
+                              }}
+                              title="Avatar"
+                              className="img-thumbnail isTooltip"
+                              src={
+                                property.avatar
+                                  ? property.avatar
+                                  : 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJ1aWxkaW5nc3xlbnwwfHwwfHx8MA%3D%3D'
+                              }
+                              data-original-title="Property"
+                            />
+                          </CCol>
+                        </CRow>
+                      </CCardText>
                       <div className="position-absolute top-0 end-0">
                         <Dropdown key={property.id} className=" text-center">
                           <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
@@ -42,7 +66,7 @@ function PropertyCardView({ property }) {
                               <EditProperty propertyId={property.id} />
                               <NavLink
                                 style={{
-                                  border: 'none',
+                                  border: '2px',
                                   color: '#00bfcc',
                                   marginLeft: '4%',
                                   textDecorationLine: 'none',
@@ -56,30 +80,7 @@ function PropertyCardView({ property }) {
                           </Dropdown.Toggle>
                         </Dropdown>
                       </div>
-                      <CCardText className=" m-5 text-center">
-                        <CRow>
-                          <CCol className="position-relative">
-                            <img
-                              alt="Avatar Image"
-                              style={{
-                                width: '150px',
-                                height: '150px',
-                                borderRadius: '50%',
-                                display: 'flex',
-                                margin: '0px auto',
-                              }}
-                              title="Avatar"
-                              className="img-circle img-thumbnail isTooltip d-flex align-items-center"
-                              src={
-                                property.avatar
-                                  ? property.avatar
-                                  : 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJ1aWxkaW5nc3xlbnwwfHwwfHx8MA%3D%3D'
-                              }
-                              data-original-title="Property"
-                            />
-                          </CCol>
-                        </CRow>
-                      </CCardText>
+
                       <CCardBody className="pt-0">
                         <CRow>
                           <CCol className="d-flex justify-content-end "></CCol>
@@ -96,22 +97,22 @@ function PropertyCardView({ property }) {
                           </CCol>
                         </CRow>
                         <br></br>
-                        <CCardText className=" m-1">
+                        <CCardText className=" m-2">
                           <CRow>
-                            <CCol md="4" className="text-black">
+                            <CCol md="5" className="text-black">
                               {property?.buildings_count || '-'} Building
                             </CCol>
-                            <CCol md="8" className="text-black">
+                            <CCol md="7" className="text-black">
                               {property?.unit_types_count || '-'} unit types
                             </CCol>
                           </CRow>
                         </CCardText>
-                        <CCardText className="m-0">
+                        <CCardText className="m-2">
                           <CRow>
-                            <CCol md="4" className="text-black">
+                            <CCol md="5" className="text-black">
                               {property?.use_type || '-'}
                             </CCol>
-                            <CCol md="8" className="text-black">
+                            <CCol md="7" className="text-black">
                               {property?.payment_term || '-'} payment
                             </CCol>
                           </CRow>
