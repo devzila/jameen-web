@@ -270,7 +270,6 @@ export default function EditResidents(props) {
                       name="property_id"
                       render={({ field }) => (
                         <Select
-                          s
                           type="text"
                           className="basic-multi-select"
                           classNamePrefix="select"
