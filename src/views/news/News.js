@@ -20,6 +20,7 @@ function News() {
 
   async function loadInitialPosts() {
     const initialPosts = await get(`/v1/admin/posts?page=${currentPage}`)
+    console.log(initialPosts)
 
     if (response.ok) {
       setPosts(initialPosts.data)
@@ -66,19 +67,19 @@ function News() {
                     {posts?.map((post) => (
                       <tr key={post.id}>
                         <td>{post.title}</td>
-                        <td>{post.content}</td>
+                        <td>{post.content.name}</td>
                         <td>{post.category}</td>
-                        <td>{post.view_count}</td>
-                        <td>{post.like_count}</td>
-                        <td>{post.publish_date}</td>
-                        <td>{post.status}</td>
-                        <td>{post.user_id}</td>
+                        <td>{post.content.view_count}</td>
+                        <td>{post.likes_count}</td>
+                        <td>{post.content.publish_date}</td>
+                        <td>{post.content.status}</td>
+                        <td>{post.content.user_id}</td>
                         <td>
-                          <Dropdown key={post.id}>
+                          {/* <Dropdown key={post.id}>
                             <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
                               <BsThreeDots />
                             </Dropdown.Toggle>
-                          </Dropdown>
+                          </Dropdown> */}
                         </td>
                       </tr>
                     ))}
