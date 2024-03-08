@@ -17,7 +17,7 @@ import {
   CContainer,
 } from '@coreui/react'
 
-import { Button, Form, Row, Col } from 'react-bootstrap'
+import { Button, Form, Row, Col, CardTitle } from 'react-bootstrap'
 
 import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
@@ -145,12 +145,30 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
       <CContainer className="bg-white  mt-5 py-2">
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Row>
-            <Col className="pr-1 mt-3" md="10">
+            <Col className="pr-1 mt-3 " md="12">
               <label>
-                <b>Unit No: </b>
-                {unitNo}
+                <b>Unit No: </b> <small className="text-danger"> *</small>
               </label>
+
+              {unitNo}
+
+              <Form.Group className=" col-12">
+                <Controller
+                  name="unit_id"
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={residents}
+                      value={residents.find((c) => c.value === field.value)}
+                      onChange={(val) => field.onChange(val.value)}
+                    />
+                  )}
+                  control={control}
+                  placeholder="Role"
+                />
+              </Form.Group>
             </Col>
+
             <Col className="pr-1 mt-3" md="12">
               <Form.Group>
                 <label>
