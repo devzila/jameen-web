@@ -15,6 +15,7 @@ import {
   CContainer,
 } from '@coreui/react'
 import { Button, Form, Row, Col } from 'react-bootstrap'
+import { id } from 'date-fns/locale'
 
 export default function EditProperty(props) {
   const [property, setProperty] = useState({})
@@ -51,13 +52,13 @@ export default function EditProperty(props) {
 
     if (response.ok) {
       const propertyUseTypesOptions = Object.entries(api.property_use_types).map((element) => ({
-        value: element[1],
+        value: element[0],
         label: element[0],
       }))
 
       const propertyPaymentTermsOptions = Object.entries(api.property_payment_terms).map(
         ([key, value]) => ({
-          value: value,
+          value: key,
           label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
         }),
       )
@@ -81,7 +82,7 @@ export default function EditProperty(props) {
   }
 
   const onSubmit = async (data) => {
-    const body = { ...data, avatar: { data: imageView } }
+    const body = { ...data, photo: { data: imageView } }
 
     const endpoint = await put(`/v1/admin/premises/properties/${propertyId}`, { property: body })
 
@@ -136,7 +137,7 @@ export default function EditProperty(props) {
                         ? property.photo
                         : imageView
                         ? imageView
-                        : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                        : 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJ1aWxkaW5nc3xlbnwwfHwwfHx8MA%3D%3D'
                     }
                     data-original-title="Usuario"
                   />
@@ -149,9 +150,9 @@ export default function EditProperty(props) {
                     <Form.Control
                       type="file"
                       accept=".jpg, .jpeg, .png"
-                      {...register('avatar')}
+                      {...register('photo')}
                       onChange={(e) => handleFileSelection(e)}
-                    ></Form.Control>
+                    />
                   </Form.Group>
                 </Col>
               </Row>
@@ -233,6 +234,7 @@ export default function EditProperty(props) {
                       </CButton>
                     </CModalFooter>
                   </div>
+                  <div className="clearfix"></div>
                 </Form>
               </Row>
             </CContainer>
