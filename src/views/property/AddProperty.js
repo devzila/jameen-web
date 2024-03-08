@@ -116,7 +116,7 @@ export default function PropertyForm({ after_submit }) {
                     style={{
                       width: '300px',
                       height: '300px',
-                      
+
                       marginTop: '2%',
                       marginLeft: '4%',
                       borderRadius: '50%',

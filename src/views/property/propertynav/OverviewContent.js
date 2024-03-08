@@ -42,18 +42,18 @@ export default function OverviewContent(propsd) {
     <>
       <CRow>
         <CCol className="mt-3" md="4">
-          <CCard className=" shadow-lg border-0 rounded-2 mb-3  p-0 my-3 " style={{ backgroundColor: '#00bfcc' }}>
+          <CCard className=" shadow-lg border-0 rounded-2 mb-4  p-0 my-3 " style={{ backgroundColor: '#00bfcc' }}>
             <div className="d-flex align-items-center justify-content-center">
               <img
                 className="img-thumbnail isTooltip"
                 style={{
                   width: '100%',
-                  height: '250px',
+                  height: '255px',
                   borderRadius: '0px',
                   display: 'block',
                   margin: '0 auto',
                 }}
-                src={property.photo || logo}
+                src={property.photo || 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJ1aWxkaW5nc3xlbnwwfHwwfHx8MA%3D%3D'}
               />
             </div>
           </CCard>

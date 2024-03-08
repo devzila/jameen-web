@@ -1,6 +1,5 @@
-// EditProperty.js
 import React, { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
@@ -16,46 +15,17 @@ import {
   CContainer,
 } from '@coreui/react'
 import { Button, Form, Row, Col } from 'react-bootstrap'
-import CIcon from '@coreui/icons-react'
-import { BsThreeDots } from 'react-icons/bs'
-import CustomDivToggle from '../../components/CustomDivToggle'
 
-export default function EditProperty({ propertyId }) {
+export default function EditProperty(props) {
+  const [property, setProperty] = useState({})
+  const [useTypeOptions, setUseTypeOptions] = useState([])
+  const [paymentTermOptions, setPaymentTermOptions] = useState([])
   const [imageView, setImageView] = useState('')
   const { get, put, response } = useFetch()
-
+  const { propertyId } = props
   const [visible, setVisible] = useState(false)
   const { register, handleSubmit, setValue, control } = useForm()
 
-  const [propertyData, setPropertyData] = useState({})
-  const [loading, setLoading] = useState(true)
-
-  // Fetch property data
-  async function fetchPropertyData() {
-    try {
-      const api = await get(`/v1/admin/premises/properties/${propertyId}`)
-      if (response.ok) {
-        setValue('name', api.data.name)
-        setValue('city', api.data.city)
-        setValue('use_type', api.data.use_type)
-        setValue('unit_counts', api.data.unit_counts)
-        setValue('payment_term', api.data.payment_term)
-
-        setPropertyData(api.data)
-        setLoading(false)
-      } else {
-        toast.error(response.data?.message || 'Failed to fetch property data')
-      }
-    } catch (error) {
-      console.error('Error fetching property data:', error)
-    }
-  }
-
-  useEffect(() => {
-    fetchPropertyData()
-  }, [])
-
-  // Handle file selection for image/avatar
   const handleFileSelection = (e) => {
     const selectedFile = e.target.files[0]
 
@@ -71,32 +41,55 @@ export default function EditProperty({ propertyId }) {
     }
   }
 
-  // Clear image/avatar
-  const clearImage = () => {
-    setValue('avatar', null)
-    setImageView(null)
+  useEffect(() => {
+    fetchProperties()
+    loadproperty()
+  }, [])
+
+  async function fetchProperties() {
+    const api = await get('/v1/admin/options')
+
+    if (response.ok) {
+      const propertyUseTypesOptions = Object.entries(api.property_use_types).map((element) => ({
+        value: element[1],
+        label: element[0],
+      }))
+
+      const propertyPaymentTermsOptions = Object.entries(api.property_payment_terms).map(
+        ([key, value]) => ({
+          value: value,
+          label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
+        }),
+      )
+      setPaymentTermOptions(propertyPaymentTermsOptions)
+      setUseTypeOptions(propertyUseTypesOptions)
+    }
+  }
+
+  // Fetch property data
+  const loadproperty = async () => {
+    const endpoint = await get(`/v1/admin/premises/properties/${propertyId}`)
+    if (response.ok) {
+      setValue('name', endpoint.data.name)
+      setValue('city', endpoint.data.city)
+      setValue('use_type', endpoint.data.use_type)
+      setValue('unit_counts', endpoint.data.unit_counts)
+      setValue('payment_term', endpoint.data.payment_term)
+    } else {
+      toast.error(response.data?.message)
+    }
   }
 
   const onSubmit = async (data) => {
-    try {
-      console.log('Submitting form with data:', data)
+    const body = { ...data, avatar: { data: imageView } }
 
-      const body = { ...data, avatar: { data: imageView } }
-      console.log('API request body:', body)
+    const endpoint = await put(`/v1/admin/premises/properties/${propertyId}`, { property: body })
 
-      const result = await put(`/v1/admin/premises/properties/${propertyId}`, { property: body })
-      console.log('API response:', result)
-
-      if (result.ok) {
-        toast.success('Property Data Edited Successfully')
-        setVisible(!visible)
-      } else {
-        toast.error(result.data?.message || 'Failed to edit property data')
-        console.error('Error editing property data:', result)
-      }
-    } catch (error) {
-      toast.error('An unexpected error occurred while editing property data')
-      console.error('Unexpected error editing property data:', error)
+    if (response.ok) {
+      toast('Property Data Edited Successfully')
+      setVisible(false)
+    } else {
+      toast(response?.error)
     }
   }
 
@@ -125,6 +118,44 @@ export default function EditProperty({ propertyId }) {
           <CModalBody>
             <CContainer>
               <Row>
+                <div className="col text-center">
+                  <img
+                    alt="Avatar Image"
+                    style={{
+                      width: '300px',
+                      height: '300px',
+
+                      marginTop: '2%',
+                      marginLeft: '4%',
+                      borderRadius: '50%',
+                    }}
+                    title="Avatar"
+                    className="img-circle img-thumbnail isTooltip  "
+                    src={
+                      property.photo
+                        ? property.photo
+                        : imageView
+                        ? imageView
+                        : 'https://bootdey.com/img/Content/avatar/avatar7.png'
+                    }
+                    data-original-title="Usuario"
+                  />
+                </div>
+              </Row>
+              <Row>
+                <Col className="pr-1 mt-3" md="12">
+                  <Form.Group>
+                    <label>Avatar Image</label>
+                    <Form.Control
+                      type="file"
+                      accept=".jpg, .jpeg, .png"
+                      {...register('avatar')}
+                      onChange={(e) => handleFileSelection(e)}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                   <Row>
                     <Col className="pr-1 mt-3" md="6">
@@ -148,10 +179,18 @@ export default function EditProperty({ propertyId }) {
                     <Col className="pr-1 mt-3" md="6">
                       <Form.Group>
                         <label>Use Type</label>
-                        <Form.Control
-                          placeholder="Use Type"
-                          type="text"
-                          {...register('use_type')}
+                        <Controller
+                          name="use_type"
+                          render={({ field }) => (
+                            <Select
+                              {...field}
+                              options={useTypeOptions}
+                              value={useTypeOptions.find((c) => c.value === field.value)}
+                              onChange={(val) => field.onChange(val.value)}
+                            />
+                          )}
+                          control={control}
+                          placeholder="use Type"
                         />
                       </Form.Group>
                     </Col>
@@ -160,30 +199,40 @@ export default function EditProperty({ propertyId }) {
                     <Col className="pr-1 mt-3" md="12">
                       <Form.Group>
                         <label>Payment Term</label>
-                        <Form.Control
-                          placeholder="Payment Term"
-                          type="text"
-                          {...register('payment_term')}
+                        <Controller
+                          name="payment_term"
+                          render={({ field }) => (
+                            <Select
+                              classNamePrefix="react-select"
+                              {...field}
+                              options={paymentTermOptions}
+                              value={paymentTermOptions.find((c) => c.value === field.value)}
+                              onChange={(val) => field.onChange(val.value)}
+                            />
+                          )}
+                          control={control}
                         />
                       </Form.Group>
                     </Col>
                   </Row>
-                  {/* Additional fields can be added based on your property structure */}
                   <div className="text-center">
                     <CModalFooter>
-                      <Button data-mdb-ripple-init type="submit" className=" custom_theme_button">
+                      <Button
+                        data-mdb-ripple-init
+                        type="submit"
+                        className="btn  custom_theme_button"
+                      >
                         Submit
                       </Button>
                       <CButton
                         className="custom_grey_button"
-                        style={{ color: 'white', backgroundColor: 'gray', border: 'none' }}
+                        color="light "
                         onClick={() => setVisible(false)}
                       >
                         Close
                       </CButton>
                     </CModalFooter>
                   </div>
-                  <div className="clearfix"></div>
                 </Form>
               </Row>
             </CContainer>

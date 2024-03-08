@@ -33,8 +33,8 @@ function PropertyCardView({ property }) {
             <CRow>
               {property.map((property) => (
                 <CCol key={property.id} md="4">
-                  <Link to={`/properties/${property.id}/overview`}>
-                    <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
+                  <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
+                    <Link to={`/properties/${property.id}/overview`}>
                       <CCardText className="card">
                         <CRow>
                           <CCol className="position-relative text-center">
@@ -59,67 +59,69 @@ function PropertyCardView({ property }) {
                           </CCol>
                         </CRow>
                       </CCardText>
-                      <div className="position-absolute top-0 end-0">
-                        <Dropdown key={property.id} className=" text-center p-3">
-                          <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                            <Dropdown.Menu>
-                              <EditProperty propertyId={property.id} />
-                              <NavLink
-                                style={{
-                                  border: '2px',
-                                  color: '#00bfcc',
-                                  marginLeft: '4%',
-                                  textDecorationLine: 'none',
-                                }}
-                                to={`/properties/${property.id}/overview`}
-                              >
-                                Show
-                              </NavLink>
-                            </Dropdown.Menu>
-                            <BsThreeDots className="float-end" />
-                          </Dropdown.Toggle>
-                        </Dropdown>
-                      </div>
+                    </Link>
 
-                      <CCardBody className="pt-0">
+                    <div className="position-absolute top-0 end-0">
+                      <Dropdown key={property.id} className=" text-center p-3">
+                        <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
+                          <BsThreeDots />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <EditProperty propertyId={property.id} />
+                          <Link
+                            style={{
+                              border: '2px',
+                              color: '#00bfcc',
+                              marginLeft: '4%',
+                              textDecorationLine: 'none',
+                            }}
+                            to={`/properties/${property.id}/overview`}
+                            className="custom_tooltip_botton"
+                          >
+                            Show
+                          </Link>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
+
+                    <CCardBody className="pt-0">
+                      <CRow>
+                        <CCol className="d-flex justify-content-end "></CCol>
+                      </CRow>
+                      <CRow>
+                        <CCol md="8" className="text-black">
+                          {property?.name || '-'}
+                          <br></br>
+                          <CCol className="text-secondary">
+                            {property?.address || '-'}
+                            <span className="mx-1"></span>
+                            {property?.city}
+                          </CCol>
+                        </CCol>
+                      </CRow>
+                      <br></br>
+                      <CCardText className=" m-2">
                         <CRow>
-                          <CCol className="d-flex justify-content-end "></CCol>
-                        </CRow>
-                        <CRow>
-                          <CCol md="8" className="text-black">
-                            {property?.name || '-'}
-                            <br></br>
-                            <CCol className="text-secondary">
-                              {property?.address || '-'}
-                              <span className="mx-1"></span>
-                              {property?.city}
-                            </CCol>
+                          <CCol md="5" className="text-black">
+                            {property?.buildings_count || '-'} Building
+                          </CCol>
+                          <CCol md="7" className="text-black">
+                            {property?.unit_types_count || '-'} unit types
                           </CCol>
                         </CRow>
-                        <br></br>
-                        <CCardText className=" m-2">
-                          <CRow>
-                            <CCol md="5" className="text-black">
-                              {property?.buildings_count || '-'} Building
-                            </CCol>
-                            <CCol md="7" className="text-black">
-                              {property?.unit_types_count || '-'} unit types
-                            </CCol>
-                          </CRow>
-                        </CCardText>
-                        <CCardText className="m-2">
-                          <CRow>
-                            <CCol md="5" className="text-black">
-                              {property?.use_type || '-'}
-                            </CCol>
-                            <CCol md="7" className="text-black">
-                              {property?.payment_term || '-'} payment
-                            </CCol>
-                          </CRow>
-                        </CCardText>
-                      </CCardBody>
-                    </CCard>
-                  </Link>
+                      </CCardText>
+                      <CCardText className="m-2">
+                        <CRow>
+                          <CCol md="5" className="text-black">
+                            {property?.use_type || '-'}
+                          </CCol>
+                          <CCol md="7" className="text-black">
+                            {property?.payment_term || '-'} payment
+                          </CCol>
+                        </CRow>
+                      </CCardText>
+                    </CCardBody>
+                  </CCard>
                 </CCol>
               ))}
             </CRow>
