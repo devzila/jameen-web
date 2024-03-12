@@ -130,7 +130,6 @@ function ParkingLot() {
                           }}
                         >
                           <tr>
-                            <th className="border-0">Id</th>
                             <th className="border-0">Parking Number</th>
                             <th className="border-0">Unit Number</th>
                             <th className="border-0">Vechile Number</th>
@@ -141,7 +140,6 @@ function ParkingLot() {
                         <tbody>
                           {parkingLot.map((parking) => (
                             <tr key={parking.id}>
-                              <td style={{ textTransform: 'capitalize' }}>{parking.id}</td>
                               <td>
                                 {editable[parking.id] ? (
                                   <input
