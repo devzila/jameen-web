@@ -6,11 +6,24 @@ import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import logo from '../../../assets/images/avatars/default.png'
+import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import Loading from 'src/components/loading/loading'
+import { Dropdown, Row, Col } from 'react-bootstrap'
+
+import { formatdate } from '../../../services/CommonFunctions'
 
 export default function Buildings() {
   const [buildings, setBuildings] = useState([])
-  const { get } = useFetch()
+  const [invoices, setInvoices] = useState([])
+  const [pagination, setPagination] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [errors, setErrors] = useState(false)
+  const [loading, setLoading] = useState(true)
+
   const { propertyId } = useParams()
+
+  const [searchKeyword, setSearchKeyword] = useState(null)
+  const { get, response } = useFetch()
 
   useEffect(() => {
     fetchBuildings()
@@ -21,56 +34,102 @@ export default function Buildings() {
       const buildingsData = await get(`/v1/admin/premises/properties/${propertyId}/buildings`)
       console.log(buildingsData)
       if (buildingsData && buildingsData.data) {
-        setBuildings(buildingsData.data[0])
+        setBuildings(buildingsData.data)
       }
     } catch (error) {
       console.error('Error fetching billable items:', error)
     }
   }
 
-
   return (
     <>
-      <CRow>
-        <CCol md="4">
-          <CCard className=" p-5  m-3 border-0  " style={{ backgroundColor: '#00bfcc' }}>
-            <div className="d-flex align-items-center justify-content-center h-100 ">
-              <img className="rounded-circle w-50 " src={buildings.avatar || logo} />
+      <div>
+        <section className="w-100 p-0 mt-2">
+          <div>
+            <div className="mask d-flex align-items-center h-100">
+              <div className="container">
+                <CNavbar expand="lg" colorScheme="light" className="bg-white">
+                  <CContainer fluid>
+                    <CNavbarBrand href="#"></CNavbarBrand>
+                    <div className="d-flex justify-content-end">
+                      <div className="d-flex" role="search">
+                        <input
+                          onChange={(e) => setSearchKeyword(e.target.value)}
+                          className="form-control  custom_input"
+                          type="search"
+                          placeholder="Search"
+                          aria-label="Search"
+                        />
+                        <button
+                          // onClick={loadInitialinvoices}
+                          className="btn btn-outline-success custom_search_button"
+                          type="submit"
+                        >
+                          Search
+                        </button>
+                      </div>
+                    </div>
+                  </CContainer>
+                </CNavbar>
+                <div className="row justify-content-center">
+                  <div className="col-12">
+                    <div className="table-responsive bg-white">
+                      <table className="table mb-0">
+                        <thead
+                          style={{
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            overFlow: 'hidden',
+                          }}
+                        >
+                          <tr>
+                            <th className="pt-3 pb-3 border-0">Name</th>
+                            <th className="pt-3 pb-3 border-0">Description</th>
+                            <th className="pt-3 pb-3 border-0">Created At </th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          {buildings.map((data) => (
+                            <tr key={data.id}>
+                              <td>{data.name}</td>
+                              <td>{data.description}</td>
+                              <td>{formatdate(data.created_at)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      {loading && <Loading />}
+                      {errors == true ? toast('We are facing a technical issue at our end.') : null}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </CCard>
-        </CCol>
-        <CCol md="8">
-          <CCard className=" p-5 my-3 me-3" style={{ border: '0px' }}>
-            <CListGroupItem>
-              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
-              <strong>buildings</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Id
-                <CCardText className="fw-normal text-black">{buildings?.id || '-'}</CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Name
-                <CCardText className="fw-normal text-black">{buildings?.name || '-'}</CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Description
-                <CCardText className="fw-normal text-black">
-                  {buildings?.description || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Created At
-                <CCardText className="fw-normal text-black">
-                  {buildings?.created_at || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-          </CCard>
-        </CCol>
-      </CRow>
+          </div>
+          <br></br>
+          <CNavbar
+            colorScheme="light"
+            className="bg-light d-flex justify-content-center"
+            placement="fixed-bottom"
+          >
+            <Row>
+              <Col md="12">
+                {pagination ? (
+                  <Paginate
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={pagination.per_page}
+                    pageCount={pagination.total_pages}
+                    forcePage={currentPage - 1}
+                  />
+                ) : (
+                  <br />
+                )}
+              </Col>
+            </Row>
+          </CNavbar>
+        </section>
+      </div>
     </>
   )
 }
