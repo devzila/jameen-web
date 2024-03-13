@@ -203,16 +203,15 @@ export default function Showunit() {
 
                           <CCardText className=" m-0">
                             <CRow>
-                              <CCol>Start Date:</CCol>
-                              <CCol>{contract.start_date || '-'}</CCol>
+                              <CCol>Duration:</CCol>
+                              <CCol>
+                                {contract.start_date || '-'}
+                                {contract.end_date || ' - Present'}
+                              </CCol>
                             </CRow>
                           </CCardText>
 
                           <CCardText className="m-0">
-                            <CRow>
-                              <CCol> End Date: </CCol>
-                              <CCol>{contract.end_date || '-'}</CCol>
-                            </CRow>
                             <CRow>
                               <CCol md="12" className="theme_color">
                                 Contract Members
@@ -224,12 +223,11 @@ export default function Showunit() {
                             ? contract.contract_members.map((members, index) => (
                                 <CCardText key={index} className="m-0  ps-1">
                                   <CRow>
-                                    <CCol className="d-flex align-items-center opacity-75">
-                                      {index + 1 + '.'} Name:
-                                    </CCol>
                                     <CCol>
-                                      {members.member.name + ' ' || '-'}(
-                                      {members.member_type.replace('_', ' ') || '-'})
+                                      {index + 1 + '.'} {members.member.name + ' ' || '-'}
+                                      <sub className="text-secondary">
+                                        {members.member_type.replace('_', ' ') || '-'}{' '}
+                                      </sub>
                                     </CCol>
                                   </CRow>
                                 </CCardText>
@@ -240,7 +238,11 @@ export default function Showunit() {
                             <CRow>
                               <CCol>Notes : </CCol>
                               <CCol className="text-wrap ">
-                                <abbr data-toggle="tooltip" title={contract.nots || null}>
+                                <abbr
+                                  className="text-decoration-none cursor-pointer"
+                                  data-toggle="tooltip"
+                                  title={contract.notes || null}
+                                >
                                   {contract.notes.slice(0, 15) + '...' || '-'}
                                 </abbr>
                               </CCol>
