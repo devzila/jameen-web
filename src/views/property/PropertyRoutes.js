@@ -8,7 +8,7 @@ import Showunit from './unit/ShowUnitModule/ShowUnit'
 export default function Property() {
   const PropertyUnit = React.lazy(() => import('../property/unit/Unit'))
   const PropertyUnitTypes = React.lazy(() => import('./propertynav/UnitTypes/PropertyUnitTypes'))
-  const Buildings = React.lazy(() => import('../property/propertynav/Buildings'))
+  const Buildings = React.lazy(() => import('./propertynav/Building/Buildings'))
   const ParkingLot = React.lazy(() => import('../property/propertynav/ParkingLot'))
   const PropUnitAllotment = React.lazy(() => import('./propertynav/Allotment/PropUnitAllotment'))
   const MovingIn = React.lazy(() => import('./propertynav/MovingIn/PropUnitMovingIn'))

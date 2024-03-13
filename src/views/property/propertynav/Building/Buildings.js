@@ -5,14 +5,13 @@ import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import logo from '../../../assets/images/avatars/default.png'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import { toast } from 'react-toastify'
-import Paginate from '../../../components/Pagination'
+import Paginate from '../../../../components/Pagination'
 
-import { formatdate } from '../../../services/CommonFunctions'
+import { formatdate } from '../../../../services/CommonFunctions'
 
 export default function Buildings() {
   const [buildings, setBuildings] = useState([])
@@ -74,6 +73,7 @@ export default function Buildings() {
                     </div>
                   </CContainer>
                 </CNavbar>
+                <hr className="p-0 m-0 text-secondary" />
                 <div className="row justify-content-center">
                   <div className="col-12">
                     <div className="table-responsive bg-white">

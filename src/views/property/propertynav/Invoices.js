@@ -97,6 +97,8 @@ const Finance = () => {
                     </div>
                   </CContainer>
                 </CNavbar>
+                <hr className="p-0 m-0 text-secondary" />
+
                 <div className="row justify-content-center">
                   <div className="col-12">
                     <div className="table-responsive bg-white">
