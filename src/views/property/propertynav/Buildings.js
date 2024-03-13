@@ -35,6 +35,7 @@ export default function Buildings() {
       console.log(buildingsData)
       if (buildingsData && buildingsData.data) {
         setBuildings(buildingsData.data)
+        setLoading(false)
       }
     } catch (error) {
       console.error('Error fetching billable items:', error)
