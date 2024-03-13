@@ -115,20 +115,14 @@ const PropertyUnitType = () => {
 
                     <tbody>
                       {unit_type.map((unit_type) => (
-                        <>
-                          <tr key={unit_type.id}>
-                            <th className="pt-3" style={{ color: '#666666' }}>
-                              <NavLink to={`${unit_type.id}/billableitems`}>
-                                {unit_type.name}
-                              </NavLink>
-                            </th>
-                            <td className="pt-3 text-capitalize">{unit_type.use_type}</td>
-                            <td className="pt-3">{unit_type.sqft}</td>
-                            <td className="pt-3">
-                              {unit_type.monthly_maintenance_amount_per_sqft}
-                            </td>
-                          </tr>
-                        </>
+                        <tr key={unit_type.id}>
+                          <th className="pt-3" style={{ color: '#666666' }}>
+                            <NavLink to={`${unit_type.id}/billableitems`}>{unit_type.name}</NavLink>
+                          </th>
+                          <td className="pt-3 text-capitalize">{unit_type.use_type}</td>
+                          <td className="pt-3">{unit_type.sqft}</td>
+                          <td className="pt-3">{unit_type.monthly_maintenance_amount_per_sqft}</td>
+                        </tr>
                       ))}
                     </tbody>
                   </table>

@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { CCol, CCard, CListGroupItem, CCardImage, CRow, CCardText, CImage } from '@coreui/react'
 import useFetch from 'use-http'
-import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
-import { Dropdown, Row, Col } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import Paginate from '../../../../components/Pagination'
 
 import { formatdate } from '../../../../services/CommonFunctions'
+import AddBuilding from './AddBuilding'
+
+import { Dropdown, Row, Col } from 'react-bootstrap'
+import CustomDivToggle from 'src/components/CustomDivToggle'
+import { BsThreeDots } from 'react-icons/bs'
+import EditBuilding from './EditBuilding'
 
 export default function Buildings() {
   const [buildings, setBuildings] = useState([])
@@ -35,12 +38,19 @@ export default function Buildings() {
       const buildingsData = await get(`/v1/admin/premises/properties/${propertyId}/buildings`)
       console.log(buildingsData)
       if (buildingsData && buildingsData.data) {
+        setPagination(buildingsData.pagination)
         setBuildings(buildingsData.data)
         setLoading(false)
       }
     } catch (error) {
       console.error('Error fetching billable items:', error)
     }
+  }
+  function refresh_data() {
+    fetchBuildings()
+  }
+  function handlePageClick(e) {
+    setCurrentPage(e.selected + 1)
   }
 
   return (
@@ -52,7 +62,7 @@ export default function Buildings() {
               <div className="container">
                 <CNavbar expand="lg" colorScheme="light" className="bg-white">
                   <CContainer fluid>
-                    <CNavbarBrand href="#"></CNavbarBrand>
+                    <CNavbarBrand href="#">Buildings</CNavbarBrand>
                     <div className="d-flex justify-content-end">
                       <div className="d-flex" role="search">
                         <input
@@ -70,6 +80,7 @@ export default function Buildings() {
                           Search
                         </button>
                       </div>
+                      <AddBuilding after_submit={refresh_data} />
                     </div>
                   </CContainer>
                 </CNavbar>
@@ -98,6 +109,19 @@ export default function Buildings() {
                               <td>{data.name}</td>
                               <td>{data.description}</td>
                               <td>{formatdate(data.created_at)}</td>
+                              <td>
+                                <Dropdown key={data.id}>
+                                  <Dropdown.Toggle
+                                    as={CustomDivToggle}
+                                    style={{ cursor: 'pointer' }}
+                                  >
+                                    <BsThreeDots />
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu>
+                                    <EditBuilding id={data.id} after_submit={refresh_data} />
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -110,15 +134,10 @@ export default function Buildings() {
               </div>
             </div>
           </div>
-          <br></br>
-          <CNavbar
-            colorScheme="light"
-            className="bg-light d-flex justify-content-center"
-            placement="fixed-bottom"
-          >
+          <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
             <Row>
               <Col md="12">
-                {pagination ? (
+                {pagination?.total_pages > 1 ? (
                   <Paginate
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={pagination.per_page}

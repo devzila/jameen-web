@@ -264,7 +264,7 @@ function Unit() {
           <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
             <Row>
               <Col md="12">
-                {pagination ? (
+                {pagination?.total_pages > 1 ? (
                   <Paginate
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={pagination.per_page}
