@@ -9,6 +9,8 @@ import logo from '../../../assets/images/avatars/default.png'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
 import { Dropdown, Row, Col } from 'react-bootstrap'
+import { toast } from 'react-toastify'
+import Paginate from '../../../components/Pagination'
 
 import { formatdate } from '../../../services/CommonFunctions'
 
