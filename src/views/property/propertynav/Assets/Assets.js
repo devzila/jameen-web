@@ -14,6 +14,7 @@ import { BsThreeDots } from 'react-icons/bs'
 import { formatdate } from '../../../../services/CommonFunctions'
 import AddAssets from './AddAssets'
 import EditAssets from './EditAssets'
+import CIcon from '@coreui/icons-react'
 
 export default function Assets() {
   const [assets_data, setAssets] = useState([])
@@ -68,6 +69,7 @@ export default function Assets() {
                           placeholder="Search"
                           aria-label="Search"
                         />
+
                         <button
                           // onClick={loadInitialinvoices}
                           className="btn btn-outline-success custom_search_button"
