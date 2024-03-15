@@ -75,7 +75,7 @@ export default function Assets() {
                           className="btn btn-outline-success custom_search_button"
                           type="submit"
                         >
-                          Search
+                          <CIcon icon={freeSet.cilSearch} />
                         </button>
                         <AddAssets after_submit={fetchAssets} />
                       </div>

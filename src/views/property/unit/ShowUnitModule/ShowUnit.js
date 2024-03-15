@@ -239,7 +239,8 @@ export default function Showunit() {
                               <CCol>Notes : </CCol>
                               <CCol className="text-wrap ">
                                 <abbr
-                                  className="text-decoration-none cursor-pointer"
+                                  style={{ cursor: 'pointer' }}
+                                  className="text-decoration-none "
                                   data-toggle="tooltip"
                                   title={contract.notes || null}
                                 >
@@ -309,8 +310,8 @@ export default function Showunit() {
                         <CCardText className=" m-0">
                           <CRow>
                             <CCol className="d-flex align-items-center">Owner/Resident:</CCol>
-                            <CCol>
-                              {/* {invoice.runPickOwner(invoice?.unit_contract) || '-'} */}
+                            <CCol className="p-0 m-0">
+                              {PickOwner(invoice?.unit_contract?.contract_members || '-')}
                             </CCol>
                           </CRow>
                         </CCardText>

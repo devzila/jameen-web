@@ -77,7 +77,7 @@ export default function Buildings() {
                           className="btn btn-outline-success custom_search_button"
                           type="submit"
                         >
-                          Search
+                          <CIcon icon={freeSet.cilSearch} />
                         </button>
                       </div>
                       <AddBuilding after_submit={refresh_data} />

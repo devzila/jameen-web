@@ -9,6 +9,8 @@ import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import PickOwner from '../unit/UnitFunctions/PickOwner'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -91,7 +93,7 @@ const Finance = () => {
                           className="btn btn-outline-success custom_search_button"
                           type="submit"
                         >
-                          Search
+                          <CIcon icon={freeSet.cilSearch} />
                         </button>
                       </div>
                     </div>
@@ -111,43 +113,44 @@ const Finance = () => {
                           }}
                         >
                           <tr>
-                            <th className="pt-3 pb-3 border-0">Invoice No.</th>
-                            <th className="pt-3 pb-3 border-0">Unit No.</th>
+                            <th className="py-3 border-0">Invoice No.</th>
+                            <th className="py-3 border-0">Unit No.</th>
 
-                            <th className="pt-3 pb-3 border-0">Total Amount</th>
-                            <th className="pt-3 pb-3 border-0">Owner/Resident</th>
+                            <th className="py-3 border-0">Total Amount</th>
+                            <th className="py-3 border-0">Owner/Resident</th>
 
-                            <th className="pt-3 pb-3 border-0">Invoice Date</th>
-                            <th className="pt-3 pb-3 border-0">Period</th>
-                            <th className="pt-3 pb-3 border-0">Status </th>
+                            <th className="py-3 border-0">Invoice Date</th>
+                            <th className="py-3 border-0">Period</th>
+                            <th className="py-3 border-0">Due Date</th>
+
+                            <th className="py-3 border-0">Status </th>
                           </tr>
                         </thead>
 
                         <tbody>
-                          {invoices.map((invoice) => (
+                          {invoices?.map((invoice) => (
                             <tr key={invoice.id}>
                               <th className="pt-3" scope="row" style={{ color: '#666666' }}>
                                 {invoice.number}
                               </th>
-                              <td className="pt-3">{invoice?.unit_contract?.unit?.unit_no}</td>
-                              <td className="pt-3">{invoice.total_amount}</td>
                               <td className="pt-3">
-                                {PickOwner(invoice?.unit_contract?.unit_contract)}
+                                {invoice?.unit_contract?.unit?.unit_no || '-'}
                               </td>
-
-                              <td className="pt-3">{invoice.invoice_date}</td>
+                              <td className="pt-3 text-center">{invoice?.total_amount || '-'}</td>
+                              <td className="pt-2">
+                                {PickOwner(invoice?.unit_contract?.contract_members)}
+                              </td>
+                              <td className="pt-3">{invoice?.invoice_date || '-'}</td>
                               <td className="pt-3">
-                                {invoice.period_from + '/' + invoice.period_to}
-                              </td>
+                                {invoice?.period_from + '/' + invoice?.period_to}
+                              </td>{' '}
+                              <td className="pt-3">{invoice?.due_date || '-'}</td>
                               <td className="pt-3">
                                 <button
-                                  className=" text-center "
+                                  className=" text-center  text-white border-0 p-0.7 m-0 rounded-0  "
                                   style={{
                                     backgroundColor: `${status_color(invoice.status)}`,
-                                    border: '0px',
-                                    padding: '1px',
-                                    borderRadius: '2px',
-                                    color: 'white',
+
                                     cursor: 'default',
                                     width: '120px',
                                   }}
@@ -155,7 +158,6 @@ const Finance = () => {
                                   {invoice.status}
                                 </button>
                               </td>
-
                               <td>
                                 <Dropdown key={invoice.id}>
                                   <Dropdown.Toggle
@@ -165,7 +167,21 @@ const Finance = () => {
                                     <BsThreeDots />
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
-                                    {/* <ShowUser userId={invoice.id} /> */}
+                                    <button
+                                      type="button"
+                                      className="btn mx-2 custom_theme_button "
+                                      data-mdb-ripple-init
+                                    >
+                                      Pay
+                                    </button>
+
+                                    <button
+                                      type="button"
+                                      className="btn  custom_grey_button  "
+                                      data-mdb-ripple-init
+                                    >
+                                      Cancel
+                                    </button>
                                   </Dropdown.Menu>
                                 </Dropdown>
                               </td>

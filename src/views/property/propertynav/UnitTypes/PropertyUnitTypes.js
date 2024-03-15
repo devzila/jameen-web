@@ -19,6 +19,8 @@ import { Dropdown, Row, Col, Accordion } from 'react-bootstrap'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import BillableItems from './BillableCrud/BilliableItems'
 import AddUnitTypes from './AddUnitTypes'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 const PropertyUnitType = () => {
   const { get, response } = useFetch()
@@ -85,7 +87,7 @@ const PropertyUnitType = () => {
                       className="btn btn-outline-success custom_search_button"
                       type="submit"
                     >
-                      Search
+                      <CIcon icon={freeSet.cilSearch} />
                     </button>
                   </div>
                   <AddUnitTypes after_submit={loadInitialUnitsTypes} />

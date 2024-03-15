@@ -11,6 +11,8 @@ import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand, CCard } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 function Index() {
   const [users, setUsers] = useState([])
@@ -69,6 +71,7 @@ function Index() {
                         <div className="d-flex" role="search">
                           <input
                             onChange={(e) => setSearchKeyword(e.target.value)}
+                            onReset={loadInitialusers}
                             className="form-control  custom_input"
                             type="search"
                             placeholder="Search"
@@ -79,7 +82,7 @@ function Index() {
                             className="btn btn-outline-success custom_search_button"
                             type="submit"
                           >
-                            Search
+                            <CIcon icon={freeSet.cilSearch} />
                           </button>
                         </div>
                         <AddUser after_submit={refresh_data} />

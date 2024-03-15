@@ -12,6 +12,8 @@ import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import { Link, NavLink } from 'react-router-dom'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 const Residents = () => {
   const { get, response } = useFetch()
@@ -69,7 +71,7 @@ const Residents = () => {
                 className="btn btn-outline-success custom_search_button"
                 type="submit"
               >
-                Search
+                <CIcon icon={freeSet.cilSearch} />
               </button>
             </div>
             <AddResidents />

@@ -14,6 +14,8 @@ import ShowRoles from './ShowRoles'
 import EditRoles from './EditRoles'
 import DeleteRoles from './DeleteRoles'
 import { formatdate } from 'src/services/CommonFunctions'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 export default function Role() {
   const [pagination, setPagination] = useState(null)
@@ -84,7 +86,7 @@ export default function Role() {
                             className="btn btn-outline-success custom_search_button"
                             type="submit"
                           >
-                            Search
+                            <CIcon icon={freeSet.cilSearch} />
                           </button>
                         </div>
                         <AddRoles after_submit={refresh_data} />
