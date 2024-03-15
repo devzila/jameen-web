@@ -155,7 +155,7 @@ const Finance = () => {
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
                                     <div className="d-flex">
-                                      <InvoicePayment />
+                                      <InvoicePayment invoice={invoice} />
                                       <InvoiceCancel />
                                     </div>
                                   </Dropdown.Menu>
@@ -181,7 +181,7 @@ const Finance = () => {
           >
             <Row>
               <Col md="12">
-                {pagination ? (
+                {pagination.total_pages > 1 ? (
                   <Paginate
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={pagination.per_page}

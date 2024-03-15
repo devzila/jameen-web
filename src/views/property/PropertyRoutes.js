@@ -36,7 +36,6 @@ export default function Property() {
           <Route path="Buildings" name="Buildings" element={<Buildings />} />
           <Route path="Documents" name="Documents" element={<Documents />} />
           <Route path="assets" name="Documents" element={<Assets />} />
-
           <Route path="Invoices" name="Invoices" element={<Invoices />} />
         </Routes>
       </CContainer>
