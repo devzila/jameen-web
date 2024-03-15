@@ -11,7 +11,7 @@ export default function Property() {
   const Buildings = React.lazy(() => import('../property/propertynav/Buildings'))
   const ParkingLot = React.lazy(() => import('../property/propertynav/ParkingLot'))
   const PropUnitAllotment = React.lazy(() => import('./propertynav/Allotment/PropUnitAllotment'))
-  const MovingIn = React.lazy(() => import('./propertynav/MovingIn/PropUnitMovingIn'))
+  const Contracts = React.lazy(() => import('./propertynav/Contracts/Contracts'))
   const Documents = React.lazy(() => import('../property/propertynav/Documents'))
   const Invoices = React.lazy(() => import('./propertynav/Invoices'))
   const BillableItems = React.lazy(() =>
@@ -24,16 +24,16 @@ export default function Property() {
         <Routes>
           <Route path="overview" name="Overview" element={<OverviewContent />} />
           <Route path="unit" name="Unit" element={<PropertyUnit />} />
-          <Route path="unit/:unitId" name="Unit" element={<Showunit />} />
-
           <Route path="unit-types" name="Unit Types" element={<PropertyUnitTypes />} />
+          <Route path="unit-types/:unittypeID/billableitems" element={<BillableItems />} />
+          <Route path="unit/:unitId" name="Unit" element={<Showunit />} />{' '}
+          {/* Move this route up */}
           <Route path="ParkingLot" name="ParkingLot" element={<ParkingLot />} />
           <Route path="Allotment" name="Allotment" element={<PropUnitAllotment />} />
-          <Route path="MovingIn" name="MovingIn" element={<MovingIn />} />
+          <Route path="Contracts" name="Contracts" element={<Contracts />} />
           <Route path="Buildings" name="Buildings" element={<Buildings />} />
           <Route path="Documents" name="Documents" element={<Documents />} />
           <Route path="Invoices" name="Invoices" element={<Invoices />} />
-          <Route path="unit-types/:unittypeID/billableitems" element={<BillableItems />} />
         </Routes>
       </CContainer>
     </>
