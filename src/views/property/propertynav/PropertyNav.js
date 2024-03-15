@@ -30,9 +30,9 @@ export default function PropertyNav() {
           <div>
             <NavLink to="Invoices"> Invoices </NavLink>
           </div>
-          {/* <div>
-            <NavLink to="/*"> Templates </NavLink>
-          </div> */}
+          <div>
+            <NavLink to="assets"> Assets </NavLink>
+          </div>
         </div>
       </div>
     </div>

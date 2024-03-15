@@ -19,6 +19,8 @@ import { Dropdown, Row, Col, Accordion } from 'react-bootstrap'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import BillableItems from './BillableCrud/BilliableItems'
 import AddUnitTypes from './AddUnitTypes'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 const PropertyUnitType = () => {
   const { get, response } = useFetch()
@@ -85,13 +87,15 @@ const PropertyUnitType = () => {
                       className="btn btn-outline-success custom_search_button"
                       type="submit"
                     >
-                      Search
+                      <CIcon icon={freeSet.cilSearch} />
                     </button>
                   </div>
                   <AddUnitTypes after_submit={loadInitialUnitsTypes} />
                 </div>
               </CContainer>
             </CNavbar>
+            <hr className="p-0 m-0 text-secondary" />
+
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="table-responsive bg-white">
@@ -113,20 +117,14 @@ const PropertyUnitType = () => {
 
                     <tbody>
                       {unit_type.map((unit_type) => (
-                        <>
-                          <tr key={unit_type.id}>
-                            <th className="pt-3" style={{ color: '#666666' }}>
-                              <NavLink to={`${unit_type.id}/billableitems`}>
-                                {unit_type.name}
-                              </NavLink>
-                            </th>
-                            <td className="pt-3 text-capitalize">{unit_type.use_type}</td>
-                            <td className="pt-3">{unit_type.sqft}</td>
-                            <td className="pt-3">
-                              {unit_type.monthly_maintenance_amount_per_sqft}
-                            </td>
-                          </tr>
-                        </>
+                        <tr key={unit_type.id}>
+                          <th className="pt-3" style={{ color: '#666666' }}>
+                            <NavLink to={`${unit_type.id}/billableitems`}>{unit_type.name}</NavLink>
+                          </th>
+                          <td className="pt-3 text-capitalize">{unit_type.use_type}</td>
+                          <td className="pt-3">{unit_type.sqft}</td>
+                          <td className="pt-3">{unit_type.monthly_maintenance_amount_per_sqft}</td>
+                        </tr>
                       ))}
                     </tbody>
                   </table>

@@ -8,6 +8,8 @@ import Paginate from 'src/components/Pagination'
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 function ParkingLot() {
   const { propertyId } = useParams()
@@ -107,7 +109,7 @@ function ParkingLot() {
                     variant="outline"
                     className="btn btn-outline-success my-2 my-sm-0 "
                   >
-                    Search
+                    <CIcon icon={freeSet.cilSearch} />
                   </CButton>
                   <br></br>
                   {/* <AddParkingLot />  */}
@@ -206,10 +208,7 @@ function ParkingLot() {
               </div>
             </div>
           </div>
-          <CNavbar
-            colorScheme="light"
-            className="bg-light d-flex justify-content-center"
-          >
+          <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
             <Row>
               <Col md="12">
                 {pagination ? (

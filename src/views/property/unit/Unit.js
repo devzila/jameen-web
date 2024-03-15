@@ -16,6 +16,8 @@ import PickOwner from './UnitFunctions/PickOwner'
 import AllocateUnit from './AllocateUnit'
 import FilterAccordion from './UnitFunctions/FilterAccordioan'
 import MovingInUnit from './MovingInUnit'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 function Unit() {
   const { get, response, error } = useFetch()
@@ -126,7 +128,7 @@ function Unit() {
                           value={searchKeyword}
                           onChange={(e) => setSearchKeyword(e.target.value)}
                           className="form-control me-0 custom_input  "
-                          type="search"
+                          type="text"
                           placeholder="Search"
                           aria-label="Search"
                         />
@@ -135,7 +137,7 @@ function Unit() {
                           className="btn btn-outline-success custom_search_button "
                           type="submit"
                         >
-                          Search
+                          <CIcon icon={freeSet.cilSearch} />
                         </button>
                       </div>
                       <FilterAccordion filter_callback={filter_callback} units_type={unit_type} />
@@ -143,6 +145,7 @@ function Unit() {
                     </div>
                   </CContainer>
                 </CNavbar>
+                <hr className="p-0 m-0 text-secondary" />
 
                 <div className="row justify-content-center">
                   <div className="col-16">
@@ -263,7 +266,7 @@ function Unit() {
           <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
             <Row>
               <Col md="12">
-                {pagination ? (
+                {pagination?.total_pages > 1 ? (
                   <Paginate
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={pagination.per_page}

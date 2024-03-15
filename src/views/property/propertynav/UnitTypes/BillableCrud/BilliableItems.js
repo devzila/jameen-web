@@ -167,6 +167,7 @@ export default function BillableItems() {
               </div>
             </div>
           </Card>
+          <hr className="p-0 m-0 text-secondary" />
 
           <div className="mask d-flex align-items-center h-100">
             <div className="w-100">

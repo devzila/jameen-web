@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types'
+import Select from 'react-select'
 
 import {
   CButton,
@@ -17,8 +18,9 @@ import {
 } from '@coreui/react'
 
 export default function EditMaintenanceStaff({ after_submit, id }) {
-  const { register, handleSubmit, setValue } = useForm()
+  const { register, handleSubmit, setValue, control } = useForm()
   const { get, put, response } = useFetch()
+  const [properties_data, setProperties_data] = useState([])
 
   const [visible, setVisible] = useState(false)
   const [errors, setErrors] = useState({})
@@ -26,6 +28,7 @@ export default function EditMaintenanceStaff({ after_submit, id }) {
 
   useEffect(() => {
     fetchSecurityStaff()
+    fetchProperties()
   }, [])
 
   async function fetchSecurityStaff() {
@@ -37,9 +40,24 @@ export default function EditMaintenanceStaff({ after_submit, id }) {
         setValue('email', api.data.email)
         setValue('mobile_number', api.data.mobile_number)
         setValue('username', api.data.username)
+        // setValue('property_ids')
       }
     } catch (error) {
       console.error('Error fetching Security Staff:', error)
+    }
+  }
+  let properties_array = []
+  function trimProperties(properties) {
+    properties.forEach((element) => {
+      properties_array.push({ value: element.id, label: element.name })
+    })
+    return properties_array
+  }
+  //fetch properties
+  async function fetchProperties() {
+    const api = await get('/v1/admin/premises/properties')
+    if (response.ok) {
+      setProperties_data(trimProperties(api.data))
     }
   }
 
@@ -47,8 +65,8 @@ export default function EditMaintenanceStaff({ after_submit, id }) {
     console.log(data)
     const assigned_properties_data =
       data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
-
     const body = { ...data, property_ids: assigned_properties_data }
+    console.log(body)
     const apiResponse = await put(`/v1/admin/security_staffs/${id}`, {
       security_staff: body,
     })
@@ -153,6 +171,27 @@ export default function EditMaintenanceStaff({ after_submit, id }) {
                     </label>
 
                     <Form.Control type="text" {...register('mobile_number')}></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="12">
+                  <Form.Group>
+                    <label>Assigned Properties</label>
+
+                    <Controller
+                      name="property_ids"
+                      render={({ field }) => (
+                        <Select
+                          isMulti
+                          type="text"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          {...field}
+                          options={properties_data}
+                        />
+                      )}
+                      control={control}
+                      placeholder="Assigned Properties"
+                    />
                   </Form.Group>
                 </Col>
               </Row>
