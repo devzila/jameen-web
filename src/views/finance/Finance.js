@@ -12,6 +12,8 @@ import { status_color } from 'src/services/CommonFunctions'
 import PickOwner from '../property/unit/UnitFunctions/PickOwner'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import InvoicePayment from './InvoicePayment'
+import InvoiceCancel from './InvoiceCancel'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -151,21 +153,11 @@ const Finance = () => {
                                   >
                                     <BsThreeDots />
                                   </Dropdown.Toggle>
-                                  <Dropdown.Menu className="p-1">
-                                    <button
-                                      type="button"
-                                      className="btn mx-2 custom_theme_button "
-                                      data-mdb-ripple-init
-                                    >
-                                      Pay
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="btn  custom_grey_button  "
-                                      data-mdb-ripple-init
-                                    >
-                                      Cancel
-                                    </button>
+                                  <Dropdown.Menu>
+                                    <div className="d-flex">
+                                      <InvoicePayment />
+                                      <InvoiceCancel />
+                                    </div>
                                   </Dropdown.Menu>
                                 </Dropdown>
                               </td>

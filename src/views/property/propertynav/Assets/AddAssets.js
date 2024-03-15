@@ -31,8 +31,6 @@ export default function AddAssets({ after_submit }) {
       asset: data,
     })
     if (response.ok) {
-      navigate(`/properties/${propertyId}/assets`)
-
       setVisible(!visible)
       reset()
       after_submit()
