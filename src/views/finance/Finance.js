@@ -12,6 +12,8 @@ import { status_color } from 'src/services/CommonFunctions'
 import PickOwner from '../property/unit/UnitFunctions/PickOwner'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import InvoicePayment from './InvoicePayment'
+import InvoiceCancel from './InvoiceCancel'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -58,32 +60,33 @@ const Finance = () => {
     <>
       <div>
         <section className="w-100 p-0">
-          <CNavbar expand="lg" colorScheme="light" className="bg-light">
-            <CContainer fluid>
-              <CNavbarBrand href="#">Invoices</CNavbarBrand>
-              <div className="d-flex justify-content-end">
-                <div className="d-flex" role="search">
-                  <input
-                    onChange={(e) => setSearchKeyword(e.target.value)}
-                    className="form-control  custom_input"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                  />
-                  <button
-                    onClick={loadInitialinvoices}
-                    className="btn btn-outline-success custom_search_button"
-                    type="submit"
-                  >
-                    <CIcon icon={freeSet.cilSearch} />
-                  </button>
-                </div>
-              </div>
-            </CContainer>
-          </CNavbar>
           <div>
             <div className="mask d-flex align-items-center h-100">
               <div className="container">
+                <CNavbar expand="lg" colorScheme="light" className="bg-white">
+                  <CContainer fluid>
+                    <CNavbarBrand href="#">Invoices</CNavbarBrand>
+                    <div className="d-flex justify-content-end">
+                      <div className="d-flex" role="search">
+                        <input
+                          onChange={(e) => setSearchKeyword(e.target.value)}
+                          className="form-control  custom_input"
+                          type="search"
+                          placeholder="Search"
+                          aria-label="Search"
+                        />
+                        <button
+                          onClick={loadInitialinvoices}
+                          className="btn btn-outline-success custom_search_button"
+                          type="submit"
+                        >
+                          <CIcon icon={freeSet.cilSearch} />
+                        </button>
+                      </div>
+                    </div>
+                  </CContainer>
+                </CNavbar>
+                <hr className=" text-secondary m-0" />
                 <div className="row justify-content-center">
                   <div className="col-12">
                     <div className="table-responsive bg-white">
@@ -151,21 +154,11 @@ const Finance = () => {
                                   >
                                     <BsThreeDots />
                                   </Dropdown.Toggle>
-                                  <Dropdown.Menu className="p-1">
-                                    <button
-                                      type="button"
-                                      className="btn mx-2 custom_theme_button "
-                                      data-mdb-ripple-init
-                                    >
-                                      Pay
-                                    </button>
-                                    <button
-                                      type="button"
-                                      className="btn  custom_grey_button  "
-                                      data-mdb-ripple-init
-                                    >
-                                      Cancel
-                                    </button>
+                                  <Dropdown.Menu>
+                                    <div className="d-flex">
+                                      <InvoicePayment invoice={invoice} />
+                                      <InvoiceCancel />
+                                    </div>
                                   </Dropdown.Menu>
                                 </Dropdown>
                               </td>
@@ -189,7 +182,7 @@ const Finance = () => {
           >
             <Row>
               <Col md="12">
-                {pagination ? (
+                {pagination?.total_pages > 1 ? (
                   <Paginate
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={pagination.per_page}

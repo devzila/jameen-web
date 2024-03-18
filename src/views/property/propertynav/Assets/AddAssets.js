@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
@@ -19,20 +19,17 @@ import {
 
 export default function AddAssets({ after_submit }) {
   const { register, handleSubmit, control, reset } = useForm()
-  const { get, post, response, api } = useFetch()
+  const { post, response } = useFetch()
 
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
   const [errors, setErrors] = useState({})
-  const navigate = useNavigate()
 
   async function onSubmit(data) {
     const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/assets`, {
       asset: data,
     })
     if (response.ok) {
-      navigate(`/properties/${propertyId}/assets`)
-
       setVisible(!visible)
       reset()
       after_submit()
