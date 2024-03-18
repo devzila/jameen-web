@@ -1,27 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Card, Button, Col, Dropdown } from 'react-bootstrap'
+import { Card, Button, Dropdown } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { BsThreeDots } from 'react-icons/bs'
-import { NavLink } from 'react-router-dom'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import EditProperty from './EditProperty'
 import ShowProperty from './ShowProperty'
-import CIcon from '@coreui/icons-react'
-import { freeSet } from '@coreui/icons'
-import {
-  CCol,
-  CCard,
-  CListGroupItem,
-  CCardImage,
-  CRow,
-  CCardText,
-  CCardBody,
-  CCardTitle,
-  CCardSubtitle,
-  CCardLink,
-  CButton,
-} from '@coreui/react'
+import { CCol, CCard, CRow, CCardText, CCardBody } from '@coreui/react'
 
 function PropertyCardView({ property }) {
   console.log(property)
@@ -29,11 +14,11 @@ function PropertyCardView({ property }) {
     <>
       <CRow>
         <CCol md="12">
-          <CCard className=" p-3  mt-0 border-0 theme_color">
+          <CCard className="p-3 mt-0 border-0 theme_color">
             <CRow>
               {property.map((property) => (
                 <CCol key={property.id} md="4">
-                  <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
+                  <CCard className="shadow-lg border-0 rounded-2 mb-3">
                     <Link to={`/properties/${property.id}/overview`}>
                       <CCardText className="card">
                         <CRow>
@@ -48,7 +33,7 @@ function PropertyCardView({ property }) {
                                 margin: '0 auto',
                               }}
                               title="Avatar"
-                              className="img-thumbnail isTooltip"
+                              className="isTooltip"
                               src={
                                 property.photo
                                   ? property.photo
@@ -133,8 +118,7 @@ function PropertyCardView({ property }) {
 }
 
 PropertyCardView.propTypes = {
-  property: PropTypes.number,
-  refresh_data: PropTypes.func.isRequired,
+  property: PropTypes.array.isRequired,
 }
 
 export default PropertyCardView
