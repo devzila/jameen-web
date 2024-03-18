@@ -24,9 +24,10 @@ export default function PropertyNav() {
           <div>
             <NavLink to="Contracts"> Contracts </NavLink>
           </div>
-          {/* <div>
-            <NavLink to="MovingIn"> Moving in </NavLink>
-          </div> */}
+          *{' '}
+          <div>
+            <NavLink to="Maintenances"> Maintenance </NavLink>
+          </div>
           <div>
             <NavLink to="Invoices"> Invoices </NavLink>
           </div>

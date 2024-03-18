@@ -63,41 +63,40 @@ function Property() {
       <div>
         {error && error.Error}
         <section style={{ width: '100%', padding: '0px' }}>
-          
           <div>
             <div className="mask d-flex align-items-center h-100">
               <div className="container">
-              <CNavbar expand="lg" colorScheme="light" className="bg-white">
-            <CContainer fluid>
-              <CNavbarBrand href="#">Property</CNavbarBrand>
+                <CNavbar expand="lg" colorScheme="light" className="bg-white">
+                  <CContainer fluid>
+                    <CNavbarBrand href="#">Property</CNavbarBrand>
 
-              <div className="d-flex justify-content-end">
-                <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
-                  <div></div>
-                  <CFormInput
-                    onChange={(e) => setSearchKeyword(e.target.value)}
-                    type="search"
-                    className="me-0 custom_input"
-                    placeholder="Search"
-                  />
-                  <CButton
-                    onClick={loadInitialProperties}
-                    variant="outline"
-                    className="btn btn-outline-success my-2 my-sm-0 "
-                  >
-                    Search
-                  </CButton>
-                  <br></br>
-                  <AddProperty after_submit={refresh_data} />
-                  <BsGrid3X3Gap
-                    onClick={handleIconClick}
-                    style={{ fontSize: '2.5rem' }}
-                    className="mx-2 theme_color"
-                  />
-                </CForm>
-              </div>
-            </CContainer>
-          </CNavbar>
+                    <div className="d-flex justify-content-end">
+                      <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
+                        <div></div>
+                        <CFormInput
+                          onChange={(e) => setSearchKeyword(e.target.value)}
+                          type="search"
+                          className="me-0 custom_input"
+                          placeholder="Search"
+                        />
+                        <CButton
+                          onClick={loadInitialProperties}
+                          variant="outline"
+                          className="btn btn-outline-success my-2 my-sm-0 "
+                        >
+                          Search
+                        </CButton>
+                        <br></br>
+                        <AddProperty after_submit={refresh_data} />
+                        <BsGrid3X3Gap
+                          onClick={handleIconClick}
+                          style={{ fontSize: '2.5rem' }}
+                          className="mx-2 theme_color"
+                        />
+                      </CForm>
+                    </div>
+                  </CContainer>
+                </CNavbar>
                 <div className="row justify-content-center">
                   <div className="col-16">
                     {isCardView ? (

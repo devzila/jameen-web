@@ -8,6 +8,8 @@ import Paginate from 'src/components/Pagination'
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 import AddContracts from './AddContracts'
 import FilterAccordionContract from './FilterAccordionContract'
 
@@ -20,19 +22,20 @@ const Contract = () => {
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchKeyword, setSearchKeyword] = useState(null)
-  const [contractTypeFilter, setContractTypeFilter] = useState('')
+  const [contract_type, setContract_type] = useState([])
 
   useEffect(() => {
     loadInitialRunningContracts()
-  }, [currentPage, searchKeyword, contractTypeFilter])
+  }, [currentPage, searchKeyword])
 
-  async function loadInitialRunningContracts() {
-    let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`
+  async function loadInitialRunningContracts(queries) {
+    let endpoint = `/v1/admin/premises/properties/${propertyId}/contracts?page=${currentPage}`
+    console.log(queries)
+    if (queries) {
+      endpoint += `&type=${queries}`
+    }
     if (searchKeyword) {
       endpoint += `&q=${searchKeyword}`
-    }
-    if (contractTypeFilter) {
-      endpoint += `&contract_type=${contractTypeFilter}`
     }
     const initialRunningContracts = await get(endpoint)
     console.log('Initial Running Contracts:', initialRunningContracts)
@@ -56,7 +59,11 @@ const Contract = () => {
   const refreshData = () => {
     loadInitialRunningContracts()
     setSearchKeyword('')
-    setContractTypeFilter('')
+  }
+
+  function filter_callback(queries) {
+    loadInitialRunningContracts(queries)
+    setSearchKeyword('')
   }
 
   return (
@@ -75,13 +82,16 @@ const Contract = () => {
               />
               <button
                 onClick={loadInitialRunningContracts}
-                className="btn btn-outline-success custom_search_button"
+                className="btn btn-outline-success custom_search_button "
                 type="submit"
               >
-                Search
+                <CIcon icon={freeSet.cilSearch} />
               </button>
             </div>
-            <FilterAccordionContract filterCallback={setContractTypeFilter} />
+            <FilterAccordionContract
+              filterCallback={filter_callback}
+              contracts_type={contract_type}
+            />
             <AddContracts after_submit={refreshData} />
           </div>
         </CContainer>
@@ -103,26 +113,22 @@ const Contract = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {runningContracts.map((data) =>
-                        data.running_contracts.map((running_contracts) => (
-                          <tr key={data.id}>
-                            <td className="pt-3">{running_contracts.id || '-'}</td>
-                            <td className="pt-3">{running_contracts.start_date || '-'}</td>
-                            <td className="pt-3">{running_contracts.contract_type || '-'}</td>
-                            <td className="pt-3">{running_contracts.notes || '-'}</td>
-                            <td>
-                              <Dropdown>
-                                <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                  <BsThreeDots />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  {/* <EditContracts ContractId={contract.id} after_submit={refresh_data} /> */}
-                                </Dropdown.Menu>
-                              </Dropdown>
-                            </td>
-                          </tr>
-                        )),
-                      )}
+                      {runningContracts.map((running_contracts) => (
+                        <tr key={running_contracts.id}>
+                          <td className="pt-3">{running_contracts.id || '-'}</td>
+                          <td className="pt-3">{running_contracts.start_date || '-'}</td>
+                          <td className="pt-3">{running_contracts.contract_type || '-'}</td>
+                          <td className="pt-3">{running_contracts.notes || '-'}</td>
+                          <td>
+                            <Dropdown>
+                              <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
+                                <BsThreeDots />
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu>{/* Add contract actions here */}</Dropdown.Menu>
+                            </Dropdown>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
