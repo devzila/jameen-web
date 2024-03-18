@@ -69,7 +69,7 @@ function PropertyCardView({ property }) {
                       </Dropdown>
                     </div>
 
-                    <CCardBody className="pt-0">
+                    <CCardBody className="pt-2">
                       <CRow>
                         <CCol className="d-flex justify-content-end "></CCol>
                       </CRow>
