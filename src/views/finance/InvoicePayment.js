@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CModalBody,
   CModalTitle,
@@ -6,28 +6,36 @@ import {
   CModal,
   CContainer,
   CModalFooter,
+  CFormCheck,
   CButton,
 } from '@coreui/react'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import useFetch from 'use-http'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, useFieldArray, Controller } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
+import { PaymentField } from './PaymentType'
 
 export default function InvoicePayment({ invoice }) {
-  const { register, handleSubmit, control, reset } = useForm()
+  const { register, handleSubmit, control, reset, setValue, watch } = useForm()
   const { post, response } = useFetch()
   const [errors, setErrors] = useState({})
+  const [payment_type, setPayment_type] = useState(undefined)
 
+  useEffect(() => {
+    setValue('amount', invoice?.total_amount)
+  }, [])
+
+  console.log(Date())
   console.log(invoice)
 
   const [visible, setVisible] = useState(false)
 
   async function onSubmit(data) {
-    const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/assets`, {
-      asset: data,
+    const apiResponse = await post(`/v1/admin/premises/properties/assets`, {
+      payment: data,
     })
     if (response.ok) {
       setVisible(!visible)
@@ -41,6 +49,7 @@ export default function InvoicePayment({ invoice }) {
 
   function handleClose() {
     setVisible(false)
+
     setErrors({})
   }
 
@@ -74,8 +83,7 @@ export default function InvoicePayment({ invoice }) {
                     <label>Amount</label>
                     <Form.Control
                       required
-                      value={invoice.amount}
-                      placeholder="amount"
+                      placeholder="Amount"
                       type="text"
                       {...register('amount')}
                     ></Form.Control>
@@ -83,10 +91,10 @@ export default function InvoicePayment({ invoice }) {
                 </Col>
                 <Col className="pr-3 mt-3" md="12">
                   <Form.Group>
-                    <label>Name</label>
+                    <label>Payment Date</label>
                     <Form.Control
                       required
-                      value={Date.now()}
+                      valueAsDate={new Date()}
                       placeholder="payment_date"
                       type="date"
                       {...register('payment_date')}
@@ -95,8 +103,47 @@ export default function InvoicePayment({ invoice }) {
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-1 mt-3" md="12"></Col>
+                <Col className="pr-1 mt-3 d-flex" md="12">
+                  <label className="pe-3">Payment Type</label>
+
+                  <CFormCheck
+                    type="radio"
+                    id="cashRadio"
+                    label="Cash"
+                    name="payment_type"
+                    className="mx-1"
+                    checked={payment_type === 'cash'}
+                    onChange={() => {
+                      setPayment_type('cash')
+                      setValue('payment_type', 'cash')
+                    }}
+                  />
+                  <CFormCheck
+                    type="radio"
+                    id="chequeRadio"
+                    className="mx-1"
+                    checked={payment_type === 'cheque'}
+                    onChange={() => {
+                      setPayment_type('cheque')
+                      setValue('payment_type', 'cheque')
+                    }}
+                    label="Cheque"
+                  />
+                  <CFormCheck
+                    type="radio"
+                    id="cardRadio"
+                    className="mx-1"
+                    name="payment_type"
+                    checked={payment_type === 'card'}
+                    onChange={() => {
+                      setPayment_type('card')
+                      setValue('payment_type', 'card')
+                    }}
+                    label="Card"
+                  />
+                </Col>
               </Row>
+              {payment_type ? PaymentField(payment_type, register) : null}
 
               <div className="text-center">
                 <CModalFooter>
