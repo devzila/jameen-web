@@ -7,6 +7,8 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { formatdate, status_color } from 'src/services/CommonFunctions'
 import PickOwner from '../UnitFunctions/PickOwner'
+import InvoicePayment from 'src/views/finance/InvoicePayment'
+import InvoiceCancel from 'src/views/finance/InvoiceCancel'
 
 export default function Showunit() {
   const { propertyId, unitId } = useParams()
@@ -335,8 +337,8 @@ export default function Showunit() {
                           </CRow>
                         </CCardText>
                         <div className="d-flex justify-content-end">
-                          <CButton className="btn-light custom_theme_button">Pay</CButton>
-                          <CButton className="btn-light custom_grey_button mx-2">Decline</CButton>
+                          <InvoicePayment invoice={invoice} />
+                          <InvoiceCancel />
                         </div>
                       </CCardBody>
                     </CCard>

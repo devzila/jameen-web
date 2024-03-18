@@ -11,6 +11,8 @@ import { useParams } from 'react-router-dom'
 import PickOwner from '../unit/UnitFunctions/PickOwner'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import InvoicePayment from 'src/views/finance/InvoicePayment'
+import InvoiceCancel from 'src/views/finance/InvoiceCancel'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -167,21 +169,10 @@ const Finance = () => {
                                     <BsThreeDots />
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
-                                    <button
-                                      type="button"
-                                      className="btn mx-2 custom_theme_button "
-                                      data-mdb-ripple-init
-                                    >
-                                      Pay
-                                    </button>
-
-                                    <button
-                                      type="button"
-                                      className="btn  custom_grey_button  "
-                                      data-mdb-ripple-init
-                                    >
-                                      Cancel
-                                    </button>
+                                    <div className="d-flex">
+                                      <InvoicePayment invoice={invoice} />
+                                      <InvoiceCancel />
+                                    </div>
                                   </Dropdown.Menu>
                                 </Dropdown>
                               </td>
