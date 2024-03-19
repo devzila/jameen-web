@@ -11,6 +11,9 @@ import { useParams } from 'react-router-dom'
 import PickOwner from '../unit/UnitFunctions/PickOwner'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import InvoicePayment from 'src/views/finance/InvoicePayment'
+import InvoiceCancel from 'src/views/finance/InvoiceCancel'
+import { formatdate } from 'src/services/CommonFunctions'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -140,9 +143,11 @@ const Finance = () => {
                               <td className="pt-2">
                                 {PickOwner(invoice?.unit_contract?.contract_members)}
                               </td>
-                              <td className="pt-3">{invoice?.invoice_date || '-'}</td>
+                              <td className="pt-3">{formatdate(invoice?.invoice_date) || '-'}</td>
                               <td className="pt-3">
-                                {invoice?.period_from + '/' + invoice?.period_to}
+                                {formatdate(invoice?.period_from) +
+                                  '/' +
+                                  formatdate(invoice?.period_to)}
                               </td>{' '}
                               <td className="pt-3">{invoice?.due_date || '-'}</td>
                               <td className="pt-3">
@@ -167,21 +172,10 @@ const Finance = () => {
                                     <BsThreeDots />
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu>
-                                    <button
-                                      type="button"
-                                      className="btn mx-2 custom_theme_button "
-                                      data-mdb-ripple-init
-                                    >
-                                      Pay
-                                    </button>
-
-                                    <button
-                                      type="button"
-                                      className="btn  custom_grey_button  "
-                                      data-mdb-ripple-init
-                                    >
-                                      Cancel
-                                    </button>
+                                    <div className="d-flex">
+                                      <InvoicePayment invoice={invoice} />
+                                      <InvoiceCancel id={invoice.id} />
+                                    </div>
                                   </Dropdown.Menu>
                                 </Dropdown>
                               </td>

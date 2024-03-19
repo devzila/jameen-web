@@ -24,7 +24,6 @@ const Cash = ({ register }) => (
   <Row>
     <Col className="pr-1 mt-3" md="12">
       <Form.Group>
-        <label> Cash</label>
         <Form.Control type="text" value="cash" {...register('payment_type')} hidden></Form.Control>
       </Form.Group>
     </Col>
@@ -33,7 +32,7 @@ const Cash = ({ register }) => (
         <label>Reference No. </label>
         <Form.Control
           required
-          placeholder="Reference No."
+          placeholder="- - - - - - - - -"
           type="text"
           {...register('cash_transactions_attributes[0].transaction_reference_number')}
         ></Form.Control>
@@ -44,7 +43,7 @@ const Cash = ({ register }) => (
         <label>Voucher No. </label>
         <Form.Control
           required
-          placeholder="Amount"
+          placeholder="- - - - - - - - -"
           type="text"
           {...register('cash_transactions_attributes[0].voucher_number')}
         ></Form.Control>
@@ -57,7 +56,6 @@ const Card = ({ register }) => (
   <Row>
     <Col className="pr-1 mt-3" md="12">
       <Form.Group>
-        <label>Card</label>
         <Form.Control type="text" value="card" {...register('payment_type')} hidden></Form.Control>
       </Form.Group>
     </Col>
@@ -66,7 +64,7 @@ const Card = ({ register }) => (
         <label>Reference No. </label>
         <Form.Control
           required
-          placeholder="Reference No."
+          placeholder="- - - - - - - - -"
           type="text"
           {...register('card_transactions_attributes[0].transaction_reference_number')}
         ></Form.Control>
@@ -74,10 +72,10 @@ const Card = ({ register }) => (
     </Col>
     <Col>
       <Form.Group>
-        <label>Voucher No. </label>
+        <label>Card No. </label>
         <Form.Control
           required
-          placeholder="Amount"
+          placeholder="- - - - - - - - -"
           type="text"
           {...register('card_transactions_attributes[0].voucher_number')}
         ></Form.Control>
@@ -90,7 +88,6 @@ const Cheque = ({ register }) => (
   <Row>
     <Col className="pr-1 mt-3" md="12">
       <Form.Group>
-        <label> Cheque</label>
         <Form.Control
           type="text"
           value="cheque"
@@ -104,7 +101,7 @@ const Cheque = ({ register }) => (
         <label>Reference No. </label>
         <Form.Control
           required
-          placeholder="Reference No."
+          placeholder="- - - - - - - - -"
           type="text"
           {...register('cheque_transactions_attributes[0].transaction_reference_number')}
         ></Form.Control>
@@ -115,7 +112,7 @@ const Cheque = ({ register }) => (
         <label>Cheque No. </label>
         <Form.Control
           required
-          placeholder="Cheque No."
+          placeholder="- - - - - - - - -"
           type="text"
           {...register('cheque_transactions_attributes[0].cheque_number')}
         ></Form.Control>
