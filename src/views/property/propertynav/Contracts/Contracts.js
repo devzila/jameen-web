@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
-import { useParams } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import { BsThreeDots } from 'react-icons/bs'
 import Paginate from 'src/components/Pagination'
@@ -121,7 +121,9 @@ const Contract = () => {
                             <tbody>
                               {runningContracts.map((running_contracts) => (
                                 <tr key={running_contracts.id}>
+                                  <NavLink className="mx-2" to={`${running_contracts.id}`}>
                                   <td className="pt-3">{running_contracts.unit.unit_no || '-'}</td>
+                                  </NavLink>
                                   <td>
                                     from {formatdate(running_contracts.start_date) || '-'} to{' '}
                                     {formatdate(running_contracts.end_date) || 'present Day'}{' '}
