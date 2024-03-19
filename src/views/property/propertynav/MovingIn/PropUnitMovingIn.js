@@ -19,7 +19,7 @@ import {
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
-import { cilDelete, cilNoteAdd } from '@coreui/icons'
+import { freeSet } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 export default function MovingInUnit({ unitNo, unitId, after_submit }) {
@@ -281,7 +281,7 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
                     <CIcon
                       className="mt-3"
                       onClick={() => remove(index)}
-                      icon={cilDelete}
+                      icon={freeSet.cilDelete}
                       size="xl"
                       style={{ '--ci-primary-color': 'red' }}
                     />
@@ -301,7 +301,7 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
               }}
               onClick={() => append({ name: '', description: '', file: { data: '' } })}
             >
-              <CIcon className="mt-1" icon={cilNoteAdd} />
+              <CIcon className="mt-1" icon={freeSet.cilNoteAdd} />
               ADD More
             </CButton>
           </Col>

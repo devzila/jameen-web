@@ -23,6 +23,7 @@ const MovingOut = React.lazy(() => import('../views/settings/MovingOut'))
 const Allotment = React.lazy(() => import('../views/settings/Allotment'))
 const ShowUnit = React.lazy(() => import('../views/property/unit/ShowUnitModule/ShowUnit'))
 const ResidentRoutes = React.lazy(() => import('../views/resident/ResidentNav/ResidentRoutes'))
+const ShowInvoices = React.lazy(() => import('../views/finance/ShowInvoices'))
 
 const AppContent = () => {
   return (
@@ -31,6 +32,7 @@ const AppContent = () => {
         <Routes>
           <Route path="/" exact={true} name="Dashboard" element={<Dashboard />} />
           <Route path="/finance" name="Finance" element={<Finance />} />
+          <Route path="/finance/:invoiceId/view" element={<ShowInvoices />} />
           <Route path="/resident" name="Resident" element={<Residents />} />
           <Route path="/resident/:residentId/*" name="RView" element={<ResidentRoutes />} />
           <Route path="/unit" name="Unit" element={<Unit />} />

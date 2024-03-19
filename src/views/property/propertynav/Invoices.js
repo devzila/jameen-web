@@ -103,91 +103,96 @@ const Finance = () => {
                   </CContainer>
                 </CNavbar>
                 <hr className="p-0 m-0 text-secondary" />
+                {invoices.length >= 1 ? (
+                  <div className="row justify-content-center">
+                    <div className="col-12">
+                      <div className="table-responsive bg-white">
+                        <table className="table mb-0">
+                          <thead
+                            style={{
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              overFlow: 'hidden',
+                            }}
+                          >
+                            <tr>
+                              <th className="py-3 border-0">Invoice No.</th>
+                              <th className="py-3 border-0">Unit No.</th>
 
-                <div className="row justify-content-center">
-                  <div className="col-12">
-                    <div className="table-responsive bg-white">
-                      <table className="table mb-0">
-                        <thead
-                          style={{
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            overFlow: 'hidden',
-                          }}
-                        >
-                          <tr>
-                            <th className="py-3 border-0">Invoice No.</th>
-                            <th className="py-3 border-0">Unit No.</th>
+                              <th className="py-3 border-0">Total Amount</th>
+                              <th className="py-3 border-0">Owner/Resident</th>
 
-                            <th className="py-3 border-0">Total Amount</th>
-                            <th className="py-3 border-0">Owner/Resident</th>
+                              <th className="py-3 border-0">Invoice Date</th>
+                              <th className="py-3 border-0">Period</th>
+                              <th className="py-3 border-0">Due Date</th>
 
-                            <th className="py-3 border-0">Invoice Date</th>
-                            <th className="py-3 border-0">Period</th>
-                            <th className="py-3 border-0">Due Date</th>
-
-                            <th className="py-3 border-0">Status </th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-                          {invoices?.map((invoice) => (
-                            <tr key={invoice.id}>
-                              <th className="pt-3" scope="row" style={{ color: '#666666' }}>
-                                {invoice.number}
-                              </th>
-                              <td className="pt-3">
-                                {invoice?.unit_contract?.unit?.unit_no || '-'}
-                              </td>
-                              <td className="pt-3 text-center">{invoice?.total_amount || '-'}</td>
-                              <td className="pt-2">
-                                {PickOwner(invoice?.unit_contract?.contract_members)}
-                              </td>
-                              <td className="pt-3">{formatdate(invoice?.invoice_date) || '-'}</td>
-                              <td className="pt-3">
-                                {formatdate(invoice?.period_from) +
-                                  '/' +
-                                  formatdate(invoice?.period_to)}
-                              </td>{' '}
-                              <td className="pt-3">{invoice?.due_date || '-'}</td>
-                              <td className="pt-3">
-                                <button
-                                  className=" text-center  text-white border-0 p-0.7 m-0 rounded-0  "
-                                  style={{
-                                    backgroundColor: `${status_color(invoice.status)}`,
-
-                                    cursor: 'default',
-                                    width: '120px',
-                                  }}
-                                >
-                                  {invoice.status}
-                                </button>
-                              </td>
-                              <td>
-                                <Dropdown key={invoice.id}>
-                                  <Dropdown.Toggle
-                                    as={CustomDivToggle}
-                                    style={{ cursor: 'pointer' }}
-                                  >
-                                    <BsThreeDots />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu>
-                                    <div className="d-flex">
-                                      <InvoicePayment invoice={invoice} />
-                                      <InvoiceCancel id={invoice.id} />
-                                    </div>
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </td>
+                              <th className="py-3 border-0">Status </th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      {loading && <Loading />}
-                      {errors == true ? toast('We are facing a technical issue at our end.') : null}
+                          </thead>
+
+                          <tbody>
+                            {invoices?.map((invoice) => (
+                              <tr key={invoice.id}>
+                                <th className="pt-3" scope="row" style={{ color: '#666666' }}>
+                                  {invoice.number}
+                                </th>
+                                <td className="pt-3">
+                                  {invoice?.unit_contract?.unit?.unit_no || '-'}
+                                </td>
+                                <td className="pt-3 text-center">{invoice?.total_amount || '-'}</td>
+                                <td className="pt-2">
+                                  {PickOwner(invoice?.unit_contract?.contract_members)}
+                                </td>
+                                <td className="pt-3">{formatdate(invoice?.invoice_date) || '-'}</td>
+                                <td className="pt-3">
+                                  {formatdate(invoice?.period_from) +
+                                    '/' +
+                                    formatdate(invoice?.period_to)}
+                                </td>{' '}
+                                <td className="pt-3">{invoice?.due_date || '-'}</td>
+                                <td className="pt-3">
+                                  <button
+                                    className=" text-center  text-white border-0 p-0.7 m-0 rounded-0  "
+                                    style={{
+                                      backgroundColor: `${status_color(invoice.status)}`,
+
+                                      cursor: 'default',
+                                      width: '120px',
+                                    }}
+                                  >
+                                    {invoice.status}
+                                  </button>
+                                </td>
+                                <td>
+                                  <Dropdown key={invoice.id}>
+                                    <Dropdown.Toggle
+                                      as={CustomDivToggle}
+                                      style={{ cursor: 'pointer' }}
+                                    >
+                                      <BsThreeDots />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                      <div className="d-flex">
+                                        <InvoicePayment invoice={invoice} />
+                                        <InvoiceCancel id={invoice.id} />
+                                      </div>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                        {loading ?? <Loading />}
+                        {errors == true
+                          ? toast('We are facing a technical issue at our end.')
+                          : null}
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <p className="text-center  fst-italic bg-white p-5">No Invoice Found</p>
+                )}
               </div>
             </div>
           </div>

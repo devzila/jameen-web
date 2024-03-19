@@ -21,7 +21,7 @@ function PickOwner(contract) {
         style={{ '--cui-popover-border-radius': '0px', '--cui-popover-padding-y': '25px' }}
         content={result}
         placement="right"
-        trigger={['hover', 'focus']}
+        trigger={['hover', 'focus', 'click']}
       >
         <span className="d-inline-block" tabIndex={0}>
           <CButton color="white">
