@@ -17,7 +17,7 @@ function PickOwner(contract) {
   return (
     <div>
       <CPopover
-        className="border-0 p-0 m-0"
+        className="border-0 p-0"
         style={{ '--cui-popover-border-radius': '0px', '--cui-popover-padding-y': '25px' }}
         content={result}
         placement="right"
@@ -25,8 +25,8 @@ function PickOwner(contract) {
       >
         <span className="d-inline-block" tabIndex={0}>
           <CButton color="white">
-            {(ownerNames ? ownerNames : '-') +
-              '/' +
+            {(ownerNames ? ownerNames[0] : '') +
+              ' ' +
               (co_ownerNames && co_ownerNames.length > 1
                 ? co_ownerNames.split(',')[0] + ',...'
                 : '-')}

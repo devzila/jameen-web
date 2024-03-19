@@ -28,13 +28,12 @@ export default function InvoicePayment({ invoice }) {
     setValue('amount', invoice?.total_amount)
   }, [])
 
-  console.log(Date())
   console.log(invoice)
 
   const [visible, setVisible] = useState(false)
 
   async function onSubmit(data) {
-    const apiResponse = await post(`/v1/admin/premises/properties/assets`, {
+    const apiResponse = await post(`/v1/admin/invoices/${invoice.id}/pay`, {
       payment: data,
     })
     if (response.ok) {

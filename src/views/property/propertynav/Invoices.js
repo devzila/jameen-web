@@ -13,6 +13,7 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import InvoicePayment from 'src/views/finance/InvoicePayment'
 import InvoiceCancel from 'src/views/finance/InvoiceCancel'
+import { formatdate } from 'src/services/CommonFunctions'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -142,9 +143,11 @@ const Finance = () => {
                               <td className="pt-2">
                                 {PickOwner(invoice?.unit_contract?.contract_members)}
                               </td>
-                              <td className="pt-3">{invoice?.invoice_date || '-'}</td>
+                              <td className="pt-3">{formatdate(invoice?.invoice_date) || '-'}</td>
                               <td className="pt-3">
-                                {invoice?.period_from + '/' + invoice?.period_to}
+                                {formatdate(invoice?.period_from) +
+                                  '/' +
+                                  formatdate(invoice?.period_to)}
                               </td>{' '}
                               <td className="pt-3">{invoice?.due_date || '-'}</td>
                               <td className="pt-3">
@@ -171,7 +174,7 @@ const Finance = () => {
                                   <Dropdown.Menu>
                                     <div className="d-flex">
                                       <InvoicePayment invoice={invoice} />
-                                      <InvoiceCancel />
+                                      <InvoiceCancel id={invoice.id} />
                                     </div>
                                   </Dropdown.Menu>
                                 </Dropdown>

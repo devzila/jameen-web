@@ -9,9 +9,23 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import useFetch from 'use-http'
+import { toast } from 'react-toastify'
+import PropTypes from 'prop-types'
 
-export default function InvoiceCancel() {
+export default function InvoiceCancel({ id }) {
   const [visible, setVisible] = useState(false)
+  const { put, response } = useFetch()
+
+  async function cancelInvoice() {
+    const apiResponse = await put(`/v1/admin/invoices/${id}/cancel`)
+    if (response.ok) {
+      setVisible(!visible)
+      toast.success('Invoice Cancelled')
+    } else {
+      toast.error(response.data?.message)
+    }
+  }
 
   return (
     <div className="text-center mx-1 ">
@@ -44,7 +58,7 @@ export default function InvoiceCancel() {
           </CContainer>
           <CModalFooter className="border-0">
             <button
-              onClick={() => null}
+              onClick={cancelInvoice}
               type="button"
               className="btn  ms-2 bg-danger custom_grey_button  "
               data-mdb-ripple-init
@@ -64,4 +78,8 @@ export default function InvoiceCancel() {
       </CModal>
     </div>
   )
+}
+
+InvoiceCancel.propTypes = {
+  id: PropTypes.object,
 }

@@ -7,13 +7,13 @@ import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
-import ShowInvoices from './ShowInvoices'
 import { status_color } from 'src/services/CommonFunctions'
 import PickOwner from '../property/unit/UnitFunctions/PickOwner'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import InvoicePayment from './InvoicePayment'
 import InvoiceCancel from './InvoiceCancel'
+import { formatdate } from 'src/services/CommonFunctions'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -127,9 +127,11 @@ const Finance = () => {
                                 {PickOwner(invoice?.unit_contract?.contract_members || '-')}
                               </td>
 
-                              <td className="pt-3">{invoice?.invoice_date || '-'}</td>
+                              <td className="pt-3">{formatdate(invoice?.invoice_date) || '-'}</td>
                               <td className="pt-3">
-                                {invoice?.period_from + '/' + invoice?.period_to}
+                                {formatdate(invoice?.period_from) +
+                                  '/' +
+                                  formatdate(invoice?.period_to)}
                               </td>
                               <td className="pt-3">{invoice?.due_date || '-'}</td>
 
@@ -157,7 +159,7 @@ const Finance = () => {
                                   <Dropdown.Menu>
                                     <div className="d-flex">
                                       <InvoicePayment invoice={invoice} />
-                                      <InvoiceCancel />
+                                      <InvoiceCancel id={invoice.id} />
                                     </div>
                                   </Dropdown.Menu>
                                 </Dropdown>
