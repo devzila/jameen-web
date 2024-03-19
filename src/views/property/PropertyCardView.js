@@ -1,27 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Card, Button, Col, Dropdown } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Card, Button, Dropdown } from 'react-bootstrap'
+import { NavLink, Link } from 'react-router-dom'
 import { BsThreeDots } from 'react-icons/bs'
-import { NavLink } from 'react-router-dom'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import EditProperty from './EditProperty'
 import ShowProperty from './ShowProperty'
-import CIcon from '@coreui/icons-react'
-import { freeSet } from '@coreui/icons'
-import {
-  CCol,
-  CCard,
-  CListGroupItem,
-  CCardImage,
-  CRow,
-  CCardText,
-  CCardBody,
-  CCardTitle,
-  CCardSubtitle,
-  CCardLink,
-  CButton,
-} from '@coreui/react'
+import { CCol, CCard, CRow, CCardText, CCardBody } from '@coreui/react'
 
 function PropertyCardView({ property }) {
   console.log(property)
@@ -29,12 +14,12 @@ function PropertyCardView({ property }) {
     <>
       <CRow>
         <CCol md="12">
-          <CCard className=" p-3  mt-0 border-0 theme_color">
+          <CCard className="p-3 mt-0 border-0 theme_color">
             <CRow>
               {property.map((property) => (
                 <CCol key={property.id} md="4">
-                  <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
-                    <Link to={`/properties/${property.id}/overview`}>
+                  <Link to={`/properties/${property.id}/overview`}>
+                    <CCard className="shadow-lg border-0 rounded-2 mb-3">
                       <CCardText className="card">
                         <CRow>
                           <CCol className="position-relative text-center">
@@ -48,7 +33,7 @@ function PropertyCardView({ property }) {
                                 margin: '0 auto',
                               }}
                               title="Avatar"
-                              className="img-thumbnail isTooltip"
+                              className="isTooltip"
                               src={
                                 property.photo
                                   ? property.photo
@@ -59,69 +44,73 @@ function PropertyCardView({ property }) {
                           </CCol>
                         </CRow>
                       </CCardText>
-                    </Link>
 
-                    <div className="position-absolute top-0 end-0">
-                      <Dropdown key={property.id} className=" text-center p-3">
-                        <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                          <BsThreeDots />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          <EditProperty propertyId={property.id} />
-                          <Link
-                            style={{
-                              border: '2px',
-                              color: '#00bfcc',
-                              marginLeft: '4%',
-                              textDecorationLine: 'none',
-                            }}
-                            to={`/properties/${property.id}/overview`}
-                            className="custom_tooltip_botton"
-                          >
-                            Show
-                          </Link>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </div>
+                      <div className="position-absolute top-0 end-0">
+                        <Dropdown key={property.id} className=" text-center p-3">
+                          <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
+                            <BsThreeDots />
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            <EditProperty propertyId={property.id} />
+                            <Link
+                              style={{
+                                border: '2px',
+                                color: '#00bfcc',
+                                marginLeft: '4%',
+                                textDecorationLine: 'none',
+                              }}
+                              to={`/properties/${property.id}/overview`}
+                              className="custom_tooltip_botton"
+                            >
+                              Show
+                            </Link>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </div>
 
-                    <CCardBody className="pt-0">
-                      <CRow>
-                        <CCol className="d-flex justify-content-end "></CCol>
-                      </CRow>
-                      <CRow>
-                        <CCol md="8" className="text-black">
-                          {property?.name || '-'}
-                          <br></br>
-                          <CCol className="text-secondary">
-                            {property?.address || '-'}
-                            <span className="mx-1"></span>
-                            {property?.city}
-                          </CCol>
-                        </CCol>
-                      </CRow>
-                      <br></br>
-                      <CCardText className=" m-2">
+                      <CCardBody className="pt-2">
                         <CRow>
-                          <CCol md="5" className="text-black">
-                            {property?.buildings_count || '-'} Building
-                          </CCol>
-                          <CCol md="7" className="text-black">
-                            {property?.unit_types_count || '-'} unit types
+                          <CCol className="d-flex justify-content-end "></CCol>
+                        </CRow>
+                        <CRow>
+                          <CCol md="8" className="text-black">
+                            {property?.name || '-'}
+                            <br></br>
+                            <CCol className="text-secondary">
+                              {property?.address || '-'}
+                              <span className="mx-1"></span>
+                              {property?.city}
+                            </CCol>
                           </CCol>
                         </CRow>
-                      </CCardText>
-                      <CCardText className="m-2">
-                        <CRow>
-                          <CCol md="5" className="text-black">
-                            {property?.use_type || '-'}
-                          </CCol>
-                          <CCol md="7" className="text-black">
-                            {property?.payment_term || '-'} payment
-                          </CCol>
-                        </CRow>
-                      </CCardText>
-                    </CCardBody>
-                  </CCard>
+                        <br></br>
+                        <CCardText className=" m-2">
+                          <CRow>
+                            <CCol md="5" className="text-black">
+                              <NavLink to={`/properties/${property.id}/Buildings`}>
+                                {property?.buildings_count || '-'} Building
+                              </NavLink>
+                            </CCol>
+                            <CCol md="7" className="text-black">
+                              <NavLink to={`/properties/${property.id}/unit_types`}>
+                                {property?.unit_types_count || '-'} unit types
+                              </NavLink>
+                            </CCol>
+                          </CRow>
+                        </CCardText>
+                        <CCardText className="m-2">
+                          <CRow>
+                            <CCol md="5" className="text-black">
+                              {property?.use_type || '-'}
+                            </CCol>
+                            <CCol md="7" className="text-black">
+                              {property?.payment_term || '-'} payment
+                            </CCol>
+                          </CRow>
+                        </CCardText>
+                      </CCardBody>
+                    </CCard>
+                  </Link>
                 </CCol>
               ))}
             </CRow>
@@ -133,8 +122,7 @@ function PropertyCardView({ property }) {
 }
 
 PropertyCardView.propTypes = {
-  property: PropTypes.number,
-  refresh_data: PropTypes.func.isRequired,
+  property: PropTypes.array.isRequired,
 }
 
 export default PropertyCardView

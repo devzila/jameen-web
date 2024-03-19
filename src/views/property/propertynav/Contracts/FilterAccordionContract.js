@@ -12,7 +12,7 @@ function FilterAccordionContract({ filterCallback }) {
 
   const contractTypes = [
     { value: 'moving_in', label: 'Moving In' },
-    { value: 'allotment', label: 'Allotment' },
+    { value: 'allotments', label: 'Allotment' },
   ]
   const handleReset = () => {
     setValue('contractType', null)
