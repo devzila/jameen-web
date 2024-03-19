@@ -15,6 +15,7 @@ import InvoicePayment from './InvoicePayment'
 import InvoiceCancel from './InvoiceCancel'
 import { formatdate } from 'src/services/CommonFunctions'
 import ShowInvoices from './ShowInvoices'
+import { NavLink } from 'react-router-dom'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -117,7 +118,7 @@ const Finance = () => {
                         {invoices?.map((invoice) => (
                           <tr key={invoice.id}>
                             <th className="pt-3 ps-3" scope="row" style={{ color: '#666666' }}>
-                              {invoice.number}
+                              <NavLink to={`${invoice.id}/view`}>{invoice.number}</NavLink>
                             </th>
                             <td className="pt-3">
                               {invoice?.unit_contract?.unit?.unit_no || '- '}
@@ -157,6 +158,7 @@ const Finance = () => {
                                   <div className="d-flex">
                                     <InvoicePayment invoice={invoice} />
                                     <InvoiceCancel id={invoice.id} />
+                                    {/* <ShowInvoices /> */}
                                   </div>
                                 </Dropdown.Menu>
                               </Dropdown>
@@ -196,7 +198,6 @@ const Finance = () => {
           </CNavbar>
         </section>
       </div>
-      <ShowInvoices />
     </>
   )
 }

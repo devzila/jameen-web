@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
@@ -25,23 +25,8 @@ function Add({ after_submit }) {
   const [visible, setVisible] = useState(false)
   const [unitData, setUnitData] = useState({})
   const [errors, setErrors] = useState({})
-  const navigate = useNavigate()
   const [units_data, setUnits_data] = useState([])
   const [buildings_data, setBuildings_data] = useState([])
-
-  useEffect(() => {
-    const inputs = document.querySelectorAll('.form-group input')
-    inputs.forEach((input) => {
-      input.addEventListener('focus', () => {
-        input.classList.add('active')
-      })
-      input.addEventListener('blur', () => {
-        if (!input.value) {
-          input.classList.remove('active')
-        }
-      })
-    })
-  }, [])
 
   function trimUnits(units) {
     if (units && units.data) {
@@ -91,7 +76,6 @@ function Add({ after_submit }) {
       unit: data,
     })
     if (response.ok) {
-      navigate(`/properties/${propertyId}/units`)
       setVisible(!visible)
       after_submit()
       toast('Unit added successfully')

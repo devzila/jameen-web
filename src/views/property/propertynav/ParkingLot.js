@@ -97,26 +97,24 @@ function ParkingLot() {
               <div className="container-fluid">
                 <CNavbar expand="lg" colorScheme="light" className="bg-white">
                   <CContainer fluid>
-                    <CNavbarBrand href="#">Parking Lot</CNavbarBrand>
-
+                    <CNavbarBrand href="#">Invoices</CNavbarBrand>
                     <div className="d-flex justify-content-end">
-                      <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
-                        <CFormInput
+                      <div className="d-flex" role="search">
+                        <input
                           onChange={(e) => setSearchKeyword(e.target.value)}
+                          className="form-control  custom_input"
                           type="search"
-                          className="me-0 custom_input"
                           placeholder="Search"
+                          aria-label="Search"
                         />
-                        <CButton
+                        <button
                           onClick={loadInitialParkingLot}
-                          variant="outline"
-                          className="btn btn-outline-success my-2 my-sm-0 "
+                          className="btn btn-outline-success custom_search_button"
+                          type="submit"
                         >
                           <CIcon icon={freeSet.cilSearch} />
-                        </CButton>
-                        <br></br>
-                        {/* <AddParkingLot />  */}
-                      </CForm>
+                        </button>
+                      </div>
                     </div>
                   </CContainer>
                 </CNavbar>

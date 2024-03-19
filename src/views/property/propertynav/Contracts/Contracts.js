@@ -5,7 +5,6 @@ import { NavLink, useParams } from 'react-router-dom'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import { BsThreeDots } from 'react-icons/bs'
 import Paginate from 'src/components/Pagination'
-import Loading from 'src/components/loading/loading'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { formatdate } from '../../../../services/CommonFunctions'
@@ -13,6 +12,7 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import AddContracts from './AddContracts'
 import FilterAccordionContract from './FilterAccordionContract'
+import ManualInvoice from './ManualInvoice'
 
 const Contract = () => {
   const { get, response } = useFetch()
@@ -125,8 +125,8 @@ const Contract = () => {
                                   <td className="pt-3">{running_contracts.unit.unit_no || '-'}</td>
                                   </NavLink>
                                   <td>
-                                    from {formatdate(running_contracts.start_date) || '-'} to{' '}
-                                    {formatdate(running_contracts.end_date) || 'present Day'}{' '}
+                                    {formatdate(running_contracts.start_date) || '-'}
+                                    {formatdate(running_contracts.end_date) || ' - Present'}{' '}
                                   </td>
                                   <td className="pt-3">
                                     {running_contracts.contract_type.replace(/_/g, ' ') || '-'}
@@ -144,7 +144,12 @@ const Contract = () => {
                                         <BsThreeDots />
                                       </Dropdown.Toggle>
                                       <Dropdown.Menu>
-                                        {/* Add contract actions here */}
+                                        {running_contracts.contract_type == 'allotment' ? (
+                                          <ManualInvoice
+                                            after_submit={loadInitialRunningContracts}
+                                            allotmentId={running_contracts.id}
+                                          />
+                                        ) : null}
                                       </Dropdown.Menu>
                                     </Dropdown>
                                   </td>

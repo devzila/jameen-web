@@ -1,6 +1,14 @@
 import React from 'react'
+import { UseFetch, useFetch } from 'use-http'
 
 export default function ShowInvoices() {
+  const { get } = useFetch()
+
+  const getInvoice = async () => {
+    const api = await get(
+      `/v1/admin/premises/properties/:property_id/allotments/:allotment_id/invoices/:id`,
+    )
+  }
   return (
     <div className="container mt-6 mb-7">
       <div className="row justify-content-center">
