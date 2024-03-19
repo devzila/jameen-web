@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 export default function PropertyNav() {
   return (
-    <div className="nav-container" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
+    <div className="container" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
       <div className="body-box-new sectio new-settings-box" style={{ border: 'none' }}>
         <div className="new-settings-menu">
           <div className="menu-list">

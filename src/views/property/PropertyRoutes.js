@@ -23,7 +23,7 @@ export default function Property() {
   return (
     <>
       <PropertyNav />
-      <CContainer lg>
+      <CContainer fluid>
         <Routes>
           <Route path="overview" name="Overview" element={<OverviewContent />} />
           <Route path="unit" name="Unit" element={<PropertyUnit />} />

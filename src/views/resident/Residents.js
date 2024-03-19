@@ -78,11 +78,13 @@ const Residents = () => {
           </div>
         </CContainer>
       </CNavbar>
+      <hr className=" text-secondary m-0" />
+
       <div>
         <div className="mask d-flex align-items-center h-100">
           <div className="w-100">
             <div className="row justify-content-center">
-              <div className="col-12">
+              <div className="">
                 <div className="table-responsive bg-white">
                   <table className="table mb-0">
                     <thead

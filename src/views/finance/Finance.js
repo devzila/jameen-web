@@ -59,123 +59,119 @@ const Finance = () => {
   return (
     <>
       <div>
-        <section className="w-100 p-0">
-          <div>
-            <div className="mask d-flex align-items-center h-100">
-              <div className="container">
-                <CNavbar expand="lg" colorScheme="light" className="bg-white">
-                  <CContainer fluid>
-                    <CNavbarBrand href="#">Invoices</CNavbarBrand>
-                    <div className="d-flex justify-content-end">
-                      <div className="d-flex" role="search">
-                        <input
-                          onChange={(e) => setSearchKeyword(e.target.value)}
-                          className="form-control  custom_input"
-                          type="search"
-                          placeholder="Search"
-                          aria-label="Search"
-                        />
-                        <button
-                          onClick={loadInitialinvoices}
-                          className="btn btn-outline-success custom_search_button"
-                          type="submit"
-                        >
-                          <CIcon icon={freeSet.cilSearch} />
-                        </button>
-                      </div>
+        <section className="w-100">
+          <div className="mask d-flex align-items-center h-100">
+            <div className="container-fluid">
+              <CNavbar expand="lg" colorScheme="light" className="bg-white">
+                <CContainer fluid>
+                  <CNavbarBrand href="#">Invoices</CNavbarBrand>
+                  <div className="d-flex justify-content-end">
+                    <div className="d-flex" role="search">
+                      <input
+                        onChange={(e) => setSearchKeyword(e.target.value)}
+                        className="form-control  custom_input"
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                      />
+                      <button
+                        onClick={loadInitialinvoices}
+                        className="btn btn-outline-success custom_search_button"
+                        type="submit"
+                      >
+                        <CIcon icon={freeSet.cilSearch} />
+                      </button>
                     </div>
-                  </CContainer>
-                </CNavbar>
-                <hr className=" text-secondary m-0" />
-                <div className="row justify-content-center">
-                  <div className="col-12">
-                    <div className="table-responsive bg-white">
-                      <table className="table mb-0">
-                        <thead
-                          style={{
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            overFlow: 'hidden',
-                          }}
-                        >
-                          <tr>
-                            <th className="py-3 border-0">Invoice No.</th>
-                            <th className="py-3 border-0">Unit No.</th>
+                  </div>
+                </CContainer>
+              </CNavbar>
+              <hr className=" text-secondary m-0" />
+              <div className="row justify-content-center">
+                <div className="col">
+                  <div className="table-responsive bg-white">
+                    <table className="table mb-0">
+                      <thead
+                        style={{
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          overFlow: 'hidden',
+                        }}
+                      >
+                        <tr>
+                          <th className="py-3 border-0">Invoice No.</th>
+                          <th className="py-3 border-0">Unit No.</th>
 
-                            <th className="py-3 border-0">Total Amount</th>
-                            <th className="py-3 border-0">Owner/Resident</th>
+                          <th className="py-3 border-0">Total Amount</th>
+                          <th className="py-3 border-0">Owner/Resident</th>
 
-                            <th className="py-3 border-0">Invoice Date</th>
-                            <th className="py-3 border-0">Period</th>
-                            <th className="py-3 border-0">Due Date</th>
+                          <th className="py-3 border-0">Invoice Date</th>
+                          <th className="py-3 border-0">Period</th>
+                          <th className="py-3 border-0">Due Date</th>
 
-                            <th className="py-3 border-0">Status </th>
+                          <th className="py-3 border-0">Status </th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {invoices?.map((invoice) => (
+                          <tr key={invoice.id}>
+                            <th className="pt-3 ps-3" scope="row" style={{ color: '#666666' }}>
+                              {invoice.number}
+                            </th>
+                            <td className="pt-3">
+                              {invoice?.unit_contract?.unit?.unit_no || '- '}
+                            </td>
+                            <td className="pt-3 text-center">{invoice.total_amount || '-'}</td>
+                            <td className="pt-2">
+                              {PickOwner(invoice?.unit_contract?.contract_members || '-')}
+                            </td>
+
+                            <td className="pt-3">{formatdate(invoice?.invoice_date) || '-'}</td>
+                            <td className="pt-3">
+                              {formatdate(invoice?.period_from) +
+                                '/' +
+                                formatdate(invoice?.period_to)}
+                            </td>
+                            <td className="pt-3">{invoice?.due_date || '-'}</td>
+
+                            <td className="pt-3">
+                              <button
+                                className=" text-center border-0  rounded-0 text-white"
+                                style={{
+                                  backgroundColor: `${status_color(invoice?.status)}`,
+                                  cursor: 'default',
+                                  width: '120px',
+                                }}
+                              >
+                                {invoice?.status || '-'}
+                              </button>
+                            </td>
+
+                            <td>
+                              <Dropdown key={invoice.id}>
+                                <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
+                                  <BsThreeDots />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  <div className="d-flex">
+                                    <InvoicePayment invoice={invoice} />
+                                    <InvoiceCancel id={invoice.id} />
+                                  </div>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </td>
                           </tr>
-                        </thead>
-
-                        <tbody>
-                          {invoices?.map((invoice) => (
-                            <tr key={invoice.id}>
-                              <th className="pt-3 ps-3" scope="row" style={{ color: '#666666' }}>
-                                {invoice.number}
-                              </th>
-                              <td className="pt-3">
-                                {invoice?.unit_contract?.unit?.unit_no || '- '}
-                              </td>
-                              <td className="pt-3 text-center">{invoice.total_amount || '-'}</td>
-                              <td className="pt-2">
-                                {PickOwner(invoice?.unit_contract?.contract_members || '-')}
-                              </td>
-
-                              <td className="pt-3">{formatdate(invoice?.invoice_date) || '-'}</td>
-                              <td className="pt-3">
-                                {formatdate(invoice?.period_from) +
-                                  '/' +
-                                  formatdate(invoice?.period_to)}
-                              </td>
-                              <td className="pt-3">{invoice?.due_date || '-'}</td>
-
-                              <td className="pt-3">
-                                <button
-                                  className=" text-center border-0  rounded-0 text-white"
-                                  style={{
-                                    backgroundColor: `${status_color(invoice?.status)}`,
-                                    cursor: 'default',
-                                    width: '120px',
-                                  }}
-                                >
-                                  {invoice?.status || '-'}
-                                </button>
-                              </td>
-
-                              <td>
-                                <Dropdown key={invoice.id}>
-                                  <Dropdown.Toggle
-                                    as={CustomDivToggle}
-                                    style={{ cursor: 'pointer' }}
-                                  >
-                                    <BsThreeDots />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu>
-                                    <div className="d-flex">
-                                      <InvoicePayment invoice={invoice} />
-                                      <InvoiceCancel id={invoice.id} />
-                                    </div>
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      {loading && <Loading />}
-                      {errors == true ? toast('We are facing a technical issue at our end.') : null}
-                    </div>
+                        ))}
+                      </tbody>
+                    </table>
+                    {loading && <Loading />}
+                    {errors == true ? toast('We are facing a technical issue at our end.') : null}
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
           <br></br>
           <CNavbar
             colorScheme="light"

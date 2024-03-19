@@ -92,13 +92,7 @@ export default function EditMaintenance({ afterSubmit, categoryId, isDefault }) 
                 <Col className="pr-3 mt-3" md="12">
                   <Form.Group>
                     <label>Name</label>
-                    <Form.Control
-                      required
-                      placeholder="Name"
-                      type="text"
-                      defaultValue={name || ''} // Set default value here
-                      {...register('name')}
-                    />
+                    <Form.Control required placeholder="Name" type="text" {...register('name')} />
                   </Form.Group>
                 </Col>
 
