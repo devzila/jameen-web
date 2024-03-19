@@ -110,7 +110,7 @@ const Contract = () => {
                           <table className="table mb-0">
                             <thead>
                               <tr>
-                                <th className="pt-3 pb-3 border-0">Unit Id</th>
+                                <th className="pt-3 pb-3 border-0">Unit No</th>
                                 <th className="pt-3 pb-3 border-0">Period</th>
                                 <th className="pt-3 pb-3 border-0">Contract Type</th>
                                 <th className="pt-3 pb-3 border-0">Member</th>
@@ -122,11 +122,16 @@ const Contract = () => {
                               {runningContracts.map((running_contracts) => (
                                 <tr key={running_contracts.id}>
                                   <td className="pt-3">{running_contracts.unit.unit_no || '-'}</td>
-                                  <td>from{formatdate(running_contracts.start_date) || '-'} to {formatdate(running_contracts.end_date) || '-'} </td>
+                                  <td>
+                                    from {formatdate(running_contracts.start_date) || '-'} to{' '}
+                                    {formatdate(running_contracts.end_date) || 'present Day'}{' '}
+                                  </td>
                                   <td className="pt-3">
                                     {running_contracts.contract_type.replace(/_/g, ' ') || '-'}
                                   </td>
-                                  <td className="pt-3">{running_contracts.contract_members.member_type || '-'}</td>
+                                  <td className="pt-3">
+                                    {running_contracts.contract_members.member_type || '-'}
+                                  </td>
                                   <td className="pt-3">{running_contracts.notes || '-'}</td>
                                   <td>
                                     <Dropdown>
