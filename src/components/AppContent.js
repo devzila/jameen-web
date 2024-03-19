@@ -26,7 +26,7 @@ const ResidentRoutes = React.lazy(() => import('../views/resident/ResidentNav/Re
 
 const AppContent = () => {
   return (
-    <CContainer>
+    <CContainer fluid>
       <Suspense fallback={<CSpinner color="primary" />}>
         <Routes>
           <Route path="/" exact={true} name="Dashboard" element={<Dashboard />} />
