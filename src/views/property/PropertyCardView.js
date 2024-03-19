@@ -17,7 +17,7 @@ function PropertyCardView({ property }) {
           <CCard className="p-3 mt-0 border-0 theme_color">
             <CRow>
               {property.map((property) => (
-                <CCol key={property.id} md="4">
+                <CCol key={property.id} md="3">
                   <Link to={`/properties/${property.id}/overview`}>
                     <CCard className="shadow-lg border-0 rounded-2 mb-3">
                       <CCardText className="card">
@@ -27,10 +27,11 @@ function PropertyCardView({ property }) {
                               alt="Avatar Image"
                               style={{
                                 width: '100%',
-                                height: '250px',
+                                height: '220px',
                                 borderRadius: '0px',
                                 display: 'block',
                                 margin: '0 auto',
+                                objectFit: 'cover',
                               }}
                               title="Avatar"
                               className="isTooltip"

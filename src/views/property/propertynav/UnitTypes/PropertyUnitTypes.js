@@ -69,7 +69,7 @@ const PropertyUnitType = () => {
     <div>
       <div>
         <div className="mask d-flex align-items-center h-100 mt-2">
-          <div className="container">
+          <div className="container-fluid">
             <CNavbar expand="lg" colorScheme="light" className="bg-white">
               <CContainer fluid>
                 <CNavbarBrand href="/unit_type">Unit Types</CNavbarBrand>

@@ -92,34 +92,34 @@ function ParkingLot() {
       <div>
         {error && error.Error}
         <section style={{ width: '100%', padding: '0px' }}>
-          <CNavbar expand="lg" colorScheme="light" className="bg-light">
-            <CContainer fluid>
-              <CNavbarBrand href="#">Parking Lot</CNavbarBrand>
-
-              <div className="d-flex justify-content-end">
-                <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
-                  <CFormInput
-                    onChange={(e) => setSearchKeyword(e.target.value)}
-                    type="search"
-                    className="me-0 custom_input"
-                    placeholder="Search"
-                  />
-                  <CButton
-                    onClick={loadInitialParkingLot}
-                    variant="outline"
-                    className="btn btn-outline-success my-2 my-sm-0 "
-                  >
-                    <CIcon icon={freeSet.cilSearch} />
-                  </CButton>
-                  <br></br>
-                  {/* <AddParkingLot />  */}
-                </CForm>
-              </div>
-            </CContainer>
-          </CNavbar>
           <div>
             <div className="mask d-flex align-items-center h-100">
-              <div className="container">
+              <div className="container-fluid">
+                <CNavbar expand="lg" colorScheme="light" className="bg-white">
+                  <CContainer fluid>
+                    <CNavbarBrand href="#">Parking Lot</CNavbarBrand>
+
+                    <div className="d-flex justify-content-end">
+                      <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
+                        <CFormInput
+                          onChange={(e) => setSearchKeyword(e.target.value)}
+                          type="search"
+                          className="me-0 custom_input"
+                          placeholder="Search"
+                        />
+                        <CButton
+                          onClick={loadInitialParkingLot}
+                          variant="outline"
+                          className="btn btn-outline-success my-2 my-sm-0 "
+                        >
+                          <CIcon icon={freeSet.cilSearch} />
+                        </CButton>
+                        <br></br>
+                        {/* <AddParkingLot />  */}
+                      </CForm>
+                    </div>
+                  </CContainer>
+                </CNavbar>
                 <div className="row justify-content-center">
                   <div className="col-16">
                     <div className="table-responsive bg-white">

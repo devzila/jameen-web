@@ -56,7 +56,7 @@ export default function Assets() {
         <section className="w-100 p-0 mt-2">
           <div>
             <div className="mask d-flex align-items-center h-100">
-              <div className="container">
+              <div className="container-fluid">
                 <CNavbar expand="lg" colorScheme="light" className="bg-white">
                   <CContainer fluid>
                     <CNavbarBrand>Assets</CNavbarBrand>

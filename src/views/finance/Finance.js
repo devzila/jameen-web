@@ -14,6 +14,7 @@ import { freeSet } from '@coreui/icons'
 import InvoicePayment from './InvoicePayment'
 import InvoiceCancel from './InvoiceCancel'
 import { formatdate } from 'src/services/CommonFunctions'
+import ShowInvoices from './ShowInvoices'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -195,6 +196,7 @@ const Finance = () => {
           </CNavbar>
         </section>
       </div>
+      <ShowInvoices />
     </>
   )
 }

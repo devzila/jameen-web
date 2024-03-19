@@ -66,7 +66,7 @@ export default function Role() {
       <section>
         <div>
           <div className="mask d-flex align-items-center h-100 mt-3">
-            <div className="container">
+            <div className="container-fluid">
               <div className="row justify-content-center">
                 <div className="col-12">
                   <CNavbar expand="lg" colorScheme="light" className="bg-white">
