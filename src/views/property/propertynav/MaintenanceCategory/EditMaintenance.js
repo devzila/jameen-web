@@ -46,8 +46,7 @@ export default function EditMaintenance({ afterSubmit, categoryId, isDefault }) 
       `/v1/admin/premises/properties/${propertyId}/maintenance_categories/${categoryId}`,
       {
         category: data,
-      }
-
+      },
     )
     if (response.ok) {
       setVisible(!visible)
@@ -93,9 +92,16 @@ export default function EditMaintenance({ afterSubmit, categoryId, isDefault }) 
                 <Col className="pr-3 mt-3" md="12">
                   <Form.Group>
                     <label>Name</label>
-                    <Form.Control required placeholder="Name" type="text" {...register('name')} />
+                    <Form.Control
+                      required
+                      placeholder="Name"
+                      type="text"
+                      defaultValue={name || ''} // Set default value here
+                      {...register('name')}
+                    />
                   </Form.Group>
                 </Col>
+
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Description</label>
@@ -112,19 +118,23 @@ export default function EditMaintenance({ afterSubmit, categoryId, isDefault }) 
                 <Col className="pr-3 mt-3" md="6">
                   <Form.Group>
                     <label>Priority</label>
-                    <Form.Control placeholder="Priority" type="text" {...register('priority')} />
+                    <Form.Control as="select" {...register('priority')} defaultValue={isDefault}>
+                      <option value="high">High</option>
+                      <option value="low">Low</option>
+                    </Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Is Default</label>
                     <Form.Control
-                      className="form-check-input"
-                      type="checkbox"
-                      role="switch"
-                      defaultChecked={true}
+                      as="select"
                       {...register('is_default')}
-                    ></Form.Control>
+                      defaultValue={isDefault ? 'true' : 'false'}
+                    >
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                    </Form.Control>
                   </Form.Group>
                 </Col>
               </Row>

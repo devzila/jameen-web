@@ -92,7 +92,10 @@ export default function AddMaintenance({ afterSubmit }) {
                 <Col className="pr-3 mt-3" md="6">
                   <Form.Group>
                     <label>Priority</label>
-                    <Form.Control placeholder="Priority" type="text" {...register('priority')} />
+                    <Form.Control as="select" {...register('priority')} defaultValue="high">
+                      <option value="high">High</option>
+                      <option value="low">Low</option>
+                    </Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
