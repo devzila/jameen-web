@@ -55,6 +55,7 @@ export default function OverviewContent(propsd) {
                   borderRadius: '0px',
                   display: 'block',
                   margin: '0 auto',
+                  objectFit: 'cover',
                 }}
                 src={
                   property.photo ||
