@@ -196,6 +196,7 @@ const Finance = () => {
           </CNavbar>
         </section>
       </div>
+
       <ShowInvoices />
     </>
   )
