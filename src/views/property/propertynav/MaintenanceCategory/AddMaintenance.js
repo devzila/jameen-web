@@ -31,7 +31,7 @@ export default function AddMaintenance({ afterSubmit }) {
       },
     )
     if (response.ok) {
-      setVisible(false)
+      setVisible(!visible)
       afterSubmit()
       reset()
       toast.success('Maintenance category added successfully')
@@ -51,7 +51,7 @@ export default function AddMaintenance({ afterSubmit }) {
       <Button
         type="button"
         className="btn s-3 custom_theme_button"
-        onClick={() => setVisible(true)}
+        onClick={() => setVisible(!visible)}
       >
         Add Maintenance
       </Button>
