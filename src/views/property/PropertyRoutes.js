@@ -5,11 +5,11 @@ import PropertyNav from './propertynav/PropertyNav'
 import OverviewContent from '../property/propertynav/OverviewContent'
 import Showunit from './unit/ShowUnitModule/ShowUnit'
 import ContractView from './propertynav/Contracts/ContractView'
+import Buildings from './propertynav/Building/Buildings'
+import PropertyUnitTypes from './propertynav/UnitTypes/PropertyUnitTypes'
 
 export default function Property() {
   const PropertyUnit = React.lazy(() => import('../property/unit/Unit'))
-  const PropertyUnitTypes = React.lazy(() => import('./propertynav/UnitTypes/PropertyUnitTypes'))
-  const Buildings = React.lazy(() => import('./propertynav/Building/Buildings'))
   const ParkingLot = React.lazy(() => import('../property/propertynav/ParkingLot'))
   const PropUnitAllotment = React.lazy(() => import('./propertynav/Allotment/PropUnitAllotment'))
   const Contracts = React.lazy(() => import('./propertynav/Contracts/Contracts'))
