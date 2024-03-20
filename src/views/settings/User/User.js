@@ -145,11 +145,7 @@ function Index() {
           </div>
         </div>
         <br></br>
-        <CNavbar
-          colorScheme="light"
-          className="bg-light d-flex justify-content-center"
-          placement="fixed-bottom"
-        >
+        <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
           <Row>
             <Col md="12">
               {pagination ? (

@@ -156,8 +156,13 @@ const Finance = () => {
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                   <div className="d-flex">
-                                    <InvoicePayment invoice={invoice} />
-                                    <InvoiceCancel id={invoice.id} />
+                                    {invoice?.status === 'pending' ? (
+                                      <>
+                                        <InvoicePayment invoice={invoice} />
+                                        <InvoiceCancel id={invoice.id} />
+                                        <button className="btn tooltip_button"> Download</button>
+                                      </>
+                                    ) : null}
                                     {/* <ShowInvoices /> */}
                                   </div>
                                 </Dropdown.Menu>
@@ -176,11 +181,7 @@ const Finance = () => {
           </div>
 
           <br></br>
-          <CNavbar
-            colorScheme="light"
-            className="bg-light d-flex justify-content-center"
-            placement="fixed-bottom"
-          >
+          <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
             <Row>
               <Col md="12">
                 {pagination?.total_pages > 1 ? (

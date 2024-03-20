@@ -29,7 +29,7 @@ export default function ContractView() {
 
   return (
     <CCard className="my-3 border-0">
-      <CRow key={contract.id}>
+      <CRow>
         <CCol md="8">
           <CCard className="p-3 my-3 border-0 theme_color">
             <CListGroupItem>
