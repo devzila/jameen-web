@@ -4,7 +4,7 @@ import AddProperty from './AddProperty'
 import { Dropdown } from 'react-bootstrap'
 import { NavLink, Link } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
-import { BsThreeDots, BsGrid3X3Gap } from 'react-icons/bs'
+import { BsThreeDots, BsList, BsGrid3X3Gap } from 'react-icons/bs' // Import BsList icon for property list view
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@coreui/react'
@@ -12,6 +12,8 @@ import ShowProperty from './ShowProperty'
 import EditProperty from './EditProperty'
 import OverviewContent from './propertynav/OverviewContent'
 import PropertyCardView from './PropertyCardView'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 function Property() {
   const { get, response, error } = useFetch()
@@ -71,29 +73,37 @@ function Property() {
                     <CNavbarBrand href="#">Property</CNavbarBrand>
 
                     <div className="d-flex justify-content-end">
-                      <CForm onSubmit={(e) => e.preventDefault()} className="input-group  d-flex ">
-                        <div></div>
-                        <CFormInput
+                      <div className="d-flex" role="search">
+                        <input
                           onChange={(e) => setSearchKeyword(e.target.value)}
+                          className="form-control  custom_input"
                           type="search"
-                          className="me-0 custom_input"
                           placeholder="Search"
+                          aria-label="Search"
                         />
-                        <CButton
+                        <button
                           onClick={loadInitialProperties}
-                          variant="outline"
-                          className="btn btn-outline-success my-2 my-sm-0 "
+                          className="btn btn-outline-success custom_search_button"
+                          type="submit"
                         >
-                          Search
-                        </CButton>
-                        <br></br>
-                        <AddProperty after_submit={refresh_data} />
+                          <CIcon icon={freeSet.cilSearch} />
+                        </button>
+                      </div>
+                      <br></br>
+                      <AddProperty after_submit={refresh_data} />
+                      {isCardView ? (
                         <BsGrid3X3Gap
                           onClick={handleIconClick}
                           style={{ fontSize: '2.5rem' }}
                           className="mx-2 theme_color"
                         />
-                      </CForm>
+                      ) : (
+                        <BsList
+                          onClick={handleIconClick}
+                          style={{ fontSize: '2.5rem' }}
+                          className="mx-2 theme_color"
+                        />
+                      )}
                     </div>
                   </CContainer>
                 </CNavbar>
