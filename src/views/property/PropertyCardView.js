@@ -18,9 +18,9 @@ function PropertyCardView({ property }) {
             <CRow>
               {property.map((property) => (
                 <CCol key={property.id} md="3">
-                  <Link to={`/properties/${property.id}/overview`}>
                     <CCard className="shadow-lg border-0 rounded-2 mb-3">
                       <CCardText className="card">
+                      <Link to={`/properties/${property.id}/overview`}>
                         <CRow>
                           <CCol className="position-relative text-center">
                             <img
@@ -44,6 +44,7 @@ function PropertyCardView({ property }) {
                             />
                           </CCol>
                         </CRow>
+                        </Link>
                       </CCardText>
 
                       <div className="position-absolute top-0 end-0">
@@ -93,7 +94,7 @@ function PropertyCardView({ property }) {
                               </NavLink>
                             </CCol>
                             <CCol md="7" className="text-black">
-                              <NavLink to={`/properties/${property.id}/unit_types`}>
+                              <NavLink to={`/properties/${property.id}/unit-types`}>
                                 {property?.unit_types_count || '-'} unit types
                               </NavLink>
                             </CCol>
@@ -111,7 +112,6 @@ function PropertyCardView({ property }) {
                         </CCardText>
                       </CCardBody>
                     </CCard>
-                  </Link>
                 </CCol>
               ))}
             </CRow>

@@ -21,6 +21,7 @@ export default function EditMaintenance({ afterSubmit, categoryId, isDefault }) 
 
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
+  const [maintenanceCategory, setMaintenanceCategory] = useState({})
   const [errors, setErrors] = useState({})
   const navigate = useNavigate()
 
@@ -34,6 +35,7 @@ export default function EditMaintenance({ afterSubmit, categoryId, isDefault }) 
     )
     console.log(endpoint)
     if (response.ok) {
+      setMaintenanceCategory(endpoint.data)
       setValue('name', endpoint.data.name)
       setValue('description', endpoint.data.description)
       setValue('priority', endpoint.data.priority || '') // Set priority value or empty string if not provided
@@ -41,7 +43,6 @@ export default function EditMaintenance({ afterSubmit, categoryId, isDefault }) 
   }
 
   async function onSubmit(data) {
-    console.log(data)
     const apiResponse = await put(
       `/v1/admin/premises/properties/${propertyId}/maintenance_categories/${categoryId}`,
       {
@@ -49,9 +50,8 @@ export default function EditMaintenance({ afterSubmit, categoryId, isDefault }) 
       },
     )
     if (response.ok) {
-      setVisible(!visible)
+      setVisible(false)
       afterSubmit()
-      reset()
       toast.success('Maintenance category updated successfully')
     } else {
       setErrors(response.data.errors)
@@ -61,7 +61,6 @@ export default function EditMaintenance({ afterSubmit, categoryId, isDefault }) 
 
   function handleClose() {
     setVisible(false)
-    setErrors({})
   }
 
   return (
@@ -92,7 +91,13 @@ export default function EditMaintenance({ afterSubmit, categoryId, isDefault }) 
                 <Col className="pr-3 mt-3" md="12">
                   <Form.Group>
                     <label>Name</label>
-                    <Form.Control required placeholder="Name" type="text" {...register('name')} />
+                    <Form.Control
+                      required
+                      placeholder="Name"
+                      type="text"
+                      defaultValue={maintenanceCategory.name}
+                      {...register('name')}
+                    />
                   </Form.Group>
                 </Col>
 
@@ -103,6 +108,7 @@ export default function EditMaintenance({ afterSubmit, categoryId, isDefault }) 
                       as="textarea"
                       rows={3}
                       placeholder="Description"
+                      defaultValue={maintenanceCategory.description}
                       {...register('description')}
                     />
                   </Form.Group>

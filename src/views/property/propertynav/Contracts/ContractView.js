@@ -70,13 +70,13 @@ export default function ContractView() {
         </CCol>
         {/* Add member list card here */}
         <CCol md="12" className="m-0">
-          {contract?.contract_members?.map((member, index) => (
-            <CCard className="p-3 my-3 border-0 theme_color">
-              <CListGroupItem>
-                <CIcon icon={freeSet.cilUser} size="lg" className="me-2" />
-                <strong className="text-black">Member List</strong>
-                <hr className="text-secondary" />
-              </CListGroupItem>
+          <CCard className="p-3 my-3 border-0 theme_color">
+            <CListGroupItem>
+              <CIcon icon={freeSet.cilUser} size="lg" className="me-2" />
+              <strong className="text-black">Member List</strong>
+              <hr className="text-secondary" />
+            </CListGroupItem>
+            {contract?.contract_members?.map((member, index) => (
               <CRow key={index}>
                 <CCol className="p-3 mt-0 fw-light">
                   Member Type
@@ -102,15 +102,9 @@ export default function ContractView() {
                     {member.member.username || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light">
-                  Name
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {member.member.name || '-'}
-                  </CCardText>
-                </CCol>
               </CRow>
-            </CCard>
-          ))}
+            ))}
+          </CCard>
         </CCol>
       </CRow>
     </CCard>

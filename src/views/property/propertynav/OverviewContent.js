@@ -1,8 +1,8 @@
-import { CCol, CCard, CListGroupItem, CRow, CCardText, CContainer } from '@coreui/react'
+import { CCol, CCard, CListGroupItem, CRow, CCardText, CContainer, CButton } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { formatdate } from 'src/services/CommonFunctions'
@@ -37,6 +37,9 @@ export default function OverviewContent(propsd) {
       setProperty(api.data)
     }
   }
+  const handleDelete = async () => {
+    console.log('Deleting property...')
+  }
 
   return (
     <>
@@ -49,7 +52,6 @@ export default function OverviewContent(propsd) {
             >
               <div className="d-flex align-items-center justify-content-center">
                 <img
-                  className="img-thumbnail isTooltip"
                   style={{
                     width: '100%',
                     height: '255px',
@@ -71,6 +73,18 @@ export default function OverviewContent(propsd) {
               <CListGroupItem>
                 <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
                 <strong className="text-black">Overview</strong>
+                {/* <div className="d-flex justify-content-end mb-2">
+                <CButton color="primary" className="me-2">
+                  <Link to={`/edit/${propertyId}`}>
+                    <CIcon icon={freeSet.cilPencil} className="me-1" />
+                    Edit
+                  </Link>
+                </CButton>
+                <CButton color="danger" onClick={handleDelete}>
+                  <CIcon icon={freeSet.cilTrash} className="me-1" />
+                  Delete
+                </CButton>
+                </div> */}
                 <hr className="text-secondary" />
               </CListGroupItem>
               <CRow className="">
