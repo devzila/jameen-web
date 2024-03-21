@@ -158,8 +158,14 @@ const Finance = () => {
                                   <div className="d-flex">
                                     {invoice?.status === 'pending' ? (
                                       <>
-                                        <InvoicePayment invoice={invoice} />
-                                        <InvoiceCancel id={invoice.id} />
+                                        <InvoicePayment
+                                          invoice={invoice}
+                                          aftersubmit={loadInitialinvoices}
+                                        />
+                                        <InvoiceCancel
+                                          id={invoice.id}
+                                          aftersubmit={loadInitialinvoices}
+                                        />
                                         <button className="btn tooltip_button"> Download</button>
                                       </>
                                     ) : null}

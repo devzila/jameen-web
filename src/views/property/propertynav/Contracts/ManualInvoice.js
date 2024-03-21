@@ -120,7 +120,7 @@ function ManualInvoice({ after_submit, allotmentId }) {
                 {fields?.map((field, index) => (
                   <Row key={field.id}>
                     <b className="mt-4"> </b>
-                    <Col className="pr-1 mt-3" md="6">
+                    <Col className="pr-1 mt-3" md="4">
                       <Form.Group>
                         <b>Item Name</b>
                         <Form.Control
@@ -132,7 +132,7 @@ function ManualInvoice({ after_submit, allotmentId }) {
                       </Form.Group>
                     </Col>
 
-                    <Col className="pr-1 mt-3" md="6">
+                    <Col className="pr-1 mt-3" md="4">
                       <Form.Group>
                         <label>Amount</label>
                         <Form.Control
@@ -143,7 +143,7 @@ function ManualInvoice({ after_submit, allotmentId }) {
                         ></Form.Control>
                       </Form.Group>
                     </Col>
-                    <Col className="pr-1 mt-3" md="6">
+                    <Col className="pr-1 mt-3" md="3">
                       <Form.Group>
                         <label>VAT Amount</label>
                         <Form.Control
@@ -156,9 +156,9 @@ function ManualInvoice({ after_submit, allotmentId }) {
                       </Form.Group>
                     </Col>
 
-                    <Col>
+                    <Col className="mt-4">
                       {fields.length > 1 && (
-                        <Col className="justify-content-center mt-2" md="4">
+                        <Col className="justify-content-center mt-2" md="1">
                           <CIcon
                             className="mt-3"
                             onClick={() => remove(index)}

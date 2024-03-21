@@ -18,7 +18,7 @@ import { toast } from 'react-toastify'
 import Select from 'react-select'
 import { PaymentField } from './PaymentType'
 
-export default function InvoicePayment({ invoice }) {
+export default function InvoicePayment({ invoice, aftersubmit }) {
   const { register, handleSubmit, control, reset, setValue, watch } = useForm()
   const { post, response } = useFetch()
   const [errors, setErrors] = useState({})
@@ -38,6 +38,7 @@ export default function InvoicePayment({ invoice }) {
     })
     if (response.ok) {
       setVisible(!visible)
+      aftersubmit()
       reset()
       toast.success('Payment Successfull')
     } else {
@@ -173,4 +174,5 @@ export default function InvoicePayment({ invoice }) {
 
 InvoicePayment.propTypes = {
   invoice: PropTypes.object,
+  aftersubmit: PropTypes.func,
 }

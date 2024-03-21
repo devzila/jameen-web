@@ -152,6 +152,7 @@ export default function EditProperty(props) {
                       accept=".jpg, .jpeg, .png"
                       {...register('photo')}
                       onChange={(e) => handleFileSelection(e)}
+                      className="border-0"
                     />
                   </Form.Group>
                 </Col>

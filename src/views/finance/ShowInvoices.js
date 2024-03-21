@@ -20,7 +20,7 @@ export default function ShowInvoices() {
   }
 
   async function downloadFile() {
-    const api = await get(`/v1/admin/invoices/${invoice.id}.pdf`)
+    const api = await get(`/v1/admin/invoices/${invoiceId}.pdf`)
 
     console.log(api)
   }
