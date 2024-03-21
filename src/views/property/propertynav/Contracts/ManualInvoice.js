@@ -137,7 +137,8 @@ function ManualInvoice({ after_submit, allotmentId }) {
                         <label>Amount</label>
                         <Form.Control
                           placeholder="- - - -"
-                          type="text"
+                          type="number"
+                          min="0"
                           {...register(`breakups.${index}.amount`)}
                         ></Form.Control>
                       </Form.Group>
@@ -147,8 +148,10 @@ function ManualInvoice({ after_submit, allotmentId }) {
                         <label>VAT Amount</label>
                         <Form.Control
                           placeholder="- - - -"
-                          type="text"
-                          {...register(`breakups.${index}.vat_amount`)}
+                          type="number"
+                          min="0"
+                          max="30"
+                          {...register(`breakups.${index}.vat_percent`)}
                         ></Form.Control>
                       </Form.Group>
                     </Col>
