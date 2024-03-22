@@ -53,7 +53,7 @@ export default function AddMaintenance({ afterSubmit }) {
         className="btn s-3 custom_theme_button"
         onClick={() => setVisible(!visible)}
       >
-        Add Maintenance
+        Add Category
       </Button>
       <CModal
         alignment="center"
@@ -64,7 +64,7 @@ export default function AddMaintenance({ afterSubmit }) {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add Maintenance Category</CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Add Category</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>

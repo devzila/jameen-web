@@ -122,7 +122,9 @@ const Contract = () => {
                               {runningContracts.map((running_contracts) => (
                                 <tr key={running_contracts.id}>
                                   <NavLink className="mx-2" to={`${running_contracts.id}`}>
-                                  <td className="pt-3">{running_contracts.unit.unit_no || '-'}</td>
+                                    <td className="pt-3">
+                                      {running_contracts.unit.unit_no || '-'}
+                                    </td>
                                   </NavLink>
                                   <td>
                                     {formatdate(running_contracts.start_date) || '-'}

@@ -135,7 +135,7 @@ export default function OverviewContent(propsd) {
                 <CCol className="p-3 mt-0 fw-light">
                   Created At
                   <CCardText className="fw-normal text-black text-capitalize">
-                    {property?.created_at || '-'}
+                    {formatdate(property?.created_at)}
                   </CCardText>
                 </CCol>
               </CRow>

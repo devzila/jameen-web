@@ -61,7 +61,7 @@ function Maintenances() {
               <div className="container-fluid">
                 <CNavbar expand="lg" colorScheme="light" className="bg-white">
                   <CContainer fluid>
-                    <CNavbarBrand href="#">Maintenance</CNavbarBrand>
+                    <CNavbarBrand href="#">Categories</CNavbarBrand>
                     <div className="d-flex justify-content-end bg-light">
                       <div className="d-flex  " role="search">
                         <input
