@@ -87,7 +87,7 @@ export default function ContractView() {
               <tbody>
                 {contract?.contract_members?.map((member, index) => (
                   <tr key={index}>
-                    <td>{member.member_type || '-'}</td>
+                    <td>{member.member_type.replace(/_/g, ' ') || '-'}</td>
                     <td>{member.member.first_name || '-'}</td>
                     <td>{member.member.last_name || '-'}</td>
                     <td>{member.member.username || '-'}</td>
