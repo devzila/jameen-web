@@ -1,4 +1,4 @@
-import { CCol, CCard, CListGroupItem, CRow, CCardText } from '@coreui/react'
+import { CCol, CCard, CListGroupItem, CRow, CCardText, CTable } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { formatdate } from '../../../../services/CommonFunctions'
@@ -68,42 +68,33 @@ export default function ContractView() {
             </CRow>
           </CCard>
         </CCol>
-        {/* Add member list card here */}
         <CCol md="12" className="m-0">
           <CCard className="p-3 my-3 border-0 theme_color">
             <CListGroupItem>
-              <CIcon icon={freeSet.cilUser} size="lg" className="me-2" />
+              <CIcon icon={freeSet.cilPeople} size="lg" className="me-2" />
               <strong className="text-black">Member List</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
-            {contract?.contract_members?.map((member, index) => (
-              <CRow key={index}>
-                <CCol className="p-3 mt-0 fw-light">
-                  Member Type
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {member.member_type || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light">
-                  First Name
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {member.member.first_name || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light">
-                  Last Name
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {member.member.last_name || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light">
-                  Username
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {member.member.username || '-'}
-                  </CCardText>
-                </CCol>
-              </CRow>
-            ))}
+            <CTable striped responsive="sm">
+              <thead>
+                <tr>
+                  <th>Member Type</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              <tbody>
+                {contract?.contract_members?.map((member, index) => (
+                  <tr key={index}>
+                    <td>{member.member_type || '-'}</td>
+                    <td>{member.member.first_name || '-'}</td>
+                    <td>{member.member.last_name || '-'}</td>
+                    <td>{member.member.username || '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </CTable>
           </CCard>
         </CCol>
       </CRow>

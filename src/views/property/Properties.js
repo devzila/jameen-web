@@ -91,7 +91,7 @@ function Property() {
                       </div>
                       <br></br>
                       <AddProperty after_submit={refresh_data} />
-                      {isCardView ? (
+                      {!isCardView ? (
                         <BsGrid3X3Gap
                           onClick={handleIconClick}
                           style={{ fontSize: '2.5rem' }}
