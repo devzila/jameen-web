@@ -29,10 +29,10 @@ export default function ShowInvoices() {
     getInvoice()
   }, [])
   return (
-    <div className="container mt-6 mb-7">
+    <div className="container mt-6 mb-7 rounded-0">
       <div className="row justify-content-center">
         <div className="col-lg-12 col-xl-7">
-          <div className="card">
+          <div className="card rounded-1 mb-2">
             <div className="card-body p-4">
               <div className="d-flex justify-content-between ">
                 <button
@@ -77,44 +77,46 @@ export default function ShowInvoices() {
               <div className="border-top border-gray-200 pt-2">
                 <div className="fw-bold mb-1">Transactions</div>
 
-                {invoice?.payments?.map((payments) => (
-                  <div className="row">
-                    <div className="col-md-6">
+                <div className="row">
+                  {invoice?.payments?.map((payments) => (
+                    <div className="col">
                       <div className="text-muted ">Amount</div>
                       <strong>{payments?.amount || '-'}</strong>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
-              <div className="table-responsive ">
-                <table className=" table border-bottom border-gray-200 ">
-                  <thead>
-                    <tr>
-                      <th className="fs-sm text-dark text-uppercase-bold-sm px-1">Type</th>
-                      <th className="fs-sm text-dark text-uppercase-bold-sm  text-end px-1">
-                        Voucher No
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="font-monospace fw-light">
-                    {invoice?.payments?.map((trans, index) => (
-                      <React.Fragment key={index}>
-                        {trans.transactions?.map((data, dataIndex) => (
-                          <tr key={`${index}-${dataIndex}`}>
-                            <td className="text-start px-1 font-monospace">
-                              {data?.type?.split('::')[3] || '-'}
-                            </td>
-                            <td className="text-end px-1 font-monospace">
-                              {data?.voucher_number || '-'}
-                            </td>
-                          </tr>
-                        ))}
-                      </React.Fragment>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              {invoice.status === 'paid' ? (
+                <div className="table-responsive ">
+                  <table className=" table border-bottom border-gray-200 ">
+                    <thead>
+                      <tr>
+                        <th className="fs-sm text-dark text-uppercase-bold-sm px-1">Type</th>
+                        <th className="fs-sm text-dark text-uppercase-bold-sm  text-end px-1">
+                          Voucher No
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="font-monospace fw-light">
+                      {invoice?.payments?.map((trans, index) => (
+                        <React.Fragment key={index}>
+                          {trans.transactions?.map((data, dataIndex) => (
+                            <tr key={dataIndex}>
+                              <td className="text-start px-1 font-monospace">
+                                {data?.type?.split('::')[3] || '-'}
+                              </td>
+                              <td className="text-end px-1 font-monospace">
+                                {data?.voucher_number || '-'}
+                              </td>
+                            </tr>
+                          ))}
+                        </React.Fragment>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : null}
 
               <div className="table-responsive">
                 <table className=" table border-bottom border-gray-200 ">
