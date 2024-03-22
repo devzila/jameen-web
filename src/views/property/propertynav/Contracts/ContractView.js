@@ -47,7 +47,7 @@ export default function ContractView() {
               <CCol className="p-3 mt-0 fw-light">
                 Contract Type
                 <CCardText className="fw-normal text-black text-capitalize">
-                  {contract.contract_type.replace(/_/g, ' ')  || '-'}
+                  {contract.contract_type || '-'}
                 </CCardText>
               </CCol>
             </CRow>
