@@ -72,7 +72,7 @@ export default function ContractView() {
           <CCard className="p-3 my-3 border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilPeople} size="lg" className="me-2" />
-              <strong className="text-black">Member List</strong>
+              <strong className="text-black">Members</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
             <CTable striped responsive="sm">
