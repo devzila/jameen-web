@@ -154,6 +154,7 @@ export default function EditProperty(props) {
                       accept=".jpg, .jpeg, .png"
                       {...register('photo')} // Update the input name if necessary
                       onChange={(e) => handleFileSelection(e)} // Ensure handleFileSelection is called
+                      className="border-0"
                     />
                   </Form.Group>
                 </Col>
