@@ -72,7 +72,7 @@ export default function ContractView() {
           <CCard className="p-3 my-3 border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilPeople} size="lg" className="me-2" />
-              <strong className="text-black">Member List</strong>
+              <strong className="text-black">Members</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
             <CTable striped responsive="sm">
@@ -87,7 +87,7 @@ export default function ContractView() {
               <tbody>
                 {contract?.contract_members?.map((member, index) => (
                   <tr key={index}>
-                    <td>{member.member_type || '-'}</td>
+                    <td>{member.member_type.replace(/_/g, ' ') || '-'}</td>
                     <td>{member.member.first_name || '-'}</td>
                     <td>{member.member.last_name || '-'}</td>
                     <td>{member.member.username || '-'}</td>
@@ -97,6 +97,46 @@ export default function ContractView() {
             </CTable>
           </CCard>
         </CCol>
+        <CRow>
+          <CCol md="12">
+            <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
+              <CListGroupItem>
+                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+                <strong className="text-black">Documents</strong>
+                <hr className="text-secondary" />
+              </CListGroupItem>
+              {contract.electricity_account_number ||
+              contract.water_account_number ||
+              contract.internal_extension_number ||
+              contract.year_built ? (
+                <CRow className="">
+                  <CCol className="p-3 mt-0 fw-light">
+                    <CCardText className="fw-normal text-black text-capitalize">
+                      {contract?.electricity_account_number || '-'}
+                    </CCardText>
+                  </CCol>
+                  <CCol className="p-3 mt-0 fw-light">
+                    <CCardText className="fw-normal text-black text-capitalize">
+                      {contract?.water_account_number || '-'}
+                    </CCardText>
+                  </CCol>
+                  <CCol className="p-3 mt-0 fw-light">
+                    <CCardText className="fw-normal text-black text-capitalize">
+                      {contract?.internal_extension_number || '-'}
+                    </CCardText>
+                  </CCol>
+                  <CCol className="p-3 mt-0 fw-light">
+                    <CCardText className="fw-normal text-black text-capitalize">
+                      {contract?.year_built || '-'}
+                    </CCardText>
+                  </CCol>
+                </CRow>
+              ) : (
+                <p>No documents found</p>
+              )}
+            </CCard>
+          </CCol>
+        </CRow>
       </CRow>
     </CCard>
   )
