@@ -46,13 +46,13 @@ export default function ShowInvoices() {
                   {invoice?.status || '-'}
                 </button>
                 <CIcon
-                  icon={freeSet.cilCloudDownload}
+                  icon={freeSet.cilFile}
                   className="theme_color"
                   size="xl"
                   onClick={downloadFile}
                 />
               </div>
-              <div className="border-top border-gray-200 pt-4 mt-4">
+              <div className="border-bottom border-top border-gray-200 pt-4 mt-4">
                 <div className="row">
                   <div className="col-md-6">
                     <div className="text-muted ">Invoice No.</div>
@@ -74,52 +74,9 @@ export default function ShowInvoices() {
                   </div>
                 </div>
               </div>
-              <div className="border-top border-gray-200 pt-2">
-                <div className="fw-bold mb-1">Transactions</div>
-
-                <div className="row">
-                  {invoice?.payments?.map((payments) => (
-                    <div className="col">
-                      <div className="text-muted ">Amount</div>
-                      <strong>{payments?.amount || '-'}</strong>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {invoice.status === 'paid' ? (
-                <div className="table-responsive ">
-                  <table className=" table border-bottom border-gray-200 ">
-                    <thead>
-                      <tr>
-                        <th className="fs-sm text-dark text-uppercase-bold-sm px-1">Type</th>
-                        <th className="fs-sm text-dark text-uppercase-bold-sm  text-end px-1">
-                          Voucher No
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="font-monospace fw-light">
-                      {invoice?.payments?.map((trans, index) => (
-                        <React.Fragment key={index}>
-                          {trans.transactions?.map((data, dataIndex) => (
-                            <tr key={dataIndex}>
-                              <td className="text-start px-1 font-monospace">
-                                {data?.type?.split('::')[3] || '-'}
-                              </td>
-                              <td className="text-end px-1 font-monospace">
-                                {data?.voucher_number || '-'}
-                              </td>
-                            </tr>
-                          ))}
-                        </React.Fragment>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : null}
 
               <div className="table-responsive">
-                <table className=" table border-bottom border-gray-200 ">
+                <table className=" table table-striped border-bottom border-gray-200 ">
                   <thead>
                     <tr>
                       <th className="fs-sm text-dark text-uppercase-bold-sm px-1">Description</th>
@@ -166,6 +123,51 @@ export default function ShowInvoices() {
                   <h5 className="text-success font-monospace">{invoice?.total_amount || '-'}</h5>
                 </div>
               </div>
+              <div className="border-top border-gray-200 pt-2">
+                <div className="fw-bold mb-1">Transactions</div>
+              </div>
+
+              {invoice.status === 'paid' ? (
+                <div className="table-responsive ">
+                  <table className=" table table-striped border-bottom border-gray-200 ">
+                    <thead>
+                      <tr>
+                        <th className="fs-sm text-dark text-uppercase-bold-sm px-1">Amount</th>
+                        <th className="fs-sm text-dark text-uppercase-bold-sm px-1">Date</th>
+
+                        <th className="fs-sm text-dark text-uppercase-bold-sm  text-center px-1">
+                          Payment Type
+                        </th>
+                        <th className="fs-sm text-dark text-uppercase-bold-sm  text-end px-1">
+                          Voucher No
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="font-monospace fw-light">
+                      {invoice?.payments?.map((trans, index) => (
+                        <React.Fragment key={index}>
+                          {trans.transactions?.map((data, dataIndex) => (
+                            <tr key={dataIndex}>
+                              <td className="text-start px-1 font-monospace">
+                                {trans?.amount || '-'}
+                              </td>
+                              <td className="text-start px-1 font-monospace">
+                                {data?.date || '-'}
+                              </td>
+                              <td className=" px-1 font-monospace">
+                                {data?.type?.split('::')[3] || '-'}
+                              </td>
+                              <td className="text-end px-1 font-monospace">
+                                {data?.voucher_number || '-'}
+                              </td>
+                            </tr>
+                          ))}
+                        </React.Fragment>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

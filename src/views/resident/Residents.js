@@ -86,7 +86,7 @@ const Residents = () => {
             <div className="row justify-content-center">
               <div className="">
                 <div className="table-responsive bg-white">
-                  <table className="table mb-0">
+                  <table className="table table-striped mb-0 ">
                     <thead
                       style={{
                         textOverflow: 'ellipsis',
@@ -141,7 +141,7 @@ const Residents = () => {
                       ))}
                     </tbody>
                   </table>
-                  {loading && <Loading />}
+                  {loading ?? <Loading />}
                   {errors && toast('Unable To Load data')}
                 </div>
               </div>

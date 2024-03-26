@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useForm, Controller } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
@@ -36,7 +35,7 @@ export default function EditProperty(props) {
 
       reader.onload = function (e) {
         const base64Result = e.target.result
-        setImageView(base64Result) // Update imageView with the selected image
+        setImageView(base64Result)
       }
 
       reader.readAsDataURL(selectedFile)
@@ -72,10 +71,6 @@ export default function EditProperty(props) {
   const loadproperty = async () => {
     const endpoint = await get(`/v1/admin/premises/properties/${propertyId}`)
     if (response.ok) {
-      setProperty(endpoint.data)
-      setImageView(endpoint.data.photo || '') // Set initial image view
-
-      // Set default values for form inputs
       setValue('name', endpoint.data.name)
       setValue('city', endpoint.data.city)
       setValue('use_type', endpoint.data.use_type)
@@ -126,7 +121,7 @@ export default function EditProperty(props) {
               <Row>
                 <div className="col text-center">
                   <img
-                    alt="Property Image"
+                    alt="Avatar Image"
                     style={{
                       width: '300px',
                       height: '300px',
@@ -135,25 +130,30 @@ export default function EditProperty(props) {
                       marginLeft: '4%',
                       borderRadius: '50%',
                     }}
-                    title="Property Image"
+                    title="Avatar"
                     className="img-circle img-thumbnail isTooltip  "
                     src={
-                      imageView
+                      property.photo
+                        ? property.photo
+                        : imageView
                         ? imageView
                         : 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJ1aWxkaW5nc3xlbnwwfHwwfHx8MA%3D%3D'
                     }
+                    data-original-title="Usuario"
                   />
                 </div>
               </Row>
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>Property Image</label>
+                    <label>Avatar Image</label>
                     <Form.Control
+                      wr
+                      d
                       type="file"
                       accept=".jpg, .jpeg, .png"
-                      {...register('photo')} // Update the input name if necessary
-                      onChange={(e) => handleFileSelection(e)} // Ensure handleFileSelection is called
+                      {...register('photo')}
+                      onChange={(e) => handleFileSelection(e)}
                       className="border-0"
                     />
                   </Form.Group>

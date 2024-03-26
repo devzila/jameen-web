@@ -96,7 +96,7 @@ export default function Role() {
                   <hr className="p-0 m-0 text-secondary" />
 
                   <div className="table-responsive bg-white">
-                    <table className="table mb-1">
+                    <table className="table table-striped mb-1">
                       <thead
                         style={{
                           textOverflow: 'ellipsis',
@@ -115,13 +115,13 @@ export default function Role() {
                       <tbody>
                         {roles.map((role) => (
                           <tr key={role.id}>
-                            <th className="pt-3" scope="row" style={{ color: '#666666' }}>
+                            <th className="pt-3  " scope="row" style={{ color: '#666666' }}>
                               {role.name}
                             </th>
-                            <td className="pt-3">{role.description || '-'}</td>
+                            <td className="pt-3 ">{role.description || '-'}</td>
 
-                            <td className="pt-3">{formatdate(role.created_at)}</td>
-                            <td className="pt-3">{formatdate(role.updated_at)}</td>
+                            <td className="pt-3 ">{formatdate(role.created_at)}</td>
+                            <td className="pt-3 ">{formatdate(role.updated_at)}</td>
 
                             <td>
                               <Dropdown key={role.id}>
