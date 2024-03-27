@@ -101,6 +101,8 @@ const Contract = () => {
                   </div>
                 </CContainer>
               </CNavbar>
+              <hr className="p-0 m-0 text-secondary" />
+
               <div>
                 <div className="mask d-flex align-items-center h-100">
                   <div className="w-100">
