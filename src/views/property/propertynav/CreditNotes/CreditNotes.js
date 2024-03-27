@@ -102,7 +102,6 @@ const CreditNote = () => {
                             <thead>
                               <tr>
                                 <th className="pt-3 pb-3 border-0">Name</th>
-                                <th className="pt-3 pb-3 border-0">Content</th>
                                 <th className="pt-3 pb-3 border-0">Created At</th>
                                 <th className="pt-3 pb-3 border-0">Updated At</th>
                                 <th className="pt-3 pb-3 border-0">Actions</th>
@@ -112,7 +111,6 @@ const CreditNote = () => {
                               {creditNotes.map((credit_notes) => (
                                 <tr key={credit_notes.id}>
                                   <td className="pt-3">{credit_notes.name || '-'}</td>
-                                  <td className="pt-3">{credit_notes.content || '-'}</td>
                                   <td className="pt-3">{formatdate(credit_notes.created_at)}</td>
                                   <td className="pt-3">{formatdate(credit_notes.updated_at)}</td>
                                   <td>
