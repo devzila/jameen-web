@@ -107,6 +107,8 @@ function Property() {
                     </div>
                   </CContainer>
                 </CNavbar>
+                <hr className="p-0 m-0 text-secondary" />
+
                 <div className="row justify-content-center">
                   <div className="col-16">
                     {isCardView ? (
@@ -147,7 +149,7 @@ function Property() {
                                   </NavLink>
                                 </td>
                                 <td style={{ textTransform: 'capitalize' }}>
-                                  {property.payment_term?.replace('_', ' ')}
+                                  {property.payment_term?.replace(/_/g, ' ')}
                                 </td>
                                 <td>
                                   <Dropdown key={property.id}>

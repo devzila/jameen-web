@@ -170,24 +170,24 @@ function Unit() {
                         <tbody>
                           {units.map((unit) => (
                             <tr key={unit.id}>
-                              <td className=" ">
-                                <NavLink className="mx-2" to={`${unit.id}`}>
+                              <td className="pt-3 pb-2">
+                                <NavLink className="mx-2 p-0" to={`${unit.id}`}>
                                   {unit.unit_no}
                                 </NavLink>
                               </td>
 
-                              <td className="pt-3  ">
+                              <td className="pt-3 pb-2 text-center">
                                 {unit.bedrooms_number + '  /  ' + unit.bathrooms_number}
                               </td>
-                              <td className="pt-3  ">{unit.year_built}</td>
-                              <td className="pt-1   ">
+                              <td className="pt-3 pb-2">{unit.year_built}</td>
+                              <td className="pt-3 pb-2">
                                 {unit.running_contracts[0]?.contract_members
                                   ? PickOwner(unit.running_contracts[0]?.contract_members)
                                   : '-'}
                               </td>
-                              <td className="pt-1 ">
+                              <td className="pt-3 pb-2 ">
                                 <button
-                                  className=" text-center "
+                                  className="text-center"
                                   style={{
                                     backgroundColor: `${status_color(unit.status)}`,
                                     border: '0px',
@@ -203,7 +203,7 @@ function Unit() {
                               </td>
 
                               <td>
-                                <Dropdown key={unit.id} className=" text-center">
+                                <Dropdown key={unit.id} className="text-center">
                                   <Dropdown.Toggle
                                     as={CustomDivToggle}
                                     style={{ cursor: 'pointer' }}

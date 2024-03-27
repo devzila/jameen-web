@@ -121,11 +121,11 @@ const Contract = () => {
                             <tbody>
                               {runningContracts.map((running_contracts) => (
                                 <tr key={running_contracts.id}>
-                                  <NavLink className="mx-2" to={`${running_contracts.id}`}>
-                                    <td className="pt-3">
+                                  <td className="pt-3">
+                                    <NavLink className="mx-2" to={`${running_contracts.id}`}>
                                       {running_contracts.unit.unit_no || '-'}
-                                    </td>
-                                  </NavLink>
+                                    </NavLink>
+                                  </td>
                                   <td>
                                     {formatdate(running_contracts.start_date) || '-'}
                                     {formatdate(running_contracts.end_date) || ' - Present'}{' '}
