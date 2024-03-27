@@ -211,6 +211,7 @@ function ManualInvoice({ after_submit, allotmentId }) {
                 </CModalFooter>
               </div>
             </Form>
+
             <div className="clearfix"></div>
           </CContainer>
         </CModalBody>

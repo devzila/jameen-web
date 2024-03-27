@@ -21,6 +21,8 @@ import BillableItems from './BillableCrud/BilliableItems'
 import AddUnitTypes from './AddUnitTypes'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import EditUnitTypes from './EditUnitTypes'
+import { formatdate } from 'src/services/CommonFunctions'
 
 const PropertyUnitType = () => {
   const { get, response } = useFetch()
@@ -112,6 +114,9 @@ const PropertyUnitType = () => {
                         <th className="pt-3 pb-3 border-0">Use Type</th>
                         <th className="pt-3 pb-3 border-0">Area </th>
                         <th className="pt-3 pb-3 border-0">Maintenace/sqft</th>
+                        <th className="pt-3 pb-3 border-0">Last Updated</th>
+
+                        <th className="pt-3 pb-3 border-0 text-center">Actions</th>
                       </tr>
                     </thead>
 
@@ -124,6 +129,22 @@ const PropertyUnitType = () => {
                           <td className="pt-3 text-capitalize">{unit_type.use_type}</td>
                           <td className="pt-3">{unit_type.sqft}</td>
                           <td className="pt-3">{unit_type.monthly_maintenance_amount_per_sqft}</td>
+
+                          <td className="pt-3">{formatdate(unit_type?.updated_at)}</td>
+
+                          <td>
+                            <Dropdown key={unit_type.id} className="text-center">
+                              <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
+                                <BsThreeDots />
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu>
+                                <EditUnitTypes
+                                  id={unit_type.id}
+                                  after_submit={loadInitialUnitsTypes}
+                                />
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </td>
                         </tr>
                       ))}
                     </tbody>

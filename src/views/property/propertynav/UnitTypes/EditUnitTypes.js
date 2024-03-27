@@ -17,9 +17,9 @@ import {
   CContainer,
 } from '@coreui/react'
 
-export default function AddUnitTypes({ after_submit, unittypeID }) {
-  const { register, handleSubmit, control, reset } = useForm()
-  const { get, post, response, api } = useFetch()
+export default function EditUnitTypes({ after_submit, id }) {
+  const { register, handleSubmit, control, setValue } = useForm()
+  const { get, put, response } = useFetch()
 
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
@@ -36,20 +36,43 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
     setUnit_type(temp2_unit_type)
   }
 
+  //   { value: 'residential', label: 'residential' },
+  //   { value: 'commercial', label: 'commercial' },
+  //   { value: 'mixed', label: 'mixed' }
+
+  // use_type: 'residential',
+
   console.log(unit_type)
   React.useEffect(() => {
+    loadUnitsTypes()
     fetchLocalData()
   }, [])
 
+  async function loadUnitsTypes() {
+    let endpoint = await get(`/v1/admin/premises/properties/${propertyId}/unit_types/${id}`)
+    console.log(endpoint)
+
+    if (response.ok) {
+      setValue('name', endpoint?.data?.name)
+      setValue('description', endpoint.data.description)
+      setValue('use_type', endpoint?.data?.use_type)
+      setValue('sqft', endpoint?.data?.sqft)
+      setValue(
+        'monthly_maintenance_amount_per_sqft',
+        endpoint?.data?.monthly_maintenance_amount_per_sqft,
+      )
+    }
+  }
+
   async function onSubmit(data) {
     console.log(data)
-    const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/unit_types`, {
+    const apiResponse = await put(`/v1/admin/premises/properties/${propertyId}/unit_types/${id}`, {
       unit_type: data,
     })
+    console.log(apiResponse)
     if (response.ok) {
       setVisible(!visible)
       after_submit()
-      reset()
       toast('Item added successfully')
     } else {
       setErrors(response.data.errors)
@@ -65,11 +88,11 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
     <div>
       <button
         type="button"
-        className="btn s-3 custom_theme_button "
+        className="tooltip_button d-flex"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
-        Add
+        Edit
       </button>
       <CModal
         alignment="center"
@@ -80,7 +103,7 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add </CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Edit Unit Types </CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
@@ -129,6 +152,7 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
@@ -184,7 +208,7 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
   )
 }
 
-AddUnitTypes.propTypes = {
+EditUnitTypes.propTypes = {
   after_submit: PropTypes.func,
-  unittypeID: PropTypes.number,
+  id: PropTypes.number,
 }
