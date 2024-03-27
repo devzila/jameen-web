@@ -107,7 +107,7 @@ const Residents = () => {
                     <tbody>
                       {residents.map((residents) => (
                         <tr key={residents.id}>
-                          <th className="pt-3" scope="row" style={{ color: '#666666' }}>
+                          <th className="pt-3 border-0" scope="row">
                             <NavLink to={`/resident/${residents.id}/overview`}>
                               {residents.first_name + ' ' + residents.last_name}
                             </NavLink>

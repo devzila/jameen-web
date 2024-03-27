@@ -117,7 +117,11 @@ const Finance = () => {
                       <tbody>
                         {invoices?.map((invoice) => (
                           <tr key={invoice.id}>
-                            <th className="pt-3 ps-3" scope="row" style={{ color: '#666666' }}>
+                            <th
+                              className="pt-3 ps-3 border-0"
+                              scope="row"
+                              style={{ color: '#666666' }}
+                            >
                               <NavLink to={`${invoice.id}/view`}>{invoice.number}</NavLink>
                             </th>
                             <td className="pt-3">

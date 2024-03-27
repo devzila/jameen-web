@@ -92,7 +92,7 @@ function Index() {
                   <hr className="p-0 m-0 text-secondary" />
 
                   <div className="table-responsive bg-white">
-                    <table className="table mb-1">
+                    <table className="table table-striped mb-1">
                       <thead
                         style={{
                           textOverflow: 'ellipsis',
@@ -113,7 +113,7 @@ function Index() {
                       <tbody>
                         {users.map((user) => (
                           <tr key={user.id}>
-                            <th className="pt-3" scope="row" style={{ color: '#666666' }}>
+                            <th className="pt-3 border-0" scope="row" style={{ color: '#666666' }}>
                               {user.name}
                             </th>
                             <td className="pt-3">{user.email}</td>

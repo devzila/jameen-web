@@ -101,7 +101,7 @@ const PropertyUnitType = () => {
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="table-responsive bg-white">
-                  <table className="table mb-0">
+                  <table className="table table-striped mb-0 ">
                     <thead
                       style={{
                         textOverflow: 'ellipsis',
@@ -123,17 +123,19 @@ const PropertyUnitType = () => {
                     <tbody>
                       {unit_type.map((unit_type) => (
                         <tr key={unit_type.id}>
-                          <th className="pt-3" style={{ color: '#666666' }}>
+                          <th className="pt-3 border-0">
                             <NavLink to={`${unit_type.id}/billableitems`}>{unit_type.name}</NavLink>
                           </th>
-                          <td className="pt-3 text-capitalize">{unit_type.use_type}</td>
-                          <td className="pt-3">{unit_type.sqft}</td>
-                          <td className="pt-3">{unit_type.monthly_maintenance_amount_per_sqft}</td>
+                          <td className="pt-3 border-0  text-capitalize">{unit_type.use_type}</td>
+                          <td className="pt-3 border-0 ">{unit_type.sqft}</td>
+                          <td className="pt-3 border-0 ">
+                            {unit_type.monthly_maintenance_amount_per_sqft}
+                          </td>
 
-                          <td className="pt-3">{formatdate(unit_type?.updated_at)}</td>
+                          <td className="pt-3 border-0 ">{formatdate(unit_type?.updated_at)}</td>
 
-                          <td>
-                            <Dropdown key={unit_type.id} className="text-center">
+                          <td className="border-0">
+                            <Dropdown key={unit_type.id} className="text-center ">
                               <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
                                 <BsThreeDots />
                               </Dropdown.Toggle>

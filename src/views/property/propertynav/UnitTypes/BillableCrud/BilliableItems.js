@@ -174,7 +174,7 @@ export default function BillableItems() {
               <div className="row justify-content-center">
                 <div className="col-12">
                   <div className="table-responsive bg-white">
-                    <table className="table mb-0">
+                    <table className="table table-striped mb-0">
                       <thead
                         style={{
                           textOverflow: 'ellipsis',
@@ -194,8 +194,8 @@ export default function BillableItems() {
                       <tbody>
                         {billableItems.map((billableItems) => (
                           <tr key={billableItems.id}>
-                            <th className="pt-3" scope="row" style={{ color: '#666666' }}>
-                              <NavLink>{billableItems.name}</NavLink>
+                            <th className="pt-3 border-0" scope="row" style={{ color: '#666666' }}>
+                              {billableItems.name}
                             </th>
                             <td className="pt-3 text-capitalize">{billableItems.description}</td>
                             <td className="pt-3 text-capitalize">{billableItems.billable_type}</td>

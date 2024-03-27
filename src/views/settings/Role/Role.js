@@ -115,7 +115,7 @@ export default function Role() {
                       <tbody>
                         {roles.map((role) => (
                           <tr key={role.id}>
-                            <th className="pt-3  " scope="row" style={{ color: '#666666' }}>
+                            <th className="pt-3 border-0 " scope="row" style={{ color: '#666666' }}>
                               {role.name}
                             </th>
                             <td className="pt-3 ">{role.description || '-'}</td>

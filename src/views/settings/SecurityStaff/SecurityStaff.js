@@ -64,7 +64,7 @@ export default function SecurityStaff() {
                 <div className="row justify-content-center">
                   <div className="col-12">
                     <div className="table-responsive bg-white">
-                      <table className="table mb-1">
+                      <table className="table table-striped mb-1">
                         <thead
                           style={{
                             textOverflow: 'ellipsis',
@@ -83,8 +83,8 @@ export default function SecurityStaff() {
                         <tbody>
                           {securityStaff.map((securityStaff) => (
                             <tr key={securityStaff.id}>
-                              <th className="pt-3 " scope="row" style={{ color: '#666666' }}>
-                                <NavLink>{securityStaff.name}</NavLink>
+                              <th className="pt-3 border-0" scope="row">
+                                {securityStaff.name}
                               </th>
                               <td className="pt-3 text-capitalize">
                                 {securityStaff.active ? 'Active' : 'Not Active' || '-'}

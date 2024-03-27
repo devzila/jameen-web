@@ -68,7 +68,7 @@ export default function MaintenanceStaff() {
                 <div className="row justify-content-center">
                   <div className="col-12">
                     <div className="table-responsive bg-white">
-                      <table className="table mb-2">
+                      <table className="table table-striped mb-2">
                         <thead
                           style={{
                             textOverflow: 'ellipsis',
@@ -87,8 +87,8 @@ export default function MaintenanceStaff() {
                         <tbody>
                           {maintenanceData.map((maintenanceData) => (
                             <tr key={maintenanceData.id}>
-                              <th className="pt-3 " scope="row" style={{ color: '#666666' }}>
-                                <NavLink>{maintenanceData.name}</NavLink>
+                              <th className="pt-3 border-0" scope="row">
+                                {maintenanceData.name}
                               </th>
                               <td className="pt-3 text-capitalize">
                                 {maintenanceData.active ? 'Active' : 'Not Active' || '-'}
