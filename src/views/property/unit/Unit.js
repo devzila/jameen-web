@@ -149,7 +149,7 @@ function Unit() {
                 <div className="row justify-content-center">
                   <div className="col-16">
                     <div className="table-responsive bg-white">
-                      <table className="table mb-0">
+                      <table className="table  table-striped mb-0">
                         <thead
                           style={{
                             textOverflow: 'ellipsis',

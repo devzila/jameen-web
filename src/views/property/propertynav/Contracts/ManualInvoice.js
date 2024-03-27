@@ -20,7 +20,7 @@ import {
 } from '@coreui/react'
 
 function ManualInvoice({ after_submit, allotmentId }) {
-  const { register, handleSubmit, control } = useForm()
+  const { register, handleSubmit, watch, control } = useForm()
   const { get, post, response, api } = useFetch()
 
   const { propertyId } = useParams()
@@ -145,14 +145,17 @@ function ManualInvoice({ after_submit, allotmentId }) {
                     </Col>
                     <Col className="pr-1 mt-3" md="3">
                       <Form.Group>
-                        <label>VAT Amount</label>
-                        <Form.Control
+                        <label>VAT Percent</label>
+                        <input
+                          className="p-1 w-100 text-white d-block border-0 "
+                          style={{ BackgroundColor: 'red' }}
                           placeholder="- - - -"
-                          type="number"
+                          type="range"
                           min="0"
                           max="30"
                           {...register(`breakups.${index}.vat_percent`)}
-                        ></Form.Control>
+                        ></input>
+                        {watch(`breakups.${index}.vat_percent`)}
                       </Form.Group>
                     </Col>
 

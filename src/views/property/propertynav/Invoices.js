@@ -14,6 +14,7 @@ import { freeSet } from '@coreui/icons'
 import InvoicePayment from 'src/views/finance/InvoicePayment'
 import InvoiceCancel from 'src/views/finance/InvoiceCancel'
 import { formatdate } from 'src/services/CommonFunctions'
+import { status_color } from 'src/services/CommonFunctions'
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -57,21 +58,6 @@ const Finance = () => {
     setCurrentPage(e.selected + 1)
   }
 
-  function status_color(status) {
-    switch (status) {
-      case 'pending':
-        return 'rgb(255, 68, 51)'
-      case 'vacant':
-        return 'rgba(0, 120, 0,0.7)'
-        break
-      case 'occupied':
-        return 'grey'
-        break
-      default:
-        return 'white'
-    }
-  }
-
   return (
     <>
       <div>
@@ -107,7 +93,7 @@ const Finance = () => {
                   <div className="row justify-content-center">
                     <div className="col-12">
                       <div className="table-responsive bg-white">
-                        <table className="table mb-0">
+                        <table className="table table-striped  mb-0">
                           <thead
                             style={{
                               textOverflow: 'ellipsis',
