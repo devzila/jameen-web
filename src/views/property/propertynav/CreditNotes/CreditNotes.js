@@ -99,7 +99,7 @@ const CreditNote = () => {
                     <div className="row justify-content-center">
                       <div className="col-12">
                         <div className="table-responsive bg-white">
-                          <table className="table mb-0">
+                          <table className="table  table-striped mb-0">
                             <thead>
                               <tr>
                                 <th className="pt-3 pb-3 border-0">Name</th>

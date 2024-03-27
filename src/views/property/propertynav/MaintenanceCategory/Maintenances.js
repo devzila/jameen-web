@@ -92,7 +92,7 @@ function Maintenances() {
                     ) : (
                       <div>
                         <div className="table-responsive bg-white">
-                          <table className="table mb-0">
+                          <table className="table  table-striped mb-0">
                             <thead>
                               <tr>
                                 <th className="border-0">Name</th>
