@@ -14,7 +14,7 @@ function PropertyCardView({ property }) {
     <>
       <CRow>
         <CCol md="12">
-          <CCard className="p-3 mt-0 border-0 theme_color">
+          <CCard className="p-3 mt-0 border-0 rounded-0 theme_color">
             <CRow>
               {property.map((property) => (
                 <CCol key={property.id} md="3">
@@ -88,25 +88,25 @@ function PropertyCardView({ property }) {
                       <br></br>
                       <CCardText className=" m-2">
                         <CRow>
-                          <CCol md="5" className="text-black">
+                          <CCol md="5" className="text-black ">
                             <NavLink to={`/properties/${property.id}/Buildings`}>
                               {property?.buildings_count || '-'} Building
                             </NavLink>
                           </CCol>
                           <CCol md="7" className="text-black">
                             <NavLink to={`/properties/${property.id}/unit-types`}>
-                              {property?.unit_types_count || '-'} unit types
+                              {property?.unit_types_count || '-'} Unit types
                             </NavLink>
                           </CCol>
                         </CRow>
                       </CCardText>
                       <CCardText className="m-2">
                         <CRow>
-                          <CCol md="5" className="text-black">
+                          <CCol md="5" className="text-black text-capitalize">
                             {property?.use_type || '-'}
                           </CCol>
-                          <CCol md="7" className="text-black">
-                            {property?.payment_term || '-'} payment
+                          <CCol md="7" className="text-black text-capitalize">
+                            {property?.payment_term.replace(/_/g, ' ') || '-'} Payment
                           </CCol>
                         </CRow>
                       </CCardText>
