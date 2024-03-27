@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 export default function PropertyNav() {
   return (
-    <div className="container" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
+    <div className="container-fluid" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
       <div className="body-box-new sectio new-settings-box" style={{ border: 'none' }}>
         <div className="new-settings-menu">
           <div className="menu-list">
@@ -33,6 +33,9 @@ export default function PropertyNav() {
             </div>
             <div>
               <NavLink to="assets"> Assets </NavLink>
+            </div>
+            <div>
+              <NavLink to="invoice_templates"> Invoice Template </NavLink>
             </div>
           </div>
         </div>

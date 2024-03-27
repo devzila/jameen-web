@@ -80,6 +80,7 @@ export default function EditUser({ userId, after_submit }) {
   //Get User Data
   async function getUserData() {
     let api = await get(`/v1/admin/users/${userId}`)
+    console.log(api)
 
     if (response.ok) {
       if (api.data) {
