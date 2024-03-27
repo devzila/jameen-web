@@ -101,13 +101,15 @@ const Contract = () => {
                   </div>
                 </CContainer>
               </CNavbar>
+              <hr className="p-0 m-0 text-secondary" />
+
               <div>
                 <div className="mask d-flex align-items-center h-100">
                   <div className="w-100">
                     <div className="row justify-content-center">
                       <div className="col-12">
                         <div className="table-responsive bg-white">
-                          <table className="table mb-0">
+                          <table className="table  table-striped mb-0">
                             <thead>
                               <tr>
                                 <th className="pt-3 pb-3 border-0">Unit No</th>
