@@ -25,6 +25,7 @@ import CIcon from '@coreui/icons-react'
 import { BsThreeDots } from 'react-icons/bs'
 
 import { formatdate } from 'src/services/CommonFunctions'
+import EditUnitTypes from '../EditUnitTypes'
 
 export default function BillableItems() {
   const [billableItems, setBillableItems] = useState([])
@@ -73,22 +74,31 @@ export default function BillableItems() {
   function reload_callback() {
     fetchBillableItems()
   }
-
+  function triggerEdit() {
+    console.log('triggered')
+  }
   return (
     <>
       <CCol>
         <CRow>
           <CCol md="12">
             <CCard className=" p-3 mt-2" style={{ border: '0px' }}>
-              <CListGroupItem>
-                <CIcon
-                  icon={freeSet.cilLineStyle}
-                  size="lg"
-                  className="me-2"
-                  style={{ color: '#00bfcc' }}
-                />
-                <strong>Unit Type</strong>
-                <hr style={{ color: '#C8C2C0' }} />
+              <CListGroupItem className="d-flex justify-content-between">
+                <div>
+                  <CIcon
+                    icon={freeSet.cilLineStyle}
+                    size="lg"
+                    className="me-2"
+                    style={{ color: '#00bfcc' }}
+                  />
+                  <strong>Unit Type</strong>
+                </div>
+                <div>
+                  <button onClick={triggerEdit} className="btn custom_theme_button">
+                    Edit
+                  </button>
+                  {/* <EditUnitTypes id={unittypeID} /> */}
+                </div>
               </CListGroupItem>
               <CRow>
                 <CCol className=" mt-0 fw-light" style={{ color: '#00bfcc' }}>
@@ -127,7 +137,10 @@ export default function BillableItems() {
                 </CCol>
               </CRow>
               <CRow className="mt-3">
-                <CCol className="mt-0 fw-light col-3" style={{ color: '#00bfcc' }}>
+                <CCol
+                  className="mt-0 fw-light col-sm-6 text-nowrap col-lg-3"
+                  style={{ color: '#00bfcc' }}
+                >
                   Description
                   <CCardText
                     className="fw-normal"
@@ -136,7 +149,10 @@ export default function BillableItems() {
                     {unittype?.description || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className=" mt-0 fw-light col-3" style={{ color: '#00bfcc' }}>
+                <CCol
+                  className=" mt-0 fw-light col-sm-6 text-nowrap col-lg-3"
+                  style={{ color: '#00bfcc' }}
+                >
                   Created At
                   <CCardText
                     className="fw-normal"
@@ -145,7 +161,10 @@ export default function BillableItems() {
                     {formatdate(unittype?.created_at) || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className=" mt-0 fw-light col-3" style={{ color: '#00bfcc' }}>
+                <CCol
+                  className=" mt-0 fw-light col-sm-6 text-nowrap col-lg-3"
+                  style={{ color: '#00bfcc' }}
+                >
                   Modified On
                   <CCardText
                     className="fw-normal"
@@ -169,63 +188,76 @@ export default function BillableItems() {
           </Card>
           <hr className="p-0 m-0 text-secondary" />
 
-          <div className="mask d-flex align-items-center h-100">
-            <div className="w-100">
-              <div className="row justify-content-center">
-                <div className="col-12">
-                  <div className="table-responsive bg-white">
-                    <table className="table table-striped mb-0">
-                      <thead
-                        style={{
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                          overFlow: 'hidden',
-                        }}
-                      >
-                        <tr>
-                          <th className="pt-3 pb-3 border-0">Name</th>
-                          <th className="pt-3 pb-3 border-0">Description</th>
-                          <th className="pt-3 pb-3 border-0">Billabale Type </th>
-                          <th className="pt-3 pb-3 border-0">Monthly Amount</th>
-                          <th className="pt-3 pb-3 border-0">VAT</th>
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {billableItems.map((billableItems) => (
-                          <tr key={billableItems.id}>
-                            <th className="pt-3 border-0" scope="row" style={{ color: '#666666' }}>
-                              {billableItems.name}
-                            </th>
-                            <td className="pt-3 text-capitalize">{billableItems.description}</td>
-                            <td className="pt-3 text-capitalize">{billableItems.billable_type}</td>
-                            <td className="pt-3"> {billableItems.monthly_amount}</td>
-                            <td>{billableItems.vat_percent}%</td>
-
-                            <td>
-                              <Dropdown key={billableItems.id}>
-                                <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                  <BsThreeDots />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  <EditBillable
-                                    id={billableItems.id}
-                                    after_submit={reload_callback}
-                                  />
-                                </Dropdown.Menu>
-                              </Dropdown>
-                            </td>
+          {billableItems.lenght >= 1 ? (
+            <div className="mask d-flex align-items-center h-100">
+              <div className="w-100">
+                <div className="row justify-content-center">
+                  <div className="col-12">
+                    <div className="table-responsive bg-white">
+                      <table className="table table-striped mb-0">
+                        <thead
+                          style={{
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            overFlow: 'hidden',
+                          }}
+                        >
+                          <tr>
+                            <th className="pt-3 pb-3 border-0">Name</th>
+                            <th className="pt-3 pb-3 border-0">Description</th>
+                            <th className="pt-3 pb-3 border-0">Billabale Type </th>
+                            <th className="pt-3 pb-3 border-0">Monthly Amount</th>
+                            <th className="pt-3 pb-3 border-0">VAT</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    {loading && <Loading />}
-                    {errors && toast('Unable To Load data')}
+                        </thead>
+
+                        <tbody>
+                          {billableItems.map((billableItems) => (
+                            <tr key={billableItems.id}>
+                              <th
+                                className="pt-3 border-0"
+                                scope="row"
+                                style={{ color: '#666666' }}
+                              >
+                                {billableItems.name}
+                              </th>
+                              <td className="pt-3 text-capitalize">{billableItems.description}</td>
+                              <td className="pt-3 text-capitalize">
+                                {billableItems.billable_type}
+                              </td>
+                              <td className="pt-3"> {billableItems.monthly_amount}</td>
+                              <td>{billableItems.vat_percent}%</td>
+
+                              <td>
+                                <Dropdown key={billableItems.id}>
+                                  <Dropdown.Toggle
+                                    as={CustomDivToggle}
+                                    style={{ cursor: 'pointer' }}
+                                  >
+                                    <BsThreeDots />
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu>
+                                    <EditBillable
+                                      id={billableItems.id}
+                                      after_submit={reload_callback}
+                                    />
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      {loading ?? <Loading />}
+                      {errors ?? toast('Unable To Load data')}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <p className="text-center fst-italic bg-white p-5">No Billable Items Found.</p>
+          )}
         </div>
         <br></br>
         <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">

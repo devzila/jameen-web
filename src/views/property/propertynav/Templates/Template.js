@@ -74,11 +74,10 @@ const CreditNote = () => {
       <section className="w-100 p-0 mt-2">
         <div>
           <div className="mask d-flex align-items-center w-100">
-            <div className="container-fluid">
+            <div className="w-100">
               <CNavbar expand="lg" colorScheme="light" className="bg-white">
                 <CContainer fluid>
                   <CNavbarBrand>
-                    {' '}
                     <Dropdown>
                       <Dropdown.Toggle
                         variant="secondary"
@@ -87,11 +86,17 @@ const CreditNote = () => {
                       >
                         {selectedOption?.replace('_', ' ').toUpperCase()}
                       </Dropdown.Toggle>
-                      <Dropdown.Menu className="rounded-0 shadow-lg">
-                        <Dropdown.Item onClick={() => handleOptionChange('credit_notes')}>
+                      <Dropdown.Menu className="rounded-0 border-0  shadow-lg">
+                        <Dropdown.Item
+                          onClick={() => handleOptionChange('credit_notes')}
+                          className="theme_color"
+                        >
                           Credit Notes
                         </Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleOptionChange('invoices')}>
+                        <Dropdown.Item
+                          onClick={() => handleOptionChange('invoices')}
+                          className="theme_color"
+                        >
                           Invoice Template
                         </Dropdown.Item>
                       </Dropdown.Menu>
@@ -113,8 +118,8 @@ const CreditNote = () => {
                           <thead>
                             <tr>
                               <th className="pt-3 pb-3 border-0">Name</th>
-                              <th className="pt-3 pb-3 border-0">Created At</th>
-                              <th className="pt-3 pb-3 border-0">Updated At</th>
+                              <th className="pt-3 pb-3 border-0 text-nowrap">Created At</th>
+                              <th className="pt-3 pb-3 border-0 text-nowrap">Updated At</th>
                               <th className="pt-3 pb-3 border-0">Actions</th>
                             </tr>
                           </thead>
@@ -122,8 +127,12 @@ const CreditNote = () => {
                             {creditNotes.map((credit_notes) => (
                               <tr key={credit_notes.id}>
                                 <td className="pt-3">{credit_notes.name || '-'}</td>
-                                <td className="pt-3">{formatdate(credit_notes.created_at)}</td>
-                                <td className="pt-3">{formatdate(credit_notes.updated_at)}</td>
+                                <td className="pt-3 text-nowrap">
+                                  {formatdate(credit_notes.created_at)}
+                                </td>
+                                <td className="pt-3 text-nowrap">
+                                  {formatdate(credit_notes.updated_at)}
+                                </td>
                                 <td>
                                   <Dropdown>
                                     <Dropdown.Toggle

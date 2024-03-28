@@ -139,7 +139,7 @@ const PropertyUnitType = () => {
                               <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
                                 <BsThreeDots />
                               </Dropdown.Toggle>
-                              <Dropdown.Menu>
+                              <Dropdown.Menu className="text-center">
                                 <EditUnitTypes
                                   id={unit_type.id}
                                   after_submit={loadInitialUnitsTypes}

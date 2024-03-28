@@ -25,7 +25,7 @@ export default function Property() {
   return (
     <>
       <PropertyNav />
-      <CContainer fluid>
+      <CContainer fluid className="p-0">
         <Routes>
           <Route path="overview" name="Overview" element={<OverviewContent />} />
           <Route path="unit" name="Unit" element={<PropertyUnit />} />

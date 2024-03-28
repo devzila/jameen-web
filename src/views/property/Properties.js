@@ -68,7 +68,7 @@ function Property() {
         <section style={{ width: '100%', padding: '0px' }}>
           <div>
             <div className="mask d-flex align-items-center h-100">
-              <div className="container-fluid">
+              <div className="w-100">
                 <CNavbar expand="lg" colorScheme="light" className="bg-white">
                   <CContainer fluid>
                     <CNavbarBrand href="#">Property</CNavbarBrand>
@@ -176,8 +176,8 @@ function Property() {
                               ))}
                             </tbody>
                           </table>
-                          {loading && <Loading />}
-                          {errors && (
+                          {loading ?? <Loading />}
+                          {errors ?? (
                             <p
                               className="d-flex justify-content-cente"
                               style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}

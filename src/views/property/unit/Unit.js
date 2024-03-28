@@ -206,7 +206,7 @@ function Unit() {
                                 <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
-                                <Dropdown.Menu>
+                                <Dropdown.Menu className="text-start">
                                   <Edit unitId={unit.id} after_submit={refresh_data} />
                                   <NavLink
                                     style={{
