@@ -83,58 +83,64 @@ export default function Assets() {
                   </CContainer>
                 </CNavbar>
                 <hr className="p-0 m-0 text-secondary" />
-                <div className="row justify-content-center">
-                  <div className="col-12">
-                    <div className="table-responsive bg-white">
-                      <table className="table mb-0">
-                        <thead
-                          style={{
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            overFlow: 'hidden',
-                          }}
-                        >
-                          <tr>
-                            <th className="pt-3 pb-3 border-0">Name</th>
-                            <th className="pt-3 pb-3 border-0">Asset Type</th>
-                            <th className="pt-3 pb-3 border-0">Description</th>
+                {assets_data.length >= 1 ? (
+                  <div className="row justify-content-center">
+                    <div className="col-12">
+                      <div className="table-responsive bg-white">
+                        <table className="table mb-0">
+                          <thead
+                            style={{
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              overFlow: 'hidden',
+                            }}
+                          >
+                            <tr>
+                              <th className="pt-3 pb-3 border-0">Name</th>
+                              <th className="pt-3 pb-3 border-0">Asset Type</th>
+                              <th className="pt-3 pb-3 border-0">Description</th>
 
-                            <th className="pt-3 pb-3 border-0">Created At </th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-                          {assets_data.map((data) => (
-                            <tr key={data.id}>
-                              <td>{data.name || '-'}</td>
-                              <td className="text-capitalize">
-                                {data.asset_type.replace(/_/g, ' ') || '-'}
-                              </td>
-
-                              <td>{data.description || '-'}</td>
-                              <td>{formatdate(data.created_at) || '-'}</td>
-                              <td>
-                                <Dropdown key={data.id}>
-                                  <Dropdown.Toggle
-                                    as={CustomDivToggle}
-                                    style={{ cursor: 'pointer' }}
-                                  >
-                                    <BsThreeDots />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu>
-                                    <EditAssets id={data.id} after_submit={fetchAssets} />
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </td>
+                              <th className="pt-3 pb-3 border-0">Created At </th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      {loading && <Loading />}
-                      {errors == true ? toast('We are facing a technical issue at our end.') : null}
+                          </thead>
+
+                          <tbody>
+                            {assets_data.map((data) => (
+                              <tr key={data.id}>
+                                <td>{data.name || '-'}</td>
+                                <td className="text-capitalize">
+                                  {data.asset_type.replace(/_/g, ' ') || '-'}
+                                </td>
+
+                                <td>{data.description || '-'}</td>
+                                <td>{formatdate(data.created_at) || '-'}</td>
+                                <td>
+                                  <Dropdown key={data.id}>
+                                    <Dropdown.Toggle
+                                      as={CustomDivToggle}
+                                      style={{ cursor: 'pointer' }}
+                                    >
+                                      <BsThreeDots />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                      <EditAssets id={data.id} after_submit={fetchAssets} />
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                        {loading && <Loading />}
+                        {errors == true
+                          ? toast('We are facing a technical issue at our end.')
+                          : null}
+                      </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <p className="text-center fst-italic bg-white p-5">No Assets Found</p>
+                )}
               </div>
             </div>
           </div>
