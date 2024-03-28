@@ -71,7 +71,7 @@ const PropertyUnitType = () => {
     <div>
       <div>
         <div className="mask d-flex align-items-center h-100 mt-2">
-          <div className="container-fluid">
+          <div className="w-100">
             <CNavbar expand="lg" colorScheme="light" className="bg-white">
               <CContainer fluid>
                 <CNavbarBrand href="/unit_type">Unit Types</CNavbarBrand>
@@ -110,7 +110,7 @@ const PropertyUnitType = () => {
                       }}
                     >
                       <tr>
-                        <th className="pt-3 pb-3 border-0">Name</th>
+                        <th className="pt-3 pb-3 border-0 ">Name</th>
                         <th className="pt-3 pb-3 border-0">Use Type</th>
                         <th className="pt-3 pb-3 border-0">Area </th>
                         <th className="pt-3 pb-3 border-0">Maintenace/sqft</th>
@@ -123,7 +123,7 @@ const PropertyUnitType = () => {
                     <tbody>
                       {unit_type.map((unit_type) => (
                         <tr key={unit_type.id}>
-                          <th className="pt-3 border-0">
+                          <th className="pt-3 border-0 text-nowrap">
                             <NavLink to={`${unit_type.id}/billableitems`}>{unit_type.name}</NavLink>
                           </th>
                           <td className="pt-3 border-0  text-capitalize">{unit_type.use_type}</td>

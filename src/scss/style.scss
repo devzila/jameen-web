@@ -52,6 +52,15 @@ input:focus,
   border-radius: 2px;
 }
 
+.fr-box,
+.fr-basic,
+.fr-top {
+  border-radius: 0px !important;
+}
+.fr-second-toolbar {
+  display: none;
+}
+
 label {
   color: grey;
   font-size: 13px;
@@ -83,7 +92,7 @@ label {
   border: 0px;
   color: white;
   border-radius: 2px;
-  background-color: gray;
+  background-color: rgba(128, 128, 128, 0.952);
 }
 .custom_grey_button:hover {
   background-color: rgba(128, 128, 128, 0.849);

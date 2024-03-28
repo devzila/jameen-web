@@ -113,173 +113,168 @@ function Unit() {
 
   return (
     <>
-      <div>
-        <section className="w-100 p-0 mt-2">
-          <div>
-            <div className="mask d-flex align-items-center h-100">
-              <div className="container-fluid">
-                <CNavbar expand="lg" colorScheme="light" className="bg-white">
-                  <CContainer fluid>
-                    <CNavbarBrand href="#">Unit</CNavbarBrand>
-                    <div className="d-flex justify-content-end bg-light">
-                      <div className="d-flex  " role="search">
-                        <input
-                          value={searchKeyword}
-                          onChange={(e) => setSearchKeyword(e.target.value)}
-                          className="form-control me-0 custom_input  "
-                          type="text"
-                          placeholder="Search"
-                          aria-label="Search"
-                        />
-                        <button
-                          onClick={loadInitialUnits}
-                          className="btn btn-outline-success custom_search_button "
-                          type="submit"
-                        >
-                          <CIcon icon={freeSet.cilSearch} />
-                        </button>
-                      </div>
-                      <FilterAccordion filter_callback={filter_callback} units_type={unit_type} />
-                      <Add after_submit={refresh_data} />
+      <section className="w-100 p-0 mt-2">
+        <div>
+          <div className="mask d-flex align-items-center h-100">
+            <div className="w-100">
+              <CNavbar expand="lg" colorScheme="light" className="bg-white">
+                <CContainer fluid>
+                  <CNavbarBrand href="#">Unit</CNavbarBrand>
+                  <div className="d-flex justify-content-end bg-light">
+                    <div className="d-flex  " role="search">
+                      <input
+                        value={searchKeyword}
+                        onChange={(e) => setSearchKeyword(e.target.value)}
+                        className="form-control me-0 custom_input  "
+                        type="text"
+                        placeholder="Search"
+                        aria-label="Search"
+                      />
+                      <button
+                        onClick={loadInitialUnits}
+                        className="btn btn-outline-success custom_search_button "
+                        type="submit"
+                      >
+                        <CIcon icon={freeSet.cilSearch} />
+                      </button>
                     </div>
-                  </CContainer>
-                </CNavbar>
-                <hr className="p-0 m-0 text-secondary" />
+                    <FilterAccordion filter_callback={filter_callback} units_type={unit_type} />
+                    <Add after_submit={refresh_data} />
+                  </div>
+                </CContainer>
+              </CNavbar>
+              <hr className="p-0 m-0 text-secondary" />
 
-                <div className="row justify-content-center">
-                  <div className="col-16">
-                    <div className="table-responsive bg-white">
-                      <table className="table  table-striped mb-0">
-                        <thead
-                          style={{
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            overFlow: 'hidden',
-                          }}
-                        >
-                          <tr>
-                            <th className="pt-3 pb-3 border-0  ">Unit Number</th>
-                            <th className="pt-3 pb-3 border-0  ">Bed/Bath </th>
-                            <th className="pt-3 pb-3 border-0  ">Year Built</th>
-                            <th className="pt-3 pb-3 border-0  ">Owner/Resident</th>
-                            <th className="pt-3 pb-3 border-0  ">Status</th>
-                            <th className="pt-3 pb-3 border-0 text-center ">Action </th>
-                          </tr>
-                        </thead>
+              <div className="row justify-content-center">
+                <div className="col-16">
+                  <div className="table-responsive bg-white">
+                    <table className="table  table-striped mb-0">
+                      <thead
+                        style={{
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          overFlow: 'hidden',
+                        }}
+                      >
+                        <tr>
+                          <th className="pt-3 pb-3 border-0  ">Unit Number</th>
+                          <th className="pt-3 pb-3 border-0  ">Bed/Bath </th>
+                          <th className="pt-3 pb-3 border-0  ">Year Built</th>
+                          <th className="pt-3 pb-3 border-0  ">Owner/Resident</th>
+                          <th className="pt-3 pb-3 border-0  ">Status</th>
+                          <th className="pt-3 pb-3 border-0 text-center ">Action </th>
+                        </tr>
+                      </thead>
 
-                        <tbody>
-                          {units.map((unit) => (
-                            <tr key={unit.id}>
-                              <td className="pt-3 pb-2">
-                                <NavLink className="mx-2 p-0" to={`${unit.id}`}>
-                                  {unit.unit_no}
-                                </NavLink>
-                              </td>
+                      <tbody>
+                        {units.map((unit) => (
+                          <tr key={unit.id}>
+                            <td className="pt-3 pb-2">
+                              <NavLink className="mx-2 p-0" to={`${unit.id}`}>
+                                {unit.unit_no}
+                              </NavLink>
+                            </td>
 
-                              <td className="pt-3 pb-2 text-center">
-                                {unit.bedrooms_number + '  /  ' + unit.bathrooms_number}
-                              </td>
-                              <td className="pt-3 pb-2">{unit.year_built}</td>
-                              <td className="pt-3 pb-2">
-                                {unit.running_contracts[0]?.contract_members
-                                  ? PickOwner(unit.running_contracts[0]?.contract_members)
-                                  : '-'}
-                              </td>
-                              <td className="pt-3 pb-2 ">
-                                <button
-                                  className="text-center"
-                                  style={{
-                                    backgroundColor: `${status_color(unit.status)}`,
-                                    border: '0px',
-                                    padding: '1px',
-                                    borderRadius: '2px',
-                                    color: 'white',
-                                    cursor: 'default',
-                                    width: '120px',
-                                  }}
-                                >
-                                  {unit.status}
-                                </button>
-                              </td>
+                            <td className="pt-3 pb-2 text-center">
+                              {unit.bedrooms_number + '  /  ' + unit.bathrooms_number}
+                            </td>
+                            <td className="pt-3 pb-2">{unit.year_built}</td>
+                            <td className="pt-3 pb-2">
+                              {unit.running_contracts[0]?.contract_members
+                                ? PickOwner(unit.running_contracts[0]?.contract_members)
+                                : '-'}
+                            </td>
+                            <td className="pt-3 pb-2 ">
+                              <button
+                                className="text-center"
+                                style={{
+                                  backgroundColor: `${status_color(unit.status)}`,
+                                  border: '0px',
+                                  padding: '1px',
+                                  borderRadius: '2px',
+                                  color: 'white',
+                                  cursor: 'default',
+                                  width: '120px',
+                                }}
+                              >
+                                {unit.status}
+                              </button>
+                            </td>
 
-                              <td>
-                                <Dropdown key={unit.id} className="text-center">
-                                  <Dropdown.Toggle
-                                    as={CustomDivToggle}
-                                    style={{ cursor: 'pointer' }}
+                            <td>
+                              <Dropdown key={unit.id} className="text-center">
+                                <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
+                                  <BsThreeDots />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  <Edit unitId={unit.id} after_submit={refresh_data} />
+                                  <NavLink
+                                    style={{
+                                      border: 'none',
+                                      color: '#00bfcc',
+                                      marginLeft: '35%',
+                                      textDecorationLine: 'none',
+                                    }}
+                                    to={`/properties/${propertyId}/units/${unit.id}`}
                                   >
-                                    <BsThreeDots />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu>
-                                    <Edit unitId={unit.id} after_submit={refresh_data} />
-                                    <NavLink
-                                      style={{
-                                        border: 'none',
-                                        color: '#00bfcc',
-                                        marginLeft: '35%',
-                                        textDecorationLine: 'none',
-                                      }}
-                                      to={`/properties/${propertyId}/units/${unit.id}`}
-                                    >
-                                      Show
-                                    </NavLink>
+                                    Show
+                                  </NavLink>
 
-                                    <Delete unitId={unit.id} after_submit={refresh_data} />
+                                  <Delete unitId={unit.id} after_submit={refresh_data} />
 
-                                    {unit.status === 'unallotted' ? (
-                                      <AllocateUnit
-                                        unitId={unit.id}
-                                        unitNo={unit.unit_no}
-                                        after_submit={refresh_data}
-                                      />
-                                    ) : null}
-                                    {unit.status === 'vacant' ? (
-                                      <MovingInUnit
-                                        unitId={unit.id}
-                                        unitNo={unit.unit_no}
-                                        after_submit={refresh_data}
-                                      />
-                                    ) : null}
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      {loading && <Loading />}
-                      {errors && (
-                        <p
-                          className="d-flex justify-content-cente"
-                          style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
-                        >
-                          There is a technical issue at Backend
-                        </p>
-                      )}
-                    </div>
+                                  {unit.status === 'unallotted' ? (
+                                    <AllocateUnit
+                                      unitId={unit.id}
+                                      unitNo={unit.unit_no}
+                                      after_submit={refresh_data}
+                                    />
+                                  ) : null}
+                                  {unit.status === 'vacant' ? (
+                                    <MovingInUnit
+                                      unitId={unit.id}
+                                      unitNo={unit.unit_no}
+                                      after_submit={refresh_data}
+                                    />
+                                  ) : null}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {loading && <Loading />}
+                    {errors && (
+                      <p
+                        className="d-flex justify-content-cente"
+                        style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
+                      >
+                        There is a technical issue at Backend
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
-            <Row>
-              <Col md="12">
-                {pagination?.total_pages > 1 ? (
-                  <Paginate
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={pagination.per_page}
-                    pageCount={pagination.total_pages}
-                    forcePage={currentPage - 1}
-                  />
-                ) : (
-                  <br />
-                )}
-              </Col>
-            </Row>
-          </CNavbar>
-        </section>
-      </div>
+        </div>
+        <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
+          <Row>
+            <Col md="12">
+              {pagination?.total_pages > 1 ? (
+                <Paginate
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={pagination.per_page}
+                  pageCount={pagination.total_pages}
+                  forcePage={currentPage - 1}
+                />
+              ) : (
+                <br />
+              )}
+            </Col>
+          </Row>
+        </CNavbar>
+      </section>
     </>
   )
 }

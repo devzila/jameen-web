@@ -1,37 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import PropTypes from 'prop-types'
-import { useParams, NavLink } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-import {
-  CNavbar,
-  CContainer,
-  CNavbarBrand,
-  CCol,
-  CCard,
-  CListGroupItem,
-  CRow,
-  CCardText,
-} from '@coreui/react'
-import { freeSet } from '@coreui/icons'
+import { CCol } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
 import { Dropdown, Row, Col, Card } from 'react-bootstrap'
-import Paginate from '../../../../components/Pagination'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import AddVehicles from './AddVehicles'
 import EditVehices from './EditVehicles'
-import CIcon from '@coreui/icons-react'
 import { BsThreeDots } from 'react-icons/bs'
-
-import { formatdate } from 'src/services/CommonFunctions'
 
 export default function ResVehicles() {
   const [resvehicles, setResvehicles] = useState([])
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [pagination, setPagination] = useState(null)
-  const [currentPage, setCurrentPage] = useState(1)
   const { get, response } = useFetch()
   const { residentId } = useParams()
 
@@ -50,10 +34,6 @@ export default function ResVehicles() {
     } catch (error) {
       console.error('Error fetching billable items:', error)
     }
-  }
-
-  function handlePageClick(e) {
-    setCurrentPage(e.selected + 1)
   }
 
   function reload_callback() {
@@ -78,7 +58,7 @@ export default function ResVehicles() {
                 <div className="row justify-content-center">
                   <div className="col-12">
                     <div className="table-responsive bg-white">
-                      <table className="table mb-0">
+                      <table className="table table-striped mb-0">
                         <thead
                           style={{
                             textOverflow: 'ellipsis',
@@ -97,8 +77,8 @@ export default function ResVehicles() {
                         <tbody>
                           {resvehicles.map((resvehicles) => (
                             <tr key={resvehicles.id}>
-                              <th className="pt-3 " scope="row" style={{ color: '#666666' }}>
-                                <NavLink>{resvehicles.brand_name}</NavLink>
+                              <th className="pt-3 border-0" scope="row">
+                                {resvehicles.brand_name}
                               </th>
                               <td className="pt-3 text-capitalize">
                                 {resvehicles.registration_no || '-'}
@@ -139,22 +119,6 @@ export default function ResVehicles() {
         </div>
 
         <br></br>
-        <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
-          <Row>
-            <Col md="12">
-              {pagination ? (
-                <Paginate
-                  onPageChange={handlePageClick}
-                  pageRangeDisplayed={pagination.per_page}
-                  pageCount={pagination.total_pages}
-                  forcePage={currentPage - 1}
-                />
-              ) : (
-                <br />
-              )}
-            </Col>
-          </Row>
-        </CNavbar>
       </CCol>
     </>
   )

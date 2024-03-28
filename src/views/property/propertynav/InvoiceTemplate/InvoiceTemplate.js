@@ -31,8 +31,8 @@ export default function InvoiceTemplate() {
             <div className="container-fluid">
               <CNavbar expand="lg" colorScheme="light" className="bg-white">
                 <CContainer fluid>
-                  <CNavbarBrand href="/contracts">Invoice Templates</CNavbarBrand>
-                  <AddInvoiceTemp />
+                  <p className="fs-5 "> Invoice Templates</p>
+                  <AddInvoiceTemp after_submit={fetchInvoiceTemplates} />
                 </CContainer>
               </CNavbar>
               <hr className="p-0 m-0 text-secondary" />
@@ -46,8 +46,8 @@ export default function InvoiceTemplate() {
                             <thead>
                               <tr>
                                 <th className="pt-3 pb-3 border-0">Name</th>
-                                <th className="pt-3 pb-3 border-0">Created At</th>
-                                <th className="pt-3 pb-3 border-0">Updated At</th>
+                                <th className="pt-3 pb-3 border-0 text-nowrap">Created At</th>
+                                <th className="pt-3 pb-3 border-0 text-nowrap">Updated At</th>
                                 <th className="pt-3 pb-3 border-0">Actions</th>
                               </tr>
                             </thead>
@@ -55,8 +55,12 @@ export default function InvoiceTemplate() {
                               {inTemp.map((intemp) => (
                                 <tr key={intemp.id}>
                                   <td className="pt-3 text-capitalize">{intemp.name || '-'}</td>
-                                  <td className="pt-3">{formatdate(intemp.created_at)}</td>
-                                  <td className="pt-3">{formatdate(intemp.updated_at)}</td>
+                                  <td className="pt-3 text-nowrap">
+                                    {formatdate(intemp.created_at)}
+                                  </td>
+                                  <td className="pt-3 text-nowrap">
+                                    {formatdate(intemp.updated_at)}
+                                  </td>
                                   <td>
                                     <Dropdown>
                                       <Dropdown.Toggle
@@ -65,14 +69,6 @@ export default function InvoiceTemplate() {
                                       >
                                         <BsThreeDots />
                                       </Dropdown.Toggle>
-                                      {/* <Dropdown.Menu>
-                                    {credit_notes.contract_type == 'allotment' ? (
-                                      <ManualInvoice
-                                        after_submit={loadInitialCreditNotes}
-                                        allotmentId={credit_notes.id}
-                                      />
-                                    ) : null}
-                                  </Dropdown.Menu> */}
                                     </Dropdown>
                                   </td>
                                 </tr>

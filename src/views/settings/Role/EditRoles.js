@@ -158,24 +158,10 @@ export default function EditRoles({ roleId, after_submit }) {
 
             <div className="text-center">
               <CModalFooter>
-                <Button
-                  data-mdb-ripple-init
-                  type="submit"
-                  className="btn  btn-primary btn-block"
-                  style={{
-                    marginTop: '5px',
-                    color: 'white',
-                    backgroundColor: '#00bfcc',
-                    border: '0px',
-                  }}
-                >
+                <Button type="submit" className="btn s-3 custom_theme_button">
                   Submit
                 </Button>
-                <CButton
-                  color="secondary"
-                  style={{ border: '0px', color: 'white' }}
-                  onClick={() => setVisible(false)}
-                >
+                <CButton className="custom_grey_button" onClick={() => setVisible(false)}>
                   Close
                 </CButton>
               </CModalFooter>

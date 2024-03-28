@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom'
 import { freeSet } from '@coreui/icons'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'

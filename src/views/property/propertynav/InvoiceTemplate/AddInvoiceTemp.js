@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import Select from 'react-select'
 import PropTypes from 'prop-types'
+import 'froala-editor/css/froala_style.min.css'
+import 'froala-editor/css/froala_editor.pkgd.min.css'
+import FroalaEditorComponent from 'react-froala-wysiwyg'
+import Froalaeditor from 'froala-editor'
 
 import {
   CButton,
@@ -17,15 +20,16 @@ import {
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
-import InvoiceTemple from './InvoiceTem'
-
 export default function AddInvoiceTemp({ after_submit }) {
   const [visible, setVisible] = useState(false)
+  const [model, setModel] = useState()
+
   const { register, handleSubmit, control, watch, reset } = useForm()
   const { get, post, response } = useFetch()
 
   async function onSubmit(data) {
-    const apiResponse = await post(`/v1/admin/tempate/invoices`, { invoice: data })
+    data = { ...data, content: model }
+    const apiResponse = await post(`/v1/admin/template/invoices`, { invoice: data })
 
     console.log(response)
 
@@ -38,6 +42,32 @@ export default function AddInvoiceTemp({ after_submit }) {
       toast(apiResponse.data?.message)
     }
   }
+  const handleModelChange = (event) => {
+    setModel(event)
+  }
+  Froalaeditor.DefineIcon('Macros', { NAME: 'Macros', SVG_KEY: 'cogs' })
+  Froalaeditor.RegisterCommand('Macros', {
+    title: 'Macros',
+    type: 'dropdown',
+    focus: false,
+    undo: false,
+    refreshAfterCallback: true,
+    options: {
+      v1: 'Option 1',
+      v2: 'Option 2',
+    },
+    callback: function (cmd, val) {
+      console.log(val)
+    },
+    // Callback on refresh.
+    refresh: function ($btn) {
+      console.log('do refresh')
+    },
+    // Callback on dropdown show.
+    refreshOnShow: function ($btn, $dropdown) {
+      console.log('do refresh when show')
+    },
+  })
 
   return (
     <>
@@ -48,7 +78,7 @@ export default function AddInvoiceTemp({ after_submit }) {
           data-mdb-ripple-init
           onClick={() => setVisible(!visible)}
         >
-          Add Property
+          Add Template
         </button>
         <CModal
           alignment="center"
@@ -65,17 +95,48 @@ export default function AddInvoiceTemp({ after_submit }) {
             <CContainer>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Row>
-                  <Col className="pr-1 m-3" md="12">
+                  <Col className="my-2" md="12">
                     <Form.Group>
                       <label>Name</label>
                       <Form.Control
                         required
                         placeholder="Name"
                         type="text"
-                        {...register('name', { required: ' Name is required.' })}
+                        {...register('name')}
                       ></Form.Control>
                     </Form.Group>
                   </Col>
+                </Row>
+                <Row>
+                  <label>Content</label>
+
+                  <FroalaEditorComponent
+                    model={model}
+                    config={{
+                      toolbarSticky: true,
+
+                      toolbarButtons: [
+                        ['bold', 'italic', 'underline', 'undo', 'redo'],
+                        [
+                          'outdent',
+                          'indent',
+                          'subscript',
+                          'superscript',
+                          'strikeThrough',
+                          'insertHR',
+                          'selectAll',
+                          'formatOL',
+                          'formatUL',
+                          'insertTable',
+                          'Macros',
+                        ],
+                      ],
+                    }}
+                    onModelChange={handleModelChange}
+                    tag="textarea"
+                    name="content"
+                    {...register('content')}
+                  />
                 </Row>
                 <div className="text-center">
                   <CModalFooter>

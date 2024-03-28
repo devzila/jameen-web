@@ -117,7 +117,7 @@ function Property() {
                         <PropertyCardView property={properties} />
                       ) : (
                         <div className="table-responsive bg-white">
-                          <table className="table mb-0">
+                          <table className="table table-striped mb-0">
                             <thead
                               style={{
                                 textOverflow: 'ellipsis',
