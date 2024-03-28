@@ -75,13 +75,13 @@ export default function PropertyForm({ after_submit }) {
     console.log(response)
 
     if (response.ok) {
-      toast('Property added successfully')
+      toast.success('Property added successfully')
       setVisible(!visible)
       after_submit()
       reset()
       setImageView('')
     } else {
-      toast(apiResponse.data?.message)
+      toast.error(apiResponse.data?.message)
     }
   }
 
