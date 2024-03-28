@@ -101,11 +101,7 @@ const PropertyUnitType = () => {
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="table-responsive bg-white">
-<<<<<<< HEAD
-                  <table className="table table-striped mb-0 ">
-=======
                   <table className="table  table-striped mb-0">
->>>>>>> ccaacd6d8bf8772dbcd2a0357b4e62a8d8263cb9
                     <thead
                       style={{
                         textOverflow: 'ellipsis',
