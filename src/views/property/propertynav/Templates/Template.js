@@ -7,7 +7,7 @@ import { BsThreeDots } from 'react-icons/bs'
 import { formatdate } from '../../../../services/CommonFunctions'
 
 import CustomDivToggle from 'src/components/CustomDivToggle'
-import EditCreditNotes from './EditCreditNotes'
+import EditTemplate from './EditTemplate'
 import { useParams } from 'react-router-dom'
 import AddTemp from './AddTemp'
 
@@ -133,9 +133,10 @@ const CreditNote = () => {
                                       <BsThreeDots />
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
-                                      <EditCreditNotes
+                                      <EditTemplate
                                         id={credit_notes.id}
                                         after_submit={refreshData}
+                                        option={selectedOption}
                                       />
                                     </Dropdown.Menu>
                                   </Dropdown>
