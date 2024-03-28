@@ -82,7 +82,11 @@ const CreditNote = () => {
                   <CNavbarBrand>
                     {' '}
                     <Dropdown>
-                      <Dropdown.Toggle variant="white" className='custom_theme_button' id="dropdown-basic">
+                      <Dropdown.Toggle
+                        variant="white"
+                        className="custom_theme_button"
+                        id="dropdown-basic"
+                      >
                         Select Option
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
@@ -96,8 +100,11 @@ const CreditNote = () => {
                     </Dropdown>
                   </CNavbarBrand>
                   <div className="d-flex justify-content-end">
-                  {selectedOption === 'creditNotes' ?
-                    <AddCreditNotes after_submit={refreshData} />:<AddInvoiceTemp after_submit={fetchInvoiceTemplates}/>}
+                    {selectedOption === 'creditNotes' ? (
+                      <AddCreditNotes after_submit={refreshData} />
+                    ) : (
+                      <AddInvoiceTemp />
+                    )}
                   </div>
                 </CContainer>
               </CNavbar>
