@@ -7,7 +7,6 @@ import Showunit from './unit/ShowUnitModule/ShowUnit'
 import ContractView from './propertynav/Contracts/ContractView'
 import Buildings from './propertynav/Building/Buildings'
 import PropertyUnitTypes from './propertynav/UnitTypes/PropertyUnitTypes'
-import InvoiceTemplate from './propertynav/InvoiceTemplate/InvoiceTemplate'
 
 export default function Property() {
   const PropertyUnit = React.lazy(() => import('../property/unit/Unit'))
@@ -44,7 +43,6 @@ export default function Property() {
           <Route path="assets" name="Documents" element={<Assets />} />
           <Route path="CreditNotes" name="CreditNotes" element={<CreditNotes />} />
           <Route path="Invoices" name="Invoices" element={<Invoices />} />
-          <Route path="invoice_templates" name="Invoice Template" element={<InvoiceTemplate />} />
         </Routes>
       </CContainer>
     </>

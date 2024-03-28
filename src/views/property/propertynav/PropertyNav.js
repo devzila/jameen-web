@@ -29,16 +29,13 @@ export default function PropertyNav() {
               <NavLink to="Maintenances"> Maintenance </NavLink>
             </div>
             <div>
-              <NavLink to="CreditNotes"> Credit Notes </NavLink>
+              <NavLink to="CreditNotes"> Templates </NavLink>
             </div>
             <div>
               <NavLink to="Invoices"> Invoices </NavLink>
             </div>
             <div>
               <NavLink to="assets"> Assets </NavLink>
-            </div>
-            <div>
-              <NavLink to="invoice_templates"> Invoice Template </NavLink>
             </div>
           </div>
         </div>

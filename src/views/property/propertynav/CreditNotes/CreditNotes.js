@@ -27,7 +27,7 @@ const CreditNote = () => {
 
   useEffect(() => {
     loadInitialTemplate()
-  }, [currentPage, searchKeyword,selectedOption])
+  }, [currentPage, searchKeyword, selectedOption])
 
   async function loadInitialTemplate(queries) {
     let endpoint = `/v1/admin/template/${selectedOption}`
@@ -54,7 +54,6 @@ const CreditNote = () => {
   }
   console.log(selectedOption)
 
-
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
   }
@@ -71,7 +70,6 @@ const CreditNote = () => {
   const handleOptionChange = (option) => {
     setSelectedOption(option)
     console.log(option)
-    
   }
   return (
     <>
@@ -89,9 +87,9 @@ const CreditNote = () => {
                         className="custom_theme_button"
                         id="dropdown-basic"
                       >
-                        {selectedOption?.replace('_'," ").toUpperCase()}
+                        {selectedOption?.replace('_', ' ').toUpperCase()}
                       </Dropdown.Toggle>
-                      <Dropdown.Menu className='rounded-0 shadow-lg'>
+                      <Dropdown.Menu className="rounded-0 shadow-lg">
                         <Dropdown.Item onClick={() => handleOptionChange('credit_notes')}>
                           Credit Notes
                         </Dropdown.Item>
@@ -102,60 +100,57 @@ const CreditNote = () => {
                     </Dropdown>
                   </CNavbarBrand>
                   <div className="d-flex justify-content-end">
-                   
-                      <AddInvoiceTemp option={selectedOption} after_submit={refreshData} />
-                    
+                    <AddInvoiceTemp option={selectedOption} after_submit={refreshData} />
                   </div>
                 </CContainer>
               </CNavbar>
               <hr className="p-0 m-0 text-secondary" />
-              
-                <div className="mask d-flex align-items-center w-100">
-                  <div className="w-100">
-                    <div className=" justify-content-center">
-                      <div className="w-100">
-                        <div className="table-responsive bg-white">
-                          <table className="table table-striped mb-0">
-                            <thead>
-                              <tr>
-                                <th className="pt-3 pb-3 border-0">Name</th>
-                                <th className="pt-3 pb-3 border-0">Created At</th>
-                                <th className="pt-3 pb-3 border-0">Updated At</th>
-                                <th className="pt-3 pb-3 border-0">Actions</th>
+
+              <div className="mask d-flex align-items-center w-100">
+                <div className="w-100">
+                  <div className=" justify-content-center">
+                    <div className="w-100">
+                      <div className="table-responsive bg-white">
+                        <table className="table table-striped mb-0">
+                          <thead>
+                            <tr>
+                              <th className="pt-3 pb-3 border-0">Name</th>
+                              <th className="pt-3 pb-3 border-0">Created At</th>
+                              <th className="pt-3 pb-3 border-0">Updated At</th>
+                              <th className="pt-3 pb-3 border-0">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {creditNotes.map((credit_notes) => (
+                              <tr key={credit_notes.id}>
+                                <td className="pt-3">{credit_notes.name || '-'}</td>
+                                <td className="pt-3">{formatdate(credit_notes.created_at)}</td>
+                                <td className="pt-3">{formatdate(credit_notes.updated_at)}</td>
+                                <td>
+                                  <Dropdown>
+                                    <Dropdown.Toggle
+                                      as={CustomDivToggle}
+                                      style={{ cursor: 'pointer' }}
+                                    >
+                                      <BsThreeDots />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                      <EditCreditNotes
+                                        id={credit_notes.id}
+                                        after_submit={refreshData}
+                                      />
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </td>
                               </tr>
-                            </thead>
-                            <tbody>
-                              {creditNotes.map((credit_notes) => (
-                                <tr key={credit_notes.id}>
-                                  <td className="pt-3">{credit_notes.name || '-'}</td>
-                                  <td className="pt-3">{formatdate(credit_notes.created_at)}</td>
-                                  <td className="pt-3">{formatdate(credit_notes.updated_at)}</td>
-                                  <td>
-                                    <Dropdown>
-                                      <Dropdown.Toggle
-                                        as={CustomDivToggle}
-                                        style={{ cursor: 'pointer' }}
-                                      >
-                                        <BsThreeDots />
-                                      </Dropdown.Toggle>
-                                      <Dropdown.Menu>
-                                        <EditCreditNotes
-                                          id={credit_notes.id}
-                                          after_submit={refreshData}
-                                        />
-                                      </Dropdown.Menu>
-                                    </Dropdown>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
                 </div>
-              
+              </div>
 
               {/* {selectedOption === 'invoicr' && <InvoiceTemplate />} */}
             </div>

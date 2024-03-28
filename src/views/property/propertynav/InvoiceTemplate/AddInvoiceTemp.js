@@ -20,7 +20,7 @@ import {
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
-export default function AddInvoiceTemp({ after_submit ,option}) {
+export default function AddInvoiceTemp({ after_submit, option }) {
   const [visible, setVisible] = useState(false)
   const [model, setModel] = useState()
 
@@ -29,11 +29,10 @@ export default function AddInvoiceTemp({ after_submit ,option}) {
 
   async function onSubmit(data) {
     data = { ...data, content: model }
-    if(option=='credit_notes'){
-      var payload={credit_note: data}
-    }
-    else if (option=='invoices'){
-       var payload={invoice: data}
+    if (option == 'credit_notes') {
+      var payload = { credit_note: data }
+    } else if (option == 'invoices') {
+      var payload = { invoice: data }
     }
     const api = await post(`/v1/admin/template/${option}`, payload)
 
