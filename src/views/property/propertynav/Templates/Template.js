@@ -7,11 +7,9 @@ import { BsThreeDots } from 'react-icons/bs'
 import { formatdate } from '../../../../services/CommonFunctions'
 
 import CustomDivToggle from 'src/components/CustomDivToggle'
-import AddCreditNotes from './AddCreditNotes'
 import EditCreditNotes from './EditCreditNotes'
 import { useParams } from 'react-router-dom'
-import InvoiceTemplate from '../InvoiceTemplate/InvoiceTemplate'
-import AddInvoiceTemp from '../Templates/AddTemp'
+import AddTemp from './AddTemp'
 
 const CreditNote = () => {
   const { get, response } = useFetch()
@@ -100,7 +98,7 @@ const CreditNote = () => {
                     </Dropdown>
                   </CNavbarBrand>
                   <div className="d-flex justify-content-end">
-                    <AddInvoiceTemp option={selectedOption} after_submit={refreshData} />
+                    <AddTemp option={selectedOption} after_submit={refreshData} />
                   </div>
                 </CContainer>
               </CNavbar>

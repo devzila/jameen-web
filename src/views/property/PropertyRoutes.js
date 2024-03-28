@@ -17,7 +17,7 @@ export default function Property() {
   const Documents = React.lazy(() => import('../property/propertynav/Documents'))
   const Invoices = React.lazy(() => import('./propertynav/Invoices'))
   const Assets = React.lazy(() => import('./propertynav/Assets/Assets'))
-  const CreditNotes = React.lazy(() => import('./propertynav/CreditNotes/CreditNotes'))
+  const Template = React.lazy(() => import('./propertynav/Templates/Template'))
 
   const BillableItems = React.lazy(() =>
     import('./propertynav/UnitTypes/BillableCrud/BilliableItems'),
@@ -41,7 +41,7 @@ export default function Property() {
           <Route path="Buildings" name="Buildings" element={<Buildings />} />
           <Route path="Documents" name="Documents" element={<Documents />} />
           <Route path="assets" name="Documents" element={<Assets />} />
-          <Route path="CreditNotes" name="CreditNotes" element={<CreditNotes />} />
+          <Route path="templates" name="CreditNotes" element={<Template />} />
           <Route path="Invoices" name="Invoices" element={<Invoices />} />
         </Routes>
       </CContainer>

@@ -20,7 +20,7 @@ import {
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
-export default function AddInvoiceTemp({ after_submit, option }) {
+export default function AddTemp({ after_submit, option }) {
   const [visible, setVisible] = useState(false)
   const [model, setModel] = useState()
 
@@ -167,7 +167,7 @@ export default function AddInvoiceTemp({ after_submit, option }) {
   )
 }
 
-AddInvoiceTemp.propTypes = {
+AddTemp.propTypes = {
   after_submit: PropTypes.func,
   option: PropTypes.string,
 }
