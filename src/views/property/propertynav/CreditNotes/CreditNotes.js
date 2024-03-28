@@ -19,18 +19,18 @@ const CreditNote = () => {
   const [creditNotes, setCreditNotes] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectValue, setSelectValue] = useState(null)
-  const [selectedOption, setSelectedOption] = useState('creditNotes')
+  const [selectedOption, setSelectedOption] = useState('credit_notes')
   const [errors, setErrors] = useState(false)
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchKeyword, setSearchKeyword] = useState(null)
 
   useEffect(() => {
-    loadInitialCreditNotes()
-  }, [currentPage, searchKeyword])
+    loadInitialTemplate()
+  }, [currentPage, searchKeyword,selectedOption])
 
-  async function loadInitialCreditNotes(queries) {
-    let endpoint = `/v1/admin/template/credit_notes?page=${currentPage}`
+  async function loadInitialTemplate(queries) {
+    let endpoint = `/v1/admin/template/${selectedOption}`
     console.log(queries)
     if (queries) {
       endpoint += `&type=${queries}`
@@ -52,13 +52,15 @@ const CreditNote = () => {
       setLoading(false)
     }
   }
+  console.log(selectedOption)
+
 
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
   }
 
   const refreshData = () => {
-    loadInitialCreditNotes()
+    loadInitialTemplate()
     setSearchKeyword('')
   }
 
@@ -68,6 +70,8 @@ const CreditNote = () => {
   }
   const handleOptionChange = (option) => {
     setSelectedOption(option)
+    console.log(option)
+    
   }
   return (
     <>
@@ -81,33 +85,31 @@ const CreditNote = () => {
                     {' '}
                     <Dropdown>
                       <Dropdown.Toggle
-                        variant="white"
+                        variant="secondary"
                         className="custom_theme_button"
                         id="dropdown-basic"
                       >
-                        Select Option
+                        {selectedOption?.replace('_'," ").toUpperCase()}
                       </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => handleOptionChange('creditNotes')}>
+                      <Dropdown.Menu className='rounded-0 shadow-lg'>
+                        <Dropdown.Item onClick={() => handleOptionChange('credit_notes')}>
                           Credit Notes
                         </Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleOptionChange('invoiceTemplate')}>
+                        <Dropdown.Item onClick={() => handleOptionChange('invoices')}>
                           Invoice Template
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
                   </CNavbarBrand>
                   <div className="d-flex justify-content-end">
-                    {selectedOption === 'creditNotes' ? (
-                      <AddCreditNotes after_submit={refreshData} />
-                    ) : (
-                      <AddInvoiceTemp />
-                    )}
+                   
+                      <AddInvoiceTemp option={selectedOption} after_submit={refreshData} />
+                    
                   </div>
                 </CContainer>
               </CNavbar>
               <hr className="p-0 m-0 text-secondary" />
-              {selectedOption === 'creditNotes' && (
+              
                 <div className="mask d-flex align-items-center w-100">
                   <div className="w-100">
                     <div className=" justify-content-center">
@@ -153,9 +155,9 @@ const CreditNote = () => {
                     </div>
                   </div>
                 </div>
-              )}
+              
 
-              {selectedOption === 'invoiceTemplate' && <InvoiceTemplate />}
+              {/* {selectedOption === 'invoicr' && <InvoiceTemplate />} */}
             </div>
           </div>
         </div>

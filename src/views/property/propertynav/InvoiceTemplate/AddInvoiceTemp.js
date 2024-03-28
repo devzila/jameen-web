@@ -20,7 +20,7 @@ import {
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
-export default function AddInvoiceTemp({ after_submit }) {
+export default function AddInvoiceTemp({ after_submit ,option}) {
   const [visible, setVisible] = useState(false)
   const [model, setModel] = useState()
 
@@ -29,9 +29,15 @@ export default function AddInvoiceTemp({ after_submit }) {
 
   async function onSubmit(data) {
     data = { ...data, content: model }
-    const apiResponse = await post(`/v1/admin/template/invoices`, { invoice: data })
+    if(option=='credit_notes'){
+      var payload={credit_note: data}
+    }
+    else if (option=='invoices'){
+       var payload={invoice: data}
+    }
+    const api = await post(`/v1/admin/template/${option}`, payload)
 
-    console.log(response)
+    console.log(payload)
 
     if (response.ok) {
       toast.success('Template added successfully')
@@ -39,7 +45,7 @@ export default function AddInvoiceTemp({ after_submit }) {
       after_submit()
       reset()
     } else {
-      toast(apiResponse.data?.message)
+      toast(api.data?.message)
     }
   }
   const handleModelChange = (event) => {
@@ -164,4 +170,5 @@ export default function AddInvoiceTemp({ after_submit }) {
 
 AddInvoiceTemp.propTypes = {
   after_submit: PropTypes.func,
+  option: PropTypes.string,
 }
