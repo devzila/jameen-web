@@ -25,17 +25,17 @@ export default function InvoiceTemplate() {
   console.log(inTemp)
   return (
     <>
-      <section className="w-100 p-0 mt-2">
+      <section className="w-100 p-0 mt-0">
         <div>
-          <div className="mask d-flex align-items-center h-100">
-            <div className="container-fluid">
-              <CNavbar expand="lg" colorScheme="light" className="bg-white">
+        <div className="mask d-flex align-items-center h-100">
+            <div className="w-100">
+              {/* <CNavbar expand="lg" colorScheme="light" className="bg-white">
                 <CContainer fluid>
                   <p className="fs-5 "> Invoice Templates</p>
                   <AddInvoiceTemp after_submit={fetchInvoiceTemplates} />
                 </CContainer>
               </CNavbar>
-              <hr className="p-0 m-0 text-secondary" />
+              <hr className="p-0 m-0 text-secondary" /> */}
               <div>
                 <div className="mask d-flex align-items-center h-100">
                   <div className="w-100">

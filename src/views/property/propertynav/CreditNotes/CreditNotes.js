@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { toast } from 'react-toastify'
-import { NavLink, useParams } from 'react-router-dom'
-import { Dropdown, Row, Col } from 'react-bootstrap'
+import { Dropdown } from 'react-bootstrap'
+import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+import { Row, Col } from 'react-bootstrap'
 import { BsThreeDots } from 'react-icons/bs'
+import { formatdate } from '../../../../services/CommonFunctions'
+import { freeSet } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 import Paginate from 'src/components/Pagination'
 import CustomDivToggle from 'src/components/CustomDivToggle'
-import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import { formatdate } from '../../../../services/CommonFunctions'
-import CIcon from '@coreui/icons-react'
-import { freeSet } from '@coreui/icons'
 import AddCreditNotes from './AddCreditNotes'
 import EditCreditNotes from './EditCreditNotes'
-// import AddContracts from './AddContracts'
-// import FilterAccordionContract from './FilterAccordionContract'
-// import ManualInvoice from './ManualInvoice'
+import { useParams } from 'react-router-dom'
+import InvoiceTemplate from '../InvoiceTemplate/InvoiceTemplate'
+import AddInvoiceTemp from '../InvoiceTemplate/AddInvoiceTemp'
 
 const CreditNote = () => {
   const { get, response } = useFetch()
@@ -22,6 +21,7 @@ const CreditNote = () => {
   const [creditNotes, setCreditNotes] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectValue, setSelectValue] = useState(null)
+  const [selectedOption, setSelectedOption] = useState('creditNotes')
   const [errors, setErrors] = useState(false)
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
@@ -40,15 +40,14 @@ const CreditNote = () => {
     if (searchKeyword) {
       endpoint += `&q=${searchKeyword}`
     }
-    const initialCreditNotes = await get(endpoint) // Corrected variable name
-    console.log('Initial Credit Notes:', initialCreditNotes) // Corrected variable name
+    const initialCreditNotes = await get(endpoint)
+    console.log('Initial Credit Notes:', initialCreditNotes)
 
     if (response.ok) {
       if (initialCreditNotes.data) {
-        // Corrected variable name
         setLoading(false)
-        setCreditNotes(initialCreditNotes.data) // Corrected variable name
-        setPagination(initialCreditNotes.pagination) // Corrected variable name
+        setCreditNotes(initialCreditNotes.data)
+        setPagination(initialCreditNotes.pagination)
       }
     } else {
       setErrors(true)
@@ -69,45 +68,47 @@ const CreditNote = () => {
     const value = event.target.value
     setSelectValue(value)
   }
-
+  const handleOptionChange = (option) => {
+    setSelectedOption(option)
+  }
   return (
     <>
       <section className="w-100 p-0 mt-2">
         <div>
-          <div className="mask d-flex align-items-center h-100">
+          <div className="mask d-flex align-items-center w-100">
             <div className="container-fluid">
               <CNavbar expand="lg" colorScheme="light" className="bg-white">
                 <CContainer fluid>
-                  <CNavbarBrand href="/contracts">Credit Notes</CNavbarBrand>
+                  <CNavbarBrand>
+                    {' '}
+                    <Dropdown>
+                      <Dropdown.Toggle variant="white" className='custom_theme_button' id="dropdown-basic">
+                        Select Option
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => handleOptionChange('creditNotes')}>
+                          Credit Notes
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleOptionChange('invoiceTemplate')}>
+                          Invoice Template
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </CNavbarBrand>
                   <div className="d-flex justify-content-end">
-                    <div className="d-flex" role="search">
-                      <input
-                        onChange={(e) => setSearchKeyword(e.target.value)}
-                        className="form-control  custom_input"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                      />
-                      <button
-                        onClick={loadInitialCreditNotes}
-                        className="btn btn-outline-success custom_search_button "
-                        type="submit"
-                      >
-                        <CIcon icon={freeSet.cilSearch} />
-                      </button>
-                    </div>
-                    <AddCreditNotes after_submit={refreshData} />
+                  {selectedOption === 'creditNotes' ?
+                    <AddCreditNotes after_submit={refreshData} />:<AddInvoiceTemp after_submit={fetchInvoiceTemplates}/>}
                   </div>
                 </CContainer>
               </CNavbar>
               <hr className="p-0 m-0 text-secondary" />
-              <div>
-                <div className="mask d-flex align-items-center h-100">
+              {selectedOption === 'creditNotes' && (
+                <div className="mask d-flex align-items-center w-100">
                   <div className="w-100">
-                    <div className="row justify-content-center">
-                      <div className="col-12">
+                    <div className=" justify-content-center">
+                      <div className="w-100">
                         <div className="table-responsive bg-white">
-                          <table className="table  table-striped mb-0">
+                          <table className="table table-striped mb-0">
                             <thead>
                               <tr>
                                 <th className="pt-3 pb-3 border-0">Name</th>
@@ -131,7 +132,10 @@ const CreditNote = () => {
                                         <BsThreeDots />
                                       </Dropdown.Toggle>
                                       <Dropdown.Menu>
-                                        <EditCreditNotes id={credit_notes.id} after_submit={refreshData} />
+                                        <EditCreditNotes
+                                          id={credit_notes.id}
+                                          after_submit={refreshData}
+                                        />
                                       </Dropdown.Menu>
                                     </Dropdown>
                                   </td>
@@ -144,24 +148,9 @@ const CreditNote = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-              <br />
-              <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
-                <Row>
-                  <Col md="12">
-                    {pagination?.total_pages > 1 ? (
-                      <Paginate
-                        onPageChange={handlePageClick}
-                        pageRangeDisplayed={pagination.per_page}
-                        pageCount={pagination.total_pages}
-                        forcePage={currentPage - 1}
-                      />
-                    ) : (
-                      <br />
-                    )}
-                  </Col>
-                </Row>
-              </CNavbar>
+              )}
+
+              {selectedOption === 'invoiceTemplate' && <InvoiceTemplate />}
             </div>
           </div>
         </div>
