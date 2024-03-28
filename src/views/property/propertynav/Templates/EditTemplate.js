@@ -20,7 +20,7 @@ import {
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
 
-export default function EditTemplate({ after_submit, id ,option}) {
+export default function EditTemplate({ after_submit, id, option }) {
   const { register, handleSubmit, control, reset, setValue } = useForm()
   const { get, put, response, api } = useFetch()
   const [model, setModel] = useState()
@@ -37,7 +37,6 @@ export default function EditTemplate({ after_submit, id ,option}) {
     if (response.ok) {
       setValue('name', endpoint?.data?.name)
       setModel(endpoint?.data?.content)
-
     }
   }
   const handleModelChange = (event) => {
@@ -45,7 +44,6 @@ export default function EditTemplate({ after_submit, id ,option}) {
   }
 
   async function onSubmit(data) {
-
     if (option == 'credit_notes') {
       var payload = { credit_note: data }
     } else if (option == 'invoices') {
@@ -69,15 +67,15 @@ export default function EditTemplate({ after_submit, id ,option}) {
 
   return (
     <>
-     <div>
-     <button
-        type="button"
-        className="tooltip_button d-flex"
-        data-mdb-ripple-init
-        onClick={() => setVisible(!visible)}
-      >
-        Edit
-      </button>
+      <div>
+        <button
+          type="button"
+          className="tooltip_button d-flex"
+          data-mdb-ripple-init
+          onClick={() => setVisible(!visible)}
+        >
+          Edit
+        </button>
         <CModal
           alignment="center"
           size="xl"
@@ -87,7 +85,9 @@ export default function EditTemplate({ after_submit, id ,option}) {
           aria-labelledby="StaticBackdropExampleLabel"
         >
           <CModalHeader>
-            <CModalTitle id="StaticBackdropExampleLabel">EDIT {option?.replace('_'," ").toUpperCase()} </CModalTitle>
+            <CModalTitle id="StaticBackdropExampleLabel">
+              EDIT {option?.replace('_', ' ').toUpperCase()}{' '}
+            </CModalTitle>
           </CModalHeader>
           <CModalBody>
             <CContainer>
