@@ -10,6 +10,8 @@ import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { formatdate } from '../../../../services/CommonFunctions'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import AddCreditNotes from './AddCreditNotes'
+import EditCreditNotes from './EditCreditNotes'
 // import AddContracts from './AddContracts'
 // import FilterAccordionContract from './FilterAccordionContract'
 // import ManualInvoice from './ManualInvoice'
@@ -19,6 +21,7 @@ const CreditNote = () => {
   const { propertyId, unitId } = useParams()
   const [creditNotes, setCreditNotes] = useState([])
   const [loading, setLoading] = useState(true)
+  const [selectValue, setSelectValue] = useState(null)
   const [errors, setErrors] = useState(false)
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
@@ -62,6 +65,11 @@ const CreditNote = () => {
     setSearchKeyword('')
   }
 
+  const onChange = (event) => {
+    const value = event.target.value
+    setSelectValue(value)
+  }
+
   return (
     <>
       <section className="w-100 p-0 mt-2">
@@ -88,7 +96,7 @@ const CreditNote = () => {
                         <CIcon icon={freeSet.cilSearch} />
                       </button>
                     </div>
-                    {/* <AddContracts after_submit={refreshData} /> */}
+                    <AddCreditNotes after_submit={refreshData} />
                   </div>
                 </CContainer>
               </CNavbar>
@@ -122,14 +130,9 @@ const CreditNote = () => {
                                       >
                                         <BsThreeDots />
                                       </Dropdown.Toggle>
-                                      {/* <Dropdown.Menu>
-                                        {credit_notes.contract_type == 'allotment' ? (
-                                          <ManualInvoice
-                                            after_submit={loadInitialCreditNotes}
-                                            allotmentId={credit_notes.id}
-                                          />
-                                        ) : null}
-                                      </Dropdown.Menu> */}
+                                      <Dropdown.Menu>
+                                        <EditCreditNotes id={credit_notes.id} after_submit={refreshData} />
+                                      </Dropdown.Menu>
                                     </Dropdown>
                                   </td>
                                 </tr>
