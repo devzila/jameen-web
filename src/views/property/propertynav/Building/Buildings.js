@@ -18,7 +18,6 @@ import EditBuilding from './EditBuilding'
 
 export default function Buildings() {
   const [buildings, setBuildings] = useState([])
-  const [invoices, setInvoices] = useState([])
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [errors, setErrors] = useState(false)
