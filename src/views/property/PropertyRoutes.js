@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { Navigate, Route, Routes, Link, Outlet } from 'react-router-dom'
+import { Navigate, Route, Routes, Link } from 'react-router-dom'
 import { CContainer, CSpinner } from '@coreui/react'
 import PropertyNav from './propertynav/PropertyNav'
 import OverviewContent from '../property/propertynav/OverviewContent'
