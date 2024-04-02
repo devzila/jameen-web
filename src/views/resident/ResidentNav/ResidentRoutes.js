@@ -5,16 +5,13 @@ import ResNotes from './ResNotes'
 import ResOverview from './ResOverview'
 import ResVehicles from './Vehicles/ResVehicles'
 import ResHistory from './ResHistory'
+import Residents from '../Residents'
 
 export default function ShowResidentPage() {
-  const { residentID } = useParams()
-  // const ResOverview = React.lazy(() => import('./ResOverview'))
-  // const ResNotes = React.lazy(() => import('./ResNotes'))
-
   return (
     <div>
       <ResNav />
-      <Routes>
+      <Routes path="/residents/:residentId" element={<Residents />}>
         <Route path="overview" name="Resident Overview" element={<ResOverview />} />
         <Route path="notes" name="Resident Notes" element={<ResNotes />} />
         <Route path="vehicles" name="Resident Vehicles" element={<ResVehicles />} />
