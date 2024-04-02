@@ -206,15 +206,11 @@ function Unit() {
                                 <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
-                                <Dropdown.Menu className="text-start">
+                                <Dropdown.Menu className="text-center">
                                   <Edit unitId={unit.id} after_submit={refresh_data} />
                                   <NavLink
-                                    style={{
-                                      border: 'none',
-                                      color: '#00bfcc',
-                                      marginLeft: '35%',
-                                      textDecorationLine: 'none',
-                                    }}
+                                    type="button"
+                                    className="tooltip_button theme_color"
                                     to={`/properties/${propertyId}/units/${unit.id}`}
                                   >
                                     Show

@@ -94,10 +94,7 @@ export default function BillableItems() {
                   <strong>Unit Type</strong>
                 </div>
                 <div>
-                  <button onClick={triggerEdit} className="btn custom_theme_button">
-                    Edit
-                  </button>
-                  {/* <EditUnitTypes id={unittypeID} /> */}
+                  <EditUnitTypes id={unittypeID} />
                 </div>
               </CListGroupItem>
               <CRow>

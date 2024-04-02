@@ -2,9 +2,12 @@ import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
 import { AuthContext } from '../contexts/AuthContext'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
+  console.log(useLocation())
   const auth = useContext(AuthContext)
 
   function extractLastPart(inputString) {
@@ -31,18 +34,25 @@ const AppBreadcrumb = () => {
   const breadcrumbs = getBreadcrumbs(currentLocation)
 
   return (
-    <CBreadcrumb className="m-0 ms-2">
-      <CBreadcrumbItem href="/">HOME</CBreadcrumbItem>
+    <CBreadcrumb className="m-0 ms-1" style={{ '--cui-breadcrumb-divider': "''" }}>
+      <CBreadcrumbItem href="/" className="ms-1">
+        <CIcon icon={freeSet.cilHome} />
+      </CBreadcrumbItem>
       {breadcrumbs.map((breadcrumb, index) => {
-        return (
-          <CBreadcrumbItem
-            className="text-uppercase"
-            {...(breadcrumb.active ? { active: true } : { href: breadcrumb.pathname })}
-            key={index}
-          >
-            {`${extractLastPart(breadcrumb?.name)}`}
-          </CBreadcrumbItem>
-        )
+        if (isNaN(extractLastPart(breadcrumb?.name))) {
+          return (
+            <CBreadcrumbItem
+              className="text-uppercase "
+              {...(breadcrumb.active ? { active: true } : { href: breadcrumb.pathname })}
+              key={index}
+            >
+              <div className="m-0 p-0">
+                <CIcon icon={freeSet.cilChevronRight} className="text-secondary me-1" />
+                {extractLastPart(breadcrumb?.name)}
+              </div>
+            </CBreadcrumbItem>
+          )
+        }
       })}
     </CBreadcrumb>
   )

@@ -7,7 +7,7 @@ import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import PickOwner from '../unit/UnitFunctions/PickOwner'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
@@ -119,8 +119,10 @@ const Finance = () => {
                           <tbody>
                             {invoices?.map((invoice) => (
                               <tr key={invoice.id}>
-                                <th className="pt-3" scope="row" style={{ color: '#666666' }}>
-                                  {invoice.number}
+                                <th className="pt-3 ps-3 border-0" scope="row">
+                                  <NavLink to={`/finance/${invoice.id}/view`}>
+                                    {invoice.number}
+                                  </NavLink>
                                 </th>
                                 <td className="pt-3">
                                   {invoice?.unit_contract?.unit?.unit_no || '-'}

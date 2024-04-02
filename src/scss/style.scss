@@ -21,6 +21,8 @@ $enable-rtl: true;
 a {
   color: #00bfcc;
   text-decoration-line: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 input {
   border: 1px solid #00bfcc;
