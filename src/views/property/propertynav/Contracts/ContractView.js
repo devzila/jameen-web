@@ -75,7 +75,7 @@ export default function ContractView() {
               <strong className="text-black">Members</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
-            <CTable  responsive="sm">
+            <CTable responsive="sm">
               <thead>
                 <tr>
                   <th>Member Type</th>
