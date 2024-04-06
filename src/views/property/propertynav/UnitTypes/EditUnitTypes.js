@@ -88,7 +88,7 @@ export default function EditUnitTypes({ after_submit, id }) {
     <div>
       <button
         type="button"
-        className="tooltip_button d-flex"
+        className="tooltip_button text-nowrap px-3 py-2"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >

@@ -75,7 +75,7 @@ function PropertyCardView({ property }) {
                         <CCol className="d-flex justify-content-end "></CCol>
                       </CRow>
                       <CRow>
-                        <CCol md="8" className="text-black">
+                        <CCol md="8" className="text-black text-nowrap">
                           {property?.name || '-'}
                           <br></br>
                           <CCol className="text-secondary">
@@ -86,7 +86,7 @@ function PropertyCardView({ property }) {
                         </CCol>
                       </CRow>
                       <br></br>
-                      <CCardText className=" m-2">
+                      <CCardText className="m-2">
                         <CRow>
                           <CCol md="5" className="text-black ">
                             <NavLink to={`/properties/${property.id}/Buildings`}>

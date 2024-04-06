@@ -15,7 +15,7 @@ export default function Index() {
     <>
       <Nav />
       <CContainer fluid>
-        <Routes>
+        <Routes path="/settings" element={<Role />}>
           <Route path="roles" name="Role" element={<Role />} />
           <Route path="users" name="User" element={<User />} />
           <Route path="maintenance" name="Maintenance" element={<Maintenance />} />

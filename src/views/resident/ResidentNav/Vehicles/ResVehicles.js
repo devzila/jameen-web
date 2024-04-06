@@ -53,68 +53,73 @@ export default function ResVehicles() {
             </div>
             <hr className=" text-secondary" />
 
-            <div className="mask d-flex align-items-center h-100 mt-2">
-              <div className="w-100">
-                <div className="row justify-content-center">
-                  <div className="col-12">
-                    <div className="table-responsive bg-white">
-                      <table className="table table-striped mb-0">
-                        <thead
-                          style={{
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            overFlow: 'hidden',
-                          }}
-                        >
-                          <tr>
-                            <th className="pt-1 border-0">Name</th>
-                            <th className="pt-1 border-0">Registration No.</th>
-                            <th className="pt-1 border-0">Year Built </th>
-                            <th className="pt-1 border-0">Tag</th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-                          {resvehicles.map((resvehicles) => (
-                            <tr key={resvehicles.id}>
-                              <th className="pt-3 border-0" scope="row">
-                                {resvehicles.brand_name}
-                              </th>
-                              <td className="pt-3 text-capitalize">
-                                {resvehicles.registration_no || '-'}
-                              </td>
-                              <td className="pt-3 text-capitalize">
-                                {resvehicles.year_built || '-'}
-                              </td>
-                              <td className="pt-3"> {resvehicles.tag || '-'}</td>
-
-                              <td>
-                                <Dropdown key={resvehicles.id}>
-                                  <Dropdown.Toggle
-                                    as={CustomDivToggle}
-                                    style={{ cursor: 'pointer' }}
-                                  >
-                                    <BsThreeDots />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu>
-                                    <EditVehices
-                                      id={resvehicles.id}
-                                      after_submit={reload_callback}
-                                    />
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </td>
+            {resvehicles.length >= 1 ? (
+              <div className="mask d-flex align-items-center h-100 mt-2">
+                <div className="w-100">
+                  <div className="row justify-content-center">
+                    <div className="col-12">
+                      <div className="table-responsive bg-white">
+                        <table className="table table-striped mb-0">
+                          <thead
+                            style={{
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              overFlow: 'hidden',
+                            }}
+                          >
+                            <tr>
+                              <th className="pt-1 border-0">Name</th>
+                              <th className="pt-1 border-0">Registration No.</th>
+                              <th className="pt-1 border-0">Year Built </th>
+                              <th className="pt-1 border-0">Tag</th>
+                              <th className="pt-1 border-0">Actions</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      {loading && <Loading />}
-                      {errors && toast('Unable To Load data')}
+                          </thead>
+
+                          <tbody>
+                            {resvehicles.map((resvehicles) => (
+                              <tr key={resvehicles.id}>
+                                <th className="pt-3 border-0" scope="row">
+                                  {resvehicles.brand_name}
+                                </th>
+                                <td className="pt-3 text-capitalize">
+                                  {resvehicles.registration_no || '-'}
+                                </td>
+                                <td className="pt-3 text-capitalize">
+                                  {resvehicles.year_built || '-'}
+                                </td>
+                                <td className="pt-3"> {resvehicles.tag || '-'}</td>
+
+                                <td>
+                                  <Dropdown key={resvehicles.id}>
+                                    <Dropdown.Toggle
+                                      as={CustomDivToggle}
+                                      style={{ cursor: 'pointer' }}
+                                    >
+                                      <BsThreeDots />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                      <EditVehices
+                                        id={resvehicles.id}
+                                        after_submit={reload_callback}
+                                      />
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                        {loading ?? <Loading />}
+                        {errors ?? toast('Unable To Load data')}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <p className="fst-italic bg-white text-center">No Vehicles Found.</p>
+            )}
           </Card>
         </div>
 

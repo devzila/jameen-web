@@ -29,16 +29,16 @@ export default function ResOverview() {
 
   return (
     <>
-      <CRow>
-        <CCol md="4">
-          <CCard className=" p-5  m-3 border-0  " style={{ backgroundColor: '#00bfcc' }}>
-            <div className="d-flex align-items-center justify-content-center h-100 ">
+      <CRow className="bg-white mt-2 m-1 p-1 rounded-2 border-0">
+        <CCol md="4" sm="6">
+          <CCard className="p-5 my-3 border-0 text-center" style={{ backgroundColor: '#00bfcc' }}>
+            <div className="">
               <img className="rounded-circle w-50 " src={resident_data.avatar || logo} />
             </div>
           </CCard>
         </CCol>
-        <CCol md="8">
-          <CCard className=" pt-3 pb-1 px-3  my-3 me-3  border-0">
+        <CCol className="col">
+          <CCard className="p-3  my-3 border-0">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -88,16 +88,16 @@ export default function ResOverview() {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light theme_color">
+              <CCol className="p-3 mt-0 fw-light theme_color col-lg-3 col-sm-3">
                 Email
                 <CCardText
-                  className="fw-normal"
+                  className="fw-normal text-nowrap"
                   style={{ color: 'black', textTransform: 'capitalize' }}
                 >
                   {resident_data?.email || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
+              <CCol className="p-3 mt-0 fw-light theme_color text-nowrap col-lg-3 col-sm-6">
                 Phone No.
                 <CCardText
                   className="fw-normal"
@@ -106,10 +106,10 @@ export default function ResOverview() {
                   {resident_data?.phone_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                D.OB.
+              <CCol className="p-3 mt-0 fw-light theme_color  col-lg-3 col-sm-6">
+                D.O.B.
                 <CCardText
-                  className="fw-normal"
+                  className="fw-normal "
                   style={{ color: 'black', textTransform: 'capitalize' }}
                 >
                   {formatdate(resident_data?.dob) || '-'}
@@ -121,8 +121,8 @@ export default function ResOverview() {
       </CRow>
 
       <CRow>
-        <CCol md="2">
-          <CCard className=" p-3 m-3 border-0">
+        <CCol md="2" sm="12">
+          <CCard className="p-3 my-3 border-0">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -159,8 +159,8 @@ export default function ResOverview() {
             </CRow>
           </CCard>
         </CCol>
-        <CCol md="10">
-          <CCard className=" px-3 pt-4 my-3 me-3 border-0">
+        <CCol md="10" sm="12">
+          <CCard className=" p-3 my-3 border-0">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -235,8 +235,8 @@ export default function ResOverview() {
       </CRow>
 
       <CRow>
-        <CCol md="12">
-          <CCard className=" p-3 m-3 border-0">
+        <CCol md="12" sm="12">
+          <CCard className=" p-3 my-3 border-0">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -292,7 +292,7 @@ export default function ResOverview() {
 
       <CRow>
         <CCol md="12">
-          <CCard className=" p-3 m-3 border-0">
+          <CCard className=" p-3 my-3 border-0">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}

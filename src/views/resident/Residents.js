@@ -101,32 +101,29 @@ const Residents = () => {
                         <th className="pt-3 pb-3 border-0">Gender</th>
                         <th className="pt-3 pb-3 border-0">Email</th>
                         <th className="pt-3 pb-3 border-0">Mobile Number </th>
+                        <th className="pt-3 pb-3 border-0">Actions </th>
                       </tr>
                     </thead>
 
                     <tbody>
                       {residents.map((residents) => (
                         <tr key={residents.id}>
-                          <th className="pt-3 border-0" scope="row">
+                          <th className="pt-3 border-0 text-nowrap" scope="row">
                             <NavLink to={`/resident/${residents.id}/overview`}>
                               {residents.first_name + ' ' + residents.last_name}
                             </NavLink>
                           </th>
-                          <td className="pt-3">{residents.dob}</td>
+                          <td className="pt-3 text-nowrap">{residents.dob}</td>
                           <td className="pt-3">{residents.username}</td>
                           <td className="pt-3">
                             {residents.gender.charAt(0).toUpperCase() + residents.gender.slice(1)}
                           </td>
                           <td className="pt-3">{residents.email}</td>
                           <td className="pt-3">
-                            {residents.phone_number
-                              .replace('(', ' ')
-                              .replace(')', ' ')
-                              .replace('.', ' ')
-                              .replace(/-/g, ' ')}
+                            {residents.phone_number.replace(/[()\-.]/g, ' ')}
                           </td>
 
-                          <td>
+                          <td className="text-center">
                             <Dropdown key={residents.id}>
                               <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
                                 <BsThreeDots />

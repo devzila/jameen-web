@@ -13,17 +13,20 @@ $enable-rtl: true;
 @import 'custom';
 
 * {
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  a {
-    color: #00bfcc;
-    text-decoration-line: none;
-  }
-  input {
-    border: 1px solid #00bfcc;
-    padding-block-start: 5px;
-  }
+  // border: 1px dashed red;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+a {
+  color: #00bfcc;
+  text-decoration-line: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+input {
+  border: 1px solid #00bfcc;
+  padding-block-start: 5px;
 }
 
 input:focus,
@@ -121,4 +124,14 @@ label {
 
 .react-select-container {
   color: pink;
+}
+
+.dropdown-menu {
+  border-radius: 2px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border: 0px;
+}
+
+.btn-close {
+  --cui-btn-close-focus-shadow: none;
 }

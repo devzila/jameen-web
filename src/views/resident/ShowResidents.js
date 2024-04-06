@@ -61,7 +61,7 @@ export default function ShowResidents(props) {
             <div className="container bootstrap snippets bootdey">
               <div className="panel-body inf-content">
                 <div className="row">
-                  <div className="col-md-4">
+                  <div className="col-sm-4">
                     <img
                       alt="Avatar Image"
                       style={{
@@ -92,34 +92,36 @@ export default function ShowResidents(props) {
                         <tbody>
                           <tr>
                             <td>
-                              <strong>
-                                <span className="glyphicon glyphicon-asterisk text-primary"></span>
+                              <strong className="text-nowrap">
+                                <span className="glyphicon glyphicon-asterisk text-primary "></span>
                                 First Name
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">
+                            <td className="text-primary text-black-50 text-capitalize">
                               {resident_data.first_name}
                             </td>
                           </tr>
                           <tr>
                             <td>
-                              <strong>
+                              <strong className="text-nowrap">
                                 <span className="glyphicon glyphicon-user  text-primary"></span>
                                 Last Name
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">
+                            <td className="text-primary text-black-50 text-capitalize">
                               {resident_data.last_name}
                             </td>
                           </tr>
                           <tr>
                             <td>
                               <strong>
-                                <span className="glyphicon glyphicon-bookmark text-primary"></span>
+                                <span className="glyphicon glyphicon-bookmark text-primary "></span>
                                 Gender
                               </strong>
                             </td>
-                            <td className="text-primary text-black-50">{resident_data.gender}</td>
+                            <td className="text-primary text-black-50 text-capitalize">
+                              {resident_data.gender}
+                            </td>
                           </tr>
 
                           <tr>
@@ -175,8 +177,8 @@ export default function ShowResidents(props) {
                           </tr>
                           <tr>
                             <td>
-                              <strong>
-                                <span className="glyphicon glyphicon-calendar text-primary"></span>
+                              <strong className="text-nowrap">
+                                <span className="glyphicon glyphicon-calendar text-primary "></span>
                                 Created At
                               </strong>
                             </td>

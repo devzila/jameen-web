@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react'
-import { Navigate, Route, Routes, Link, Outlet } from 'react-router-dom'
+import { Navigate, Route, Routes, Link } from 'react-router-dom'
 import { CContainer, CSpinner } from '@coreui/react'
 import PropertyNav from './propertynav/PropertyNav'
 import OverviewContent from '../property/propertynav/OverviewContent'
@@ -7,6 +7,7 @@ import Showunit from './unit/ShowUnitModule/ShowUnit'
 import ContractView from './propertynav/Contracts/ContractView'
 import Buildings from './propertynav/Building/Buildings'
 import PropertyUnitTypes from './propertynav/UnitTypes/PropertyUnitTypes'
+import Properties from './Properties'
 
 export default function Property() {
   const PropertyUnit = React.lazy(() => import('../property/unit/Unit'))
@@ -25,14 +26,14 @@ export default function Property() {
   return (
     <>
       <PropertyNav />
-      <CContainer fluid>
-        <Routes>
+      <CContainer fluid className="p-0">
+        <Routes path="/properties/:propertyId" name="Properties" element={<Properties />}>
           <Route path="overview" name="Overview" element={<OverviewContent />} />
           <Route path="unit" name="Unit" element={<PropertyUnit />} />
           <Route path="unit-types" name="Unit Types" element={<PropertyUnitTypes />} />
           <Route path="unit-types/:unittypeID/billableitems" element={<BillableItems />} />
-          <Route path="unit/:unitId" name="Unit" element={<Showunit />} />{' '}
-          <Route path="contracts/:contractId" name="Unit" element={<ContractView />} />{' '}
+          <Route path="unit/:unitId" name="Unit" element={<Showunit />} />
+          <Route path="contracts/:contractId" name="Unit" element={<ContractView />} />
           {/* Move this route up */}
           <Route path="ParkingLot" name="ParkingLot" element={<ParkingLot />} />
           <Route path="Allotment" name="Allotment" element={<PropUnitAllotment />} />
