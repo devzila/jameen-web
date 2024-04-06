@@ -13,6 +13,8 @@ const Maintenance = React.lazy(() => import('../views/maintenance/Maintenance'))
 const Visitor = React.lazy(() => import('../views/visitor/Visitor'))
 const Operation = React.lazy(() => import('../views/operation/Operation'))
 const News = React.lazy(() => import('../views/news/News'))
+const NewsRoutes = React.lazy(() => import('../views/news/NewsRoutes'))
+
 const Report = React.lazy(() => import('../views/report/Report'))
 const Settings = React.lazy(() => import('../views/settings/Index'))
 const Page404 = React.lazy(() => import('../views/Page404'))
@@ -49,6 +51,8 @@ const AppContent = () => {
           <Route path="/visitor" name="Visitor" element={<Visitor />} />
           <Route path="/operation" name="Operation" element={<Operation />} />
           <Route path="/news" name="News" element={<News />} />
+          <Route path="/news/:postId/*" name="Post" element={<NewsRoutes />} />
+
           <Route path="/report" name="Report" element={<Report />} />
           <Route path="/settings/*" name="Settings" element={<Settings />}>
             <Route path="users" name="User" element={<User />} />

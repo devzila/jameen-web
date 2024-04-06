@@ -34,6 +34,7 @@ export default function AddTemp({ after_submit, option }) {
     } else if (option == 'invoices') {
       var payload = { invoice: data }
     }
+
     const api = await post(`/v1/admin/template/${option}`, payload)
 
     console.log(payload)
