@@ -88,13 +88,13 @@ function News() {
                       <tr>
                         <th className="pt-3 pb-3 border-0">Title</th>
                         <th className="pt-3 pb-3 border-0">Category</th>
+                        <th className="pt-3 pb-3 border-0">User ID</th>
                         <th className="pt-3 pb-3 border-0">View Count</th>
                         <th className="pt-3 pb-3 border-0">Like Count</th>
                         <th className="pt-3 pb-3 border-0">Content Name</th>
                         <th className="pt-3 pb-3 border-0">Content Body</th>
                         <th className="pt-3 pb-3 border-0">Content Record</th>
                         <th className="pt-3 pb-3 border-0">Status</th>
-                        <th className="pt-3 pb-3 border-0">User ID</th>
                         <th className="pt-3 pb-3 border-0">Action</th>
                       </tr>
                     </thead>
@@ -106,13 +106,14 @@ function News() {
                             <NavLink to={`${post.id}/posts`}>{post.title}</NavLink>
                           </th>
                           <td className="pt-3">{post.category}</td>
+                          <td className="pt-3">{post.user_id}</td>
                           <td className="pt-3">{post.view_count}</td>
                           <td className="pt-3">{post.likes_count}</td>
                           <td className="pt-3">{post.content.name}</td>
                           <td className="pt-3">{post.content.body}</td>
                           <td className="pt-3">{post.content.record_type}</td>
                           <td className="pt-3">{post.status}</td>
-                          <td className="pt-3">{post.user_id}</td>
+
                           <td>
                             <Dropdown key={post.id}>
                               <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
