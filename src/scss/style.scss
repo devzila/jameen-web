@@ -46,10 +46,10 @@ input:focus,
   border: 0px;
 }
 .modal {
-  background: rgba(255, 255, 255, 0.15);
+  // background: radial-gradient(rgba(0, 0, 0, 0.55));
   border: 0px;
-
-  // backdrop-filter: blur(1px);
+  background: radial-gradient(circle, rgba(17, 14, 15, 0.2) 2%, rgba(0, 0, 0, 0.337) 100%);
+  // backdrop-filter: blur(0.5px);
 }
 
 .modal-content,
