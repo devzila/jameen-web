@@ -28,6 +28,7 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
 
   function fetchLocalData() {
     const temp_use_type = JSON.parse(localStorage.getItem('meta'))
+    console.log(temp_use_type)
 
     const temp2_unit_type = Object.entries(temp_use_type.property_use_types).map((x) => ({
       value: x[0],

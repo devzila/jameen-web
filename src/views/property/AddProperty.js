@@ -38,7 +38,7 @@ export default function PropertyForm({ after_submit }) {
       const propertyPaymentTermsOptions = Object.entries(api.property_payment_terms).map(
         ([key, value]) => ({
           value: value,
-          label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
+          label: key.charAt(0).toUpperCase() + key.slice(1)?.replace(/_/g, ' '),
         }),
       )
       setPaymentTermOptions(propertyPaymentTermsOptions)

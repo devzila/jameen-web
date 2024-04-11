@@ -109,39 +109,49 @@ export default function Visitor() {
                       </thead>
 
                       <tbody>
-                        {visitor.map((visitor) => (
-                          <tr key={visitor.id}>
-                            <th className="pt-3" scope="row" style={{ color: '#666666' }}>
-                              {visitor.name}
-                            </th>
-                            <td className="pt-3">{visitor.status || '-'}</td>
-                            <td className="pt-3">{visitor.visit_date}</td>
-                            <td className="pt-3">{visitor.phone_number}</td>
-                            <td className="pt-3">
-                              {visitor.resident_id.replace('T', ' ').replace('Z', ' ').slice(0, 19)}
-                            </td>
-                            <td className="pt-3">{visitor.unit_id}</td>
-                            <td className="pt-3">
-                              {visitor.checkin.replace('T', ' ').replace('Z', ' ').slice(0, 19)}
-                            </td>
-                            <td className="pt-3">
-                              {visitor.chackout.replace('T', ' ').replace('Z', ' ').slice(0, 19)}
-                            </td>
+                        {visitor &&
+                          visitor?.map((visitor) => (
+                            <tr key={visitor.id}>
+                              <th className="pt-3" scope="row" style={{ color: '#666666' }}>
+                                {visitor.name}
+                              </th>
+                              <td className="pt-3">{visitor.status || '-'}</td>
+                              <td className="pt-3">{visitor.visit_date}</td>
+                              <td className="pt-3">{visitor.phone_number}</td>
+                              <td className="pt-3">
+                                {visitor.resident_id
+                                  ?.replace('T', ' ')
+                                  ?.replace('Z', ' ')
+                                  .slice(0, 19)}
+                              </td>
+                              <td className="pt-3">{visitor.unit_id}</td>
+                              <td className="pt-3">
+                                {visitor.checkin?.replace('T', ' ')?.replace('Z', ' ').slice(0, 19)}
+                              </td>
+                              <td className="pt-3">
+                                {visitor.chackout
+                                  ?.replace('T', ' ')
+                                  ?.replace('Z', ' ')
+                                  .slice(0, 19)}
+                              </td>
 
-                            <td>
-                              <Dropdown key={visitor.id}>
-                                <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                  <BsThreeDots />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  <EditVisitor visitorId={visitor.id} />
-                                  <ShowVisitor visitorId={visitor.id} />
-                                  <DeleteVisitor visitorId={visitor.id} />
-                                </Dropdown.Menu>
-                              </Dropdown>
-                            </td>
-                          </tr>
-                        ))}
+                              <td>
+                                <Dropdown key={visitor.id}>
+                                  <Dropdown.Toggle
+                                    as={CustomDivToggle}
+                                    style={{ cursor: 'pointer' }}
+                                  >
+                                    <BsThreeDots />
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu>
+                                    <EditVisitor visitorId={visitor.id} />
+                                    <ShowVisitor visitorId={visitor.id} />
+                                    <DeleteVisitor visitorId={visitor.id} />
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
                     {loading && <Loading />}

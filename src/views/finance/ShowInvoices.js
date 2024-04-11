@@ -98,7 +98,7 @@ export default function ShowInvoices() {
                       <tr key={items.id}>
                         <td className="px-0">
                           {items?.item_name || '-'}
-                          <small>({items?.item_type.replace(/_/g, ' ') || '-'})</small>
+                          <small>({items?.item_type?.replace(/_/g, ' ') || '-'})</small>
                         </td>
 
                         <td className="text-end px-1 font-monospace">{items?.vat_amount || '-'}</td>
