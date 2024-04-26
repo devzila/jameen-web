@@ -116,7 +116,8 @@ const Residents = () => {
                           <td className="pt-3 text-nowrap">{residents.dob}</td>
                           <td className="pt-3">{residents.username}</td>
                           <td className="pt-3">
-                            {residents.gender.charAt(0).toUpperCase() + residents.gender.slice(1)}
+                            {residents.gender?.charAt(0)?.toUpperCase() +
+                              residents.gender?.slice(1)}
                           </td>
                           <td className="pt-3">{residents.email}</td>
                           <td className="pt-3">

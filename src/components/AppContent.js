@@ -26,6 +26,7 @@ const Allotment = React.lazy(() => import('../views/settings/Allotment'))
 const ShowUnit = React.lazy(() => import('../views/property/unit/ShowUnitModule/ShowUnit'))
 const ResidentRoutes = React.lazy(() => import('../views/resident/ResidentNav/ResidentRoutes'))
 const ShowInvoices = React.lazy(() => import('../views/finance/ShowInvoices'))
+const DashboardRoutes = React.lazy(() => import('../views/dashboard/DashboardRoutes'))
 
 const AppContent = () => {
   return (
@@ -47,6 +48,9 @@ const AppContent = () => {
             name="ShowUnit"
             element={<ShowUnit />}
           />
+          <Route path="/dashboard" name="Dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/*" name="Dashboard" element={<Dashboard />} />
+
           <Route path="/maintenance" name="Maintenance" element={<Maintenance />} />
           <Route path="/visitor" name="Visitor" element={<Visitor />} />
           <Route path="/operation" name="Operation" element={<Operation />} />
