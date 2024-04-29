@@ -9,6 +9,7 @@ export default function DashboardRoutes() {
   return (
     <Container>
       <Routes>
+        <Route path="/" element={<Overview />} />
         <Route path="overview" element={<Overview />} />
         <Route path="finance" element={<Finance />} />
         <Route path="maintenance" element={<Maintenance />} />

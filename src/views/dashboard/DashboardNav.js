@@ -7,21 +7,21 @@ import { toast } from 'react-toastify'
 
 export default function DashboardNav() {
   return (
-    <div className=" d-flex justify-content-center container-fluid mt-2">
+    <div className=" d-flex justify-content-center container-fluid mt-2 ">
       <div className="body-box-new new-settings-box border-0 menu-items">
         <div className="new-settings-menu  shadow-lg  bg-white rounded-pill ">
           <div className="ms-5">
-            <NavLink to={'overview'} className="p-3 ">
+            <NavLink to="/dashboard/overview" className="p-3 ">
               <CIcon icon={freeSet.cilLayers} size="xxl" className="  theme_color " />
             </NavLink>
           </div>
           <div>
-            <NavLink to="finance" className="p-3 ">
+            <NavLink to="/dashboard/finance" className="p-3 ">
               <CIcon icon={freeSet.cilCash} size="xxl" className=" theme_color " />
             </NavLink>
           </div>
           <div className="me-5">
-            <NavLink to="maintenance" className="p-3">
+            <NavLink to="/dashboard/maintenance" className="p-3">
               <CIcon icon={freeSet.cilSettings} size="xxl" className=" theme_color " />
             </NavLink>
           </div>
