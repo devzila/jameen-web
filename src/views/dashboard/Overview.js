@@ -1,9 +1,20 @@
 import { freeSet } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Col, Row } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { useFetch } from 'use-http'
+import { Line } from 'react-chartjs-2'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js'
 
 export default function Overview() {
   const { get, response } = useFetch()
@@ -21,6 +32,38 @@ export default function Overview() {
       toast.error('Something went wrong')
     }
   }
+
+  ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Chart.js Line Chart',
+      },
+    },
+  }
+
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Dataset 1',
+        data: [22, 3, 12, 55, 62, 6, 12],
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+    ],
+  }
+
+  const chartContainer = useRef(null)
+
   console.log(ratings)
   return (
     <>
@@ -36,7 +79,7 @@ export default function Overview() {
             />
           </div>
 
-          <div>Satisfaction Score : {ratings?.satisfaction_score}</div>
+          <div>Satisfaction Score : {ratings?.satisfaction_score | 0}</div>
         </Col>
         <Col className="bg-white mx-1 rounded-3 shadow-lg p-3 text-nowrap mt-2 ">
           <div className="d-flex justify-content-center">
@@ -60,9 +103,15 @@ export default function Overview() {
           <div className="d-flex justify-content-center">
             <CIcon icon={freeSet.cilLibrary} size="3xl" className="d-block  mb-2 text-secondary" />{' '}
           </div>
-          <div>Total Ratings : {ratings?.total_ratings || 0 }</div>
+          <div>Total Ratings : {ratings?.total_ratings || 0}</div>
         </Col>
       </Row>
+
+      <section className=" my-4 w-100">
+        <div className="col-8 bg-white  shadow-lg rounded-3 p-3">
+          <Line options={options} data={data} />
+        </div>
+      </section>
     </>
   )
 }

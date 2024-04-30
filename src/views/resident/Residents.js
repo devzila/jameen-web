@@ -49,6 +49,7 @@ const Residents = () => {
     }
   }
   function handlePageClick(e) {
+    setLoading(true)
     setCurrentPage(e.selected + 1)
   }
 
@@ -139,8 +140,8 @@ const Residents = () => {
                       ))}
                     </tbody>
                   </table>
-                  {loading ?? <Loading />}
-                  {errors && toast('Unable To Load data')}
+                  {loading && <Loading />}
+                  {errors ?? toast('Unable To Load data')}
                 </div>
               </div>
             </div>

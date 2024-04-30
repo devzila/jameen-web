@@ -22,7 +22,7 @@ export default function DashboardNav() {
           </div>
           <div className="me-5">
             <NavLink to="/dashboard/maintenance" className="p-3">
-              <CIcon icon={freeSet.cilSettings} size="xxl" className=" theme_color " />
+              <CIcon icon={freeSet.cilFactorySlash} size="xxl" className=" theme_color " />
             </NavLink>
           </div>
         </div>
