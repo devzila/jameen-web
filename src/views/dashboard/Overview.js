@@ -22,12 +22,21 @@ export default function Overview() {
   const [ratings, setRatings] = useState()
 
   useEffect(() => {
-    loadInitialStats()
+    loadSatisfactionScores()
   }, [])
-  const loadInitialStats = async () => {
+  const loadSatisfactionScores = async () => {
     const api = await get('v1/admin/reports/maintenance_requests')
     if (response.ok) {
-      setRatings(api.data)
+      setRatings(api.data[0])
+    } else {
+      toast.error('Something went wrong')
+    }
+  }
+
+  const loadGraph = async () => {
+    const api = await get('v1/admin/reports/maintenance_requests')
+    if (response.ok) {
+      setRatings(api.data[0])
     } else {
       toast.error('Something went wrong')
     }
@@ -37,16 +46,19 @@ export default function Overview() {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top',
       },
       title: {
         display: true,
-        text: 'Chart.js Line Chart',
+        text: 'Maintenance Requests',
       },
     },
   }
+
+  var size = { width: '600', height: '450' }
 
   const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
 
@@ -54,7 +66,7 @@ export default function Overview() {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
+        label: '',
         data: [22, 3, 12, 55, 62, 6, 12],
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -107,11 +119,9 @@ export default function Overview() {
         </Col>
       </Row>
 
-      <section className=" my-4 w-100">
-        <div className="col-8 bg-white  shadow-lg rounded-3 p-3">
-          <Line options={options} data={data} />
-        </div>
-      </section>
+      <div className="bg-white  shadow-lg rounded-3 p-3  w-100 h-100 my-3 mx-0">
+        <Line options={options} data={data} width={400} height={600} />
+      </div>
     </>
   )
 }

@@ -7,7 +7,7 @@ import { Maintenance } from './Maintenance'
 
 export default function DashboardRoutes() {
   return (
-    <Container>
+    <Container fluid>
       <Routes>
         <Route path="/" element={<Overview />} />
         <Route path="overview" element={<Overview />} />
