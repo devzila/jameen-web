@@ -152,7 +152,7 @@ export const Maintenance = () => {
       <div className="bg-white  shadow-lg rounded-3 p-3  w-100 h-100 my-3 mx-0">
         <Line options={options} data={data} width={400} height={600} />
       </div>
-      <Row>
+      <Row className="w-100 p-0">
         <div className="bg-white  shadow-lg rounded-3 p-1  h-100 my-3 mx-1 col-7">
           <Bar options={options} data={bardata} height={400} />
         </div>
