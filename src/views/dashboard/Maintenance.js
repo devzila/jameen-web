@@ -16,43 +16,17 @@ import {
   Legend,
   BarElement,
 } from 'chart.js'
+import TopCards from './Maintenance/TopCards'
+import { CCard, CCol, CRow } from '@coreui/react'
 
 export const Maintenance = () => {
   const { get, response } = useFetch()
 
-  const [ratings, setRatings] = useState()
-  const [ticketByStatus, setTicketsByStatus] = useState()
+  const [sot_data, setSot_data] = useState([])
 
-  useEffect(() => {
-    loadSatisfactionScores()
-    loadticketbystatus()
-  }, [])
-  const loadSatisfactionScores = async () => {
-    const api = await get('v1/admin/reports/maintenance_requests')
-    if (response.ok) {
-      setRatings(api.data[0])
-    } else {
-      toast.error('Something went wrong')
-    }
-  }
+  const [ticketCountByCategories, setTicketCountByCategory] = useState([])
 
-  const loadGraph = async () => {
-    const api = await get('v1/admin/reports/maintenance_requests')
-    if (response.ok) {
-      setRatings(api.data[0])
-    } else {
-      toast.error('Something went wrong')
-    }
-  }
-
-  const loadticketbystatus = async () => {
-    const api = await get('v1/admin/reports/tickets_by_status')
-    if (response.ok) {
-      setTicketsByStatus(api.data)
-    } else {
-      toast.error('Something went wrong')
-    }
-  }
+  const [tcbStatus, setTcbStatus] = useState({})
 
   ChartJS.register(
     CategoryScale,
@@ -79,88 +53,108 @@ export const Maintenance = () => {
     },
   }
 
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
-  const bardata = {
-    labels: ticketByStatus ? Object.keys(ticketByStatus) : null,
-    datasets: [
-      {
-        label: 'Tickets By Status',
-        data: ticketByStatus ? Object.values(ticketByStatus) : null,
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-    ],
-  }
-  var size = { width: '600', height: '450' }
+  useEffect(() => {
+    satisfactionOverTime()
+    loadticketbycategory()
+    loadticketbyreqstatus()
+  }, [])
 
-  const data = {
-    labels,
+  //linechart satisfaction over time
+  const satisfactionOverTime = async () => {
+    const api = await get('v1/admin/reports/maintenance_request/satisfaction_score_over_time')
+
+    if (response.ok) {
+      setSot_data(api.data)
+    } else {
+      toast.error('Something went wrong')
+    }
+  }
+
+  const sotLine = {
+    labels: sot_data.map((item) => item.yrmn),
     datasets: [
       {
-        label: '',
-        data: [22, 3, 12, 55, 62, 6, 12],
+        label: ``,
+        data: sot_data.map((item) => item.rating),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
     ],
   }
 
-  const chartContainer = useRef(null)
+  //tickets by category count
 
-  console.log(ratings)
+  const loadticketbycategory = async () => {
+    const api = await get('v1/admin/reports/maintenance_request/tickets_by_categories')
+    console.log(api)
+    if (response.ok) {
+      setTicketCountByCategory(api.data)
+    } else {
+      // toast.error('Something went wrong')
+    }
+  }
+
+  const tcbcategories_points = {
+    labels: ticketCountByCategories ? Object.keys(ticketCountByCategories) : null,
+    datasets: [
+      {
+        label: 'Tickets By Status',
+        data: ticketCountByCategories ? Object.values(ticketCountByCategories) : null,
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+    ],
+  }
+
+  //tickets count by satisfaction score
+
+  const loadticketbyreqstatus = async () => {
+    const api = await get('v1/admin/reports/maintenance_request/tickets_by_status')
+    console.log(api)
+
+    if (response.ok) {
+      setTcbStatus(api.data)
+    } else {
+      // toast.error('Something went wrong')
+    }
+  }
+
+  const tcbstatus_points = {
+    labels: tcbStatus ? Object.keys(tcbStatus) : null,
+    datasets: [
+      {
+        label: 'Tickets By Status',
+        data: tcbStatus ? Object.values(tcbStatus) : null,
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+    ],
+  }
+
+  //
+
   return (
     <>
-      <Row className="mt-4 text-uppercase text-center">
-        <Col className="bg-white mx-1 rounded-3 shadow-lg p-3 text-nowrap mt-2 ">
-          <div className="d-flex justify-content-center">
-            <CIcon
-              icon={freeSet.cilSmile}
-              size="3xl"
-              className={`d-block mb-2  ${
-                ratings?.satisfaction_score >= 50 ? 'text-success' : 'text-danger'
-              }`}
-            />
-          </div>
+      <TopCards />
+      <CRow className="mt-3 ">
+        <CCard className="p-3 my-3 border-0">
+          <CCol md="12" sm="12" className="bg-white rounded-3">
+            <Line options={options} data={sotLine} width={400} height={600} />
+          </CCol>
+        </CCard>
+      </CRow>
 
-          <div>Satisfaction Score : {ratings?.satisfaction_score | 0}</div>
-        </Col>
-        <Col className="bg-white mx-1 rounded-3 shadow-lg p-3 text-nowrap mt-2 ">
-          <div className="d-flex justify-content-center">
-            <CIcon icon={freeSet.cilSmile} size="3xl" className="d-block  mb-2 text-success" />
-          </div>
-          <div>Good Ratings : {ratings?.good_ratings || 0}</div>
-        </Col>
-        <Col className="bg-white mx-1 rounded-3 shadow-lg p-3 text-nowrap mt-2 ">
-          <div className="d-flex justify-content-center">
-            <CIcon icon={freeSet.cilMeh} size="3xl" className="d-block  mb-2 text-warning  " />
-          </div>
-          <div>Average Ratings : {ratings?.average_ratings || 0}</div>
-        </Col>
-        <Col className="bg-white mx-1 rounded-3 shadow-lg p-3 text-nowrap mt-2 ">
-          <div className="d-flex justify-content-center">
-            <CIcon icon={freeSet.cilSad} size="3xl" className="d-block  mb-2 text-danger" />
-          </div>
-          <div>Bad Ratings : {ratings?.bad_ratings || 0}</div>
-        </Col>
-        <Col className="bg-white mx-1 rounded-3 shadow-lg p-3 text-nowrap mt-2 ">
-          <div className="d-flex justify-content-center">
-            <CIcon icon={freeSet.cilLibrary} size="3xl" className="d-block  mb-2 text-secondary" />{' '}
-          </div>
-          <div>Total Ratings : {ratings?.total_ratings || 0}</div>
-        </Col>
-      </Row>
+      <CRow>
+        <CCol md="6" sm="12">
+          <CCard className="p-3 my-3 border-0">
+            <Bar options={options} data={tcbcategories_points} />
+          </CCard>
+        </CCol>
 
-      <div className="bg-white  shadow-lg rounded-3 p-3  w-100 h-100 my-3 mx-0">
-        <Line options={options} data={data} width={400} height={600} />
-      </div>
-      <Row className="w-100 p-0">
-        <div className="bg-white  shadow-lg rounded-3 p-1  h-100 my-3 mx-1 col-7">
-          <Bar options={options} data={bardata} height={400} />
-        </div>
-
-        <div className="bg-white  shadow-lg rounded-3 p-1 h-100 my-3 mx-1 col-4">
-          <Bar options={options} data={bardata} height={400} />
-        </div>
-      </Row>
+        <CCol md="6" sm="12">
+          <CCard className="p-3 my-3 border-0">
+            <Bar options={options} data={tcbstatus_points} />
+          </CCard>
+        </CCol>
+      </CRow>
     </>
   )
 }

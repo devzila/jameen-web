@@ -62,7 +62,7 @@ const Login = () => {
         })
       })
       .catch((error) => {
-        if (!('json' in error) || error.status == 404) {
+        if (!('json' in error) || error.status === 404) {
           toast('Unknown Error Occured. Server response not received.')
           setData({
             ...data,
