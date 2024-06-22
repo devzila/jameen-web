@@ -25,7 +25,7 @@ export default function TopCards() {
 
   return (
     <>
-      <Row className="mt-4 text-uppercase text-center">
+      <Row className="mt-2 text-uppercase text-center">
         <Col className="bg-white mx-1 rounded-3 shadow-lg p-3 text-nowrap mt-2 ">
           <div className="d-flex justify-content-center">
             <CIcon

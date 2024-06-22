@@ -15,31 +15,26 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js'
+import { CCard, CCol, CRow } from '@coreui/react'
 
 export default function Overview() {
   const { get, response } = useFetch()
 
-  const [ratings, setRatings] = useState()
+  const [overview_data, setOverview] = useState()
 
   useEffect(() => {
-    loadSatisfactionScores()
+    loadOverviewRecords()
   }, [])
 
-  const loadSatisfactionScores = async () => {
-    const api = await get('v1/admin/reports/maintenance_requests')
+  const loadOverviewRecords = async () => {
+    const api = await get('v1/admin/reports/overviews')
+
+    console.log(api.data)
     if (response.ok) {
-      setRatings(api.data[0])
+      setOverview(api.data)
+      console.log(overview_data)
     } else {
       // toast.error('Something went wrong')
-    }
-  }
-
-  const loadGraph = async () => {
-    const api = await get('v1/admin/reports/maintenance_requests')
-    if (response.ok) {
-      setRatings(api.data[0])
-    } else {
-      toast.error('Something went wrong')
     }
   }
 
@@ -74,9 +69,72 @@ export default function Overview() {
       },
     ],
   }
-
-  const chartContainer = useRef(null)
-
-  console.log(ratings)
-  return <></>
+  return (
+    <>
+      <CRow>
+        <CCol md="4" sm="12">
+          <CCard className="p-3 my-3 border-0">
+            <table>
+              <thead>
+                <tr className="text-center text-uppercase fw-bold">Residents</tr>
+              </thead>
+              <tbody>
+                {overview_data
+                  ? Object.entries(overview_data.resident).map((item) => (
+                      <tr key={item} className="border-bottom ">
+                        <td className="text-capitalize">{item[0].replace(/_/g, ' ')}</td>
+                        <td>{item[1]}</td>
+                        <hr />
+                      </tr>
+                    ))
+                  : null}
+              </tbody>
+            </table>
+          </CCard>
+        </CCol>
+        <CCol md="4" sm="12">
+          <CCard className="p-3 my-3 border-0">
+            <table>
+              <thead>
+                <tr className="text-center text-uppercase fw-bold">Maintenance Requests</tr>
+              </thead>
+              <tbody>
+                {overview_data
+                  ? Object.entries(overview_data.maintenance_requests).map((item) => (
+                      <>
+                        <tr key={item} className="border-bottom ">
+                          <td className="text-capitalize">{item[0].replace(/_/g, ' ')}</td>
+                          <td>{item[1]}</td>
+                          <hr />
+                        </tr>
+                      </>
+                    ))
+                  : null}
+              </tbody>
+            </table>
+          </CCard>
+        </CCol>
+        <CCol md="4" sm="12">
+          <CCard className="p-3 my-3 border-0">
+            <table>
+              <thead>
+                <tr className="text-center text-uppercase fw-bold">Maintenance Requests</tr>
+              </thead>
+              <tbody>
+                {overview_data
+                  ? Object.entries(overview_data.finance).map((item) => (
+                      <tr key={item} className="border-bottom ">
+                        <td className="text-capitalize">{item[0].replace(/_/g, ' ')}</td>
+                        <td>{item[1]}</td>
+                        <hr />
+                      </tr>
+                    ))
+                  : null}
+              </tbody>
+            </table>
+          </CCard>
+        </CCol>
+      </CRow>
+    </>
+  )
 }

@@ -48,7 +48,7 @@ export const Maintenance = () => {
       },
       title: {
         display: true,
-        text: 'Maintenance Requests',
+        text: 'JAMEEN',
       },
     },
   }
@@ -74,7 +74,7 @@ export const Maintenance = () => {
     labels: sot_data.map((item) => item.yrmn),
     datasets: [
       {
-        label: ``,
+        label: 'Satisfaction Score Over Time',
         data: sot_data.map((item) => item.rating),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -98,7 +98,7 @@ export const Maintenance = () => {
     labels: ticketCountByCategories ? Object.keys(ticketCountByCategories) : null,
     datasets: [
       {
-        label: 'Tickets By Status',
+        label: 'Tickets By Category Count',
         data: ticketCountByCategories ? Object.values(ticketCountByCategories) : null,
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
@@ -134,7 +134,7 @@ export const Maintenance = () => {
   return (
     <>
       <TopCards />
-      <CRow className="mt-3 ">
+      <CRow className="mt-1 ">
         <CCard className="p-3 my-3 border-0">
           <CCol md="12" sm="12" className="bg-white rounded-3">
             <Line options={options} data={sotLine} width={400} height={600} />
