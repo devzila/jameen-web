@@ -118,7 +118,7 @@ export default function Overview() {
           <CCard className="p-3 my-3 border-0">
             <table>
               <thead>
-                <tr className="text-center text-uppercase fw-bold">Maintenance Requests</tr>
+                <tr className="text-center text-uppercase fw-bold">Maintenance Requests checks</tr>
               </thead>
               <tbody>
                 {overview_data
