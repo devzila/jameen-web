@@ -38,14 +38,12 @@ const Finance = () => {
       endpoint += `&q[_cont]=${searchKeyword}`
     }
     let initial_invoices = await get(endpoint)
-    console.log(initial_invoices)
 
     if (response.ok) {
       if (initial_invoices.data) {
         setLoading(false)
         setInvoices(initial_invoices.data)
         setPagination(initial_invoices.pagination)
-        console.log(initial_invoices)
       }
     } else if (response.ok) {
       setErrors(true)

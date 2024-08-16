@@ -41,7 +41,6 @@ function Unit() {
 
   async function loadUnitTypes() {
     let endpoint = await get(`/v1/admin/premises/properties/${propertyId}/unit_types`)
-    console.log(endpoint)
 
     if (response.ok) {
       const temp_unit = await endpoint.data.map((data) => ({
@@ -68,7 +67,6 @@ function Unit() {
     }
 
     const initialUnits = await get(endpoint)
-    console.log(initialUnits)
 
     if (response.ok) {
       setErrors(false)

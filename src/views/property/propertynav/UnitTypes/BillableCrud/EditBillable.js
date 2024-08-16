@@ -42,12 +42,9 @@ export default function EditBillable({ after_submit, id }) {
       const billableItemsData = await get(
         `/v1/admin/premises/properties/${propertyId}/unit_types/${unittypeID}/billable_items/${id}}`,
       )
-      console.log(billableItemsData)
       if (response.ok) {
         setBillable_data(billableItemsData.data)
         setValue('billable_type', billable_data.billable_type)
-
-        console.log(billable_data)
       }
     } catch (error) {
       console.error('Error fetching billable items:', error)
@@ -55,7 +52,6 @@ export default function EditBillable({ after_submit, id }) {
   }
 
   async function onSubmit(data) {
-    console.log(data)
     const apiResponse = await put(
       `/v1/admin/premises/properties/${propertyId}/unit_types/${unittypeID}/billable_items/${id}`,
       {
@@ -75,7 +71,6 @@ export default function EditBillable({ after_submit, id }) {
     setVisible(false)
     setErrors({})
   }
-  console.log(billable_data)
 
   return (
     <div>

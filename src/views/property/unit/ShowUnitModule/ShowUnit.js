@@ -25,17 +25,14 @@ export default function Showunit() {
 
   async function getUnitInvoices() {
     let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/invoices`)
-    console.log(api.data)
 
     if (response.ok) {
       setInvoices(api.data)
-      console.log(invoices)
     }
   }
 
   async function getUnitData() {
     let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
-    console.log(api.data)
 
     setUnit(api.data)
     if (api.data) {

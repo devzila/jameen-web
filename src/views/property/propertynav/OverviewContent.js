@@ -30,16 +30,13 @@ export default function OverviewContent(propsd) {
 
       setMember_info(contractMembers || [])
     } else {
-      console.log('No running contracts found')
     }
 
     if (response.ok) {
       setProperty(api.data)
     }
   }
-  const handleDelete = async () => {
-    console.log('Deleting property...')
-  }
+  const handleDelete = async () => {}
 
   return (
     <>

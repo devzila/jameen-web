@@ -33,7 +33,6 @@ function Property() {
     let endpoint = `/v1/admin/premises/properties?search=${searchKeyword}`
 
     const initialProperties = await get(endpoint)
-    console.log(initialProperties)
 
     if (response.ok) {
       setLoading(false)

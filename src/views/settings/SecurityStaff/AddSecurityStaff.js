@@ -33,7 +33,6 @@ export default function AddSecurityStaff({ after_submit }) {
 
     const body = { ...data, property_ids: assigned_properties_data }
 
-    console.log(data)
     const apiResponse = await post(`/v1/admin/security_staffs`, {
       security_staff: body,
     })

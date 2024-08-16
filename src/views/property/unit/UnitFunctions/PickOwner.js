@@ -2,7 +2,6 @@ import { CPopover, CButton } from '@coreui/react'
 import React from 'react'
 
 function PickOwner(contract) {
-  console.log(contract)
   const ownerNames = contract
     ?.filter((member) => member.member_type === 'owner')
     .map((x) => x.member.name)

@@ -31,7 +31,6 @@ const Contract = () => {
 
   async function loadInitialRunningContracts(queries) {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/contracts?page=${currentPage}`
-    console.log(queries)
     if (queries) {
       endpoint += `&type=${queries}`
     }
@@ -39,7 +38,6 @@ const Contract = () => {
       endpoint += `&q=${searchKeyword}`
     }
     const initialRunningContracts = await get(endpoint)
-    console.log('Initial Running Contracts:', initialRunningContracts)
 
     if (response.ok) {
       if (initialRunningContracts.data) {

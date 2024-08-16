@@ -15,7 +15,6 @@ export default function TopCards() {
 
   const overallSatisfaction = async () => {
     const api = await get('v1/admin/reports/maintenance_request/overall')
-    console.log(api)
     if (api) {
       setRatings(api.data)
     } else {

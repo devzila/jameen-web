@@ -28,8 +28,6 @@ export default function InvoicePayment({ invoice, aftersubmit }) {
     setValue('amount', invoice?.total_amount)
   }, [])
 
-  console.log(invoice)
-
   const [visible, setVisible] = useState(false)
 
   async function onSubmit(data) {

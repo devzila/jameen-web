@@ -29,7 +29,6 @@ function ParkingLot() {
   const loadInitialParkingLot = async (searchTerm = '') => {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/parkings?page=${currentPage}&search=${searchTerm}`
 
-    console.log(endpoint)
     try {
       const initialParkingLot = await get(endpoint)
       setParkingLot(initialParkingLot.data)

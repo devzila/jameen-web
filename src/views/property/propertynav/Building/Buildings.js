@@ -35,7 +35,6 @@ export default function Buildings() {
   async function fetchBuildings() {
     try {
       const buildingsData = await get(`/v1/admin/premises/properties/${propertyId}/buildings`)
-      console.log(buildingsData)
       if (buildingsData && buildingsData.data) {
         setPagination(buildingsData.pagination)
         setBuildings(buildingsData.data)

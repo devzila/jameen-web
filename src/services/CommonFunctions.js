@@ -5,8 +5,6 @@ export function formatdate(isoDate) {
 
     const formatted_date = date.toLocaleDateString('en-US', options) || '-'
 
-    console.log(formatted_date)
-
     return formatted_date
   } else {
     return null

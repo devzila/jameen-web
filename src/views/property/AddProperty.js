@@ -72,8 +72,6 @@ export default function PropertyForm({ after_submit }) {
 
     const apiResponse = await post(`/v1/admin/premises/properties`, { property: body })
 
-    console.log(response)
-
     if (response.ok) {
       toast.success('Property added successfully')
       setVisible(!visible)

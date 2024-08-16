@@ -33,7 +33,6 @@ export default function EditTemplate({ after_submit, id, option }) {
 
   async function fetchCreditNotes() {
     const endpoint = await get(`/v1/admin/template/${option}/${id}`)
-    console.log(endpoint)
     if (response.ok) {
       setValue('name', endpoint?.data?.name)
       setModel(endpoint?.data?.content)

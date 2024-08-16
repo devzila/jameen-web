@@ -48,7 +48,6 @@ export default function EditSecurityStaff({ after_submit, id }) {
   async function fetchSecurityStaff() {
     try {
       const securityStaffData = await get(`/v1/admin/security_staffs/${id}`)
-      console.log(securityStaffData)
       if (securityStaffData && securityStaffData.data) {
         setValue('name', securityStaffData.data.name)
         setValue('email', securityStaffData.data.email)
@@ -61,7 +60,6 @@ export default function EditSecurityStaff({ after_submit, id }) {
   }
 
   async function onSubmit(data) {
-    console.log(data)
     const assigned_properties_data =
       data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
 

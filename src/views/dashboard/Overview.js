@@ -29,10 +29,8 @@ export default function Overview() {
   const loadOverviewRecords = async () => {
     const api = await get('v1/admin/reports/overviews')
 
-    console.log(api.data)
     if (response.ok) {
       setOverview(api.data)
-      console.log(overview_data)
     } else {
       // toast.error('Something went wrong')
     }

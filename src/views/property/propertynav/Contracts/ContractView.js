@@ -18,7 +18,6 @@ export default function ContractView() {
   async function loadInitialContractData() {
     const endpoint = `/v1/admin/premises/properties/${propertyId}/contracts/${contractId}`
     const initialContractData = await get(endpoint)
-    console.log(initialContractData)
     if (response.ok) {
       setContractData(initialContractData.data)
     }

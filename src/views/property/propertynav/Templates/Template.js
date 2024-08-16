@@ -29,7 +29,6 @@ const CreditNote = () => {
 
   async function loadInitialTemplate(queries) {
     let endpoint = `/v1/admin/template/${selectedOption}`
-    console.log(queries)
     if (queries) {
       endpoint += `&type=${queries}`
     }
@@ -37,7 +36,6 @@ const CreditNote = () => {
       endpoint += `&q=${searchKeyword}`
     }
     const initialCreditNotes = await get(endpoint)
-    console.log('Initial Credit Notes:', initialCreditNotes)
 
     if (response.ok) {
       if (initialCreditNotes.data) {
@@ -50,7 +48,6 @@ const CreditNote = () => {
       setLoading(false)
     }
   }
-  console.log(selectedOption)
 
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
@@ -67,7 +64,6 @@ const CreditNote = () => {
   }
   const handleOptionChange = (option) => {
     setSelectedOption(option)
-    console.log(option)
   }
   return (
     <>

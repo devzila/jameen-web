@@ -35,7 +35,6 @@ export default function AddBillable({ after_submit, unittypeID }) {
   ]
 
   async function onSubmit(data) {
-    console.log(data)
     const apiResponse = await post(
       `/v1/admin/premises/properties/${propertyId}/unit_types/${unittypeID}/billable_items`,
       {

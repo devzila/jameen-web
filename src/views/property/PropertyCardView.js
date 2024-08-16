@@ -9,7 +9,6 @@ import ShowProperty from './ShowProperty'
 import { CCol, CCard, CRow, CCardText, CCardBody } from '@coreui/react'
 
 function PropertyCardView({ property }) {
-  console.log(property)
   return (
     <>
       <CRow>

@@ -50,7 +50,6 @@ const PropertyUnitType = () => {
       endpoint += `&q[username_eq]=${searchKeyword}`
     }
     const initialUnitTypes = await get(endpoint)
-    console.log(initialUnitTypes)
 
     if (response.ok) {
       if (initialUnitTypes.data) {

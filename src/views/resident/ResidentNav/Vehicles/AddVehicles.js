@@ -25,7 +25,6 @@ export default function AddBillable({ after_submit, residentId }) {
   const navigate = useNavigate()
 
   async function onSubmit(data) {
-    console.log(data)
     const apiResponse = await post(`/v1/admin/members/${residentId}/vehicles`, {
       vehicle: data,
     })

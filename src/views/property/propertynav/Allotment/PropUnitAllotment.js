@@ -58,7 +58,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
 
   const loadInitalUnits = async () => {
     const api = await get(`/v1/admin/premises/properties/${propertyId}/allotments`)
-    console.log(api)
   }
 
   //useEffext

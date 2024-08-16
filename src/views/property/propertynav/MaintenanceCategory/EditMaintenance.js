@@ -33,7 +33,6 @@ export default function EditMaintenance({ afterSubmit, categoryId, isDefault }) 
     const endpoint = await get(
       `/v1/admin/premises/properties/${propertyId}/maintenance_categories/${categoryId}`,
     )
-    console.log(endpoint)
     if (response.ok) {
       setMaintenanceCategory(endpoint.data)
       setValue('name', endpoint.data.name)

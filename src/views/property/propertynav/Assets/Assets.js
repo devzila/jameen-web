@@ -34,14 +34,12 @@ export default function Assets() {
   async function fetchAssets() {
     try {
       const assetsData = await get(`/v1/admin/premises/properties/${propertyId}/assets`)
-      console.log(assetsData)
       if (assetsData && assetsData.data) {
         setAssets(assetsData.data)
         setLoading(false)
       }
     } catch (error) {
       toast.error(error.error)
-      console.log('sdd')
       console.error('Error fetching billable items:', error)
     }
   }

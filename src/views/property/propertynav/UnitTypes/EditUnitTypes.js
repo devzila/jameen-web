@@ -42,7 +42,6 @@ export default function EditUnitTypes({ after_submit, id }) {
 
   // use_type: 'residential',
 
-  console.log(unit_type)
   React.useEffect(() => {
     loadUnitsTypes()
     fetchLocalData()
@@ -50,7 +49,6 @@ export default function EditUnitTypes({ after_submit, id }) {
 
   async function loadUnitsTypes() {
     let endpoint = await get(`/v1/admin/premises/properties/${propertyId}/unit_types/${id}`)
-    console.log(endpoint)
 
     if (response.ok) {
       setValue('name', endpoint?.data?.name)
@@ -65,11 +63,9 @@ export default function EditUnitTypes({ after_submit, id }) {
   }
 
   async function onSubmit(data) {
-    console.log(data)
     const apiResponse = await put(`/v1/admin/premises/properties/${propertyId}/unit_types/${id}`, {
       unit_type: data,
     })
-    console.log(apiResponse)
     if (response.ok) {
       setVisible(!visible)
       after_submit()

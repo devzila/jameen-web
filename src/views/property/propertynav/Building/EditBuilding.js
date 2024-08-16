@@ -32,7 +32,6 @@ export default function EditBuilding({ after_submit, id }) {
 
   async function fetchBuilding() {
     const endpoint = await get(`/v1/admin/premises/properties/${propertyId}/buildings/${id}`)
-    console.log(endpoint)
     if (response.ok) {
       setValue('name', endpoint.data.name)
       setValue('description', endpoint.data.description)

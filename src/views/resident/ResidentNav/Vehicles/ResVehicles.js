@@ -26,7 +26,6 @@ export default function ResVehicles() {
   async function fetchMemberVehicles() {
     try {
       const api = await get(`/v1/admin/members//${residentId}/vehicles`)
-      console.log(api)
       if (api && api.data) {
         setLoading(false)
         setResvehicles(api.data)

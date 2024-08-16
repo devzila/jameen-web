@@ -13,7 +13,7 @@ export default function ShowInvoices() {
 
   const getInvoice = async () => {
     const api = await get(`/v1/admin/invoices/${invoiceId}`)
-    console.log(api)
+
     if (response.ok) {
       setInvoice(api.data)
     }
@@ -21,8 +21,6 @@ export default function ShowInvoices() {
 
   async function downloadFile() {
     const api = await get(`/v1/admin/invoices/${invoiceId}.pdf`)
-
-    console.log(api)
   }
 
   useEffect(() => {

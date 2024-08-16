@@ -37,8 +37,6 @@ export default function AddTemp({ after_submit, option }) {
 
     const api = await post(`/v1/admin/template/${option}`, payload)
 
-    console.log(payload)
-
     if (response.ok) {
       toast.success('Template added successfully')
       setVisible(!visible)
@@ -62,17 +60,11 @@ export default function AddTemp({ after_submit, option }) {
       v1: 'Option 1',
       v2: 'Option 2',
     },
-    callback: function (cmd, val) {
-      console.log(val)
-    },
+    callback: function (cmd, val) {},
     // Callback on refresh.
-    refresh: function ($btn) {
-      console.log('do refresh')
-    },
+    refresh: function ($btn) {},
     // Callback on dropdown show.
-    refreshOnShow: function ($btn, $dropdown) {
-      console.log('do refresh when show')
-    },
+    refreshOnShow: function ($btn, $dropdown) {},
   })
 
   return (

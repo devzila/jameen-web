@@ -7,7 +7,6 @@ const propTypes = {
 }
 
 export const PaymentField = (type, register) => {
-  console.log(type)
   switch (type) {
     case 'cash':
       return <Cash register={register} />

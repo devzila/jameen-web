@@ -7,7 +7,6 @@ import { freeSet } from '@coreui/icons'
 
 const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
-  console.log(useLocation())
   const auth = useContext(AuthContext)
 
   function extractLastPart(inputString) {

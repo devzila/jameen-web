@@ -34,7 +34,6 @@ export default function EditMaintenanceStaff({ after_submit, id }) {
   async function fetchSecurityStaff() {
     try {
       const api = await get(`/v1/admin/maintenance_staffs/${id}`)
-      console.log(api)
       if (api && api.data) {
         setValue('name', api.data.name)
         setValue('email', api.data.email)
@@ -62,11 +61,9 @@ export default function EditMaintenanceStaff({ after_submit, id }) {
   }
 
   async function onSubmit(data) {
-    console.log(data)
     const assigned_properties_data =
       data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
     const body = { ...data, property_ids: assigned_properties_data }
-    console.log(body)
     const apiResponse = await put(`/v1/admin/security_staffs/${id}`, {
       security_staff: body,
     })

@@ -47,7 +47,6 @@ export default function BillableItems() {
       const billableItemsData = await get(
         `/v1/admin/premises/properties/${propertyId}/unit_types/${unittypeID}/billable_items`,
       )
-      console.log(billableItemsData)
       if (billableItemsData && billableItemsData.data) {
         setLoading(false)
         setBillableItems(billableItemsData.data)
@@ -64,7 +63,6 @@ export default function BillableItems() {
 
     if (response.ok) {
       setUnittype(endpoint.data)
-      console.log(endpoint)
     }
   }
   function handlePageClick(e) {
@@ -74,9 +72,7 @@ export default function BillableItems() {
   function reload_callback() {
     fetchBillableItems()
   }
-  function triggerEdit() {
-    console.log('triggered')
-  }
+
   return (
     <>
       <CCol>
