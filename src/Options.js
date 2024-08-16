@@ -1,4 +1,3 @@
-import { useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 const options = {
@@ -17,11 +16,12 @@ const options = {
 
     // every time we make an http request, before getting the response back, this will run
     response: async ({ response, abort }) => {
-      console.log(useLocation().pathname)
-      if (response.status >= 400 && response.status < 500) {
+      const environment = process.env.NODE_ENV
+      if (response.status != 404 && response.status >= 400 && response.status < 420) {
+        toast.error('Session Expired')
         localStorage.clear()
         sessionStorage.clear()
-        toast.error('Session Expired')
+        window.location.reload()
       }
       return response
     },

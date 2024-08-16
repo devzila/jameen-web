@@ -1,7 +1,4 @@
-import { freeSet } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
 import React, { useEffect, useState, useRef } from 'react'
-import { Col, Row } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 import { useFetch } from 'use-http'
 import { Line, Bar } from 'react-chartjs-2'
