@@ -86,7 +86,6 @@ export const Maintenance = () => {
 
   const loadticketbycategory = async () => {
     const api = await get('v1/admin/reports/maintenance_request/tickets_by_categories')
-    console.log(api)
     if (response.ok) {
       setTicketCountByCategory(api.data)
     } else {
@@ -109,7 +108,6 @@ export const Maintenance = () => {
 
   const loadticketbyreqstatus = async () => {
     const api = await get('v1/admin/reports/maintenance_request/tickets_by_status')
-    console.log(api)
 
     if (response.ok) {
       setTcbStatus(api.data)

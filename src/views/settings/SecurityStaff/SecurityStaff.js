@@ -28,7 +28,6 @@ export default function SecurityStaff() {
   async function fetchSecurityStaff() {
     try {
       const api = await get(`/v1/admin/security_staffs`)
-      console.log(api)
       if (api && api.data) {
         setLoading(false)
         setSecurityStaff(api.data)
