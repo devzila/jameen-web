@@ -145,7 +145,7 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
     <div>
       <button
         type="button"
-        className="tooltip_button "
+        className="custom_theme_button "
         data-mdb-ripple-init
         onClick={() => setVisible(true)}
       >
@@ -344,7 +344,7 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
   )
 }
 MovingInUnit.propTypes = {
-  unitId: PropTypes.number,
+  unitId: PropTypes.string,
   unitNo: PropTypes.string,
   after_submit: PropTypes.func,
 }

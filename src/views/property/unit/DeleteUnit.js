@@ -9,15 +9,14 @@ function Delete({ unitId, after_submit }) {
   const { propertyId } = useParams()
   const { del, response } = useFetch()
   const [visible, setVisible] = useState(false)
-  const navigate = useNavigate()
 
   const handleDelete = async () => {
-    const apiResponse = await del(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
+    await del(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
     if (response.ok) {
+      console.log(response)
       toast('Unit deleted successfully')
-      after_submit()
     } else {
-      toast(response.data?.message)
+      toast.error(response.data?.message)
     }
     setVisible(false)
   }
@@ -26,7 +25,7 @@ function Delete({ unitId, after_submit }) {
     <div>
       <button
         type="button"
-        className="tooltip_button"
+        className="custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
@@ -39,10 +38,10 @@ function Delete({ unitId, after_submit }) {
         </Modal.Header>
         <Modal.Body>Are you sure you want to delete this unit?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setVisible(false)}>
+          <Button className="custom_grey_button" onClick={() => setVisible(false)}>
             Cancel
           </Button>
-          <Button variant="danger" onClick={handleDelete}>
+          <Button className="custom_red_button" onClick={handleDelete}>
             Delete
           </Button>
         </Modal.Footer>
@@ -51,7 +50,7 @@ function Delete({ unitId, after_submit }) {
   )
 }
 Delete.propTypes = {
-  unitId: PropTypes.number,
+  unitId: PropTypes.string,
 
   after_submit: PropTypes.func,
 }

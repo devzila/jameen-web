@@ -104,6 +104,17 @@ label {
   color: white;
 }
 
+.custom_red_button {
+  border: 0px;
+  color: white;
+  border-radius: 2px;
+  background-color: #e55353;
+}
+.custom_red_button:hover {
+  background-color: #e55353de;
+  color: white;
+}
+
 .custom_search_button {
   border-radius: 0px;
   border-left: 0px;

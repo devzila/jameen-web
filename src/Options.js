@@ -27,9 +27,11 @@ const options = {
             <button
               className="btn btn-primary"
               style={{ width: '200px', borderRadius: '3px' }}
-              onClick={
-                (() => window.location.reload(), localStorage.clear(), sessionStorage.clear())
-              }
+              onClick={() => {
+                window.location.reload()
+                localStorage.clear()
+                sessionStorage.clear()
+              }}
             >
               Login
             </button>

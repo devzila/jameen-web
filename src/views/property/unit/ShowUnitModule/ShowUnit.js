@@ -9,6 +9,10 @@ import { formatdate, status_color } from 'src/services/CommonFunctions'
 import PickOwner from '../UnitFunctions/PickOwner'
 import InvoicePayment from 'src/views/finance/InvoicePayment'
 import InvoiceCancel from 'src/views/finance/InvoiceCancel'
+import Edit from '../EditUnit'
+import Delete from '../DeleteUnit'
+import AllocateUnit from '../AllocateUnit'
+import MovingInUnit from '../MovingInUnit'
 
 export default function Showunit() {
   const { propertyId, unitId } = useParams()
@@ -42,16 +46,46 @@ export default function Showunit() {
       setUnit(api.data)
     }
   }
+  const refresh_data = () => {
+    getUnitData()
+    getUnitInvoices()
+  }
 
   return (
     <>
       <CCard className="   my-3 border-0 ">
         <CRow>
-          <CCol md="4">
-            <CCard className=" p-3  my-3 border-0 theme_color">
+          <CCol md="12">
+            <CCard className=" px-3 pt-0  my-3 border-0 theme_color">
               <CListGroupItem>
-                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-                <strong className="text-black">Property Details</strong>
+                <div className="d-flex w-100 justify-content-between">
+                  <div>
+                    <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
+                    <strong className="text-black">Unit Information</strong>
+                  </div>
+                  <div className="d-flex">
+                    <Edit unitId={unitId} after_submit={refresh_data} />
+
+                    {unit.status === 'unallotted' ? (
+                      <>
+                        <Delete unitId={unitId} after_submit={refresh_data} />
+                        <AllocateUnit
+                          unitId={unitId}
+                          unitNo={unit.unit_no}
+                          after_submit={refresh_data}
+                        />
+                      </>
+                    ) : null}
+                    {unit.status === 'vacant' ? (
+                      <MovingInUnit
+                        unitId={unitId}
+                        unitNo={unit.unit_no}
+                        after_submit={refresh_data}
+                      />
+                    ) : null}
+                  </div>
+                </div>
+
                 <hr className="text-secondary" />
               </CListGroupItem>
               <CRow className="">
@@ -65,6 +99,24 @@ export default function Showunit() {
                   Bedroom Number
                   <CCardText className="fw-normal text-black text-capitalize">
                     {unit?.bedrooms_number || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-3 mt-0 fw-light">
+                  Name
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.unit_type?.name || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-3 mt-0 fw-light">
+                  Use Type
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.unit_type?.use_type || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-3 mt-0 fw-light">
+                  Description
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.unit_type?.description || '-'}
                   </CCardText>
                 </CCol>
               </CRow>
@@ -81,38 +133,6 @@ export default function Showunit() {
                     {unit?.year_built || '-'}
                   </CCardText>
                 </CCol>
-              </CRow>
-            </CCard>
-          </CCol>
-          <CCol md="8">
-            <CCard className=" p-3 my-3 border-0 theme_color">
-              <CListGroupItem>
-                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-                <strong className="text-black">Unit Information</strong>
-                <hr className="text-secondary" />
-              </CListGroupItem>
-              <CRow className="">
-                <CCol className="p-3 mt-0 fw-light">
-                  Name
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {unit?.unit_type?.name || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-3 mt-0 fw-light">
-                  Use Type
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {unit?.unit_type?.use_type || '-'}
-                  </CCardText>
-                </CCol>
-
-                <CCol className="p-3 mt-0 fw-light">
-                  Description
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {unit?.unit_type?.description || '-'}
-                  </CCardText>
-                </CCol>
-              </CRow>
-              <CRow>
                 <CCol className="p-3 mt-0 fw-light">
                   Total Area (sq. ft.)
                   <CCardText className="fw-normal text-black text-capitalize">
@@ -138,43 +158,39 @@ export default function Showunit() {
       </CCard>
 
       <CRow>
-        {/* <CCol md="12">
-          <CCard className=" p-4 mt-1 border-0 theme_color">
+        <CCol md="12" className="m-0">
+          <CCard className=" p-3 mt-3 mt-0 border-0 ">
             <CListGroupItem>
-              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-              <strong className="text-black">Building Details</strong>
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+              <strong className="text-black">Parking Info.</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-3 mt-0 fw-light">
-                Name
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.building?.name || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light">
-                Description
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.building?.description || '-'}
-                </CCardText>
-              </CCol>
-
-              <CCol className="p-3 mt-0 fw-light">
-                Bathroom Number
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.bathrooms_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light">
-                Year Built
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.year_built || '-'}
-                </CCardText>
-              </CCol>
+            <CRow>
+              {null?.length ? (
+                <CCol md="4">
+                  <CCard className="border-0 rounded-2 mb-3 ">
+                    <CCardBody className="pt-0 mt-1">
+                      <CRow>
+                        <CCol md="12" className="theme_color">
+                          Allocated
+                        </CCol>
+                      </CRow>
+                      <CRow>
+                        <CCol> Total :</CCol>
+                        <CCol className="text-capitalize">-</CCol>
+                      </CRow>
+                    </CCardBody>
+                  </CCard>
+                </CCol>
+              ) : (
+                <p className="text-center  fst-italic">No Parking Data Found</p>
+              )}
             </CRow>
           </CCard>
-        </CCol> */}
+        </CCol>
+      </CRow>
 
+      <CRow>
         <CCol md="12" className="m-0">
           <CCard className=" p-3 mt-3 mt-0 border-0 ">
             <CListGroupItem>

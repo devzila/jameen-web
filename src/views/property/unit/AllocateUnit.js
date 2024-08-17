@@ -138,7 +138,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
     <div>
       <button
         type="button"
-        className="tooltip_button "
+        className="custom_theme_button "
         data-mdb-ripple-init
         onClick={() => setVisible(true)}
       >
@@ -315,7 +315,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   )
 }
 AllocateUnit.propTypes = {
-  unitId: PropTypes.number,
+  unitId: PropTypes.string,
   unitNo: PropTypes.string,
   after_submit: PropTypes.func,
 }

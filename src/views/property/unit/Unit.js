@@ -156,11 +156,11 @@ function Unit() {
                       >
                         <tr>
                           <th className="pt-3 pb-3 border-0  ">Unit Number</th>
+                          <th className="pt-3 pb-3 border-0  "> Type </th>
                           <th className="pt-3 pb-3 border-0  ">Bed/Bath </th>
                           <th className="pt-3 pb-3 border-0  ">Year Built</th>
                           <th className="pt-3 pb-3 border-0  ">Owner/Resident</th>
                           <th className="pt-3 pb-3 border-0  ">Status</th>
-                          <th className="pt-3 pb-3 border-0 text-center ">Action </th>
                         </tr>
                       </thead>
 
@@ -172,8 +172,9 @@ function Unit() {
                                 {unit.unit_no}
                               </NavLink>
                             </td>
+                            <td className="pt-3 pb-2">{unit?.unit_type?.name || '-'}</td>
 
-                            <td className="pt-3 pb-2 text-center">
+                            <td className="pt-3 pb-2 text-start">
                               {unit.bedrooms_number + '  /  ' + unit.bathrooms_number}
                             </td>
                             <td className="pt-3 pb-2">{unit.year_built}</td>
@@ -197,41 +198,6 @@ function Unit() {
                               >
                                 {unit.status}
                               </button>
-                            </td>
-
-                            <td>
-                              <Dropdown key={unit.id} className="text-center">
-                                <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                  <BsThreeDots />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu className="text-center">
-                                  <Edit unitId={unit.id} after_submit={refresh_data} />
-                                  <NavLink
-                                    type="button"
-                                    className="tooltip_button theme_color"
-                                    to={`/properties/${propertyId}/units/${unit.id}`}
-                                  >
-                                    Show
-                                  </NavLink>
-
-                                  <Delete unitId={unit.id} after_submit={refresh_data} />
-
-                                  {unit.status === 'unallotted' ? (
-                                    <AllocateUnit
-                                      unitId={unit.id}
-                                      unitNo={unit.unit_no}
-                                      after_submit={refresh_data}
-                                    />
-                                  ) : null}
-                                  {unit.status === 'vacant' ? (
-                                    <MovingInUnit
-                                      unitId={unit.id}
-                                      unitNo={unit.unit_no}
-                                      after_submit={refresh_data}
-                                    />
-                                  ) : null}
-                                </Dropdown.Menu>
-                              </Dropdown>
                             </td>
                           </tr>
                         ))}
