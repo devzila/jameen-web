@@ -20,8 +20,6 @@ const options = {
       const environment = process.env.NODE_ENV
 
       if (response.status != 404 && response.status >= 400 && response.status < 420) {
-        localStorage.clear()
-        sessionStorage.clear()
         toast.error(
           <div>
             <h2>Session expired</h2>
@@ -37,6 +35,7 @@ const options = {
             </button>
           </div>,
           {
+            position: center,
             autoClose: false,
             closeOnClick: false,
             pauseOnHover: false,
