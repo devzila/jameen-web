@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify'
+import React from 'react'
 
 const options = {
   headers: {
@@ -17,11 +18,31 @@ const options = {
     // every time we make an http request, before getting the response back, this will run
     response: async ({ response, abort }) => {
       const environment = process.env.NODE_ENV
+
       if (response.status != 404 && response.status >= 400 && response.status < 420) {
-        toast.error('Session Expired')
         localStorage.clear()
         sessionStorage.clear()
-        window.location.reload()
+        toast.error(
+          <div>
+            <h2>Session expired</h2>
+            <p>Please login again to continue!</p>
+            <button
+              className="btn btn-primary"
+              style={{ width: '200px', borderRadius: '3px' }}
+              onClick={
+                (() => window.location.reload(), localStorage.clear(), sessionStorage.clear())
+              }
+            >
+              Login
+            </button>
+          </div>,
+          {
+            autoClose: false,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: false,
+          },
+        )
       }
       return response
     },
