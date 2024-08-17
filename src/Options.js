@@ -35,7 +35,6 @@ const options = {
             </button>
           </div>,
           {
-            position: center,
             autoClose: false,
             closeOnClick: false,
             pauseOnHover: false,
