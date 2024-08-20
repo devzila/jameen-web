@@ -92,7 +92,7 @@ function ParkingLot() {
         {error && error.Error}
         <section style={{ width: '100%', padding: '0px' }}>
           <div>
-            <div className="mask d-flex align-items-center h-100">
+            <div className="mask d-flex align-items-center h-100 mt-2">
               <div className="container-fluid">
                 <CNavbar expand="lg" colorScheme="light" className="bg-white">
                   <CContainer fluid>
@@ -159,13 +159,13 @@ function ParkingLot() {
                                   <>
                                     <button
                                       onClick={() => saveChanges(parking.id)}
-                                      className="btn btn-success btn-sm me-2"
+                                      className="btn custom_theme_button"
                                     >
                                       Save
                                     </button>
                                     <button
                                       onClick={() => cancelEditing(parking.id)}
-                                      className="btn btn-danger btn-sm"
+                                      className="btn custom_grey_button"
                                     >
                                       Cancel
                                     </button>
@@ -177,9 +177,14 @@ function ParkingLot() {
                                       style={{ cursor: 'pointer' }}
                                     >
                                       <Dropdown.Menu>
-                                        <Dropdown.Item onClick={() => toggleEditable(parking.id)}>
+                                        <button
+                                          type="button"
+                                          className="tooltip_button"
+                                          data-mdb-ripple-init
+                                          onClick={() => toggleEditable(parking.id)}
+                                        >
                                           Edit
-                                        </Dropdown.Item>
+                                        </button>
                                         {/* <ShowProperty propertyId={property.id} /> */}
                                       </Dropdown.Menu>
                                       <BsThreeDots />

@@ -13,18 +13,20 @@ import Edit from '../EditUnit'
 import Delete from '../DeleteUnit'
 import AllocateUnit from '../AllocateUnit'
 import MovingInUnit from '../MovingInUnit'
+import AddParking from './AllotParking'
 
 export default function Showunit() {
   const { propertyId, unitId } = useParams()
 
   const [unit, setUnit] = useState({})
-
   const [invoices, setInvoices] = useState({})
+  const [parkingData, setParkingData] = useState({})
   const { get, response } = useFetch()
 
   useEffect(() => {
     getUnitData()
     getUnitInvoices()
+    getParkingData()
   }, [])
 
   async function getUnitInvoices() {
@@ -37,14 +39,17 @@ export default function Showunit() {
 
   async function getUnitData() {
     let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
-
-    setUnit(api.data)
-    if (api.data) {
-    }
-
     if (response.ok) {
       setUnit(api.data)
     }
+  }
+
+  async function getParkingData() {
+    let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/parkings`)
+    if (response.ok) {
+      setParkingData(api.data)
+    }
+    console.log(api)
   }
   const refresh_data = () => {
     getUnitData()
@@ -68,12 +73,12 @@ export default function Showunit() {
 
                     {unit.status === 'unallotted' ? (
                       <>
-                        <Delete unitId={unitId} after_submit={refresh_data} />
                         <AllocateUnit
                           unitId={unitId}
                           unitNo={unit.unit_no}
                           after_submit={refresh_data}
                         />
+                        <Delete unitId={unitId} after_submit={refresh_data} />
                       </>
                     ) : null}
                     {unit.status === 'vacant' ? (
@@ -96,13 +101,14 @@ export default function Showunit() {
                   </CCardText>
                 </CCol>
                 <CCol className="p-3 mt-0 fw-light">
-                  Bedroom Number
+                  Year Built
                   <CCardText className="fw-normal text-black text-capitalize">
-                    {unit?.bedrooms_number || '-'}
+                    {unit?.year_built || '-'}
                   </CCardText>
                 </CCol>
+
                 <CCol className="p-3 mt-0 fw-light">
-                  Name
+                  Unit Type
                   <CCardText className="fw-normal text-black text-capitalize">
                     {unit?.unit_type?.name || '-'}
                   </CCardText>
@@ -121,18 +127,19 @@ export default function Showunit() {
                 </CCol>
               </CRow>
               <CRow>
-                <CCol className="mt-0 fw-light">
+                <CCol className="p-3 mt-0 fw-light">
+                  Bedroom Number
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.bedrooms_number || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-3 mt-0 fw-light">
                   Bathroom Number
                   <CCardText className="fw-normal text-black text-capitalize">
                     {unit?.bathrooms_number || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className=" mt-0 fw-light">
-                  Year Built
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {unit?.year_built || '-'}
-                  </CCardText>
-                </CCol>
+
                 <CCol className="p-3 mt-0 fw-light">
                   Total Area (sq. ft.)
                   <CCardText className="fw-normal text-black text-capitalize">
@@ -161,27 +168,42 @@ export default function Showunit() {
         <CCol md="12" className="m-0">
           <CCard className=" p-3 mt-3 mt-0 border-0 ">
             <CListGroupItem>
-              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
-              <strong className="text-black">Parking Info.</strong>
+              <div className="d-flex w-100 justify-content-between">
+                <div>
+                  <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+                  <strong className="text-black">Parking Info.</strong>
+                </div>
+                <div className="d-flex">
+                  <AddParking unitId={unitId} after_submit={getParkingData} />
+                </div>
+              </div>
               <hr className="text-secondary" />
             </CListGroupItem>
+
             <CRow>
-              {null?.length ? (
-                <CCol md="4">
-                  <CCard className="border-0 rounded-2 mb-3 ">
-                    <CCardBody className="pt-0 mt-1">
-                      <CRow>
-                        <CCol md="12" className="theme_color">
-                          Allocated
-                        </CCol>
-                      </CRow>
-                      <CRow>
-                        <CCol> Total :</CCol>
-                        <CCol className="text-capitalize">-</CCol>
-                      </CRow>
-                    </CCardBody>
-                  </CCard>
-                </CCol>
+              {parkingData?.length ? (
+                parkingData.map((parking) => (
+                  <CRow className="">
+                    <CCol className="p-3 mt-0 fw-light">
+                      Parking No.
+                      <CCardText className="fw-normal text-black text-capitalize">
+                        {parking?.parking_number || '-'}
+                      </CCardText>
+                    </CCol>
+                    <CCol className="p-3 mt-0 fw-light">
+                      Vehicles
+                      <CCardText className="fw-normal text-black text-capitalize">
+                        {parking?.bedrooms_number || '-'}
+                      </CCardText>
+                    </CCol>
+                    <CCol className="p-3 mt-0 fw-light">
+                      Created At
+                      <CCardText className="fw-normal text-black text-capitalize">
+                        {formatdate(parking.created_at) || '-'}
+                      </CCardText>
+                    </CCol>
+                  </CRow>
+                ))
               ) : (
                 <p className="text-center  fst-italic">No Parking Data Found</p>
               )}

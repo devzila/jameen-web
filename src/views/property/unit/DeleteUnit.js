@@ -25,7 +25,7 @@ function Delete({ unitId, after_submit }) {
     <div>
       <button
         type="button"
-        className="custom_theme_button"
+        className="btn custom_red_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
