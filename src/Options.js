@@ -4,7 +4,6 @@ import React from 'react'
 const options = {
   headers: {
     Accept: 'application/json',
-    Authorization: localStorage.getItem('token'),
     Test: '123',
   },
   interceptors: {
@@ -12,14 +11,15 @@ const options = {
     // url, path and route are supplied to the interceptor
     // request options can be modified and must be returned
     request: async ({ options, url, path, route }) => {
+      options.headers.Authorization = localStorage.getItem('token')
       return options
     },
 
     // every time we make an http request, before getting the response back, this will run
     response: async ({ response, abort }) => {
       const environment = process.env.NODE_ENV
-
       if (response.status != 404 && response.status >= 400 && response.status < 420) {
+        toast.dismiss()
         toast.error(
           <div>
             <h2>Session expired</h2>
