@@ -51,6 +51,7 @@ export default function AllotParking({ unitId, after_submit }) {
     if (response.ok) {
       toast.success('Parking Alloted Successfully')
       after_submit()
+      getUnallotedParking()
       setVisible(false)
     } else {
       toast.error(response.data?.message || 'Unable to allot parking')
