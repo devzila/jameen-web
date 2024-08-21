@@ -49,7 +49,6 @@ export default function Showunit() {
     if (response.ok) {
       setParkingData(api.data)
     }
-    console.log(api)
   }
   const refresh_data = () => {
     getUnitData()
@@ -183,7 +182,7 @@ export default function Showunit() {
             <CRow>
               {parkingData?.length ? (
                 parkingData.map((parking) => (
-                  <CRow className="">
+                  <CRow key={parking.id} className="">
                     <CCol className="p-3 mt-0 fw-light">
                       Parking No.
                       <CCardText className="fw-normal text-black text-capitalize">

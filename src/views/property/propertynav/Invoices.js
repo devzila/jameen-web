@@ -62,7 +62,7 @@ const Finance = () => {
         <section className="w-100 p-0 mt-2">
           <div>
             <div className="mask d-flex align-items-center h-100">
-              <div className="container-fluid">
+              <div className="container-fluid p-0">
                 <CNavbar expand="lg" colorScheme="light" className="bg-white">
                   <CContainer fluid>
                     <CNavbarBrand href="#">Invoices</CNavbarBrand>

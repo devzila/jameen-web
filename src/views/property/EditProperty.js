@@ -15,7 +15,6 @@ import {
   CContainer,
 } from '@coreui/react'
 import { Button, Form, Row, Col } from 'react-bootstrap'
-import { id } from 'date-fns/locale'
 
 export default function EditProperty(props) {
   const [property, setProperty] = useState({})
@@ -99,7 +98,7 @@ export default function EditProperty(props) {
       <div>
         <button
           type="button"
-          className="tooltip_button d-flex"
+          className="btn custom_theme_button d-flex"
           data-mdb-ripple-init
           onClick={() => setVisible(!visible)}
         >
@@ -249,5 +248,5 @@ export default function EditProperty(props) {
 }
 
 EditProperty.propTypes = {
-  propertyId: PropTypes.number.isRequired,
+  propertyId: PropTypes.string.isRequired,
 }

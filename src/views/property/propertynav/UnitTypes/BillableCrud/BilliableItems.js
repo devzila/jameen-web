@@ -47,7 +47,8 @@ export default function BillableItems() {
       const billableItemsData = await get(
         `/v1/admin/premises/properties/${propertyId}/unit_types/${unittypeID}/billable_items`,
       )
-      if (billableItemsData && billableItemsData.data) {
+      console.log(response)
+      if (response.ok) {
         setLoading(false)
         setBillableItems(billableItemsData.data)
       }
@@ -181,7 +182,7 @@ export default function BillableItems() {
           </Card>
           <hr className="p-0 m-0 text-secondary" />
 
-          {billableItems.lenght >= 1 ? (
+          {billableItems.length >= 1 ? (
             <div className="mask d-flex align-items-center h-100">
               <div className="w-100">
                 <div className="row justify-content-center">
@@ -219,7 +220,11 @@ export default function BillableItems() {
                                 {billableItems.billable_type}
                               </td>
                               <td className="pt-3"> {billableItems.monthly_amount}</td>
-                              <td>{billableItems.vat_percent}%</td>
+                              <td>
+                                {`${billableItems.vat_percent} ${
+                                  billableItems?.billable_type === 'fixed' ? '' : '%'
+                                }`}
+                              </td>
 
                               <td>
                                 <Dropdown key={billableItems.id}>

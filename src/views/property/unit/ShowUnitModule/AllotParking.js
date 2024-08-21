@@ -28,7 +28,6 @@ export default function AllotParking({ unitId, after_submit }) {
 
   async function getUnallotedParking() {
     const api = await get(`/v1/admin/premises/properties/${propertyId}/parkings?unallotted=1`)
-    console.log(api)
 
     if (response.ok) {
       trimUnallotedParking(api?.data)
@@ -58,6 +57,11 @@ export default function AllotParking({ unitId, after_submit }) {
     }
   }
 
+  function getDependency() {
+    setVisible(!visible)
+    getUnallotedParking()
+  }
+
   return (
     <>
       <div>
@@ -65,7 +69,7 @@ export default function AllotParking({ unitId, after_submit }) {
           type="button"
           className="btn custom_theme_button"
           data-mdb-ripple-init
-          onClick={() => setVisible(!visible)}
+          onClick={() => getDependency()}
         >
           Allot Parking
         </button>

@@ -34,7 +34,7 @@ export default function ShowProperty({ propertyId }) {
     <div>
       <button
         type="button"
-        className="tooltip_button d-flex"
+        className="btn custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >

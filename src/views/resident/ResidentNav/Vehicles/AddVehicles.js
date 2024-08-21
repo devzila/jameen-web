@@ -16,7 +16,7 @@ import {
   CContainer,
 } from '@coreui/react'
 
-export default function AddBillable({ after_submit, residentId }) {
+export default function AddVehicles({ after_submit, residentId }) {
   const { register, handleSubmit, control } = useForm()
   const { get, post, response, api } = useFetch()
 
@@ -152,7 +152,7 @@ export default function AddBillable({ after_submit, residentId }) {
   )
 }
 
-AddBillable.propTypes = {
+AddVehicles.propTypes = {
   after_submit: PropTypes.func,
   residentId: PropTypes.number,
 }

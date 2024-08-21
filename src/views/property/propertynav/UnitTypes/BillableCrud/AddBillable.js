@@ -16,7 +16,6 @@ import {
   CModalTitle,
   CContainer,
 } from '@coreui/react'
-import { propTypes } from 'react-bootstrap/esm/Image'
 
 export default function AddBillable({ after_submit, unittypeID }) {
   const { register, handleSubmit, control } = useForm()
@@ -24,11 +23,11 @@ export default function AddBillable({ after_submit, unittypeID }) {
 
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
-  const [unitData, setUnitData] = useState({})
   const [errors, setErrors] = useState({})
   const navigate = useNavigate()
   const [units_data, setUnits_data] = useState([])
 
+  const vat_array = Array.from({ length: 30 }, (v, i) => ({ value: i + 1, label: i + 1 }))
   const billable_array = [
     { value: 'fixed', label: 'Fixed' },
     { value: 'percentage', label: 'Percentage' },
@@ -114,9 +113,19 @@ export default function AddBillable({ after_submit, unittypeID }) {
                     <label>
                       VAT Percentage
                       <small className="text-danger ">*{errors ? errors.vat_percent : null}</small>
-                    </label>
-
-                    <Form.Control type="integer" {...register('vat_percent')}></Form.Control>
+                    </label>{' '}
+                    <Controller
+                      name="vat_percent"
+                      render={({ field }) => (
+                        <Select
+                          {...field}
+                          options={vat_array}
+                          value={vat_array.find((c) => c.value === field.value)}
+                          onChange={(val) => field.onChange(val.value)}
+                        />
+                      )}
+                      control={control}
+                    />
                   </Form.Group>
                 </Col>
               </Row>

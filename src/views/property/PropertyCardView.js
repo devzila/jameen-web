@@ -46,29 +46,6 @@ function PropertyCardView({ property }) {
                       </Link>
                     </CCardText>
 
-                    <div className="position-absolute top-0 end-0">
-                      <Dropdown key={property.id} className=" text-center p-3">
-                        <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                          <BsThreeDots />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          <EditProperty propertyId={property.id} />
-                          <Link
-                            style={{
-                              border: '2px',
-                              color: '#00bfcc',
-                              marginLeft: '4%',
-                              textDecorationLine: 'none',
-                            }}
-                            to={`/properties/${property.id}/overview`}
-                            className="custom_tooltip_botton"
-                          >
-                            Show
-                          </Link>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </div>
-
                     <CCardBody className="pt-2">
                       <CRow>
                         <CCol className="d-flex justify-content-end "></CCol>

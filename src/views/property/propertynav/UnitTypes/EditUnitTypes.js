@@ -206,5 +206,5 @@ export default function EditUnitTypes({ after_submit, id }) {
 
 EditUnitTypes.propTypes = {
   after_submit: PropTypes.func,
-  id: PropTypes.number,
+  id: PropTypes.string,
 }

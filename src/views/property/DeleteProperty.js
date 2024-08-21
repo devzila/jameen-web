@@ -5,15 +5,16 @@ import { toast } from 'react-toastify'
 import { Button, Modal } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
-function Delete({ unitId, after_submit }) {
-  const { propertyId } = useParams()
+function DeleteProperty({ propertyId, after_submit }) {
   const { del, response } = useFetch()
   const [visible, setVisible] = useState(false)
+  const navigate = useNavigate()
 
   const handleDelete = async () => {
-    await del(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
+    await del(`/v1/admin/premises/properties/${propertyId}`)
     if (response.ok) {
-      toast('Unit deleted successfully')
+      navigate('/properties')
+      toast('Property deleted successfully')
     } else {
       toast.error(response.data?.message)
     }
@@ -33,9 +34,9 @@ function Delete({ unitId, after_submit }) {
 
       <Modal show={visible} onHide={() => setVisible(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Delete Unit</Modal.Title>
+          <Modal.Title>Delete Property</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to delete this unit?</Modal.Body>
+        <Modal.Body>Are you sure you want to delete this Property?</Modal.Body>
         <Modal.Footer>
           <Button className="custom_grey_button" onClick={() => setVisible(false)}>
             Cancel
@@ -48,10 +49,10 @@ function Delete({ unitId, after_submit }) {
     </div>
   )
 }
-Delete.propTypes = {
-  unitId: PropTypes.string,
+DeleteProperty.propTypes = {
+  propertyId: PropTypes.string,
 
   after_submit: PropTypes.func,
 }
 
-export default Delete
+export default DeleteProperty

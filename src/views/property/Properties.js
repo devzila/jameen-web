@@ -2,8 +2,7 @@ import React, { Suspense, useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import AddProperty from './AddProperty'
 import { Dropdown } from 'react-bootstrap'
-import { NavLink, Link } from 'react-router-dom'
-import { Row, Col } from 'react-bootstrap'
+import { NavLink } from 'react-router-dom'
 import { BsThreeDots, BsList, BsGrid3X3Gap } from 'react-icons/bs' // Import BsList icon for property list view
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from '../../components/CustomDivToggle'
@@ -23,7 +22,6 @@ function Property() {
 
   const [properties, setProperties] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [refresh, setRefresh] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState('')
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -130,7 +128,6 @@ function Property() {
                                 <th className="border-0">USE TYPE</th>
                                 <th className="border-0">UNIT COUNT</th>
                                 <th className="border-0">PAYMENT TERM</th>
-                                <th className="border-0">ACTIONS</th>
                               </tr>
                             </thead>
 
@@ -153,23 +150,6 @@ function Property() {
                                   </td>
                                   <td style={{ textTransform: 'capitalize' }}>
                                     {property.payment_term?.replace(/_/g, ' ')}
-                                  </td>
-                                  <td>
-                                    <Dropdown key={property.id}>
-                                      <Dropdown.Toggle
-                                        as={CustomDivToggle}
-                                        style={{ cursor: 'pointer' }}
-                                      >
-                                        <Dropdown.Menu>
-                                          <EditProperty
-                                            propertyId={property.id}
-                                            after_submit={refresh_data}
-                                          />
-                                          <ShowProperty propertyId={property.id} />
-                                        </Dropdown.Menu>
-                                        <BsThreeDots />
-                                      </Dropdown.Toggle>
-                                    </Dropdown>
                                   </td>
                                 </tr>
                               ))}
