@@ -1,11 +1,12 @@
 import { CCol, CCard, CListGroupItem, CRow, CCardText, CTable } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { formatdate } from '../../../../services/CommonFunctions'
+import { formatdate } from '../../../../../services/CommonFunctions'
 import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import Invoices from '../Invoices'
+import Invoices from '../../Invoices'
+import AddManualInvoice from './AddManualInvoice'
 import ManualInvoice from './ManualInvoice'
 
 export default function ShowContract() {
@@ -42,7 +43,7 @@ export default function ShowContract() {
                   </div>
                   <div className="d-flex">
                     {contract.contract_type == 'allotment' ? (
-                      <ManualInvoice after_submit={loadInitialContractData} />
+                      <AddManualInvoice after_submit={loadInitialContractData} />
                     ) : null}
                   </div>
                 </div>
@@ -157,8 +158,8 @@ export default function ShowContract() {
           </CCol>
         </CRow>
       </CCard>
-      <CCard className="mt-3 border-0">
-        <Invoices />
+      <CCard className="my-3 border-0">
+        <ManualInvoice />
       </CCard>
     </>
   )

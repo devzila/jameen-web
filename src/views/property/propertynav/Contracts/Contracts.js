@@ -12,7 +12,7 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import AddContracts from './AddContracts'
 import FilterAccordionContract from './FilterAccordionContract'
-import ManualInvoice from './ManualInvoice'
+import ManualInvoice from './ShowContracts/AddManualInvoice'
 
 const Contract = () => {
   const { get, response } = useFetch()
