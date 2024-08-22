@@ -69,12 +69,14 @@ export default function EditProperty(props) {
   // Fetch property data
   const loadproperty = async () => {
     const endpoint = await get(`/v1/admin/premises/properties/${propertyId}`)
+    console.log(endpoint)
     if (response.ok) {
       setValue('name', endpoint.data.name)
       setValue('city', endpoint.data.city)
       setValue('use_type', endpoint.data.use_type)
       setValue('unit_counts', endpoint.data.unit_counts)
       setValue('payment_term', endpoint.data.payment_term)
+      setProperty(endpoint.data)
     } else {
       toast.error(response.data?.message)
     }

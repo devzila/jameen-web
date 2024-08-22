@@ -6,8 +6,9 @@ import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import Invoices from '../Invoices'
+import ManualInvoice from './ManualInvoice'
 
-export default function ContractView() {
+export default function ShowContract() {
   const { propertyId, contractId } = useParams()
   const { get, response, loading, error } = useFetch()
   const [contract, setContractData] = useState({})
@@ -31,11 +32,21 @@ export default function ContractView() {
     <>
       <CCard className="my-3 border-0 ">
         <CRow>
-          <CCol md="8">
+          <CCol md="12">
             <CCard className="p-3 my-3 border-0 theme_color">
               <CListGroupItem>
-                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-                <strong className="text-black">Contract Details</strong>
+                <div className="d-flex w-100 justify-content-between">
+                  <div>
+                    <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
+                    <strong className="text-black">Contract Details</strong>
+                  </div>
+                  <div className="d-flex">
+                    {contract.contract_type == 'allotment' ? (
+                      <ManualInvoice after_submit={loadInitialContractData} />
+                    ) : null}
+                  </div>
+                </div>
+
                 <hr className="text-secondary" />
               </CListGroupItem>
               <CRow className="">

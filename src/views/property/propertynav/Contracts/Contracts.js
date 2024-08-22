@@ -115,7 +115,6 @@ const Contract = () => {
                                 <th className="pt-3 pb-3 border-0">Contract Type</th>
                                 <th className="pt-3 pb-3 border-0">Member</th>
                                 <th className="pt-3 pb-3 border-0">Notes</th>
-                                <th className="pt-3 pb-3 border-0">Actions</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -137,24 +136,6 @@ const Contract = () => {
                                     {running_contracts.contract_members.member_type || '-'}
                                   </td>
                                   <td className="pt-3">{running_contracts.notes || '-'}</td>
-                                  <td>
-                                    <Dropdown>
-                                      <Dropdown.Toggle
-                                        as={CustomDivToggle}
-                                        style={{ cursor: 'pointer' }}
-                                      >
-                                        <BsThreeDots />
-                                      </Dropdown.Toggle>
-                                      <Dropdown.Menu>
-                                        {running_contracts.contract_type == 'allotment' ? (
-                                          <ManualInvoice
-                                            after_submit={loadInitialRunningContracts}
-                                            allotmentId={running_contracts.id}
-                                          />
-                                        ) : null}
-                                      </Dropdown.Menu>
-                                    </Dropdown>
-                                  </td>
                                 </tr>
                               ))}
                             </tbody>

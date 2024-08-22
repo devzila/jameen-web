@@ -4,7 +4,7 @@ import { CContainer, CSpinner } from '@coreui/react'
 import PropertyNav from './propertynav/PropertyNav'
 import OverviewContent from '../property/propertynav/OverviewContent'
 import Showunit from './unit/ShowUnitModule/ShowUnit'
-import ContractView from './propertynav/Contracts/ContractView'
+import ShowContract from './propertynav/Contracts/ShowContract'
 import Buildings from './propertynav/Building/Buildings'
 import PropertyUnitTypes from './propertynav/UnitTypes/PropertyUnitTypes'
 import Properties from './Properties'
@@ -33,7 +33,7 @@ export default function Property() {
           <Route path="unit-types" name="Unit Types" element={<PropertyUnitTypes />} />
           <Route path="unit-types/:unittypeID/billableitems" element={<BillableItems />} />
           <Route path="unit/:unitId" name="Unit" element={<Showunit />} />
-          <Route path="contracts/:contractId" name="Unit" element={<ContractView />} />
+          <Route path="contracts/:contractId" name="Unit" element={<ShowContract />} />
           {/* Move this route up */}
           <Route path="ParkingLot" name="ParkingLot" element={<ParkingLot />} />
           <Route path="Allotment" name="Allotment" element={<PropUnitAllotment />} />

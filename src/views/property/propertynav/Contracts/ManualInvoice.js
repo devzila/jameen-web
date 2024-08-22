@@ -19,13 +19,15 @@ import {
   CContainer,
 } from '@coreui/react'
 
-function ManualInvoice({ after_submit, allotmentId }) {
+function ManualInvoice({ after_submit }) {
   const { register, handleSubmit, watch, control } = useForm()
   const { get, post, response, api } = useFetch()
 
-  const { propertyId } = useParams()
+  const { propertyId, contractId } = useParams()
   const [visible, setVisible] = useState(false)
   const [errors, setErrors] = useState({})
+
+  const vat_array = Array.from({ length: 30 }, (v, i) => ({ value: i + 1, label: i + 1 }))
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -37,7 +39,7 @@ function ManualInvoice({ after_submit, allotmentId }) {
 
   async function onSubmit(data) {
     const apiResponse = await post(
-      `/v1/admin/premises/properties/${propertyId}/allotments/${allotmentId}/invoices`,
+      `/v1/admin/premises/properties/${propertyId}/allotments/${contractId}/invoices`,
       {
         invoice: data,
       },
@@ -60,7 +62,7 @@ function ManualInvoice({ after_submit, allotmentId }) {
     <div>
       <button
         type="button"
-        className=" tooltip_button "
+        className=" btn custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
@@ -145,17 +147,19 @@ function ManualInvoice({ after_submit, allotmentId }) {
                     </Col>
                     <Col className="pr-1 mt-3" md="3">
                       <Form.Group>
-                        <label>VAT Percent</label>
-                        <input
-                          className="p-1 w-100 text-white d-block border-0 "
-                          style={{ BackgroundColor: 'red' }}
-                          placeholder="- - - -"
-                          type="range"
-                          min="0"
-                          max="30"
-                          {...register(`breakups.${index}.vat_percent`)}
-                        ></input>
-                        {watch(`breakups.${index}.vat_percent`)}
+                        <label>VAT Percentage</label>{' '}
+                        <Controller
+                          name={`breakups.${index}.vat_percent`}
+                          render={({ field }) => (
+                            <Select
+                              {...field}
+                              options={vat_array}
+                              value={vat_array.find((c) => c.value === field.value)}
+                              onChange={(val) => field.onChange(val.value)}
+                            />
+                          )}
+                          control={control}
+                        />
                       </Form.Group>
                     </Col>
 
@@ -181,7 +185,7 @@ function ManualInvoice({ after_submit, allotmentId }) {
                     border: '0px',
                     color: '#00bfcc',
                     backgroundColor: 'white',
-                    boxShadow: '5px  5px 20px ',
+                    boxShadow: '0px  0px 12px -6px ',
                     borderRadius: '26px',
                   }}
                   onClick={() => append()}
