@@ -91,7 +91,7 @@ const ManualInvoice = () => {
                                     {invoice.number}
                                   </NavLink>
                                 </th>
-                                <td className="pt-3 text-center">
+                                <td className="pt-3">
                                   {' '}
                                   {invoice
                                     ? `${invoice.total_amount} (${
