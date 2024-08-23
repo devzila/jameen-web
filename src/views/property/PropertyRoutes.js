@@ -8,6 +8,7 @@ import ShowContract from './propertynav/Contracts/ShowContracts/ShowContract'
 import Buildings from './propertynav/Building/Buildings'
 import PropertyUnitTypes from './propertynav/UnitTypes/PropertyUnitTypes'
 import Properties from './Properties'
+import ShowInvoices from '../finance/ShowInvoices'
 
 export default function Property() {
   const PropertyUnit = React.lazy(() => import('../property/unit/Unit'))
@@ -34,6 +35,11 @@ export default function Property() {
           <Route path="unit-types/:unittypeID/billableitems" element={<BillableItems />} />
           <Route path="unit/:unitId" name="Unit" element={<Showunit />} />
           <Route path="contracts/:contractId" name="Unit" element={<ShowContract />} />
+          <Route
+            path="contracts/:contractId/invoice/:invoiceId"
+            name="Invoice"
+            element={<ShowInvoices />}
+          />
           {/* Move this route up */}
           <Route path="ParkingLot" name="ParkingLot" element={<ParkingLot />} />
           <Route path="Allotment" name="Allotment" element={<PropUnitAllotment />} />
@@ -43,7 +49,8 @@ export default function Property() {
           <Route path="Documents" name="Documents" element={<Documents />} />
           <Route path="assets" name="Documents" element={<Assets />} />
           <Route path="templates" name="CreditNotes" element={<Template />} />
-          <Route path="Invoices" name="Invoices" element={<Invoices />} />
+          <Route path="invoices" name="Invoices" element={<Invoices />} />
+          <Route path="invoices/:invoiceId" name="Invoice" element={<ShowInvoices />} />
         </Routes>
       </CContainer>
     </>

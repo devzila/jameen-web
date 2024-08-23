@@ -87,9 +87,7 @@ const ManualInvoice = () => {
                             {invoices?.map((invoice) => (
                               <tr key={invoice.id}>
                                 <th className="pt-3 ps-3 border-0" scope="row">
-                                  <NavLink to={`/finance/${invoice.id}/view`}>
-                                    {invoice.number}
-                                  </NavLink>
+                                  <NavLink to={`invoice/${invoice.id}`}>{invoice.number}</NavLink>
                                 </th>
                                 <td className="pt-3">
                                   {' '}
@@ -118,22 +116,6 @@ const ManualInvoice = () => {
                                   >
                                     {invoice.status}
                                   </button>
-                                </td>
-                                <td>
-                                  <Dropdown key={invoice.id}>
-                                    <Dropdown.Toggle
-                                      as={CustomDivToggle}
-                                      style={{ cursor: 'pointer' }}
-                                    >
-                                      <BsThreeDots />
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                      <div className="d-flex">
-                                        <InvoicePayment invoice={invoice} />
-                                        <InvoiceCancel id={invoice.id} />
-                                      </div>
-                                    </Dropdown.Menu>
-                                  </Dropdown>
                                 </td>
                               </tr>
                             ))}

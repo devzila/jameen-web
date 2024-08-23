@@ -119,7 +119,7 @@ const Finance = () => {
                               scope="row"
                               style={{ color: '#666666' }}
                             >
-                              <NavLink to={`${invoice.id}/view`}>{invoice.number}</NavLink>
+                              <NavLink to={`invoice/${invoice.id}`}>{invoice.number}</NavLink>
                             </th>
                             <td className="pt-3">
                               {invoice?.unit_contract?.unit?.unit_no || '- '}
@@ -148,32 +148,6 @@ const Finance = () => {
                               >
                                 {invoice?.status || '-'}
                               </button>
-                            </td>
-
-                            <td>
-                              <Dropdown key={invoice.id}>
-                                <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                  <BsThreeDots />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  <div className="d-flex">
-                                    {invoice?.status === 'pending' ? (
-                                      <>
-                                        <InvoicePayment
-                                          invoice={invoice}
-                                          aftersubmit={loadInitialinvoices}
-                                        />
-                                        <InvoiceCancel
-                                          id={invoice.id}
-                                          aftersubmit={loadInitialinvoices}
-                                        />
-                                        <button className="btn tooltip_button"> Download</button>
-                                      </>
-                                    ) : null}
-                                    {/* <ShowInvoices /> */}
-                                  </div>
-                                </Dropdown.Menu>
-                              </Dropdown>
                             </td>
                           </tr>
                         ))}

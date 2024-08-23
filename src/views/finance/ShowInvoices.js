@@ -5,7 +5,8 @@ import { useParams } from 'react-router-dom'
 import { formatdate } from 'src/services/CommonFunctions'
 import { UseFetch, useFetch } from 'use-http'
 import { status_color } from 'src/services/CommonFunctions'
-
+import InvoiceCancel from './InvoiceCancel'
+import InvoicePayment from './InvoicePayment'
 export default function ShowInvoices() {
   const { get, response } = useFetch()
   const [invoice, setInvoice] = useState({})
@@ -21,6 +22,19 @@ export default function ShowInvoices() {
 
   async function downloadFile() {
     const api = await get(`/v1/admin/invoices/${invoiceId}.pdf`)
+    downloadPdf(api, invoice.number)
+  }
+
+  const downloadPdf = (pdfString, fileName) => {
+    const blob = new Blob([pdfString], { type: 'application/pdf' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = fileName
+    a.target = '_blank'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
   }
 
   useEffect(() => {
@@ -43,12 +57,22 @@ export default function ShowInvoices() {
                 >
                   {invoice?.status || '-'}
                 </button>
-                <CIcon
-                  icon={freeSet.cilFile}
-                  className="theme_color"
-                  size="xl"
-                  onClick={downloadFile}
-                />
+
+                <div className="d-flex align-items-center">
+                  <CIcon
+                    icon={freeSet.cilPrint}
+                    className="theme_color"
+                    size="xxl"
+                    onClick={downloadFile}
+                    title="Download"
+                  />
+                  {invoice?.status === 'pending' ? (
+                    <>
+                      <InvoicePayment invoice={invoice} aftersubmit={getInvoice} />
+                      <InvoiceCancel id={invoice.id} aftersubmit={getInvoice} />
+                    </>
+                  ) : null}
+                </div>
               </div>
               <div className="border-bottom border-top border-gray-200 pt-4 mt-4">
                 <div className="row">

@@ -35,7 +35,7 @@ const AppContent = () => {
         <Routes>
           <Route path="/" exact={true} name="Dashboard" element={<Dashboard />} />
           <Route path="/finance" name="Finance" element={<Finance />} />
-          <Route path="/finance/:invoiceId/view" element={<ShowInvoices />} />
+          <Route path="/finance/invoice/:invoiceId" element={<ShowInvoices />} />
           <Route path="/resident" name="Resident" element={<Residents />} />
           <Route path="/resident/:residentId/*" name="RView" element={<ResidentRoutes />} />
           <Route path="/unit" name="Unit" element={<Unit />} />
