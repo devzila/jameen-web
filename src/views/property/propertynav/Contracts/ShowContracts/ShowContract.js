@@ -6,8 +6,8 @@ import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import Invoices from '../../Invoices'
-import AddManualInvoice from './AddManualInvoice'
-import ManualInvoice from './ManualInvoice'
+import AddManualInvoice from './AddInvoice'
+import ManualInvoice from './Invoice'
 
 export default function ShowContract() {
   const { propertyId, contractId } = useParams()
@@ -31,6 +31,9 @@ export default function ShowContract() {
 
   return (
     <>
+      {contract.contract_type == 'allotment' ? (
+        <AddManualInvoice after_submit={loadInitialContractData} />
+      ) : null}
       <CCard className="my-3 border-0 ">
         <CRow>
           <CCol md="12">
@@ -42,9 +45,7 @@ export default function ShowContract() {
                     <strong className="text-black">Contract Details</strong>
                   </div>
                   <div className="d-flex">
-                    {contract.contract_type == 'allotment' ? (
-                      <AddManualInvoice after_submit={loadInitialContractData} />
-                    ) : null}
+                    <span></span>
                   </div>
                 </div>
 
@@ -60,7 +61,7 @@ export default function ShowContract() {
                 <CCol className="p-3 mt-0 fw-light">
                   Contract Type
                   <CCardText className="fw-normal text-black text-capitalize">
-                    {contract.contract_type || '-'}
+                    {contract?.contract_type?.replace('_', ' ') || '-'}
                   </CCardText>
                 </CCol>
               </CRow>

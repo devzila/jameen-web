@@ -142,7 +142,7 @@ export default function OverviewContent(propsd) {
             <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
               <CListGroupItem>
                 <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
-                <strong className="text-black">Property Billing Details</strong>
+                <strong className="text-black">Billing Info.</strong>
                 <hr className="text-secondary" />
               </CListGroupItem>
               <CRow className="">

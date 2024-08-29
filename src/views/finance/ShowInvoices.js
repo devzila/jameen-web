@@ -41,7 +41,7 @@ export default function ShowInvoices() {
     getInvoice()
   }, [])
   return (
-    <div className="container mt-6 mb-7 rounded-0">
+    <div className="container mt-4 mb-5 rounded-0">
       <div className="row justify-content-center">
         <div className="col-lg-12 col-xl-7">
           <div className="card rounded-1 mb-2">

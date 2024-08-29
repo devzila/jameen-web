@@ -19,7 +19,7 @@ import {
   CContainer,
 } from '@coreui/react'
 
-function AddManualInvoice({ after_submit }) {
+function AddInvoice({ after_submit }) {
   const { register, handleSubmit, watch, control } = useForm()
   const { get, post, response, api } = useFetch()
 
@@ -224,9 +224,9 @@ function AddManualInvoice({ after_submit }) {
   )
 }
 
-export default AddManualInvoice
+export default AddInvoice
 
-AddManualInvoice.propTypes = {
+AddInvoice.propTypes = {
   after_submit: PropTypes.func,
   allotmentId: PropTypes.number,
 }

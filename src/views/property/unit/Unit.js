@@ -205,11 +205,8 @@ function Unit() {
                     </table>
                     {loading && <Loading />}
                     {errors && (
-                      <p
-                        className="d-flex justify-content-cente"
-                        style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
-                      >
-                        There is a technical issue at Backend
+                      <p className="text-center small text-danger fst-italic">
+                        {process.env.REACT_APP_ERROR_MESSAGE}
                       </p>
                     )}
                   </div>

@@ -39,6 +39,7 @@ export default function Showunit() {
 
   async function getUnitData() {
     let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`)
+    console.log(api)
     if (response.ok) {
       setUnit(api.data)
     }
@@ -57,7 +58,7 @@ export default function Showunit() {
 
   return (
     <>
-      <CCard className="   my-3 border-0 ">
+      <CCard className="my-2 border-0 ">
         <CRow>
           <CCol md="12">
             <CCard className=" px-3 pt-0  my-3 border-0 theme_color">
@@ -163,9 +164,47 @@ export default function Showunit() {
         </CRow>
       </CCard>
 
+      <CRow className="mt-2">
+        <CCol md="12">
+          <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
+            <CListGroupItem>
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+              <strong className="text-black">Billing Info.</strong>
+              <hr className="text-secondary" />
+            </CListGroupItem>
+            <CRow className="">
+              <CCol className="p-2 mt-0 fw-light">
+                Electricity Account No.
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {unit?.electricity_account_number || '-'}
+                </CCardText>
+              </CCol>
+              <CCol className="p-2 mt-0 fw-light">
+                Water Account No.
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {unit?.water_account_number || '-'}
+                </CCardText>
+              </CCol>
+              <CCol className="p-2 mt-0 fw-light">
+                Internal Extension No.
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {unit?.internal_extension_number || '-'}
+                </CCardText>
+              </CCol>
+              <CCol className="p-2 mt-0 fw-light">
+                Last Status Changed
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {unit?.year_built || '-'}
+                </CCardText>
+              </CCol>
+            </CRow>
+          </CCard>
+        </CCol>
+      </CRow>
+
       <CRow>
         <CCol md="12" className="m-0">
-          <CCard className=" p-3 mt-3 mt-0 border-0 ">
+          <CCard className=" p-3 mt-1 mt-0 border-0 ">
             <CListGroupItem>
               <div className="d-flex w-100 justify-content-between">
                 <div>
@@ -223,7 +262,7 @@ export default function Showunit() {
               {unit?.running_contracts?.length >= 1 ? (
                 unit.running_contracts.map((contract) => (
                   <CCol md="4" key={contract.id}>
-                    <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
+                    <CCard className="shadow-sm border-0 rounded-2 mb-3 ">
                       <CCardBody className="pt-0 mt-1">
                         <CRow>
                           <CCol md="12" className="theme_color">
@@ -309,81 +348,83 @@ export default function Showunit() {
             </CListGroupItem>
 
             {invoices?.length >= 1 ? (
-              invoices.map((invoice) => (
-                <CCol key={invoice.id} md="4">
-                  <CCard className="shadow-lg border-0 rounded-2 mb-3 ">
-                    <CCardBody className="pt-0">
-                      <CRow>
-                        <CCol className="d-flex justify-content-end mt-2">
-                          <button
-                            className=" text-center border-0 p-1  mx-2 rounded-0 text-white "
-                            style={{
-                              backgroundColor: `${status_color(invoice?.status)}`,
-
-                              width: '110px',
-                            }}
-                          >
-                            {invoice?.status || '-'}
-                          </button>
-                        </CCol>
-                      </CRow>
-                      <CRow>
-                        <CCol>Invoice No :</CCol>
-                        <CCol>{invoice?.number || '-'}</CCol>
-                      </CRow>
-
-                      <CCardText className=" m-0">
+              <CRow>
+                {invoices.map((invoice) => (
+                  <CCol key={invoice.id} md="4">
+                    <CCard className="shadow-sm border-0 rounded-2 mb-3 ">
+                      <CCardBody className="pt-0">
                         <CRow>
-                          <CCol>Invoice Date :</CCol>
-                          <CCol>{invoice?.invoice_date || '-'}</CCol>
-                        </CRow>
-                      </CCardText>
+                          <CCol className="d-flex justify-content-end mt-2">
+                            <button
+                              className=" text-center border-0 p-1  mx-2 rounded-0 text-white "
+                              style={{
+                                backgroundColor: `${status_color(invoice?.status)}`,
 
-                      <CCardText className="m-0">
-                        <CRow>
-                          <CCol> Invoice Period : </CCol>
-                          <CCol>
-                            {(formatdate(invoice?.period_from) || '-') +
-                              '/' +
-                              (formatdate(invoice?.period_to) || '-')}
+                                width: '110px',
+                              }}
+                            >
+                              {invoice?.status || '-'}
+                            </button>
                           </CCol>
                         </CRow>
-                      </CCardText>
-                      <CCardText className=" m-0">
                         <CRow>
-                          <CCol className="d-flex align-items-center">Owner/Resident:</CCol>
-                          <CCol className="p-0 m-0">
-                            {PickOwner(invoice?.unit_contract?.contract_members || '-')}
-                          </CCol>
+                          <CCol>Invoice No :</CCol>
+                          <CCol>{invoice?.number || '-'}</CCol>
                         </CRow>
-                      </CCardText>
-                      <CCardText className="m-0">
-                        <CRow>
-                          <CCol> Amount: </CCol>
-                          <CCol>{invoice?.amount || '-'}</CCol>
-                        </CRow>
-                      </CCardText>
-                      <CCardText className="m-0">
-                        <CRow>
-                          <CCol> VAT: </CCol>
-                          <CCol>{invoice?.vat_amount || '-'}</CCol>
-                        </CRow>
-                      </CCardText>
 
-                      <CCardText className="m-0">
-                        <CRow>
-                          <CCol> Total </CCol>
-                          <CCol>{invoice?.total_amount || '-'}</CCol>
-                        </CRow>
-                      </CCardText>
-                      <div className="d-flex justify-content-end">
-                        <InvoicePayment invoice={invoice} />
-                        <InvoiceCancel id={invoice.id} />
-                      </div>
-                    </CCardBody>
-                  </CCard>
-                </CCol>
-              ))
+                        <CCardText className=" m-0">
+                          <CRow>
+                            <CCol>Invoice Date :</CCol>
+                            <CCol>{invoice?.invoice_date || '-'}</CCol>
+                          </CRow>
+                        </CCardText>
+
+                        <CCardText className="m-0">
+                          <CRow>
+                            <CCol> Invoice Period : </CCol>
+                            <CCol>
+                              {(formatdate(invoice?.period_from) || '-') +
+                                '/' +
+                                (formatdate(invoice?.period_to) || '-')}
+                            </CCol>
+                          </CRow>
+                        </CCardText>
+                        <CCardText className=" m-0">
+                          <CRow>
+                            <CCol className="d-flex align-items-center">Owner/Resident:</CCol>
+                            <CCol className="p-0 m-0">
+                              {PickOwner(invoice?.unit_contract?.contract_members || '-')}
+                            </CCol>
+                          </CRow>
+                        </CCardText>
+                        <CCardText className="m-0">
+                          <CRow>
+                            <CCol> Amount: </CCol>
+                            <CCol>{invoice?.amount || '-'}</CCol>
+                          </CRow>
+                        </CCardText>
+                        <CCardText className="m-0">
+                          <CRow>
+                            <CCol> VAT: </CCol>
+                            <CCol>{invoice?.vat_amount || '-'}</CCol>
+                          </CRow>
+                        </CCardText>
+
+                        <CCardText className="m-0">
+                          <CRow>
+                            <CCol> Total </CCol>
+                            <CCol>{invoice?.total_amount || '-'}</CCol>
+                          </CRow>
+                        </CCardText>
+                        <div className="d-flex justify-content-end">
+                          <InvoicePayment invoice={invoice} />
+                          <InvoiceCancel id={invoice.id} />
+                        </div>
+                      </CCardBody>
+                    </CCard>
+                  </CCol>
+                ))}
+              </CRow>
             ) : (
               <p className="text-center  fst-italic">No Invoices Found</p>
             )}

@@ -38,7 +38,6 @@ const AppContent = () => {
           <Route path="/finance/invoice/:invoiceId" element={<ShowInvoices />} />
           <Route path="/resident" name="Resident" element={<Residents />} />
           <Route path="/resident/:residentId/*" name="RView" element={<ResidentRoutes />} />
-          <Route path="/unit" name="Unit" element={<Unit />} />
           <Route path="/properties" name="Properties" element={<Properties />} />
           <Route path="/properties/:propertyId/*" element={<PropertyRoutes />} />
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />

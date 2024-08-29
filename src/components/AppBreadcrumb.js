@@ -31,6 +31,7 @@ const AppBreadcrumb = () => {
   }
 
   const breadcrumbs = getBreadcrumbs(currentLocation)
+  console.log(breadcrumbs)
 
   return (
     <CBreadcrumb className="m-0 ms-1" style={{ '--cui-breadcrumb-divider': "''" }}>
@@ -38,20 +39,18 @@ const AppBreadcrumb = () => {
         <CIcon icon={freeSet.cilHome} />
       </CBreadcrumbItem>
       {breadcrumbs.map((breadcrumb, index) => {
-        if (isNaN(extractLastPart(breadcrumb?.name))) {
-          return (
-            <CBreadcrumbItem
-              className="text-uppercase "
-              {...(breadcrumb.active ? { active: true } : { href: breadcrumb.pathname })}
-              key={index}
-            >
-              <div className="m-0 p-0">
-                <CIcon icon={freeSet.cilChevronRight} className="text-secondary me-1" />
-                {extractLastPart(breadcrumb?.name)}
-              </div>
-            </CBreadcrumbItem>
-          )
-        }
+        return (
+          <CBreadcrumbItem
+            className="text-uppercase "
+            {...(breadcrumb.active ? { active: true } : { href: breadcrumb.pathname })}
+            key={index}
+          >
+            <div className="m-0 p-0">
+              <CIcon icon={freeSet.cilChevronRight} className="text-secondary me-1" />
+              {extractLastPart(breadcrumb?.name)}
+            </div>
+          </CBreadcrumbItem>
+        )
       })}
     </CBreadcrumb>
   )

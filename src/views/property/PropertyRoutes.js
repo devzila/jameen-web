@@ -9,6 +9,7 @@ import Buildings from './propertynav/Building/Buildings'
 import PropertyUnitTypes from './propertynav/UnitTypes/PropertyUnitTypes'
 import Properties from './Properties'
 import ShowInvoices from '../finance/ShowInvoices'
+import Invoices from './propertynav/Invoices'
 
 export default function Property() {
   const PropertyUnit = React.lazy(() => import('../property/unit/Unit'))
@@ -17,7 +18,6 @@ export default function Property() {
   const Contracts = React.lazy(() => import('./propertynav/Contracts/Contracts'))
   const Maintenances = React.lazy(() => import('./propertynav/MaintenanceCategory/Maintenances'))
   const Documents = React.lazy(() => import('../property/propertynav/Documents'))
-  const Invoices = React.lazy(() => import('./propertynav/Invoices'))
   const Assets = React.lazy(() => import('./propertynav/Assets/Assets'))
   const Template = React.lazy(() => import('./propertynav/Templates/Template'))
 
