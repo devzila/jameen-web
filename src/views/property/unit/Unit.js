@@ -160,6 +160,7 @@ function Unit() {
                           <th className="pt-3 pb-3 border-0  ">Bed/Bath </th>
                           <th className="pt-3 pb-3 border-0  ">Year Built</th>
                           <th className="pt-3 pb-3 border-0  ">Owner/Resident</th>
+                          <th className="pt-3 pb-3 border-0  ">Open Invoices</th>
                           <th className="pt-3 pb-3 border-0  ">Status</th>
                         </tr>
                       </thead>
@@ -183,6 +184,7 @@ function Unit() {
                                 ? PickOwner(unit.running_contracts[0]?.contract_members)
                                 : '-'}
                             </td>
+                            <td className="pt-3 pb-2">-</td>
                             <td className="pt-3 pb-2 ">
                               <button
                                 className="text-center"

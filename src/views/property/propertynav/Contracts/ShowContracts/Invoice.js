@@ -24,6 +24,7 @@ const Invoice = () => {
     loadManualInvoices()
   }, [currentPage])
 
+  //contract invoice
   async function loadManualInvoices() {
     const endpoint = `/v1/admin/premises/properties/${propertyId}/allotments/${contractId}/invoices`
     let manual_invoices = await get(endpoint)
@@ -48,7 +49,7 @@ const Invoice = () => {
             <div className="container-fluid p-3 my-2 border-0 theme_color">
               <div className="mb-3">
                 <CIcon icon={freeSet.cilList} size="lg" className="me-2" />
-                <strong className="text-black">Invoice</strong>
+                <strong className="text-black">Invoices</strong>
               </div>
               <hr className="p-0 m-0 text-secondary" />
               {invoices.length >= 1 ? (

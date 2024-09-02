@@ -5,9 +5,8 @@ import { formatdate } from '../../../../../services/CommonFunctions'
 import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import Invoices from '../../Invoices'
 import AddManualInvoice from './AddInvoice'
-import ManualInvoice from './Invoice'
+import Invoices from './Invoice'
 
 export default function ShowContract() {
   const { propertyId, contractId } = useParams()
@@ -31,13 +30,10 @@ export default function ShowContract() {
 
   return (
     <>
-      {contract.contract_type == 'allotment' ? (
-        <AddManualInvoice after_submit={loadInitialContractData} />
-      ) : null}
       <CCard className="my-3 border-0 ">
         <CRow>
           <CCol md="12">
-            <CCard className="p-3 my-3 border-0 theme_color">
+            <CCard className="p-3 my-1 border-0 theme_color">
               <CListGroupItem>
                 <div className="d-flex w-100 justify-content-between">
                   <div>
@@ -45,7 +41,9 @@ export default function ShowContract() {
                     <strong className="text-black">Contract Details</strong>
                   </div>
                   <div className="d-flex">
-                    <span></span>
+                    {contract.contract_type == 'allotment' ? (
+                      <AddManualInvoice after_submit={loadInitialContractData} />
+                    ) : null}{' '}
                   </div>
                 </div>
 
@@ -160,7 +158,7 @@ export default function ShowContract() {
         </CRow>
       </CCard>
       <CCard className="my-3 border-0">
-        <ManualInvoice />
+        <Invoices />
       </CCard>
     </>
   )

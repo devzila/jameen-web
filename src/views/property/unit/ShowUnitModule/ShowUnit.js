@@ -159,52 +159,41 @@ export default function Showunit() {
                   </CCardText>
                 </CCol>
               </CRow>
+              <CRow className="">
+                <CCol className="p-3 mt-0 fw-light">
+                  Electricity Account No.
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.electricity_account_number || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-3 mt-0 fw-light">
+                  Water Account No.
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.water_account_number || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-3 mt-0 fw-light">
+                  Internal Extension No.
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.internal_extension_number || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-3 mt-0 fw-light">
+                  Last Status Changed
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {unit?.year_built || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-3 mt-0 fw-light"></CCol>
+              </CRow>
             </CCard>
           </CCol>
         </CRow>
       </CCard>
 
-      <CRow className="mt-2">
-        <CCol md="12">
-          <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
-            <CListGroupItem>
-              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
-              <strong className="text-black">Billing Info.</strong>
-              <hr className="text-secondary" />
-            </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-2 mt-0 fw-light">
-                Electricity Account No.
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.electricity_account_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-2 mt-0 fw-light">
-                Water Account No.
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.water_account_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-2 mt-0 fw-light">
-                Internal Extension No.
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.internal_extension_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-2 mt-0 fw-light">
-                Last Status Changed
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {unit?.year_built || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-          </CCard>
-        </CCol>
-      </CRow>
-
       <CRow>
         <CCol md="12" className="m-0">
-          <CCard className=" p-3 mt-1 mt-0 border-0 ">
+          <CCard className=" p-3 mt-1 border-0 ">
             <CListGroupItem>
               <div className="d-flex w-100 justify-content-between">
                 <div>
@@ -252,7 +241,7 @@ export default function Showunit() {
 
       <CRow>
         <CCol md="12" className="m-0">
-          <CCard className=" p-3 mt-3 mt-0 border-0 ">
+          <CCard className="p-3 mt-3 border-0 ">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
               <strong className="text-black">Contract Info.</strong>
