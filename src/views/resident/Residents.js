@@ -49,6 +49,7 @@ const Residents = () => {
     }
   }
   function handlePageClick(e) {
+    setResidents([])
     setLoading(true)
     setCurrentPage(e.selected + 1)
   }
