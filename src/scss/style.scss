@@ -15,6 +15,21 @@ $enable-rtl: true;
 * {
   // border: 1px dashed red;
 }
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+b {
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -165,4 +180,9 @@ label {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.monospace-bold {
+  font-family: sans-serif;
+  font-weight: bold;
 }

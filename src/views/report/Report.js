@@ -9,43 +9,25 @@ import { report_card_data } from './Components/ReportCardData'
 const Report = () => {
   return (
     <>
-      <div className="d-flex justify-content-center">
-        <h3 className="text-center bg-white rounded-5 shadow-sm p-2 px-5 theme_color">Reports</h3>
+      <div className="d-flex justify-content-center ">
+        <h3 className="text-center bg-white rounded-5 shadow-sm p-2 px-5 theme_color">
+          <CIcon icon={freeSet.cilBarChart} size="xl" className="mx-2" />
+          Reports
+        </h3>
       </div>
-      <h6 className="mt-2"> - Unit Reports</h6>
 
-      <CRow className="my-3">
-        {report_card_data.unit_reports.map((item, index) => (
-          <ReportCards key={index} data={item} />
+      <span className="monospace-bold">
+        {Object.keys(report_card_data).map((key, index) => (
+          <React.Fragment key={index}>
+            <h6 className="mt-4 monospace-bold text-capitalize">- {key.replace(/_/g, ' ')}</h6>
+            <CRow className="my-2">
+              {report_card_data[key].map((item, index) => (
+                <ReportCards key={index} data={item} />
+              ))}
+            </CRow>
+          </React.Fragment>
         ))}
-      </CRow>
-
-      <h6> - Collection Report</h6>
-      <CRow className="my-3 d-flex">
-        {report_card_data.collection_reports.map((item, index) => (
-          <ReportCards key={index} data={item} />
-        ))}
-      </CRow>
-
-      <h6>- Customer balance report</h6>
-      <CRow className="my-3">
-        {report_card_data.unit_reports.map((item, index) => (
-          <ReportCards key={index} data={item} />
-        ))}
-      </CRow>
-
-      <h6>- Maintenance order report</h6>
-      <CRow className="my-3">
-        {report_card_data.unit_reports.map((item, index) => (
-          <ReportCards key={index} data={item} />
-        ))}
-      </CRow>
-      <h6>-Resident Report</h6>
-      <CRow className="my-3">
-        {report_card_data.unit_reports.map((item, index) => (
-          <ReportCards key={index} data={item} />
-        ))}
-      </CRow>
+      </span>
     </>
   )
 }
