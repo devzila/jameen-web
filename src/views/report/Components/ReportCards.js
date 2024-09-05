@@ -6,12 +6,11 @@ import CIcon from '@coreui/icons-react'
 import ReportModals from './ReportModals'
 
 export default function ReportCards(props) {
-  console.log()
   return (
-    <CCol md="4" className="mt-3">
+    <CCol md="4" className="mt-3 ">
       <ReportModals
         component={
-          <CCard className="p-3 rounded-0 border-0 shadow-sm pb-5">
+          <CCard className="p-3 rounded-0 border-0 shadow-sm pb-5 card-animations cursor-pointer">
             <CRow>
               <CCol md="2">
                 <CIcon size="xl" className="me-2 theme_color " icon={freeSet.cilJustifyLeft} />
