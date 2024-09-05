@@ -23,8 +23,6 @@ const Maintenance = () => {
   return (
     <>
       <h1>Maintenance</h1>
-      {loading && <p>Maintenance are loading!</p>}
-      <MaintenanceList listData={listData} />
       <Pagination current={currentPage} pageCount={totalPages} />
     </>
   )

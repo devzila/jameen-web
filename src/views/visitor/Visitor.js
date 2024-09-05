@@ -14,6 +14,8 @@ import AddVisitor from './AddVisitor'
 import ShowVisitor from './ShowVisitor'
 import EditVisitor from './EditVisitor'
 import DeleteVisitor from './DeleteVisitor'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 export default function Visitor() {
   const [pagination, setPagination] = useState(null)
@@ -31,7 +33,7 @@ export default function Visitor() {
     let endpoint = `/v1/admin/visitors?page=${currentPage}`
 
     if (searchKeyword) {
-      endpoint += `&q[username_eq]=${searchKeyword}`
+      endpoint += `&q[name_cont]=${searchKeyword}&q[or][email_cont]=${searchKeyword}&q[or][phone_number_cont]=${searchKeyword}`
     }
     let initialVisitor = await get(endpoint)
 
@@ -57,107 +59,94 @@ export default function Visitor() {
 
   return (
     <div>
-      <section className="w-100 p-0">
-        <CNavbar expand="lg" colorScheme="light" className="bg-light">
+      <section className="w-100 p-0 bg-white">
+        <CNavbar expand="lg" colorScheme="light" className="bg-white">
           <CContainer fluid>
-            <CNavbarBrand href="#">Visitors</CNavbarBrand>
+            <CNavbarBrand href="/residents">Visitors</CNavbarBrand>
             <div className="d-flex justify-content-end">
               <div className="d-flex" role="search">
                 <input
                   onChange={(e) => setSearchKeyword(e.target.value)}
-                  className="form-control me-2"
+                  className="form-control  custom_input"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
                 />
                 <button
                   onClick={loadInitialVisitor}
-                  className="btn btn-outline-success"
+                  className="btn btn-outline-success custom_search_button"
                   type="submit"
                 >
-                  Search
+                  <CIcon icon={freeSet.cilSearch} />
                 </button>
               </div>
               <AddVisitor />
             </div>
           </CContainer>
         </CNavbar>
+        <hr className=" text-secondary m-0" />
+
         <div>
-          <div className="mask d-flex align-items-center h-100">
-            <div className="container">
-              <div className="row justify-content-center">
-                <div className="col-12">
-                  <div className="table-responsive bg-white">
-                    <table className="table mb-0">
-                      <thead
-                        style={{
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                          overFlow: 'hidden',
-                        }}
-                      >
-                        <tr>
-                          <th className="pt-3 pb-3 border-0">Name</th>
-                          <th className="pt-3 pb-3 border-0">Status</th>
-                          <th className="pt-3 pb-3 border-0">Visit Date</th>
-                          <th className="pt-3 pb-3 border-0">Phone No.</th>
-                          <th className="pt-3 pb-3 border-0">Resident ID </th>
-                          <th className="pt-3 pb-3 border-0">Unit ID </th>
-                          <th className="pt-3 pb-3 border-0">Check In </th>
-                          <th className="pt-3 pb-3 border-0">Check Out </th>
-                        </tr>
-                      </thead>
+          <div className="mask d-flex align-items-center w-100 h-100">
+            <div className="table-responsive bg-white w-100">
+              <table className="table mb-0 table-striped">
+                <thead
+                  style={{
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    overFlow: 'hidden',
+                  }}
+                >
+                  <tr>
+                    <th className="pt-3 pb-3 border-0">Name</th>
+                    <th className="pt-3 pb-3 border-0">Status</th>
+                    <th className="pt-3 pb-3 border-0">Visit Date</th>
+                    <th className="pt-3 pb-3 border-0">Phone No.</th>
+                    <th className="pt-3 pb-3 border-0">Resident ID </th>
+                    <th className="pt-3 pb-3 border-0">Unit ID </th>
+                    <th className="pt-3 pb-3 border-0">Check In </th>
+                    <th className="pt-3 pb-3 border-0">Check Out </th>
+                  </tr>
+                </thead>
 
-                      <tbody>
-                        {visitor &&
-                          visitor?.map((visitor) => (
-                            <tr key={visitor.id}>
-                              <th className="pt-3" scope="row" style={{ color: '#666666' }}>
-                                {visitor.name}
-                              </th>
-                              <td className="pt-3">{visitor.status || '-'}</td>
-                              <td className="pt-3">{visitor.visit_date}</td>
-                              <td className="pt-3">{visitor.phone_number}</td>
-                              <td className="pt-3">
-                                {visitor.resident_id
-                                  ?.replace('T', ' ')
-                                  ?.replace('Z', ' ')
-                                  .slice(0, 19)}
-                              </td>
-                              <td className="pt-3">{visitor.unit_id}</td>
-                              <td className="pt-3">
-                                {visitor.checkin?.replace('T', ' ')?.replace('Z', ' ').slice(0, 19)}
-                              </td>
-                              <td className="pt-3">
-                                {visitor.chackout
-                                  ?.replace('T', ' ')
-                                  ?.replace('Z', ' ')
-                                  .slice(0, 19)}
-                              </td>
+                <tbody>
+                  {visitor &&
+                    visitor?.map((visitor) => (
+                      <tr key={visitor.id}>
+                        <th className="pt-3 border-0" scope="row" style={{ color: '#666666' }}>
+                          {visitor.name}
+                        </th>
+                        <td className="pt-3">{visitor.status || '-'}</td>
+                        <td className="pt-3">{visitor.visit_date}</td>
+                        <td className="pt-3">{visitor.phone_number}</td>
+                        <td className="pt-3">
+                          {visitor.resident_id?.replace('T', ' ')?.replace('Z', ' ').slice(0, 19)}
+                        </td>
+                        <td className="pt-3">{visitor.unit_id}</td>
+                        <td className="pt-3">
+                          {visitor.checkin?.replace('T', ' ')?.replace('Z', ' ').slice(0, 19)}
+                        </td>
+                        <td className="pt-3">
+                          {visitor.chackout?.replace('T', ' ')?.replace('Z', ' ').slice(0, 19)}
+                        </td>
 
-                              <td>
-                                <Dropdown key={visitor.id}>
-                                  <Dropdown.Toggle
-                                    as={CustomDivToggle}
-                                    style={{ cursor: 'pointer' }}
-                                  >
-                                    <BsThreeDots />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu>
-                                    <EditVisitor visitorId={visitor.id} />
-                                    <ShowVisitor visitorId={visitor.id} />
-                                    <DeleteVisitor visitorId={visitor.id} />
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                    {loading && <Loading />}
-                  </div>
-                </div>
-              </div>
+                        <td>
+                          <Dropdown key={visitor.id}>
+                            <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
+                              <BsThreeDots />
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              <EditVisitor visitorId={visitor.id} />
+                              <ShowVisitor visitorId={visitor.id} />
+                              <DeleteVisitor visitorId={visitor.id} />
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+              {loading && <Loading />}
             </div>
           </div>
         </div>
