@@ -17,7 +17,7 @@ function PropertyCardView({ property }) {
             <CRow>
               {property.map((property) => (
                 <CCol key={property.id} md="3">
-                  <CCard className="shadow-lg border-0 rounded-2 mb-3">
+                  <CCard className="shadow-sm border-0 rounded-2 mb-3">
                     <CCardText className="card">
                       <Link to={`/properties/${property.id}/overview`}>
                         <CRow>
@@ -51,7 +51,7 @@ function PropertyCardView({ property }) {
                         <CCol className="d-flex justify-content-end "></CCol>
                       </CRow>
                       <CRow>
-                        <CCol md="8" className="text-black text-nowrap">
+                        <CCol md="8" className="text-black text-nowrap text-capitalize">
                           {property?.name || '-'}
                           <br></br>
                           <CCol className="text-secondary">

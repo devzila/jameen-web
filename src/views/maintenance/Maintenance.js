@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Pagination from 'src/components/Pagination'
-import MaintenanceList from './MaitenanceList'
+import RoundedNavbar from '../shared/RoundedNavbar'
+import { freeSet } from '@coreui/icons'
+import TopCards from './Components/TopCards'
+import MaintanceBody from './MaintanceBody'
 
 const Maintenance = () => {
   //const [listData, setListData] = useState([{ a: 'a' }, { a: 'b' }])
@@ -22,7 +25,10 @@ const Maintenance = () => {
 
   return (
     <>
-      <h1>Maintenance</h1>
+      <RoundedNavbar props={{ icon: freeSet.cilPaint, header: 'Maintenance' }} />
+      <TopCards />
+      <MaintanceBody />
+
       <Pagination current={currentPage} pageCount={totalPages} />
     </>
   )

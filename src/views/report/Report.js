@@ -5,17 +5,12 @@ import React from 'react'
 import { CardHeader, CardText } from 'react-bootstrap'
 import ReportCards from './Components/ReportCards'
 import { report_card_data } from './Components/ReportCardData'
+import RoundedNavbar from '../shared/RoundedNavbar'
 
 const Report = () => {
   return (
     <>
-      <div className="d-flex justify-content-center ">
-        <h3 className="text-center bg-white rounded-5 shadow-sm p-2 px-5 theme_color">
-          <CIcon icon={freeSet.cilBarChart} size="xl" className="mx-2" />
-          Reports
-        </h3>
-      </div>
-
+      <RoundedNavbar props={{ icon: freeSet.cilBarChart, header: 'Reports' }} />
       <span className="monospace-bold">
         {Object.keys(report_card_data).map((key, index) => (
           <React.Fragment key={index}>
