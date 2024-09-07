@@ -69,7 +69,7 @@ export default function MaintenanceList({ data }) {
                       {data?.map((item) => (
                         <tr key={item.id}>
                           <td className="pt-3 pb-2">
-                            <NavLink className="mx-2 p-0">{item.name || '-'}</NavLink>
+                            <NavLink className="mx-2 p-0">{item.title || '-'}</NavLink>
                           </td>
                           <td className="pt-3 pb-2">{item.id || '-'}</td>
 
