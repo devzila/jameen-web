@@ -10,6 +10,7 @@ const Unit = React.lazy(() => import('../views/property/unit/Unit'))
 const Properties = React.lazy(() => import('../views/property/Properties'))
 const PropertyRoutes = React.lazy(() => import('../views/property/PropertyRoutes'))
 const Maintenance = React.lazy(() => import('../views/maintenance/Maintenance'))
+const MaintenaceRoutes = React.lazy(() => import('../views/maintenance/MaintenanceRoutes'))
 const Visitor = React.lazy(() => import('../views/visitor/Visitor'))
 const Operation = React.lazy(() => import('../views/operation/Operation'))
 const News = React.lazy(() => import('../views/news/News'))
@@ -51,6 +52,7 @@ const AppContent = () => {
           <Route path="/dashboard/*" name="Dashboard" element={<Dashboard />} />
 
           <Route path="/maintenance" name="Maintenance" element={<Maintenance />} />
+          <Route path="/maintenance/:id" name="Maintenance" element={<MaintenaceRoutes />} />
           <Route path="/visitor" name="Visitor" element={<Visitor />} />
           <Route path="/operation" name="Operation" element={<Operation />} />
           <Route path="/news" name="News" element={<News />} />

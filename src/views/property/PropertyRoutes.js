@@ -29,6 +29,7 @@ export default function Property() {
       <PropertyNav />
       <CContainer fluid className="p-0">
         <Routes path="/properties/:propertyId" name="Properties" element={<Properties />}>
+          <Route path="/" name="Overview" element={<OverviewContent />} />
           <Route path="overview" name="Overview" element={<OverviewContent />} />
           <Route path="unit" name="Unit" element={<PropertyUnit />} />
           <Route path="unit-types" name="Unit Types" element={<PropertyUnitTypes />} />

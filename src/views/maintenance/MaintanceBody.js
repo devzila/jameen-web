@@ -11,10 +11,12 @@ import CustomDivToggle from '../../components/CustomDivToggle'
 // import FilterAccordion from './UnitFunctions/FilterAccordioan'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import Loader from 'src/components/loading/loading'
 
 export default function MaintanceBody() {
   const { get, response, error } = useFetch()
   const [maintenance, setMaintenance] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     loaddMaintenanceRequests()
@@ -22,15 +24,11 @@ export default function MaintanceBody() {
 
   async function loaddMaintenanceRequests() {
     let endpoint = await get(`/v1/admin/maintenance/requests`)
-    console.log(endpoint)
 
     if (response.ok) {
+      setLoading(false)
       setMaintenance(endpoint.data)
     }
   }
-  return (
-    <>
-      <MaintenanceList data={maintenance} />
-    </>
-  )
+  return <>{loading ? <Loader /> : <MaintenanceList data={maintenance} />}</>
 }
