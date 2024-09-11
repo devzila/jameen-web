@@ -72,7 +72,13 @@ export default function MaintenanceList({ data }) {
                               {item.title || '-'}
                             </NavLink>
                           </td>
-                          <td className="pt-3 pb-2">{item.description || '-'}</td>
+                          <td
+                            className="pt-3 pb-2"
+                            title={item.description?.length > 50 ? item.description : ''}
+                          >
+                            {item.description?.slice(0, 50) +
+                              (item.description.length > 50 ? '...' : '') || '-'}
+                          </td>
 
                           <td className="pt-3 pb-2">{item.category.name || '-'}</td>
                           <td className="pt-3 pb-2">{item.category.priority || '-'}</td>
