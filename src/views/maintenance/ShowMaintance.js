@@ -83,6 +83,95 @@ export default function ShowMaintance() {
             </div>
 
             <hr className="text-secondary" />
+            <CRow className="">
+              <CCol className="p-3 mt-0 fw-light">
+                Title
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {data?.title || '-'}
+                </CCardText>
+              </CCol>
+              <CCol className="p-3 mt-0 fw-light">
+                Description
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {data?.description || '-'}
+                </CCardText>
+              </CCol>
+            </CRow>
+
+            <CRow className="">
+              <CCol className="p-3 mt-0 fw-light">
+                Category
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {data?.category?.name || '-'}
+                </CCardText>
+              </CCol>
+              <CCol className="p-3 mt-0 fw-light">
+                Status
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {data?.status || '-'}
+                </CCardText>
+              </CCol>
+            </CRow>
+            <CRow className="">
+              <CCol className="p-3 mt-0 fw-light">
+                Assigned User
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {data?.assigned_user || '-'}
+                </CCardText>
+              </CCol>
+            </CRow>
+          </CCard>
+        </CCol>
+
+        <CCol md="4">
+          <CCard className=" p-3 my-2 border-0 theme_color">
+            <div className="d-flex w-100 ">
+              <CIcon icon={freeSet.cilLibrary} size="lg" className="me-2" />
+              <strong className="text-black">Ticket Log</strong>
+            </div>
+
+            <hr className="text-secondary" />
+            <CRow className="">
+              <CCol className="p-3 mt-0 fw-light">
+                Created By
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {data?.property?.name || '-'}
+                </CCardText>
+              </CCol>
+              <CCol className="p-3 mt-0 fw-light">
+                Assigned By
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {data?.year_built || '-'}
+                </CCardText>
+              </CCol>
+            </CRow>
+
+            <CRow className="">
+              <CCol className="p-3 mt-0 fw-light">
+                Closed By
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {data?.data_type?.name || '-'}
+                </CCardText>
+              </CCol>
+            </CRow>
+          </CCard>
+        </CCol>
+
+        <CCol md="8">
+          <CCard className=" p-3 my-2 border-0 theme_color">
+            <div className="d-flex w-100 ">
+              <CIcon icon={freeSet.cilCommentBubble} size="lg" className="me-2" />
+              <strong className="text-black">Comments</strong>
+            </div>
+
+            <hr className="text-secondary" />
+            <CRow className="">
+              <CCol className="p-3 mt-0 py-5 fw-light">
+                <CCardText className="fw-normal text-black text-capitalize">
+                  {data?.property?.name || ''}
+                </CCardText>
+              </CCol>
+            </CRow>
           </CCard>
         </CCol>
       </CRow>

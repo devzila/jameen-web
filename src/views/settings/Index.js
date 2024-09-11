@@ -10,6 +10,7 @@ export default function Index() {
   const WorkFlow = React.lazy(() => import('./Workflow'))
   const Maintenance = React.lazy(() => import('./MaintenanceStaff/MaintenanaceStaff'))
   const Security = React.lazy(() => import('./SecurityStaff/SecurityStaff'))
+  const MaintenanceCategories = React.lazy(() => import('./MaintenanceCategory/Maintenances'))
 
   return (
     <>
@@ -19,6 +20,12 @@ export default function Index() {
           <Route path="roles" name="Role" element={<Role />} />
           <Route path="users" name="User" element={<User />} />
           <Route path="maintenance" name="Maintenance" element={<Maintenance />} />
+          <Route
+            path="maintenance-categories"
+            name="Maintenance Categories"
+            element={<MaintenanceCategories />}
+          />
+
           <Route path="security" name="Security" element={<Security />} />
           <Route path="integrations" name="Integrations" element={<Integrations />} />
           <Route path="workflow" name="Workflow" element={<WorkFlow />} />

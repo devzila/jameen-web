@@ -19,7 +19,9 @@ export default function Nav() {
           <div>
             <NavLink to="/settings/maintenance">Maintenance Staff</NavLink>
           </div>
-
+          <div>
+            <NavLink to="/settings/maintenance-categories">Maintenance Categories</NavLink>
+          </div>
           <div>
             <NavLink to="/settings/integrations"> Integrations </NavLink>
           </div>

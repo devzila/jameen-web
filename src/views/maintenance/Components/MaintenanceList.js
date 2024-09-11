@@ -55,16 +55,15 @@ export default function MaintenanceList({ data }) {
                     >
                       <tr>
                         <th className="pt-3 pb-3 border-0  ">Name</th>
-                        <th className="pt-3 pb-3 border-0  "> ID </th>
+                        <th className="pt-3 pb-3 border-0  ">Description</th>
                         <th className="pt-3 pb-3 border-0  ">Category</th>
-                        <th className="pt-3 pb-3 border-0  ">Status</th>
+                        <th className="pt-3 pb-3 border-0  ">Priority</th>
                         <th className="pt-3 pb-3 border-0  ">Asignee</th>
-                        <th className="pt-3 pb-3 border-0  ">Date</th>
+                        <th className="pt-3 pb-3 border-0  ">Status</th>
                         <th className="pt-3 pb-3 border-0  ">Expected Handover Date</th>
                         <th className="pt-3 pb-3 border-0  "> Actions</th>
                       </tr>
                     </thead>
-
                     <tbody>
                       {data?.map((item) => (
                         <tr key={item.id}>
@@ -73,14 +72,14 @@ export default function MaintenanceList({ data }) {
                               {item.title || '-'}
                             </NavLink>
                           </td>
-                          <td className="pt-3 pb-2">{item.id || '-'}</td>
+                          <td className="pt-3 pb-2">{item.description || '-'}</td>
 
                           <td className="pt-3 pb-2">{item.category.name || '-'}</td>
+                          <td className="pt-3 pb-2">{item.category.priority || '-'}</td>
+                          <td className="pt-3 pb-2">{item.assigned_user || '-'}</td>
                           <td className="pt-3 pb-2">{item.status || '-'}</td>
-                          <td className="pt-3 pb-2">{null || '-'}</td>
-                          <td className="pt-3 pb-2">{null || '-'}</td>
 
-                          <td className="pt-3 pb-2">{null || '-'}</td>
+                          <td className="pt-3 pb-2">{item.completion_date || '-'}</td>
                           <td className="pt-3 pb-2 ">{null || '...'}</td>
                         </tr>
                       ))}

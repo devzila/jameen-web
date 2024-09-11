@@ -6,7 +6,6 @@ import TopCards from './Components/TopCards'
 import MaintanceBody from './MaintanceBody'
 
 const Maintenance = () => {
-  //const [listData, setListData] = useState([{ a: 'a' }, { a: 'b' }])
   const [listData, setListData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -25,7 +24,6 @@ const Maintenance = () => {
 
   return (
     <>
-      <RoundedNavbar props={{ icon: freeSet.cilPaint, header: 'Maintenance' }} />
       <TopCards />
       <MaintanceBody />
 
