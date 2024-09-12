@@ -5,21 +5,33 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { Col, Row } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
+import MaintenanceTable from './MaintenanceTable'
+import MaintenanceCard from './MaintenanceCard'
 
 export default function MaintenanceList({ data }) {
   console.log(data)
   const [searchKeyword, setSearchKeyword] = useState('')
+  const [table_view, setTableView] = useState(true)
 
   return (
     <>
-      <section className="w-100 p-0 mt-2">
-        <div className="mask d-flex align-items-center h-100 p-0 m-0 w-100">
-          <div className="w-100">
-            <CNavbar expand="lg" colorScheme="light" className="bg-white">
-              <CContainer fluid>
-                <CNavbarBrand href="#">Maintenance Requests</CNavbarBrand>
+      <div className="mask d-flex align-items-center h-100 p-0 mt-2 w-100">
+        <div className="w-100">
+          <CNavbar expand="lg" colorScheme="light" className="bg-white">
+            <CContainer fluid>
+              <div className="d-flex justify-content-between w-100">
+                <div className="d-flex align-items-center">
+                  <CNavbarBrand href="#">Maintenance Requests</CNavbarBrand>
+                  <CIcon
+                    onClick={() => setTableView(!table_view)}
+                    icon={table_view ? freeSet.cilNotes : freeSet.cilStorage}
+                    size="xxl"
+                    title={table_view ? 'Card View' : 'Table View'}
+                    className="mt-0 p-0 theme_color"
+                  />
+                </div>
                 <div className="d-flex justify-content-end bg-light">
-                  <div className="d-flex  " role="search">
+                  <div className="d-flex" role="search">
                     <input
                       value={searchKeyword}
                       onChange={(e) => setSearchKeyword(e.target.value)}
@@ -38,73 +50,16 @@ export default function MaintenanceList({ data }) {
                   </div>
                   {/* <FilterAccordion filter_callback={filter_callback} units_type={unit_type} /> */}
                 </div>
-              </CContainer>
-            </CNavbar>
-            <hr className="p-0 m-0 text-secondary" />
-
-            <div className="row justify-content-center">
-              <div className="col-16">
-                <div className="table-responsive bg-white">
-                  <table className="table  table-striped mb-0">
-                    <thead
-                      style={{
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        overFlow: 'hidden',
-                      }}
-                    >
-                      <tr>
-                        <th className="pt-3 pb-3 border-0  ">Name</th>
-                        <th className="pt-3 pb-3 border-0  ">Description</th>
-                        <th className="pt-3 pb-3 border-0  ">Category</th>
-                        <th className="pt-3 pb-3 border-0  ">Priority</th>
-                        <th className="pt-3 pb-3 border-0  ">Asignee</th>
-                        <th className="pt-3 pb-3 border-0  ">Status</th>
-                        <th className="pt-3 pb-3 border-0  ">Expected Handover Date</th>
-                        <th className="pt-3 pb-3 border-0  "> Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data?.map((item) => (
-                        <tr key={item.id}>
-                          <td className="pt-3 pb-2">
-                            <NavLink to={`${item.id}`} className="mx-2 p-0">
-                              {item.title || '-'}
-                            </NavLink>
-                          </td>
-                          <td
-                            className="pt-3 pb-2"
-                            title={item.description?.length > 50 ? item.description : ''}
-                          >
-                            {item.description?.slice(0, 50) +
-                              (item.description.length > 50 ? '...' : '') || '-'}
-                          </td>
-
-                          <td className="pt-3 pb-2">{item.category.name || '-'}</td>
-                          <td className="pt-3 pb-2">{item.category.priority || '-'}</td>
-                          <td className="pt-3 pb-2">{item.assigned_user || '-'}</td>
-                          <td className="pt-3 pb-2">{item.status || '-'}</td>
-
-                          <td className="pt-3 pb-2">{item.completion_date || '-'}</td>
-                          <td className="pt-3 pb-2 ">{null || '...'}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {/* {loading && <Loading />}
-                    {errors && (
-                      <p className="text-center small text-danger fst-italic">
-                        {process.env.REACT_APP_ERROR_MESSAGE}
-                      </p>
-                    )} */}
-                </div>
               </div>
-            </div>
-          </div>
+            </CContainer>
+          </CNavbar>
+          <hr className="p-0 m-0 text-secondary" />
+          {table_view ? <MaintenanceTable data={data} /> : <MaintenanceCard data={data} />}
         </div>
-        <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
-          <Row>
-            {/* <Col md="12">
+      </div>
+      <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
+        <Row>
+          {/* <Col md="12">
               {pagination?.total_pages > 1 ? (
                 <Paginate
                   onPageChange={handlePageClick}
@@ -116,9 +71,8 @@ export default function MaintenanceList({ data }) {
                 <br />
               )}
             </Col> */}
-          </Row>
-        </CNavbar>
-      </section>
+        </Row>
+      </CNavbar>
     </>
   )
 }
