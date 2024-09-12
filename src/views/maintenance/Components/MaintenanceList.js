@@ -24,7 +24,7 @@ export default function MaintenanceList({ data }) {
                   <CNavbarBrand href="#">Maintenance Requests</CNavbarBrand>
                   <CIcon
                     onClick={() => setTableView(!table_view)}
-                    icon={table_view ? freeSet.cilNotes : freeSet.cilStorage}
+                    icon={table_view ? freeSet.cilShortText : freeSet.cilColumns}
                     size="xxl"
                     title={table_view ? 'Card View' : 'Table View'}
                     className="mt-0 p-0 theme_color"
@@ -54,7 +54,9 @@ export default function MaintenanceList({ data }) {
             </CContainer>
           </CNavbar>
           <hr className="p-0 m-0 text-secondary" />
-          {table_view ? <MaintenanceTable data={data} /> : <MaintenanceCard data={data} />}
+          <div>
+            {table_view ? <MaintenanceTable data={data} /> : <MaintenanceCard data={data} />}
+          </div>
         </div>
       </div>
       <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
