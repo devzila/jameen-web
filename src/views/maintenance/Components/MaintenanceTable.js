@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
+import { status_color } from 'src/services/CommonFunctions'
 
 export default function MaintenanceTable({ data }) {
   return (
@@ -45,7 +46,19 @@ export default function MaintenanceTable({ data }) {
                   <td className="pt-3 pb-2">{item.category.name || '-'}</td>
                   <td className="pt-3 pb-2">{item.category.priority || '-'}</td>
                   <td className="pt-3 pb-2">{item.assigned_user || '-'}</td>
-                  <td className="pt-3 pb-2">{item.status || '-'}</td>
+                  <td className="pt-3 pb-2">
+                    {' '}
+                    <button
+                      className=" text-center border-0  rounded-0 text-white"
+                      style={{
+                        backgroundColor: `${status_color(item?.status)}`,
+                        cursor: 'default',
+                        width: '120px',
+                      }}
+                    >
+                      {item.status || '-'}
+                    </button>
+                  </td>
 
                   <td className="pt-3 pb-2">{item.completion_date || '-'}</td>
                   <td className="pt-3 pb-2 ">{null || '...'}</td>

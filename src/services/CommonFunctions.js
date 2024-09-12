@@ -13,7 +13,7 @@ export function formatdate(isoDate) {
 
 export function status_color(status) {
   switch (status) {
-    case 'pending':
+    case ('pending', 'requested'):
       return 'rgb(255, 68, 51)'
     case 'due':
       return 'rgba(0, 120, 0,0.7)'
