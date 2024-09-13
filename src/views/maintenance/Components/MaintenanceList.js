@@ -7,6 +7,7 @@ import { Col, Row } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import MaintenanceTable from './MaintenanceTable'
 import MaintenanceCard from './MaintenanceCard'
+import AddMaintenance from './AddMaintenance'
 
 export default function MaintenanceList({ data }) {
   console.log(data)
@@ -48,6 +49,7 @@ export default function MaintenanceList({ data }) {
                       <CIcon icon={freeSet.cilSearch} />
                     </button>
                   </div>
+                  <AddMaintenance />
                   {/* <FilterAccordion filter_callback={filter_callback} units_type={unit_type} /> */}
                 </div>
               </div>
