@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 
 import { CContainer, CModalFooter, CButton } from '@coreui/react'
 
-export default function MaintenanceForm() {
+export default function MaintenanceForm({ handleClose }) {
   const { register, handleSubmit, control } = useForm()
   const { get, post, response, api } = useFetch()
 
@@ -31,10 +31,6 @@ export default function MaintenanceForm() {
       setErrors(response.data.errors)
       toast(response.data?.message)
     }
-  }
-  function handleClose() {
-    setVisible(false)
-    setErrors({})
   }
 
   //
@@ -124,21 +120,24 @@ export default function MaintenanceForm() {
           <Row>
             <Col className="pr-1 mt-3" md="6">
               <Form.Group>
-                <label>Required authorization to enter ?</label>
-                <Form.Control
-                  defaultValue={data.x}
-                  type="radio"
-                  {...register('authorization')}
-                ></Form.Control>
-              </Form.Group>
-            </Col>
-            <Col className="pr-1 mt-3" md="6">
-              <Form.Group>
                 <label>Internal Extension No.</label>
                 <Form.Control
                   defaultValue={data.x}
                   type="string"
                   {...register('internal_extension_number')}
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+            <Col className="pr-1 mt-3" md="6">
+              <Form.Group className="mt-4 form-check form-switch">
+                <label>Require Authorization</label>
+
+                <Form.Control
+                  className="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  defaultChecked={true}
+                  {...register('active')}
                 ></Form.Control>
               </Form.Group>
             </Col>
@@ -190,4 +189,8 @@ export default function MaintenanceForm() {
       </CContainer>
     </>
   )
+}
+
+MaintenanceForm.propTypes = {
+  handleClose: PropTypes.func,
 }

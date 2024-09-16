@@ -31,11 +31,26 @@ export default function AddMaintenance() {
   const [units_data, setUnits_data] = useState([])
   const [buildings_data, setBuildings_data] = useState([])
 
+  function handleClose() {
+    setVisible(false)
+  }
+
   return (
     <CommonModal
       data={{ header: 'Maintenance Requests', size: 'xl' }}
-      component={'Create Request'}
-      body={<MaintenanceForm />}
+      component={
+        <button
+          type="button"
+          className="btn s-3 custom_theme_button "
+          data-mdb-ripple-init
+          onClick={() => setVisible(!visible)}
+        >
+          {'Create Request'}
+        </button>
+      }
+      visible={visible}
+      body={<MaintenanceForm handleClose={handleClose} />}
+      handleClose={handleClose}
     />
   )
 }

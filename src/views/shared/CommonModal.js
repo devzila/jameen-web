@@ -1,44 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import useFetch from 'use-http'
-import { useForm, Controller } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { Button, Form, Row, Col, Container } from 'react-bootstrap'
-import Select from 'react-select'
-import PropTypes, { element } from 'prop-types'
-import { freeSet } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-import {
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
-  CContainer,
-  CRow,
-} from '@coreui/react'
+import React from 'react'
+import PropTypes from 'prop-types'
 
-export default function CommonModal({ component, data, body }) {
-  const { register, handleSubmit, control } = useForm()
-  const { get, post, response, api } = useFetch()
-  const [visible, setVisible] = useState(false)
-  const [errors, setErrors] = useState({})
+import { CModal, CModalHeader, CModalBody } from '@coreui/react'
 
-  function handleClose() {
-    setVisible(false)
-    setErrors({})
-  }
+export default function CommonModal({ component, data, body, visible, handleClose }) {
   return (
     <div>
-      <button
-        type="button"
-        className="btn s-3 custom_theme_button "
-        data-mdb-ripple-init
-        onClick={() => setVisible(!visible)}
-      >
-        {component}
-      </button>
+      {component}
       <CModal
         alignment="center"
         visible={visible}
@@ -60,25 +28,6 @@ export default function CommonModal({ component, data, body }) {
         <CModalBody className="p-0">
           <div>{body}</div>
         </CModalBody>
-        <div className="text-center">
-          <CModalFooter>
-            <Button
-              data-mdb-ripple-init
-              type="submit"
-              className="btn  btn-primary btn-block custom_theme_button"
-            >
-              Submit
-            </Button>
-            <CButton
-              className="custom_grey_button"
-              color="secondary"
-              style={{ border: '0px', color: 'white' }}
-              onClick={handleClose}
-            >
-              Close
-            </CButton>
-          </CModalFooter>
-        </div>
       </CModal>
     </div>
   )
@@ -88,4 +37,6 @@ CommonModal.propTypes = {
   component: PropTypes.element,
   body: PropTypes.element,
   data: PropTypes.object,
+  visible: PropTypes.bool,
+  handleClose: PropTypes.func,
 }
