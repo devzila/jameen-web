@@ -1,15 +1,11 @@
 import React, { Suspense, useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import AddProperty from './AddProperty'
-import { Dropdown } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
-import { BsThreeDots, BsList, BsGrid3X3Gap } from 'react-icons/bs' // Import BsList icon for property list view
+import { BsList, BsGrid3X3Gap } from 'react-icons/bs' // Import BsList icon for property list view
 import Loading from 'src/components/loading/loading'
-import CustomDivToggle from '../../components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@coreui/react'
-import ShowProperty from './ShowProperty'
-import EditProperty from './EditProperty'
-import OverviewContent from './propertynav/OverviewContent'
+
 import PropertyCardView from './PropertyCardView'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'

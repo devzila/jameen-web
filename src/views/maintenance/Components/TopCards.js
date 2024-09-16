@@ -5,7 +5,7 @@ import CIcon from '@coreui/icons-react'
 
 export default function TopCards() {
   return (
-    <Row className="mt-2 text-uppercase p-2">
+    <Row className=" text-uppercase p-2">
       <Col className="bg-white mx-1 rounded-1 shadow-sm p-3 text-nowrap mt-2 ">
         <div className="d-flex justify-content-between align-items-center">
           <b>ALL ISSUES</b>

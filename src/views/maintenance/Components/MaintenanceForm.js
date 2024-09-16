@@ -26,7 +26,7 @@ export default function MaintenanceForm({ handleClose }) {
   async function onSubmit(data) {
     console.log('triggerd')
     const apiResponse = await post(`/v1/admin/maintenance/requests`, {
-      maintenance: data,
+      request: data,
     })
     if (response.ok) {
       setVisible(!visible)
@@ -46,6 +46,14 @@ export default function MaintenanceForm({ handleClose }) {
     }
   }
 
+  const loadUnits = async (id) => {
+    const api = await get(`/v1/admin/premises/properties/${id}/units?limit=-1`)
+    console.log(api)
+    if (response.ok) {
+      setUnits_data(format_react_select(api.data, ['id', 'unit_no']))
+    }
+  }
+
   //
   return (
     <>
@@ -60,7 +68,7 @@ export default function MaintenanceForm({ handleClose }) {
                 </label>
 
                 <Controller
-                  name="building_id"
+                  name="property_id"
                   render={({ field }) => (
                     <Select
                       type="text"
@@ -68,7 +76,9 @@ export default function MaintenanceForm({ handleClose }) {
                       classNamePrefix="select"
                       {...field}
                       value={properties.find((c) => c.value === field.value)}
-                      onChange={(val) => field.onChange(val.value)}
+                      onChange={(val) => {
+                        field.onChange(val.value), loadUnits(val.value)
+                      }}
                       options={properties}
                     />
                   )}
@@ -76,6 +86,7 @@ export default function MaintenanceForm({ handleClose }) {
                 />
               </Form.Group>
             </Col>
+
             <Col className="pr-1 mt-3" md="6">
               <Form.Group>
                 <label>Request Type </label>
@@ -91,12 +102,26 @@ export default function MaintenanceForm({ handleClose }) {
           <Row>
             <Col className="pr-1 mt-3" md="6">
               <Form.Group>
-                <label>Unit No.</label>
-                <Form.Control
-                  defaultValue={data.b}
-                  type="integer"
-                  {...register('unit_no')}
-                ></Form.Control>
+                <label>
+                  Unit No
+                  <small className="text-danger"> *{errors ? errors.building_id : null} </small>
+                </label>
+
+                <Controller
+                  name="unit_id"
+                  render={({ field }) => (
+                    <Select
+                      type="text"
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      {...field}
+                      value={units_data.find((c) => c.value === field.value)}
+                      onChange={(val) => field.onChange(val.value)}
+                      options={units_data}
+                    />
+                  )}
+                  control={control}
+                />
               </Form.Group>
             </Col>
             <Col className="pr-1 mt-3" md="6">
@@ -165,28 +190,24 @@ export default function MaintenanceForm({ handleClose }) {
                 ></Form.Control>
               </Form.Group>
             </Col>
-            <Col className="pr-1 mt-3" md="12">
+            <Col className="pr-1 mt-3" md="6">
               <Form.Group>
-                <label>
-                  Building
-                  <small className="text-danger"> *{errors ? errors.building_id : null} </small>
-                </label>
-
-                <Controller
-                  name="building_id"
-                  render={({ field }) => (
-                    <Select
-                      type="text"
-                      className="basic-multi-select"
-                      classNamePrefix="select"
-                      {...field}
-                      value={[].find((c) => c.value === field.value)}
-                      onChange={(val) => field.onChange(val.value)}
-                      options={[]}
-                    />
-                  )}
-                  control={control}
-                />
+                <label>Title</label>
+                <Form.Control
+                  defaultValue={data.x}
+                  type="string"
+                  {...register('title')}
+                ></Form.Control>
+              </Form.Group>
+            </Col>
+            <Col className="pr-1 mt-3" md="6">
+              <Form.Group>
+                <label>Description</label>
+                <Form.Control
+                  defaultValue={data.x}
+                  type="string"
+                  {...register('description')}
+                ></Form.Control>
               </Form.Group>
             </Col>
           </Row>

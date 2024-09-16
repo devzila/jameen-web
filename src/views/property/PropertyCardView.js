@@ -1,11 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Card, Button, Dropdown } from 'react-bootstrap'
 import { NavLink, Link } from 'react-router-dom'
-import { BsThreeDots } from 'react-icons/bs'
-import CustomDivToggle from '../../components/CustomDivToggle'
-import EditProperty from './EditProperty'
-import ShowProperty from './ShowProperty'
 import { CCol, CCard, CRow, CCardText, CCardBody } from '@coreui/react'
 
 function PropertyCardView({ property }) {

@@ -61,22 +61,6 @@ export default function MaintenanceList({ data }) {
           </div>
         </div>
       </div>
-      <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
-        <Row>
-          {/* <Col md="12">
-              {pagination?.total_pages > 1 ? (
-                <Paginate
-                  onPageChange={handlePageClick}
-                  pageRangeDisplayed={pagination.per_page}
-                  pageCount={pagination.total_pages}
-                  forcePage={currentPage - 1}
-                />
-              ) : (
-                <br />
-              )}
-            </Col> */}
-        </Row>
-      </CNavbar>
     </>
   )
 }

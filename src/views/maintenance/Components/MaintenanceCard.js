@@ -60,5 +60,5 @@ export default function MaintenanceCard({ data }) {
 }
 
 MaintenanceCard.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.array,
 }

@@ -79,5 +79,5 @@ export default function MaintenanceTable({ data }) {
 }
 
 MaintenanceTable.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.array,
 }
