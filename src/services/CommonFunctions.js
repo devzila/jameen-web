@@ -27,3 +27,13 @@ export function status_color(status) {
       return 'white'
   }
 }
+export function format_react_select(data, key) {
+  if (data) {
+    return data.map((e) => ({
+      value: e[key[0]],
+      label: e[key[1]],
+    }))
+  } else {
+    return []
+  }
+}

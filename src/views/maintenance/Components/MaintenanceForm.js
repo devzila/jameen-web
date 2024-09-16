@@ -5,8 +5,8 @@ import { toast } from 'react-toastify'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
-
 import { CContainer, CModalFooter, CButton } from '@coreui/react'
+import { formatdate, format_react_select } from 'src/services/CommonFunctions'
 
 export default function MaintenanceForm({ handleClose }) {
   const { register, handleSubmit, control } = useForm()
@@ -15,13 +15,18 @@ export default function MaintenanceForm({ handleClose }) {
   const [visible, setVisible] = useState(false)
   const [data, setdata] = useState({})
   const [errors, setErrors] = useState({})
+  const [properties, setProperties] = useState([])
   const [units_data, setUnits_data] = useState([])
   const [buildings_data, setBuildings_data] = useState([])
 
+  useEffect(() => {
+    getProperties()
+  }, [])
+
   async function onSubmit(data) {
     console.log('triggerd')
-    const apiResponse = await post(`/v1/admin/premises/properties`, {
-      unit: data,
+    const apiResponse = await post(`/v1/admin/maintenance/requests`, {
+      maintenance: data,
     })
     if (response.ok) {
       setVisible(!visible)
@@ -30,6 +35,14 @@ export default function MaintenanceForm({ handleClose }) {
     } else {
       setErrors(response.data.errors)
       toast(response.data?.message)
+    }
+  }
+
+  const getProperties = async () => {
+    const api = await get(`/v1/admin/premises/properties?limit=-1`)
+    console.log(api)
+    if (response.ok) {
+      setProperties(format_react_select(api.data, ['id', 'name']))
     }
   }
 
@@ -43,13 +56,24 @@ export default function MaintenanceForm({ handleClose }) {
               <Form.Group>
                 <label>
                   Property
-                  <small className="text-danger"> *{errors ? errors.unit_no : null} </small>
+                  <small className="text-danger"> *{errors ? errors.building_id : null} </small>
                 </label>
-                <Form.Control
-                  defaultValue={data.no}
-                  type="integer"
-                  {...register('property')}
-                ></Form.Control>
+
+                <Controller
+                  name="building_id"
+                  render={({ field }) => (
+                    <Select
+                      type="text"
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      {...field}
+                      value={properties.find((c) => c.value === field.value)}
+                      onChange={(val) => field.onChange(val.value)}
+                      options={properties}
+                    />
+                  )}
+                  control={control}
+                />
               </Form.Group>
             </Col>
             <Col className="pr-1 mt-3" md="6">
