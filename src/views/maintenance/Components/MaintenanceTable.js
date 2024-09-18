@@ -2,6 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
 import { status_color } from 'src/services/CommonFunctions'
+import CustomDivToggle from 'src/components/CustomDivToggle'
+import { Dropdown } from 'react-bootstrap'
+import { BsThreeDots } from 'react-icons/bs'
+import AddMaintenance from './AddEditMaintenance'
 
 export default function MaintenanceTable({ data }) {
   return (
@@ -61,7 +65,16 @@ export default function MaintenanceTable({ data }) {
                   </td>
 
                   <td className="pt-3 pb-2">{item.completion_date || '-'}</td>
-                  <td className="pt-3 pb-2 ">{null || '...'}</td>
+                  <td className="pt-3 pb-2 ">
+                    <Dropdown key={item.id + 1000}>
+                      <Dropdown.Toggle as={CustomDivToggle} className="cursor-pointer">
+                        <Dropdown.Menu>
+                          <AddMaintenance type="edit" id={item.id} />
+                        </Dropdown.Menu>
+                        <BsThreeDots />
+                      </Dropdown.Toggle>
+                    </Dropdown>
+                  </td>
                 </tr>
               ))}
             </tbody>

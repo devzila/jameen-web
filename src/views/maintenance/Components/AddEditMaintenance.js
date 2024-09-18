@@ -20,7 +20,7 @@ import CommonModal from 'src/views/shared/CommonModal'
 import MaintanceBody from '../MaintanceBody'
 import MaintenanceForm from './MaintenanceForm'
 
-export default function AddMaintenance() {
+export default function AddEditMaintenance({ type, id }) {
   const { register, handleSubmit, control } = useForm()
   const { get, post, response, api } = useFetch()
 
@@ -41,16 +41,21 @@ export default function AddMaintenance() {
       component={
         <button
           type="button"
-          className="btn s-3 custom_theme_button "
+          className={`'btn s-3' ${type == 'edit' ? 'tooltip_button' : 'custom_theme_button'}`}
           data-mdb-ripple-init
           onClick={() => setVisible(!visible)}
         >
-          {'Create Request'}
+          {type == 'edit' ? 'Edit' : 'Create Request'}
         </button>
       }
       visible={visible}
-      body={<MaintenanceForm handleClose={handleClose} />}
+      body={<MaintenanceForm handleClose={handleClose} data_array={[type, id]} />}
       handleClose={handleClose}
     />
   )
+}
+
+AddEditMaintenance.propTypes = {
+  type: PropTypes.string,
+  id: PropTypes.number,
 }

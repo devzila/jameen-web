@@ -8,12 +8,12 @@ import PropTypes from 'prop-types'
 import { CContainer, CModalFooter, CButton } from '@coreui/react'
 import { formatdate, format_react_select } from 'src/services/CommonFunctions'
 
-export default function MaintenanceForm({ handleClose }) {
+export default function MaintenanceForm({ handleClose, data_array }) {
   const { register, handleSubmit, control } = useForm()
   const { get, post, response, api } = useFetch()
 
   const [visible, setVisible] = useState(false)
-  const [data, setdata] = useState({})
+  const [edit_data, setEditdata] = useState({})
   const [errors, setErrors] = useState({})
   const [properties, setProperties] = useState([])
   const [units_data, setUnits_data] = useState([])
@@ -21,10 +21,12 @@ export default function MaintenanceForm({ handleClose }) {
 
   useEffect(() => {
     getProperties()
+    if (data_array[0] === 'edit') {
+      getRequestData(data_array[1])
+    }
   }, [])
-
   async function onSubmit(data) {
-    console.log('triggerd')
+    console.log('called')
     const apiResponse = await post(`/v1/admin/maintenance/requests`, {
       request: data,
     })
@@ -51,6 +53,14 @@ export default function MaintenanceForm({ handleClose }) {
     console.log(api)
     if (response.ok) {
       setUnits_data(format_react_select(api.data, ['id', 'unit_no']))
+    }
+  }
+
+  const getRequestData = async (id) => {
+    const api = await get(`/v1/admin/maintenance/requests/${id}`)
+    console.log(api)
+    if (response.ok) {
+      setEditdata(api.data)
     }
   }
 
@@ -92,7 +102,7 @@ export default function MaintenanceForm({ handleClose }) {
                 <label>Request Type </label>
 
                 <Form.Control
-                  defaultValue={data.b}
+                  defaultValue={edit_data.request_type}
                   type="integer"
                   {...register('request_type')}
                 ></Form.Control>
@@ -131,11 +141,7 @@ export default function MaintenanceForm({ handleClose }) {
                   <small className="text-danger "> *{errors ? errors.year_built : null} </small>
                 </label>
 
-                <Form.Control
-                  defaultValue={data.year_built}
-                  type="integer"
-                  {...register('tenant')}
-                ></Form.Control>
+                <Form.Control type="integer" {...register('tenant')}></Form.Control>
               </Form.Group>
             </Col>
           </Row>
@@ -147,22 +153,14 @@ export default function MaintenanceForm({ handleClose }) {
                   <small className="text-danger"> *{errors ? errors.unit_type : null} </small>
                 </label>
 
-                <Form.Control
-                  defaultValue={data.year_built}
-                  type="date"
-                  {...register('available_date')}
-                ></Form.Control>
+                <Form.Control type="date" {...register('available_date')}></Form.Control>
               </Form.Group>
             </Col>
             <Col className="pr-1 mt-3" md="6">
               <Form.Group>
                 <label>Available Time</label>
 
-                <Form.Control
-                  defaultValue={data.b}
-                  type="time"
-                  {...register('avialable_time')}
-                ></Form.Control>
+                <Form.Control type="time" {...register('avialable_time')}></Form.Control>
               </Form.Group>
             </Col>
           </Row>
@@ -171,7 +169,7 @@ export default function MaintenanceForm({ handleClose }) {
               <Form.Group>
                 <label>Internal Extension No.</label>
                 <Form.Control
-                  defaultValue={data.x}
+                  defaultValue={edit_data.label}
                   type="string"
                   {...register('internal_extension_number')}
                 ></Form.Control>
@@ -194,7 +192,7 @@ export default function MaintenanceForm({ handleClose }) {
               <Form.Group>
                 <label>Title</label>
                 <Form.Control
-                  defaultValue={data.x}
+                  defaultValue={edit_data.title}
                   type="string"
                   {...register('title')}
                 ></Form.Control>
@@ -204,7 +202,7 @@ export default function MaintenanceForm({ handleClose }) {
               <Form.Group>
                 <label>Description</label>
                 <Form.Control
-                  defaultValue={data.x}
+                  defaultValue={edit_data.description}
                   type="string"
                   {...register('description')}
                 ></Form.Control>
@@ -216,7 +214,7 @@ export default function MaintenanceForm({ handleClose }) {
               <Button
                 data-mdb-ripple-init
                 type="submit"
-                className="btn  btn-primary btn-block custom_theme_button"
+                className="btn btn-primary btn-block custom_theme_button"
               >
                 Submit
               </Button>
@@ -238,4 +236,5 @@ export default function MaintenanceForm({ handleClose }) {
 
 MaintenanceForm.propTypes = {
   handleClose: PropTypes.func,
+  data_array: PropTypes.array,
 }
