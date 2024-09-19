@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { CContainer, CSpinner } from '@coreui/react'
+import ShowMaintance from 'src/views/maintenance/ShowMaintance'
 
 // routes config
 const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
@@ -57,9 +58,9 @@ const AppContent = () => {
             element={<MaintenanceCategory />}
           />
           <Route
-            path="/maintenance-category/:maintenanceid/*"
+            path="/maintenance-category/:maintenanceid"
             name="Maintenance"
-            element={<MaintenaceRoutes />}
+            element={<ShowMaintance />}
           />
           <Route path="/visitor" name="Visitor" element={<Visitor />} />
           <Route path="/operation" name="Operation" element={<Operation />} />
