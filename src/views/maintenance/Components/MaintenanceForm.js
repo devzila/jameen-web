@@ -104,7 +104,8 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData }
                       {...field}
                       value={properties.find((c) => c.value === field.value)}
                       onChange={(val) => {
-                        field.onChange(val.value), loadUnits(val.value)
+                        field.onChange(val.value)
+                        loadUnits(val.value)
                       }}
                       options={properties}
                     />
