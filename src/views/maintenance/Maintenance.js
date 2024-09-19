@@ -26,8 +26,6 @@ const Maintenance = () => {
     <>
       <TopCards />
       <MaintanceBody />
-
-      <Pagination current={currentPage} pageCount={totalPages} />
     </>
   )
 }
