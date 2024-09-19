@@ -8,8 +8,8 @@ import PropTypes from 'prop-types'
 import { CContainer, CModalFooter, CButton } from '@coreui/react'
 import { formatdate, format_react_select } from 'src/services/CommonFunctions'
 
-export default function MaintenanceForm({ handleClose, data_array }) {
-  const { register, handleSubmit, control } = useForm()
+export default function MaintenanceForm({ handleClose, data_array, refreshData }) {
+  const { register, handleSubmit, control, setValue } = useForm()
   const { get, post, response, api } = useFetch()
 
   const [visible, setVisible] = useState(false)
@@ -17,23 +17,27 @@ export default function MaintenanceForm({ handleClose, data_array }) {
   const [errors, setErrors] = useState({})
   const [properties, setProperties] = useState([])
   const [units_data, setUnits_data] = useState([])
-  const [buildings_data, setBuildings_data] = useState([])
+  const [maintenance_cat, setMaintenance_cat] = useState([])
+
+  const [users, setUsers] = useState([])
 
   useEffect(() => {
     getProperties()
+    getMaintenanceCategories()
+    getUsers()
     if (data_array[0] === 'edit') {
       getRequestData(data_array[1])
     }
   }, [])
   async function onSubmit(data) {
-    console.log('called')
     const apiResponse = await post(`/v1/admin/maintenance/requests`, {
       request: data,
     })
     if (response.ok) {
       setVisible(!visible)
-      // after_submit()
-      toast('Unit added successfully')
+      handleClose()
+      refreshData()
+      toast('Request Created Successfully')
     } else {
       setErrors(response.data.errors)
       toast(response.data?.message)
@@ -42,15 +46,26 @@ export default function MaintenanceForm({ handleClose, data_array }) {
 
   const getProperties = async () => {
     const api = await get(`/v1/admin/premises/properties?limit=-1`)
-    console.log(api)
     if (response.ok) {
       setProperties(format_react_select(api.data, ['id', 'name']))
+    }
+  }
+  const getMaintenanceCategories = async () => {
+    const api = await get(`/v1/admin/maintenance/categories?limit=-1`)
+    if (response.ok) {
+      setMaintenance_cat(format_react_select(api.data, ['id', 'name']))
+    }
+  }
+
+  const getUsers = async () => {
+    const api = await get(`/v1/admin/users?limit=-1`)
+    if (response.ok) {
+      setUsers(format_react_select(api.data, ['id', 'name']))
     }
   }
 
   const loadUnits = async (id) => {
     const api = await get(`/v1/admin/premises/properties/${id}/units?limit=-1`)
-    console.log(api)
     if (response.ok) {
       setUnits_data(format_react_select(api.data, ['id', 'unit_no']))
     }
@@ -58,9 +73,11 @@ export default function MaintenanceForm({ handleClose, data_array }) {
 
   const getRequestData = async (id) => {
     const api = await get(`/v1/admin/maintenance/requests/${id}`)
-    console.log(api)
     if (response.ok) {
       setEditdata(api.data)
+      setValue('category_id', api.data.category.id)
+      setValue('property_id', api.data.property_id)
+      setValue('assigned_user_id', api.data.assigned_user_id)
     }
   }
 
@@ -96,16 +113,28 @@ export default function MaintenanceForm({ handleClose, data_array }) {
                 />
               </Form.Group>
             </Col>
-
             <Col className="pr-1 mt-3" md="6">
               <Form.Group>
-                <label>Request Type </label>
+                <label>
+                  Maintenance Category
+                  <small className="text-danger"> *{errors ? errors.building_id : null} </small>
+                </label>
 
-                <Form.Control
-                  defaultValue={edit_data.request_type}
-                  type="integer"
-                  {...register('request_type')}
-                ></Form.Control>
+                <Controller
+                  name="category_id"
+                  render={({ field }) => (
+                    <Select
+                      type="text"
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      {...field}
+                      value={maintenance_cat.find((c) => c.value === field.value)}
+                      onChange={(val) => field.onChange(val.value)}
+                      options={maintenance_cat}
+                    />
+                  )}
+                  control={control}
+                />
               </Form.Group>
             </Col>
           </Row>
@@ -134,14 +163,29 @@ export default function MaintenanceForm({ handleClose, data_array }) {
                 />
               </Form.Group>
             </Col>
+
             <Col className="pr-1 mt-3" md="6">
               <Form.Group>
                 <label>
-                  Tenant
-                  <small className="text-danger "> *{errors ? errors.year_built : null} </small>
+                  Assigned User
+                  <small className="text-danger"> *{errors ? errors.building_id : null} </small>
                 </label>
 
-                <Form.Control type="integer" {...register('tenant')}></Form.Control>
+                <Controller
+                  name="assigned_user_id"
+                  render={({ field }) => (
+                    <Select
+                      type="text"
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      {...field}
+                      value={users.find((c) => c.value === field.value)}
+                      onChange={(val) => field.onChange(val.value)}
+                      options={users}
+                    />
+                  )}
+                  control={control}
+                />
               </Form.Group>
             </Col>
           </Row>
@@ -153,41 +197,39 @@ export default function MaintenanceForm({ handleClose, data_array }) {
                   <small className="text-danger"> *{errors ? errors.unit_type : null} </small>
                 </label>
 
-                <Form.Control type="date" {...register('available_date')}></Form.Control>
+                <Form.Control
+                  defaultValue={edit_data.available_date}
+                  type="date"
+                  {...register('available_date')}
+                ></Form.Control>
               </Form.Group>
             </Col>
             <Col className="pr-1 mt-3" md="6">
               <Form.Group>
                 <label>Available Time</label>
 
-                <Form.Control type="time" {...register('avialable_time')}></Form.Control>
+                <Form.Control
+                  defaultValue={edit_data.avialable_time}
+                  type="time"
+                  {...register('avialable_time')}
+                ></Form.Control>
               </Form.Group>
             </Col>
           </Row>
           <Row>
-            <Col className="pr-1 mt-3" md="6">
-              <Form.Group>
-                <label>Internal Extension No.</label>
-                <Form.Control
-                  defaultValue={edit_data.label}
-                  type="string"
-                  {...register('internal_extension_number')}
-                ></Form.Control>
-              </Form.Group>
-            </Col>
-            <Col className="pr-1 mt-3" md="6">
+            {/* <Col className="pr-1 mt-3" md="6">
               <Form.Group className="mt-4 form-check form-switch">
-                <label>Require Authorization</label>
+                <label></label>
 
                 <Form.Control
                   className="form-check-input"
                   type="checkbox"
                   role="switch"
                   defaultChecked={true}
-                  {...register('active')}
+                  {...register('maintainable_id')}
                 ></Form.Control>
               </Form.Group>
-            </Col>
+            </Col> */}
             <Col className="pr-1 mt-3" md="6">
               <Form.Group>
                 <label>Title</label>
@@ -198,7 +240,7 @@ export default function MaintenanceForm({ handleClose, data_array }) {
                 ></Form.Control>
               </Form.Group>
             </Col>
-            <Col className="pr-1 mt-3" md="6">
+            <Col className="pr-1 mt-3" md="12">
               <Form.Group>
                 <label>Description</label>
                 <Form.Control
@@ -237,4 +279,5 @@ export default function MaintenanceForm({ handleClose, data_array }) {
 MaintenanceForm.propTypes = {
   handleClose: PropTypes.func,
   data_array: PropTypes.array,
+  refreshData: PropTypes.func,
 }

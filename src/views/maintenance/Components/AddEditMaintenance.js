@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import CommonModal from 'src/views/shared/CommonModal'
 import MaintenanceForm from './MaintenanceForm'
 
-export default function AddEditMaintenance({ type, id }) {
+export default function AddEditMaintenance({ type, id, refreshData }) {
   const [visible, setVisible] = useState(false)
 
   function handleClose() {
@@ -24,7 +24,13 @@ export default function AddEditMaintenance({ type, id }) {
         </button>
       }
       visible={visible}
-      body={<MaintenanceForm handleClose={handleClose} data_array={[type, id]} />}
+      body={
+        <MaintenanceForm
+          handleClose={handleClose}
+          data_array={[type, id]}
+          refreshData={refreshData}
+        />
+      }
       handleClose={handleClose}
     />
   )
@@ -33,4 +39,5 @@ export default function AddEditMaintenance({ type, id }) {
 AddEditMaintenance.propTypes = {
   type: PropTypes.string,
   id: PropTypes.number,
+  refreshData: PropTypes.func,
 }

@@ -6,7 +6,6 @@ import { NavLink } from 'react-router-dom'
 import { status_color } from 'src/services/CommonFunctions'
 
 export default function MaintenanceCard({ data }) {
-  console.log(data)
   return (
     <>
       <Row>

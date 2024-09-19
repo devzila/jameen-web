@@ -37,7 +37,7 @@ export default function MaintanceBody() {
         <Loader />
       ) : (
         <>
-          <MaintenanceList data={maintenance} />
+          <MaintenanceList data={maintenance} refreshData={loaddMaintenanceRequests} />
           <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center my-3">
             <Row>
               <Col md="12">

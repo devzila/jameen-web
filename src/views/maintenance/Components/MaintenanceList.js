@@ -8,7 +8,7 @@ import MaintenanceTable from './MaintenanceTable'
 import MaintenanceCard from './MaintenanceCard'
 import AddEditMaintenance from './AddEditMaintenance'
 
-export default function MaintenanceList({ data }) {
+export default function MaintenanceList({ data, refreshData }) {
   const [searchKeyword, setSearchKeyword] = useState('')
   const [table_view, setTableView] = useState(true)
 
@@ -47,7 +47,7 @@ export default function MaintenanceList({ data }) {
                       <CIcon icon={freeSet.cilSearch} />
                     </button>
                   </div>
-                  <AddEditMaintenance type="add" id={0} />
+                  <AddEditMaintenance type="add" id={0} refreshData={refreshData} />
                   {/* <FilterAccordion filter_callback={filter_callback} units_type={unit_type} /> */}
                 </div>
               </div>
@@ -65,4 +65,5 @@ export default function MaintenanceList({ data }) {
 
 MaintenanceList.propTypes = {
   data: PropTypes.array,
+  refreshData: PropTypes.func,
 }
