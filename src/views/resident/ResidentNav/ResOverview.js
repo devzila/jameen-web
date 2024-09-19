@@ -1,7 +1,7 @@
-import { CCol, CCard, CListGroupItem, CCardImage, CRow, CCardText, CImage } from '@coreui/react'
+import { CCol, CCard, CListGroupItem, CRow, CCardText, CImage } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import logo from '../../../assets/images/avatars/default.png'
@@ -12,7 +12,6 @@ export default function ResOverview() {
   const { residentId } = useParams()
 
   const [resident_data, setResident_data] = useState({})
-  const [visible, setVisible] = useState(false)
   const { get, response } = useFetch()
 
   useEffect(() => {

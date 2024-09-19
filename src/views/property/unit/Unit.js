@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import '../../../scss/_custom.scss'
-import { BsThreeDots } from 'react-icons/bs'
 import Loading from 'src/components/loading/loading'
-import { Row, Col, Dropdown } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import Paginate from '../../../components/Pagination'
 import { NavLink, useParams } from 'react-router-dom'
-
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import CustomDivToggle from '../../../components/CustomDivToggle'
 import Add from './AddUnit'
-import Edit from './EditUnit'
-import Delete from './DeleteUnit'
 import PickOwner from './UnitFunctions/PickOwner'
-import AllocateUnit from './AllocateUnit'
 import FilterAccordion from './UnitFunctions/FilterAccordioan'
-import MovingInUnit from './MovingInUnit'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 
@@ -92,13 +85,11 @@ function Unit() {
     switch (status) {
       case 'unallotted':
         return 'rgb(0, 128, 0)'
-        break
       case 'vacant':
         return 'rgba(0, 120, 0,0.7)'
-        break
+
       case 'occupied':
         return 'grey'
-        break
       default:
         return 'white'
     }

@@ -16,7 +16,10 @@ export default function Property() {
   const ParkingLot = React.lazy(() => import('../property/propertynav/ParkingLot'))
   const PropUnitAllotment = React.lazy(() => import('./propertynav/Allotment/PropUnitAllotment'))
   const Contracts = React.lazy(() => import('./propertynav/Contracts/Contracts'))
-  const Maintenances = React.lazy(() => import('./propertynav/MaintenanceCategory/Maintenances'))
+  const PropMaintenancesCategory = React.lazy(() =>
+    import('./propertynav/MaintenanceCategory/PropMaintenancesCat'),
+  )
+  const ShowMaintance = React.lazy(() => import('../maintenance/ShowMaintance'))
   const Documents = React.lazy(() => import('../property/propertynav/Documents'))
   const Assets = React.lazy(() => import('./propertynav/Assets/Assets'))
   const Template = React.lazy(() => import('./propertynav/Templates/Template'))
@@ -41,11 +44,19 @@ export default function Property() {
             name="Invoice"
             element={<ShowInvoices />}
           />
-          {/* Move this route up */}
           <Route path="ParkingLot" name="ParkingLot" element={<ParkingLot />} />
           <Route path="Allotment" name="Allotment" element={<PropUnitAllotment />} />
           <Route path="Contracts" name="Contracts" element={<Contracts />} />
-          <Route path="Maintenances" name="Maintenance" element={<Maintenances />} />
+          <Route
+            path="maintenance-category"
+            name="Maintenance"
+            element={<PropMaintenancesCategory />}
+          />
+          <Route
+            path="maintenance-category/:maintenanceid"
+            name="Maintenance"
+            element={<ShowMaintance />}
+          />
           <Route path="Buildings" name="Buildings" element={<Buildings />} />
           <Route path="Documents" name="Documents" element={<Documents />} />
           <Route path="assets" name="Documents" element={<Assets />} />

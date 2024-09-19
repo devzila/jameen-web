@@ -25,7 +25,6 @@ export default function MaintanceBody() {
 
   async function loaddMaintenanceRequests() {
     let endpoint = await get(`/v1/admin/maintenance/requests?page=${currentPage}`)
-    console.log(endpoint)
     if (response.ok) {
       setLoading(false)
       setMaintenance(endpoint.data)

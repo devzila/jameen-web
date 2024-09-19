@@ -7,7 +7,8 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 
 export default function ShowMaintance() {
-  const { id } = useParams()
+  const { maintenanceid } = useParams()
+  console.log(useParams())
 
   const [data, setData] = useState({})
   const [loading, setLoading] = useState({})
@@ -17,7 +18,7 @@ export default function ShowMaintance() {
     showMaintanceRequests()
   }, [])
   async function showMaintanceRequests() {
-    let api = await get(`/v1/admin/maintenance/requests/${id}`)
+    let api = await get(`/v1/admin/maintenance/requests/${maintenanceid}`)
     console.log(api)
     if (response.ok) {
       setData(api.data)

@@ -3,15 +3,7 @@ import useFetch from 'use-http'
 import PropTypes from 'prop-types'
 import { formatdate } from 'src/services/CommonFunctions'
 
-import {
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
-  CContainer,
-} from '@coreui/react'
+import { CButton, CModal, CModalHeader, CModalBody, CModalFooter, CModalTitle } from '@coreui/react'
 
 export default function ShowUser({ userId }) {
   const [visible, setVisible] = useState(false)
@@ -57,7 +49,7 @@ export default function ShowUser({ userId }) {
               <div className="row">
                 <div className="col-md-4">
                   <img
-                    alt="Avatar Image"
+                    alt="Avatar"
                     style={{
                       width: '300px',
                       height: '300px',

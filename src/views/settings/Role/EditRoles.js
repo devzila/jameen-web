@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import Select, { NonceProvider } from 'react-select'
 import PropTypes from 'prop-types'
 import '../../../scss/_roles.scss'
 

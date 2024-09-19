@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { CContainer, CNavbar, CNavbarBrand } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import { Col, Row } from 'react-bootstrap'
-import { NavLink } from 'react-router-dom'
+
 import MaintenanceTable from './MaintenanceTable'
 import MaintenanceCard from './MaintenanceCard'
 import AddEditMaintenance from './AddEditMaintenance'
 
 export default function MaintenanceList({ data }) {
-  console.log(data)
   const [searchKeyword, setSearchKeyword] = useState('')
   const [table_view, setTableView] = useState(true)
 

@@ -7,7 +7,6 @@ import {
   cilSettings,
   cilPeople,
   cibViber,
-  cilHouse,
   cilInstitution,
   cilSpeedometer,
   cilWc,
@@ -50,8 +49,8 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Maintenance',
-    to: '/maintenance',
+    name: 'Maintenance Category',
+    to: '/maintenance-category',
     icon: <CIcon icon={cibViber} customClassName="nav-icon" />,
   },
   {

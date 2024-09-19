@@ -12,6 +12,7 @@ export default function ShowResidentPage() {
     <div>
       <ResNav />
       <Routes path="/residents/:residentId" element={<Residents />}>
+        <Route path="*" name="Resident Overview" element={<ResOverview />} />
         <Route path="overview" name="Resident Overview" element={<ResOverview />} />
         <Route path="notes" name="Resident Notes" element={<ResNotes />} />
         <Route path="vehicles" name="Resident Vehicles" element={<ResVehicles />} />
