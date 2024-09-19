@@ -10,7 +10,7 @@ export default function CommonModal({ component, data, body, visible, handleClos
       <CModal
         alignment="center"
         visible={visible}
-        size={data.size}
+        size={data[0].size}
         backdrop="static"
         onClose={handleClose}
         aria-labelledby="StaticBackdropExampleLabel"
@@ -18,7 +18,7 @@ export default function CommonModal({ component, data, body, visible, handleClos
         <CModalHeader>
           <div className="px-3 d-flex justify-content-between w-100">
             <div className=" d-flex text-secondary">
-              <h4>{data.header}</h4>
+              <h4>{data[0].header}</h4>
             </div>
             <div className="theme_color">
               <p>{''}</p>
@@ -36,7 +36,7 @@ export default function CommonModal({ component, data, body, visible, handleClos
 CommonModal.propTypes = {
   component: PropTypes.element,
   body: PropTypes.element,
-  data: PropTypes.object,
+  data: PropTypes.array,
   visible: PropTypes.bool,
   handleClose: PropTypes.func,
 }

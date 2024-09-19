@@ -8,7 +8,6 @@ import { freeSet } from '@coreui/icons'
 
 export default function ShowMaintance() {
   const { maintenanceid } = useParams()
-  console.log(useParams())
 
   const [data, setData] = useState({})
   const [loading, setLoading] = useState({})
@@ -19,7 +18,6 @@ export default function ShowMaintance() {
   }, [])
   async function showMaintanceRequests() {
     let api = await get(`/v1/admin/maintenance/requests/${maintenanceid}`)
-    console.log(api)
     if (response.ok) {
       setData(api.data)
     }

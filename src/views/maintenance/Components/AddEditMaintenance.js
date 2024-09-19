@@ -12,7 +12,7 @@ export default function AddEditMaintenance({ type, id, refreshData }) {
 
   return (
     <CommonModal
-      data={{ header: 'Maintenance Requests', size: 'xl' }}
+      data={[{ header: 'Maintenance Requests', size: 'xl' }]}
       component={
         <button
           type="button"
