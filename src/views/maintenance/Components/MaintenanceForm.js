@@ -37,7 +37,7 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData }
       setVisible(!visible)
       handleClose()
       refreshData()
-      toast('Request Created Successfully')
+      toast.success('Request Created Successfully')
     } else {
       setErrors(response.data.errors)
       toast(response.data?.message)

@@ -52,13 +52,9 @@ const AppContent = () => {
           <Route path="/dashboard" name="Dashboard" element={<Dashboard />} />
           <Route path="/dashboard/*" name="Dashboard" element={<Dashboard />} />
 
+          <Route path="/maintenance-request" name="Maintenance" element={<MaintenanceCategory />} />
           <Route
-            path="/maintenance-category"
-            name="Maintenance"
-            element={<MaintenanceCategory />}
-          />
-          <Route
-            path="/maintenance-category/:maintenanceid"
+            path="/maintenance-request/:maintenanceid"
             name="Maintenance"
             element={<ShowMaintance />}
           />

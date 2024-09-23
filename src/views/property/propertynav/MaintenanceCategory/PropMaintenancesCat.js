@@ -1,10 +1,14 @@
 import React from 'react'
-import MaintanceBody from 'src/views/maintenance/MaintanceBody'
+import { useParams } from 'react-router-dom'
+import MaintanceBody from 'src/views/maintenance/MaintenanceBody'
 
 function PropMaintenancesCat() {
+  const { propertyId } = useParams()
+
+  const endpoint = `v1/admin/premises/properties/${propertyId}/requests`
   return (
     <>
-      <MaintanceBody />
+      <MaintanceBody api_endpoint={endpoint} />
     </>
   )
 }
