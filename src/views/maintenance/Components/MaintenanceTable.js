@@ -7,7 +7,7 @@ import { Dropdown } from 'react-bootstrap'
 import { BsThreeDots } from 'react-icons/bs'
 import AddMaintenance from './AddEditMaintenance'
 
-export default function MaintenanceTable({ data }) {
+export default function MaintenanceTable({ data, refreshData }) {
   return (
     <div className="row justify-content-center">
       <div className="col-16">
@@ -65,13 +65,13 @@ export default function MaintenanceTable({ data }) {
 
                   <td className="pt-3 pb-2">{item.completion_date || '-'}</td>
                   <td className="pt-3 pb-2 ">
-                    <Dropdown key={item.id + 1000}>
+                    <Dropdown key={item.id}>
                       <Dropdown.Toggle as={CustomDivToggle} className="cursor-pointer">
-                        <Dropdown.Menu>
-                          <AddMaintenance type="edit" id={item.id} />
-                        </Dropdown.Menu>
                         <BsThreeDots />
                       </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <AddMaintenance type="edit" id={item.id} refreshData={refreshData} />
+                      </Dropdown.Menu>
                     </Dropdown>
                   </td>
                 </tr>
@@ -92,4 +92,5 @@ export default function MaintenanceTable({ data }) {
 
 MaintenanceTable.propTypes = {
   data: PropTypes.array,
+  refreshData: PropTypes.func,
 }

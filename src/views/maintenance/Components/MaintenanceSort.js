@@ -106,7 +106,7 @@ export default function MaintenanceSort({ units_type, filter_callback }) {
             />
           </Dropdown.Item>
           <Dropdown.Item className="btn btn-teritary" href="#/action-3">
-            <label>Unit Type</label>
+            <label>Order</label>
             <Controller
               name="unit_type_id"
               render={({ field }) => (
@@ -116,7 +116,7 @@ export default function MaintenanceSort({ units_type, filter_callback }) {
                   classNamePrefix="select"
                   {...field}
                   onChange={(val) => handleunit_type(val)}
-                  options={units_type}
+                  options={[]}
                 />
               )}
               control={control}

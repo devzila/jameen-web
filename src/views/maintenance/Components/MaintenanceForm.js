@@ -10,7 +10,7 @@ import { formatdate, format_react_select } from 'src/services/CommonFunctions'
 
 export default function MaintenanceForm({ handleClose, data_array, refreshData }) {
   const { register, handleSubmit, control, setValue } = useForm()
-  const { get, post, response, api } = useFetch()
+  const { get, post, put, response, api } = useFetch()
 
   const [visible, setVisible] = useState(false)
   const [edit_data, setEditdata] = useState({})
@@ -21,6 +21,8 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData }
 
   const [users, setUsers] = useState([])
 
+  console.log(data_array)
+
   useEffect(() => {
     getProperties()
     getMaintenanceCategories()
@@ -30,9 +32,16 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData }
     }
   }, [])
   async function onSubmit(data) {
-    const apiResponse = await post(`/v1/admin/maintenance/requests`, {
-      request: data,
-    })
+    console.log(data_array)
+    if (data_array[0] == 'edit') {
+      const apiResponse = await put(`/v1/admin/maintenance/requests/${data_array[1]}`, {
+        request: data,
+      })
+    } else {
+      const apiResponse = await post(`/v1/admin/maintenance/requests`, {
+        request: data,
+      })
+    }
     if (response.ok) {
       setVisible(!visible)
       handleClose()

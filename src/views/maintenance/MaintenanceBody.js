@@ -98,7 +98,7 @@ export default function MaintanceBody({ api_endpoint }) {
               <hr className="p-0 m-0 text-secondary" />
               <div>
                 {table_view ? (
-                  <MaintenanceTable data={maintenance} />
+                  <MaintenanceTable data={maintenance} refreshData={loaddMaintenanceRequests} />
                 ) : (
                   <MaintenanceCard data={maintenance} />
                 )}
