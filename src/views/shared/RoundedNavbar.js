@@ -15,7 +15,7 @@ export default function RoundedNavbar({ props: { icon, header } }) {
 
 RoundedNavbar.propTypes = {
   props: PropTypes.shape({
-    icon: PropTypes.object,
+    icon: PropTypes.array,
     header: PropTypes.string,
   }).isRequired,
 }

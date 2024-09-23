@@ -13,7 +13,7 @@ function PropertyCardView({ property }) {
               {property.map((property) => (
                 <CCol key={property.id} md="3">
                   <CCard className="shadow-sm border-0 rounded-2 mb-3">
-                    <CCardText className="card">
+                    <div className="card">
                       <Link to={`/properties/${property.id}/overview`}>
                         <CRow>
                           <CCol className="position-relative text-center">
@@ -39,7 +39,7 @@ function PropertyCardView({ property }) {
                           </CCol>
                         </CRow>
                       </Link>
-                    </CCardText>
+                    </div>
 
                     <CCardBody className="pt-2">
                       <CRow>
@@ -57,7 +57,7 @@ function PropertyCardView({ property }) {
                         </CCol>
                       </CRow>
                       <br></br>
-                      <CCardText className="m-2">
+                      <div className="m-2">
                         <CRow>
                           <CCol md="5" className="text-black ">
                             <NavLink to={`/properties/${property.id}/Buildings`}>
@@ -70,8 +70,8 @@ function PropertyCardView({ property }) {
                             </NavLink>
                           </CCol>
                         </CRow>
-                      </CCardText>
-                      <CCardText className="m-2">
+                      </div>
+                      <div className="m-2">
                         <CRow>
                           <CCol md="5" className="text-black text-capitalize">
                             {property?.use_type || '-'}
@@ -80,7 +80,7 @@ function PropertyCardView({ property }) {
                             {property?.payment_term.replace(/_/g, ' ') || '-'} Payment
                           </CCol>
                         </CRow>
-                      </CCardText>
+                      </div>
                     </CCardBody>
                   </CCard>
                 </CCol>
