@@ -82,10 +82,12 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData }
 
   const getRequestData = async (id) => {
     const api = await get(`/v1/admin/maintenance/requests/${id}`)
+    console.log(api)
     if (response.ok) {
       setEditdata(api.data)
       setValue('category_id', api.data.category.id)
       setValue('property_id', api.data.property_id)
+      loadUnits(api.data.property_id)
       setValue('assigned_user_id', api.data.assigned_user_id)
     }
   }
