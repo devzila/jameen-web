@@ -21,8 +21,7 @@ export default function MaintenanceTable({ data, refreshData }) {
               }}
             >
               <tr>
-                <th className="pt-3 pb-3 border-0  ">Name</th>
-                <th className="pt-3 pb-3 border-0  ">Description</th>
+                <th className="pt-3 pb-3 border-0  ">Title</th>
                 <th className="pt-3 pb-3 border-0  ">Category</th>
                 <th className="pt-3 pb-3 border-0  ">Priority</th>
                 <th className="pt-3 pb-3 border-0  ">Asignee</th>
@@ -38,13 +37,6 @@ export default function MaintenanceTable({ data, refreshData }) {
                     <NavLink to={`${item.id}`} className="mx-2 p-0">
                       {item.title || '-'}
                     </NavLink>
-                  </td>
-                  <td
-                    className="pt-3 pb-2"
-                    title={item.description?.length > 50 ? item.description : ''}
-                  >
-                    {item.description?.slice(0, 50) + (item.description.length > 50 ? '...' : '') ||
-                      '-'}
                   </td>
 
                   <td className="pt-3 pb-2">{item.category.name || '-'}</td>

@@ -25,9 +25,6 @@ export default function MaintanceBody({ api_endpoint }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [searchKeyword, setSearchKeyword] = useState('')
   const [table_view, setTableView] = useState(true)
-  console.log(useParams())
-  const { propertyId } = useParams()
-  console.log(propertyId)
   useEffect(() => {
     loaddMaintenanceRequests()
   }, [currentPage])
@@ -36,8 +33,10 @@ export default function MaintanceBody({ api_endpoint }) {
     setCurrentPage(e.selected + 1)
   }
 
-  async function loaddMaintenanceRequests() {
-    let endpoint = await get(api_endpoint + `?page=${currentPage}&q[title_cont]=${searchKeyword}`)
+  async function loaddMaintenanceRequests(query) {
+    let endpoint = await get(
+      api_endpoint + `?page=${currentPage}&q[title_cont]=${searchKeyword + query}`,
+    )
     if (response.ok) {
       setLoading(false)
       setMaintenance(endpoint.data)

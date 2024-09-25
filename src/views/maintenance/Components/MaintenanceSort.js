@@ -6,46 +6,51 @@ import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilSync, freeSet } from '@coreui/icons'
 
-export default function MaintenanceSort({ units_type, filter_callback }) {
+export default function MaintenanceSort({ filter_callback }) {
   const [status_query, setStatus_query] = useState('')
-  const [unit_query, setUnit_query] = useState('')
+  const [order, setOrder] = useState('')
 
   const [visible_, setVisible_] = useState(true)
 
   useEffect(() => {
     queries_function()
-  }, [status_query, unit_query])
+  }, [status_query, order])
 
   const { control, watch, reset, setValue } = useForm()
-  const unit_status = [
-    { value: 1, label: 'Name' },
-    { value: 2, label: 'Priority' },
-    { value: 0, label: 'Handover Date' },
+
+  const sort_array = [
+    { value: 'title', label: 'Title' },
+    { value: 'priority', label: 'Priority' },
+    { value: 'date', label: 'Handover Date' },
   ]
 
+  const order_array = [
+    { value: '+asc', label: 'Ascending' },
+    { value: '+desc', label: 'Descending' },
+  ]
   const handle_reset = () => {
-    setValue('unit_status', null)
-    setValue('unit_type_id', null)
-    setUnit_query(null)
+    setValue('sort_by', null)
+    setValue('order', null)
+    setOrder(null)
     setStatus_query(null)
   }
 
   const handleunit_status = (val) => {
-    setValue('unit_status', watch('unit_status')?.value)
+    setValue('sort_by', watch('sort_by')?.value)
 
-    const query = `&q[status_eq]=${val.value}`
+    const query = `&sort=${val.value}`
     setStatus_query(query)
   }
 
-  const handleunit_type = (val) => {
-    setValue('unit_type_id', watch('unit_type_id')?.value)
+  const handleOrder = (val) => {
+    setValue('order', watch('order')?.value)
 
-    const query = `&q[unit_type_id_eq]=${val.value}`
-    setUnit_query(query)
+    const query = val.value
+    setOrder(query)
   }
 
   const queries_function = () => {
-    filter_callback(unit_query + status_query)
+    filter_callback(status_query + order)
     setVisible_(false)
   }
 
@@ -91,7 +96,7 @@ export default function MaintenanceSort({ units_type, filter_callback }) {
             <label>Sort By</label>
 
             <Controller
-              name="unit_status"
+              name="sort_by"
               render={({ field }) => (
                 <Select
                   type="text"
@@ -99,7 +104,7 @@ export default function MaintenanceSort({ units_type, filter_callback }) {
                   classNamePrefix="select"
                   {...field}
                   onChange={(val) => handleunit_status(val)}
-                  options={unit_status}
+                  options={sort_array}
                 />
               )}
               control={control}
@@ -108,15 +113,15 @@ export default function MaintenanceSort({ units_type, filter_callback }) {
           <Dropdown.Item className="btn btn-teritary" href="#/action-3">
             <label>Order</label>
             <Controller
-              name="unit_type_id"
+              name="order"
               render={({ field }) => (
                 <Select
                   type="text"
                   className="basic-single"
                   classNamePrefix="select"
                   {...field}
-                  onChange={(val) => handleunit_type(val)}
-                  options={[]}
+                  onChange={(val) => handleOrder(val)}
+                  options={order_array}
                 />
               )}
               control={control}

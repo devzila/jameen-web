@@ -48,12 +48,12 @@ export default function Property() {
           <Route path="Allotment" name="Allotment" element={<PropUnitAllotment />} />
           <Route path="Contracts" name="Contracts" element={<Contracts />} />
           <Route
-            path="maintenance-category"
+            path="maintenance-requests"
             name="Maintenance"
             element={<PropMaintenancesCategory />}
           />
           <Route
-            path="maintenance-category/:maintenanceid"
+            path="maintenance-requests/:maintenanceid"
             name="Maintenance"
             element={<ShowMaintance />}
           />

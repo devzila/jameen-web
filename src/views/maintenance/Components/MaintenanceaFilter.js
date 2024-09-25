@@ -5,48 +5,63 @@ import Select from 'react-select'
 import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilSync, freeSet } from '@coreui/icons'
-
+import { format_react_select } from 'src/services/CommonFunctions'
+import { useFetch } from 'use-http'
 export default function MaintenanceaFilter({ units_type, filter_callback }) {
-  const [status_query, setStatus_query] = useState('')
-  const [unit_query, setUnit_query] = useState('')
+  const [request, setRequest] = useState('')
+  const [category, setCategory] = useState('')
+  const [maintenance_category, setMaintenanceCategory] = useState('')
+
+  const { get, response } = useFetch()
 
   const [visible_, setVisible_] = useState(true)
 
   useEffect(() => {
     queries_function()
-  }, [status_query, unit_query])
+    getMaintenanceCategories()
+  }, [request, category])
 
   const { control, watch, reset, setValue } = useForm()
-  const unit_status = [
-    { value: 1, label: 'Requested' },
-    { value: 2, label: 'Pending' },
-    { value: 0, label: 'Fulfilled' },
+
+  const request_type = [
+    { value: 0, label: 'Requested' },
+    { value: 1, label: 'In Progress' },
+    { value: 2, label: 'Cancelled' },
+    { value: 3, label: 'Resolved' },
+    { value: 4, label: 'Reopen' },
   ]
 
   const handle_reset = () => {
-    setValue('unit_status', null)
-    setValue('unit_type_id', null)
-    setUnit_query(null)
-    setStatus_query(null)
+    setValue('category', null)
+    setValue('request_type', null)
+    setCategory(null)
+    setRequest(null)
   }
 
-  const handleunit_status = (val) => {
-    setValue('unit_status', watch('unit_status')?.value)
+  const handle_request = (val) => {
+    setValue('category', watch('priority')?.value)
 
     const query = `&q[status_eq]=${val.value}`
-    setStatus_query(query)
+    setRequest(query)
   }
 
-  const handleunit_type = (val) => {
-    setValue('unit_type_id', watch('unit_type_id')?.value)
+  const handle_category = (val) => {
+    setValue('request_type', watch('request_type')?.value)
 
-    const query = `&q[unit_type_id_eq]=${val.value}`
-    setUnit_query(query)
+    const query = `&q[category_id_eq]=${val.value}`
+    setCategory(query)
   }
 
   const queries_function = () => {
-    filter_callback(unit_query + status_query)
+    filter_callback(category + request)
     setVisible_(false)
+  }
+
+  const getMaintenanceCategories = async () => {
+    const api = await get(`/v1/admin/maintenance/categories?limit=-1`)
+    if (response.ok) {
+      setMaintenanceCategory(format_react_select(api.data, ['id', 'name']))
+    }
   }
 
   return (
@@ -91,32 +106,32 @@ export default function MaintenanceaFilter({ units_type, filter_callback }) {
             <label>Request Status</label>
 
             <Controller
-              name="unit_status"
+              name="request_type"
               render={({ field }) => (
                 <Select
                   type="text"
                   className="basic-multi-select"
                   classNamePrefix="select"
                   {...field}
-                  onChange={(val) => handleunit_status(val)}
-                  options={unit_status}
+                  onChange={(val) => handle_request(val)}
+                  options={request_type}
                 />
               )}
               control={control}
             />
           </Dropdown.Item>
           <Dropdown.Item className="btn btn-teritary" href="#/action-3">
-            <label>Priority</label>
+            <label>Category</label>
             <Controller
-              name="unit_type_id"
+              name="category"
               render={({ field }) => (
                 <Select
                   type="text"
                   className="basic-single"
                   classNamePrefix="select"
                   {...field}
-                  onChange={(val) => handleunit_type(val)}
-                  options={units_type}
+                  onChange={(val) => handle_category(val)}
+                  options={maintenance_category}
                 />
               )}
               control={control}
