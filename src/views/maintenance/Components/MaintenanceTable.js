@@ -43,14 +43,7 @@ export default function MaintenanceTable({ data, refreshData }) {
                   <td className="pt-3 pb-2">{item.category.priority || '-'}</td>
                   <td className="pt-3 pb-2">{item.assigned_user || '-'}</td>
                   <td className="pt-3 pb-2">
-                    <button
-                      className=" text-center border-0  rounded-0 text-white"
-                      style={{
-                        backgroundColor: `${status_color(item?.status)}`,
-                        cursor: 'default',
-                        width: '120px',
-                      }}
-                    >
+                    <button className={`request-${status_color(item?.status)}`}>
                       {item.status || '-'}
                     </button>
                   </td>

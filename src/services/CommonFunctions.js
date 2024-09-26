@@ -13,20 +13,18 @@ export function formatdate(isoDate) {
 }
 
 export function status_color(status) {
-  switch (status) {
-    case ('pending', 'requested'):
-      return 'rgb(255, 68, 51)'
-    case 'due':
-      return 'rgba(0, 120, 0,0.7)'
-
-    case 'paid':
-      return 'green'
-
-    case 'cancelled':
-      return 'grey'
-    default:
-      return 'white'
+  const statusColors = {
+    pending: 'red',
+    requested: 'red',
+    due: 'orange',
+    vacant: 'orange',
+    paid: 'green',
+    unallotted: 'green',
+    cancelled: 'gray',
+    occupied: 'gray',
   }
+
+  return statusColors[status] || 'gray'
 }
 export function format_react_select(data, key) {
   if (data) {

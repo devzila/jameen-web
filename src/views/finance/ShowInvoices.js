@@ -47,14 +47,7 @@ export default function ShowInvoices() {
           <div className="card rounded-1 mb-2">
             <div className="card-body p-4">
               <div className="d-flex justify-content-between ">
-                <button
-                  className=" text-center border-0 rounded-0 text-white"
-                  style={{
-                    backgroundColor: `${status_color(invoice?.status)}`,
-                    cursor: 'pointer',
-                    width: '120px',
-                  }}
-                >
+                <button className={`request-${status_color(invoice?.status)}`}>
                   {invoice?.status || '-'}
                 </button>
 

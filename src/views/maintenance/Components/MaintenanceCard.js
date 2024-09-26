@@ -16,14 +16,7 @@ export default function MaintenanceCard({ data }) {
                 <NavLink to={`${item.id}`} className=" p-0">
                   {item.title || '-'}
                 </NavLink>
-                <button
-                  className=" text-center border-0  rounded-0 text-white"
-                  style={{
-                    backgroundColor: `${status_color(item?.status)}`,
-                    cursor: 'default',
-                    width: '120px',
-                  }}
-                >
+                <button className={`request-${status_color(item?.status)}`}>
                   {item.status || '-'}
                 </button>
               </div>

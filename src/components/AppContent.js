@@ -1,7 +1,8 @@
 import React, { Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { CContainer, CSpinner } from '@coreui/react'
+import { CContainer } from '@coreui/react'
 import ShowMaintance from 'src/views/maintenance/ShowMaintance'
+import Loading from 'src/components/loading/loading'
 
 // routes config
 const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
@@ -33,7 +34,7 @@ const DashboardRoutes = React.lazy(() => import('../views/dashboard/DashboardRou
 const AppContent = () => {
   return (
     <CContainer fluid>
-      <Suspense fallback={<CSpinner color="primary" />}>
+      <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" exact={true} name="Dashboard" element={<Dashboard />} />
           <Route path="/finance" name="Finance" element={<Finance />} />

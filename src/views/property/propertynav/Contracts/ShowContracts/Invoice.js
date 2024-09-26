@@ -98,15 +98,7 @@ const Invoice = () => {
                               </td>{' '}
                               <td className="pt-3">{invoice?.due_date || '-'}</td>
                               <td className="pt-3">
-                                <button
-                                  className=" text-center  text-white border-0 p-0.7 m-0 rounded-0  "
-                                  style={{
-                                    backgroundColor: `${status_color(invoice.status)}`,
-
-                                    cursor: 'default',
-                                    width: '120px',
-                                  }}
-                                >
+                                <button className={`request-${status_color(invoice?.status)}`}>
                                   {invoice.status}
                                 </button>
                               </td>

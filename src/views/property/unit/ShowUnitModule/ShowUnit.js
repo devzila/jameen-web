@@ -344,14 +344,7 @@ export default function Showunit() {
                       <CCardBody className="pt-0">
                         <CRow>
                           <CCol className="d-flex justify-content-end mt-2">
-                            <button
-                              className=" text-center border-0 p-1  mx-2 rounded-0 text-white "
-                              style={{
-                                backgroundColor: `${status_color(invoice?.status)}`,
-
-                                width: '110px',
-                              }}
-                            >
+                            <button className={`request-${status_color(invoice?.status)}`}>
                               {invoice?.status || '-'}
                             </button>
                           </CCol>

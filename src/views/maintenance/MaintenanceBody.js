@@ -34,9 +34,14 @@ export default function MaintanceBody({ api_endpoint }) {
   }
 
   async function loaddMaintenanceRequests(query) {
-    let endpoint = await get(
-      api_endpoint + `?page=${currentPage}&q[title_cont]=${searchKeyword + query}`,
-    )
+    let api = api_endpoint + `?page=${currentPage}`
+    if (searchKeyword) {
+      api += `&q[title_cont]=${searchKeyword}`
+    }
+    if (query) {
+      api += query
+    }
+    let endpoint = await get(api)
     if (response.ok) {
       setLoading(false)
       setMaintenance(endpoint.data)

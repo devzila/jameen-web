@@ -147,3 +147,42 @@
 td {
   border: 0px;
 }
+
+.request-red {
+  background-color: rgba(255, 68, 51, 0.1);
+  cursor: default;
+  width: 120px;
+  text-align: center;
+  border-radius: 3px;
+  border: 0px;
+  color: rgba(255, 68, 51);
+}
+
+.request-green {
+  background-color: rgba(0, 128, 0, 0.1);
+  color: rgba(0, 128, 0, 0.9);
+  width: 120px;
+  text-align: center;
+  border-radius: 3px;
+  border: 0px;
+  cursor: default;
+}
+
+.request-gray {
+  background-color: rgb(128, 128, 128, 0.1);
+  color: rgb(128, 128, 128, 1);
+  width: 120px;
+  text-align: center;
+  border-radius: 3px;
+  border: 0px;
+  cursor: default;
+}
+.request-orange {
+  background-color: rgba(255, 121, 0, 0.2);
+  color: rgb(255, 121, 0);
+  width: 120px;
+  text-align: center;
+  border-radius: 3px;
+  border: 0px;
+  cursor: default;
+}

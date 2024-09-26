@@ -11,6 +11,7 @@ import PickOwner from './UnitFunctions/PickOwner'
 import FilterAccordion from './UnitFunctions/FilterAccordioan'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import { status_color } from 'src/services/CommonFunctions'
 
 function Unit() {
   const { get, response, error } = useFetch()
@@ -79,20 +80,6 @@ function Unit() {
   }
   const refresh_data = () => {
     loadInitialUnits()
-  }
-
-  function status_color(status) {
-    switch (status) {
-      case 'unallotted':
-        return 'rgb(0, 128, 0)'
-      case 'vacant':
-        return 'rgba(0, 120, 0,0.7)'
-
-      case 'occupied':
-        return 'grey'
-      default:
-        return 'white'
-    }
   }
 
   function filter_callback(queries) {
@@ -177,18 +164,7 @@ function Unit() {
                             </td>
                             <td className="pt-3 pb-2">-</td>
                             <td className="pt-3 pb-2 ">
-                              <button
-                                className="text-center"
-                                style={{
-                                  backgroundColor: `${status_color(unit.status)}`,
-                                  border: '0px',
-                                  padding: '1px',
-                                  borderRadius: '2px',
-                                  color: 'white',
-                                  cursor: 'default',
-                                  width: '120px',
-                                }}
-                              >
+                              <button className={`request-${status_color(unit?.status)}`}>
                                 {unit.status}
                               </button>
                             </td>

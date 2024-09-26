@@ -8,6 +8,7 @@ import { freeSet } from '@coreui/icons'
 import { formatdate } from 'src/services/CommonFunctions'
 import EditProperty from '../EditProperty'
 import DeleteProperty from '../DeleteProperty'
+import defaultbuilding from 'src/assets/images/default-building.png'
 
 export default function OverviewContent(propsd) {
   const { propertyId } = useParams()
@@ -41,7 +42,7 @@ export default function OverviewContent(propsd) {
 
   return (
     <>
-      <CContainer>
+      <CContainer fluid>
         <CRow>
           <CCol className="mt-3" md="4">
             <CCard
@@ -52,16 +53,13 @@ export default function OverviewContent(propsd) {
                 <img
                   style={{
                     width: '100%',
-                    height: '255px',
-                    borderRadius: '0px',
+                    height: '233px',
+                    borderRadius: '4px',
                     display: 'block',
                     margin: '0 auto',
                     objectFit: 'cover',
                   }}
-                  src={
-                    property.photo ||
-                    'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJ1aWxkaW5nc3xlbnwwfHwwfHx8MA%3D%3D'
-                  }
+                  src={property.photo || defaultbuilding}
                 />
               </div>
             </CCard>
@@ -103,7 +101,7 @@ export default function OverviewContent(propsd) {
                 <CCol className="p-2 mt-0 fw-light">
                   Payment Term
                   <CCardText className="fw-normal text-black text-capitalize">
-                    {property?.payment_term || '-'}
+                    {property?.payment_term?.replace('_', ' ') || '-'}
                   </CCardText>
                 </CCol>
               </CRow>

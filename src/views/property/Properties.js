@@ -9,7 +9,6 @@ import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@
 import PropertyCardView from './PropertyCardView'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import loading from 'src/components/loading/loading'
 
 function Property() {
   const { get, response, error } = useFetch()
