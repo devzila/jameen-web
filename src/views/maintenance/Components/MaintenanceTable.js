@@ -6,6 +6,7 @@ import CustomDivToggle from 'src/components/CustomDivToggle'
 import { Dropdown } from 'react-bootstrap'
 import { BsThreeDots } from 'react-icons/bs'
 import AddMaintenance from './AddEditMaintenance'
+import dafaultAvatar from 'src/assets/images/avatars/default.png'
 
 export default function MaintenanceTable({ data, refreshData }) {
   return (
@@ -41,7 +42,9 @@ export default function MaintenanceTable({ data, refreshData }) {
 
                   <td className="pt-3 pb-2">{item.category.name || '-'}</td>
                   <td className="pt-3 pb-2">{item.category.priority || '-'}</td>
-                  <td className="pt-3 pb-2">{item.assigned_user || '-'}</td>
+                  <td className="pt-3 pb-2">
+                    <img width="23px" src={dafaultAvatar} />
+                  </td>
                   <td className="pt-3 pb-2">
                     <button className={`request-${status_color(item?.status)}`}>
                       {item.status || '-'}

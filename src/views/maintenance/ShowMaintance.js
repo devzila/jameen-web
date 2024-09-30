@@ -5,6 +5,7 @@ import useFetch from 'use-http'
 import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import MaintenanceComments from './Components/MaintenanceComments'
 
 export default function ShowMaintance() {
   const { maintenanceid } = useParams()
@@ -157,21 +158,7 @@ export default function ShowMaintance() {
         </CCol>
 
         <CCol md="8">
-          <CCard className=" p-3 my-2 border-0 theme_color">
-            <div className="d-flex w-100 ">
-              <CIcon icon={freeSet.cilCommentBubble} size="lg" className="me-2" />
-              <strong className="text-black">Comments</strong>
-            </div>
-
-            <hr className="text-secondary" />
-            <CRow className="">
-              <CCol className="p-3 mt-0 py-5 fw-light">
-                <CCardText className="fw-normal text-black text-capitalize">
-                  {data?.property?.name || ''}
-                </CCardText>
-              </CCol>
-            </CRow>
-          </CCard>
+          <MaintenanceComments />
         </CCol>
       </CRow>
     </>

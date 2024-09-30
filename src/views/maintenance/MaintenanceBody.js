@@ -62,11 +62,18 @@ export default function MaintanceBody({ api_endpoint }) {
                     <div className="d-flex align-items-center">
                       <CNavbarBrand href="#">Maintenance Requests</CNavbarBrand>
                       <CIcon
-                        onClick={() => setTableView(!table_view)}
-                        icon={table_view ? freeSet.cilShortText : freeSet.cilColumns}
+                        onClick={() => setTableView(true)}
+                        icon={freeSet.cilMenu}
                         size="xxl"
-                        title={table_view ? 'Card View' : 'Table View'}
-                        className="mt-0 p-0 theme_color"
+                        title="Table View"
+                        className={`mt-0 p-0 mx-2 ${table_view ? 'theme_color' : ''}`}
+                      />
+                      <CIcon
+                        onClick={() => setTableView(false)}
+                        icon={freeSet.cilGrid}
+                        size="xxl"
+                        title="Card View"
+                        className={`mt-0 p-0 ${table_view ? '' : 'theme_color'}`}
                       />
                     </div>
                     <div className="d-flex justify-content-end ">
