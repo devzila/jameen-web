@@ -32,7 +32,7 @@ export default function MaintenanceComments() {
 
     if (response.ok) {
       setLoading(false)
-      setData([...data, ...api.data])
+      setData([...api.data, ...data])
       setPagination(api.pagination)
     } else {
       setLoading(false)
@@ -65,7 +65,7 @@ export default function MaintenanceComments() {
 
         <hr className="text-secondary" />
         <CRow className="">
-          <CCol className=" mt-0 fw-light">
+          <CCol className=" mt-0 fw-light comment-section ">
             {data.map((comment) => (
               <span key={comment.id}>
                 <p className="m-0 p-0"> {comment.comment}</p>
