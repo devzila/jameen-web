@@ -1,5 +1,5 @@
 import { CCol, CCard, CNavbar, CRow, CCardText, CCardBody, CButton } from '@coreui/react'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useId } from 'react'
 import useFetch from 'use-http'
 
 import { useParams } from 'react-router-dom'
@@ -10,11 +10,14 @@ import PropTypes from 'prop-types'
 import { formatdate } from 'src/services/CommonFunctions'
 import CommentForms from './Comment/CommentForms'
 
+import { toast } from 'react-toastify'
+
 export default function MaintenanceComments() {
   const [data, setData] = useState([])
-  const { get, response } = useFetch()
+  const { get, response, del } = useFetch()
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [editing, setEditing] = useState(null)
 
   const [loading, setLoading] = useState(true)
 
@@ -22,26 +25,43 @@ export default function MaintenanceComments() {
 
   useEffect(() => {
     loadComments()
-  }, [currentPage])
+  }, [])
+
+  const handleEdit = (id) => {
+    setEditing(id)
+  }
 
   async function loadComments() {
     let endpoint = getApi()
     let api = await get(endpoint)
-
     console.log(api)
 
     if (response.ok) {
       setLoading(false)
-      setData([...api.data, ...data])
+      setData([...api.data])
       setPagination(api.pagination)
     } else {
       setLoading(false)
     }
   }
+  async function handleDelete(id) {
+    const api = await del(`/v1/admin/maintenance/requests/${maintenanceid}/comments/${id}`, {})
+    if (response.ok) {
+      toast.success('Comment deleted succesfully.')
+      handleRefreshCallback()
+    }
+  }
+  const handleRefreshCallback = () => {
+    setData([])
+    loadComments()
+    setCurrentPage(1)
+  }
 
   function handlePageClick(e) {
     if (currentPage <= pagination.total_pages) {
       setCurrentPage(currentPage + 1)
+      setData([])
+      loadComments()
     }
   }
 
@@ -65,16 +85,38 @@ export default function MaintenanceComments() {
 
         <hr className="text-secondary" />
         <CRow className="">
-          <CCol className=" mt-0 fw-light comment-section ">
-            {data.map((comment) => (
-              <span key={comment.id}>
-                <p className="m-0 p-0"> {comment.comment}</p>
-                <small className="fst-italic text-secondary">
-                  {formatdate(comment.created_at)}
-                </small>
-                <hr className="p-0 m-0 text-secondary" />
-              </span>
-            ))}
+          <CCol className=" mt-0  comment-section ">
+            {data.map((comment) =>
+              editing == comment.id ? (
+                <span key={comment.id + 'edit'}>
+                  <CommentForms
+                    refresh_callback={handleRefreshCallback}
+                    id={comment.id}
+                    close_edit_callback={() => handleEdit(null)}
+                  />
+                </span>
+              ) : (
+                <span key={comment.id + 'index'}>
+                  <p className="m-0 p-0"> {comment.comment}</p>
+                  <div className="d-flex text-secondary align-items-center">
+                    <small className="fst-italic text-secondary">
+                      {formatdate(comment.created_at)}
+                    </small>
+                    <span className="px-1">⦁︎</span>
+                    <p className="p-0 m-0 cursor-pointer" onClick={() => handleEdit(comment.id)}>
+                      Edit
+                    </p>
+                    <span className="px-1">⦁︎</span>
+                    <p className="p-0 m-0 cursor-pointer" onClick={() => handleDelete(comment.id)}>
+                      Delete
+                    </p>
+                    <span className="px-1">⦁︎</span>
+                  </div>
+
+                  <hr className="p-0 m-0 text-secondary" />
+                </span>
+              ),
+            )}
           </CCol>
         </CRow>
         <CRow>
@@ -93,7 +135,7 @@ export default function MaintenanceComments() {
             )}
           </CCol>
         </CRow>
-        <CommentForms refresh_callback={loadComments} />
+        <CommentForms refresh_callback={handleRefreshCallback} />
       </CCard>
     </>
   )

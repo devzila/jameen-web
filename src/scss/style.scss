@@ -42,17 +42,21 @@ a {
 input {
   border: 1px solid #00bfcc;
   padding-block-start: 5px;
+  outline: 0px;
 }
 
 input:focus,
-.form-control:focus {
+.form-control:focus,
+input:focus-visible {
   box-shadow: none;
   border-color: gray;
+  outline: 0px;
 }
 
 .react-select__input:focus {
   border-color: gray;
   box-shadow: none;
+  outline: 0px;
 }
 
 .modal-content {
