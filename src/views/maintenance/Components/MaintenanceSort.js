@@ -21,7 +21,7 @@ export default function MaintenanceSort({ filter_callback }) {
   const sort_array = [
     { value: 'title', label: 'Title' },
     { value: 'priority', label: 'Priority' },
-    { value: 'date', label: 'Handover Date' },
+    { value: 'created_at', label: 'Date Created' },
   ]
 
   const order_array = [
@@ -38,7 +38,7 @@ export default function MaintenanceSort({ filter_callback }) {
   const handleunit_status = (val) => {
     setValue('sort_by', watch('sort_by')?.value)
 
-    const query = `&sort=${val.value}`
+    const query = `&q[s]=${val.value}`
     setStatus_query(query)
   }
 

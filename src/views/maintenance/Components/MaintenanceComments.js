@@ -25,7 +25,7 @@ export default function MaintenanceComments() {
 
   useEffect(() => {
     loadComments()
-  }, [])
+  }, [currentPage])
 
   const handleEdit = (id) => {
     setEditing(id)
@@ -34,7 +34,6 @@ export default function MaintenanceComments() {
   async function loadComments() {
     let endpoint = getApi()
     let api = await get(endpoint)
-    console.log(api)
 
     if (response.ok) {
       setLoading(false)
@@ -53,15 +52,13 @@ export default function MaintenanceComments() {
   }
   const handleRefreshCallback = () => {
     setData([])
-    loadComments()
     setCurrentPage(1)
+    loadComments()
   }
 
   function handlePageClick(e) {
     if (currentPage <= pagination.total_pages) {
       setCurrentPage(currentPage + 1)
-      setData([])
-      loadComments()
     }
   }
 

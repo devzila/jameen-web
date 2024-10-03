@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Dropdown } from 'react-bootstrap'
 import { useForm, Controller } from 'react-hook-form'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
@@ -7,10 +6,12 @@ import CIcon from '@coreui/icons-react'
 import { cilSync, freeSet } from '@coreui/icons'
 import { format_react_select } from 'src/services/CommonFunctions'
 import { useFetch } from 'use-http'
+import { Dropdown, Button, Form, Row, Col } from 'react-bootstrap'
 export default function MaintenanceaFilter({ units_type, filter_callback }) {
   const [request, setRequest] = useState('')
   const [category, setCategory] = useState('')
   const [maintenance_category, setMaintenanceCategory] = useState('')
+  const [date_range, setDateRange] = useState('')
 
   const { get, response } = useFetch()
 
@@ -19,9 +20,9 @@ export default function MaintenanceaFilter({ units_type, filter_callback }) {
   useEffect(() => {
     queries_function()
     getMaintenanceCategories()
-  }, [request, category])
+  }, [request, category, date_range])
 
-  const { control, watch, reset, setValue } = useForm()
+  const { control, watch, reset, setValue, register } = useForm()
 
   const request_type = [
     { value: 0, label: 'Requested' },
@@ -34,8 +35,11 @@ export default function MaintenanceaFilter({ units_type, filter_callback }) {
   const handle_reset = () => {
     setValue('category', null)
     setValue('request_type', null)
+    setValue('created_at_from', null)
+    setValue('created_at_to', null)
     setCategory(null)
     setRequest(null)
+    setDateRange(null)
   }
 
   const handle_request = (val) => {
@@ -53,7 +57,7 @@ export default function MaintenanceaFilter({ units_type, filter_callback }) {
   }
 
   const queries_function = () => {
-    filter_callback(category + request)
+    filter_callback(category + request + date_range)
     setVisible_(false)
   }
 
@@ -62,6 +66,19 @@ export default function MaintenanceaFilter({ units_type, filter_callback }) {
     if (response.ok) {
       setMaintenanceCategory(format_react_select(api.data, ['id', 'name']))
     }
+  }
+
+  const handleDateChange = () => {
+    const createdAtFrom = watch('created_at_from')
+    const createdAtTo = watch('created_at_to')
+    let queryString = ''
+    if (createdAtFrom) {
+      queryString += `&q[created_at_gteq]=${createdAtFrom}`
+    }
+    if (createdAtTo) {
+      queryString += `&q[created_at_lteq]=${createdAtTo}`
+    }
+    setDateRange(queryString)
   }
 
   return (
@@ -136,6 +153,26 @@ export default function MaintenanceaFilter({ units_type, filter_callback }) {
               )}
               control={control}
             />
+          </Dropdown.Item>
+          <Dropdown.Item className="btn btn-teritary" href="#/action-3">
+            <Form.Group>
+              <label>Created at from</label>
+              <Form.Control
+                type="date"
+                onChange={(val) => handleDateChange(val)}
+                {...register('created_at_from')}
+              ></Form.Control>
+            </Form.Group>
+          </Dropdown.Item>
+          <Dropdown.Item className="btn btn-teritary" href="#/action-3">
+            <Form.Group>
+              <label>Created at to</label>
+              <Form.Control
+                type="date"
+                {...register('created_at_to')}
+                onChange={(val) => handleDateChange(val)}
+              ></Form.Control>
+            </Form.Group>
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
