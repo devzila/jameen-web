@@ -1,14 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
-import { status_color } from 'src/services/CommonFunctions'
+import { formatdate, status_color } from 'src/services/CommonFunctions'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import { Dropdown } from 'react-bootstrap'
 import { BsThreeDots } from 'react-icons/bs'
-import AddMaintenance from './AddEditMaintenance'
+import AddEditMaintenance from './AddEditMaintenance'
 import dafaultAvatar from 'src/assets/images/avatars/default.png'
+import UpdateRequestStatus from './UpdateRequestStatus'
 
-export default function MaintenanceTable({ data, refreshData }) {
+export default function MaintenanceTable({ data, refreshData, api_endpoint }) {
+  console.log(data)
   return (
     <div className="row justify-content-center">
       <div className="col-16">
@@ -27,6 +29,7 @@ export default function MaintenanceTable({ data, refreshData }) {
                 <th className="pt-3 pb-3 border-0  ">Priority</th>
                 <th className="pt-3 pb-3 border-0  ">Asignee</th>
                 <th className="pt-3 pb-3 border-0  ">Status</th>
+                <th className="pt-3 pb-3 border-0  ">Created At</th>
                 <th className="pt-3 pb-3 border-0  ">Expected Handover Date</th>
                 <th className="pt-3 pb-3 border-0  "> Actions</th>
               </tr>
@@ -43,13 +46,15 @@ export default function MaintenanceTable({ data, refreshData }) {
                   <td className="pt-3 pb-2">{item.category.name || '-'}</td>
                   <td className="pt-3 pb-2">{item.category.priority || '-'}</td>
                   <td className="pt-3 pb-2">
-                    <img width="23px" src={dafaultAvatar} />
+                    {item?.assigned_user?.name ? <img width="23px" src={dafaultAvatar} /> : null}
+                    {item?.assigned_user?.name || 'Unassigned'}
                   </td>
                   <td className="pt-3 pb-2">
                     <button className={`request-${status_color(item?.status)}`}>
-                      {item.status || '-'}
+                      {item.status.replace('_', ' ') || '-'}
                     </button>
                   </td>
+                  <td className="pt-3 pb-2">{formatdate(item.created_at) || '-'}</td>
 
                   <td className="pt-3 pb-2">{item.completion_date || '-'}</td>
                   <td className="pt-3 pb-2 ">
@@ -58,7 +63,17 @@ export default function MaintenanceTable({ data, refreshData }) {
                         <BsThreeDots />
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                        <AddMaintenance type="edit" id={item.id} refreshData={refreshData} />
+                        <AddEditMaintenance
+                          type="edit"
+                          api_endpoint={api_endpoint}
+                          id={item.id}
+                          refreshData={refreshData}
+                        />
+                        <UpdateRequestStatus
+                          id={item.id}
+                          api_endpoint={api_endpoint}
+                          refreshData={refreshData}
+                        />
                       </Dropdown.Menu>
                     </Dropdown>
                   </td>
@@ -81,4 +96,5 @@ export default function MaintenanceTable({ data, refreshData }) {
 MaintenanceTable.propTypes = {
   data: PropTypes.array,
   refreshData: PropTypes.func,
+  api_endpoint: PropTypes.string,
 }

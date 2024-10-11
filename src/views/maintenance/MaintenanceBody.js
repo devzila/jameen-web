@@ -6,6 +6,7 @@ import CustomDivToggle from '../../components/CustomDivToggle'
 import Loader from 'src/components/loading/loading'
 import Paginate from 'src/components/Pagination'
 import { useParams } from 'react-router-dom'
+import TopCards from 'src/views/maintenance/Components/TopCards'
 
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
@@ -21,6 +22,8 @@ export default function MaintanceBody({ api_endpoint }) {
   const { get, response, error } = useFetch()
   const [maintenance, setMaintenance] = useState([])
   const [loading, setLoading] = useState(true)
+  const [refresh, setRefresh] = useState(true)
+
   const [pagination, setPagination] = useState({})
   const [currentPage, setCurrentPage] = useState(1)
   const [searchKeyword, setSearchKeyword] = useState('')
@@ -38,11 +41,13 @@ export default function MaintanceBody({ api_endpoint }) {
     if (searchKeyword) {
       api += `&q[title_cont]=${searchKeyword}`
     }
-    if (query) {
+    if (typeof query === 'string') {
       api += query
     }
+
     let endpoint = await get(api)
     if (response.ok) {
+      setRefresh(!refresh)
       setLoading(false)
       setMaintenance(endpoint.data)
       setPagination(endpoint.pagination)
@@ -54,6 +59,7 @@ export default function MaintanceBody({ api_endpoint }) {
         <Loader />
       ) : (
         <>
+          <TopCards refresh={refresh} />
           <div className="mask d-flex align-items-center h-100 p-0 mt-2 w-100">
             <div className="w-100">
               <CNavbar expand="lg" colorScheme="light" className="bg-white">
@@ -101,6 +107,7 @@ export default function MaintanceBody({ api_endpoint }) {
                         type="add"
                         id={0}
                         refreshData={loaddMaintenanceRequests}
+                        api_endpoint={api_endpoint}
                       />
                     </div>
                   </div>
@@ -109,7 +116,11 @@ export default function MaintanceBody({ api_endpoint }) {
               <hr className="p-0 m-0 text-secondary" />
               <div>
                 {table_view ? (
-                  <MaintenanceTable data={maintenance} refreshData={loaddMaintenanceRequests} />
+                  <MaintenanceTable
+                    data={maintenance}
+                    refreshData={loaddMaintenanceRequests}
+                    api_endpoint={api_endpoint}
+                  />
                 ) : (
                   <MaintenanceCard data={maintenance} />
                 )}

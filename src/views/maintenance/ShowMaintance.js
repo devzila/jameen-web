@@ -19,6 +19,7 @@ export default function ShowMaintance() {
   }, [])
   async function showMaintanceRequests() {
     let api = await get(`/v1/admin/maintenance/requests/${maintenanceid}`)
+    console.log(api)
     if (response.ok) {
       setData(api.data)
     }
@@ -46,16 +47,16 @@ export default function ShowMaintance() {
               <CCol className="p-3 mt-0 fw-light">
                 Unit No.
                 <CCardText className="fw-normal text-black text-capitalize">
-                  {data?.year_built || '-'}
+                  {data?.maintainable?.unit_no || '-'}
                 </CCardText>
               </CCol>
             </CRow>
 
             <CRow className="">
               <CCol className="p-3 mt-0 fw-light">
-                Tenant
+                Last Status Changed
                 <CCardText className="fw-normal text-black text-capitalize">
-                  {data?.data_type?.name || '-'}
+                  {data?.last_status_changed_date || '-'}
                 </CCardText>
               </CCol>
               <CCol className="p-3 mt-0 fw-light">
@@ -116,7 +117,7 @@ export default function ShowMaintance() {
               <CCol className="p-3 mt-0 fw-light">
                 Assigned User
                 <CCardText className="fw-normal text-black text-capitalize">
-                  {data?.assigned_user || '-'}
+                  {data?.assigned_user?.name || 'Unassigned'}
                 </CCardText>
               </CCol>
             </CRow>

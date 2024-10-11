@@ -4,8 +4,9 @@ import { freeSet } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import useFetch from 'use-http'
 import { useParams } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
-export default function TopCards() {
+export default function TopCards({ refresh }) {
   const { get, post, response } = useFetch()
   const [allData, setAllData] = useState({})
   const [last30Days, setlast30Days] = useState({})
@@ -14,7 +15,7 @@ export default function TopCards() {
 
   useEffect(() => {
     getStatsData()
-  }, [])
+  }, [refresh])
 
   const getStatsData = async () => {
     console.log(propertyId)
@@ -27,6 +28,7 @@ export default function TopCards() {
     if (response.ok) {
       setAllData(api.all)
       setlast30Days(api.last_30days)
+      console.log(api)
     }
   }
   return (
@@ -39,29 +41,9 @@ export default function TopCards() {
         <div>
           <h3>{null || 0}</h3>
           <div>
-            <Row className="mt-3">
-              <Col md="4">
-                <small className="fw-light "> PENDING </small>
-              </Col>
-              <Col md="2">{allData?.requested || 0}</Col>
-              <Col md="4">
-                <small className="fw-light "> CANCELLED </small>
-              </Col>
-              <Col md="2">{allData?.cancelled || 0}</Col>
-            </Row>
-            <Row className="mt-2">
-              <Col md="4">
-                <small className="fw-light "> Resolved </small>
-              </Col>
-              <Col md="2">{allData?.resolved || 0}</Col>
-              <Col md="4">
-                <small className="fw-light "> IN PROGRESS </small>
-              </Col>
-              <Col md="2">{allData?.in_progress || 0}</Col>
-            </Row>
             <Row className="mt-2">
               <Col md="6">
-                <small className="fw-light "> REJECTED BEFORE </small>
+                <small className="fw-light "> Last 30 days : </small>
               </Col>
               <Col md="2">{null || 0}</Col>
             </Row>
@@ -146,4 +128,8 @@ export default function TopCards() {
       </Col>
     </Row>
   )
+}
+
+TopCards.propTypes = {
+  refresh: PropTypes.bool,
 }

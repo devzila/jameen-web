@@ -51,7 +51,7 @@ export default function CommentForms({ refresh_callback, id, close_edit_callback
                 required
                 placeholder="Write a comment."
                 type="text"
-                autocomplete="off"
+                autoComplete="off"
                 defaultValue={comment.comment}
                 {...register('comment', { required: 'Comment cannot be blank' })}
               ></Form.Control>

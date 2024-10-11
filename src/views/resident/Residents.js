@@ -33,7 +33,7 @@ const Residents = () => {
   async function loadInitialResidents() {
     let endpoint = `/v1/admin/members?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[username_eq]=${searchKeyword}`
+      endpoint += `&q[username_cont]=${searchKeyword}`
     }
     const initialResidents = await get(endpoint)
 

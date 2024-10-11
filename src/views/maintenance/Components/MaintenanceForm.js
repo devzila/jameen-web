@@ -7,8 +7,13 @@ import Select from 'react-select'
 import PropTypes from 'prop-types'
 import { CContainer, CModalFooter, CButton } from '@coreui/react'
 import { formatdate, format_react_select } from 'src/services/CommonFunctions'
+import { useParams } from 'react-router-dom'
 
-export default function MaintenanceForm({ handleClose, data_array, refreshData }) {
+export default function MaintenanceForm({ handleClose, data_array, refreshData, api_endpoint }) {
+  console.log(api_endpoint)
+
+  const { propertyId } = useParams()
+
   const { register, handleSubmit, control, setValue } = useForm()
   const { get, post, put, response, api } = useFetch()
 
@@ -21,13 +26,11 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData }
 
   const [users, setUsers] = useState([])
 
-  console.log(data_array)
-
   useEffect(() => {
     getProperties()
     getMaintenanceCategories()
     getUsers()
-    if (data_array[0] === 'edit') {
+    if (data_array[0] == 'edit') {
       getRequestData(data_array[1])
     }
   }, [])
@@ -67,7 +70,11 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData }
   }
 
   const getUsers = async () => {
-    const api = await get(`/v1/admin/users?limit=-1`)
+    const endpoint = propertyId
+      ? `/v1/admin/premises/${propertyId}/actors/maintenance_staffs?limit=-1`
+      : `v1/admin/maintenance_staffs?limit=-1`
+    const api = await get(endpoint)
+
     if (response.ok) {
       setUsers(format_react_select(api.data, ['id', 'name']))
     }
@@ -292,4 +299,5 @@ MaintenanceForm.propTypes = {
   handleClose: PropTypes.func,
   data_array: PropTypes.array,
   refreshData: PropTypes.func,
+  api_endpoint: PropTypes.func,
 }
