@@ -53,13 +53,19 @@ export default function MaintanceBody({ api_endpoint }) {
       setPagination(endpoint.pagination)
     }
   }
+
+  function applyFilters(query) {
+    setSearchKeyword('')
+    loaddMaintenanceRequests(query)
+  }
+
   return (
     <>
       {loading ? (
         <Loader />
       ) : (
         <>
-          <TopCards refresh={refresh} />
+          <TopCards refresh={refresh} filter_callback={applyFilters} />
           <div className="mask d-flex align-items-center h-100 p-0 mt-2 w-100">
             <div className="w-100">
               <CNavbar expand="lg" colorScheme="light" className="bg-white">

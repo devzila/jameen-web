@@ -60,6 +60,10 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData, 
     const api = await get(`/v1/admin/premises/properties?limit=-1`)
     if (response.ok) {
       setProperties(format_react_select(api.data, ['id', 'name']))
+      setValue('property_id', Number(propertyId))
+      if (propertyId) {
+        loadUnits(propertyId)
+      }
     }
   }
   const getMaintenanceCategories = async () => {
@@ -117,6 +121,7 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData, 
                   render={({ field }) => (
                     <Select
                       type="text"
+                      isDisabled={propertyId ? true : false}
                       className="basic-multi-select"
                       classNamePrefix="select"
                       {...field}
