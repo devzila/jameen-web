@@ -26,6 +26,9 @@ export default function PropertyNav() {
               <NavLink to="Contracts"> Contracts </NavLink>
             </div>
             <div>
+              <NavLink to="moving-in"> Moving In </NavLink>
+            </div>
+            <div>
               <NavLink to="maintenance-requests"> Maintenance </NavLink>
             </div>
             <div>

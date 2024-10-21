@@ -2,18 +2,14 @@ import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
 import { NavLink, useParams } from 'react-router-dom'
-import { Dropdown, Row, Col } from 'react-bootstrap'
-import { BsThreeDots } from 'react-icons/bs'
+import { Row, Col } from 'react-bootstrap'
 import Paginate from 'src/components/Pagination'
-import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { formatdate } from '../../../../services/CommonFunctions'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import AddContracts from './AddContracts'
-import FilterAccordionContract from './FilterAccordionContract'
 
-const Contract = () => {
+const MovingIn = () => {
   const { get, response } = useFetch()
   const { propertyId, unitId } = useParams()
   const [runningContracts, setRunningContracts] = useState([])
@@ -25,11 +21,11 @@ const Contract = () => {
   const [contract_type, setContract_type] = useState([])
 
   useEffect(() => {
-    loadInitialRunningContracts()
+    loadInitialMovingInContracts()
   }, [currentPage, searchKeyword])
 
-  async function loadInitialRunningContracts(queries) {
-    let endpoint = `/v1/admin/premises/properties/${propertyId}/allotments?page=${currentPage}`
+  async function loadInitialMovingInContracts(queries) {
+    let endpoint = `/v1/admin/premises/properties/${propertyId}/moving_in?page=${currentPage}`
     if (queries) {
       endpoint += `&type=${queries}`
     }
@@ -55,12 +51,12 @@ const Contract = () => {
   }
 
   const refreshData = () => {
-    loadInitialRunningContracts()
+    loadInitialMovingInContracts()
     setSearchKeyword('')
   }
 
   function filter_callback(queries) {
-    loadInitialRunningContracts(queries)
+    loadInitialMovingInContracts(queries)
     setSearchKeyword('')
   }
 
@@ -83,7 +79,7 @@ const Contract = () => {
                         aria-label="Search"
                       />
                       <button
-                        onClick={loadInitialRunningContracts}
+                        onClick={loadInitialMovingInContracts}
                         className="btn btn-outline-success custom_search_button "
                         type="submit"
                       >
@@ -91,7 +87,7 @@ const Contract = () => {
                       </button>
                     </div>
 
-                    <AddContracts after_submit={refreshData} />
+                    {/* <AddContracts after_submit={refreshData} /> */}
                   </div>
                 </CContainer>
               </CNavbar>
@@ -165,4 +161,4 @@ const Contract = () => {
   )
 }
 
-export default Contract
+export default MovingIn

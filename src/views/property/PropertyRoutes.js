@@ -10,6 +10,7 @@ import PropertyUnitTypes from './propertynav/UnitTypes/PropertyUnitTypes'
 import Properties from './Properties'
 import ShowInvoices from '../finance/ShowInvoices'
 import Invoices from './propertynav/Invoices'
+import MovingIn from './propertynav/MovingIn/MovingIn'
 
 export default function Property() {
   const PropertyUnit = React.lazy(() => import('../property/unit/Unit'))
@@ -57,6 +58,14 @@ export default function Property() {
             name="Maintenance"
             element={<ShowMaintance />}
           />
+          <Route path="moving-in" name="Moving In" element={<MovingIn />} />
+          <Route path="moving-in/:contractId" name="Moving In" element={<ShowContract />} />
+          <Route
+            path="moving-in/:contractId/invoice/:invoiceId"
+            name="Moving In"
+            element={<ShowInvoices />}
+          />
+
           <Route path="Buildings" name="Buildings" element={<Buildings />} />
           <Route path="Documents" name="Documents" element={<Documents />} />
           <Route path="assets" name="Documents" element={<Assets />} />

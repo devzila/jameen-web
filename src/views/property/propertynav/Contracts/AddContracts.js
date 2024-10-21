@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import Select from 'react-select'
 import { useParams } from 'react-router-dom'
 import Loading from 'src/components/loading/loading'
+import { format_react_select } from 'src/services/CommonFunctions'
 
 import {
   CButton,
@@ -28,6 +29,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   const [temp_base64, setTemp_base64] = useState([])
 
   const [residents, setResidents] = useState([])
+  const [units, setUnits] = useState([])
 
   const [visible, setVisible] = useState(false)
   const [submitLoader, setSubmitLoader] = useState(false)
@@ -49,7 +51,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
 
     if (response.ok) {
       if (initialResidents.data) {
-        setResidents(trimResidents(initialResidents.data))
+        setResidents(format_react_select(initialResidents.data, ['id', ['first_name']]))
       }
     } else {
       toast('Unable to load residents')
@@ -57,9 +59,16 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   }
 
   const loadInitalUnits = async () => {
-    const api = await get(`/v1/admin/premises/properties/${propertyId}/allotments`)
+    const initialUnits = await get(`/v1/admin/premises/properties/${propertyId}/units?limit=-1`)
+    if (response.ok) {
+      if (initialUnits.data) {
+        setUnits(format_react_select(initialUnits.data, ['id', 'unit_no']))
+      }
+    } else {
+      toast('Unable to load residents')
+    }
   }
-
+  console.log(units)
   //useEffext
   useEffect(() => {
     loadInitialResidents()
@@ -67,16 +76,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   }, [])
 
   //resident dropdown
-  let resident_array = []
-  function trimResidents(obj) {
-    obj.forEach((element) => {
-      resident_array.push({
-        value: element.id,
-        label: element.first_name + ' ' + element.last_name,
-      })
-    })
-    return resident_array
-  }
 
   //base64
   //base64
@@ -161,24 +160,24 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
           <CModalTitle id="StaticBackdropExampleLabel">Add </CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <CContainer className="bg-white  mt-5 py-2">
+          <CContainer className="bg-white  mt-1">
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
-                <Col className="pr-1 mt-3 " md="12">
+                <Col className="pr-1 mt-1 " md="12">
                   <label>
                     <b>Unit No: </b> <small className="text-danger"> *</small>
                   </label>
 
                   {unitNo}
 
-                  <Form.Group className=" col-12">
+                  <Form.Group className="col-12">
                     <Controller
                       name="unit_id"
                       render={({ field }) => (
                         <Select
                           {...field}
-                          options={residents}
-                          value={residents.find((c) => c.value === field.value)}
+                          options={units}
+                          value={units.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
                         />
                       )}
@@ -307,6 +306,13 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
               </Col>
               <div className="text-center">
                 <CModalFooter>
+                  <CButton
+                    className="custom_grey_button"
+                    color="secondary"
+                    onClick={() => setVisible(false)}
+                  >
+                    Close
+                  </CButton>
                   <Button data-mdb-ripple-init type="submit" className="custom_theme_button">
                     Submit
                   </Button>

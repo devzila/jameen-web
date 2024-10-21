@@ -124,7 +124,7 @@ function AddInvoice({ after_submit }) {
                     <b className="mt-4"> </b>
                     <Col className="pr-1 mt-3" md="4">
                       <Form.Group>
-                        <b>Item Name</b>
+                        {index == 0 ? <label>Item Name</label> : null}
                         <Form.Control
                           required
                           placeholder=" Name"
@@ -136,7 +136,8 @@ function AddInvoice({ after_submit }) {
 
                     <Col className="pr-1 mt-3" md="4">
                       <Form.Group>
-                        <label>Amount</label>
+                        {index == 0 ? <label>Amount</label> : null}
+
                         <Form.Control
                           placeholder="- - - -"
                           type="number"
@@ -147,7 +148,7 @@ function AddInvoice({ after_submit }) {
                     </Col>
                     <Col className="pr-1 mt-3" md="3">
                       <Form.Group>
-                        <label>VAT Percentage</label>{' '}
+                        {index == 0 ? <label>VAT Percentage</label> : null}
                         <Controller
                           name={`breakups.${index}.vat_percent`}
                           render={({ field }) => (

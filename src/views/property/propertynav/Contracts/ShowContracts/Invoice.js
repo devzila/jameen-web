@@ -8,8 +8,10 @@ import { freeSet } from '@coreui/icons'
 
 import { formatdate } from 'src/services/CommonFunctions'
 import { status_color } from 'src/services/CommonFunctions'
+import PropTypes from 'prop-types'
+import AddManualInvoice from './AddInvoice'
 
-const Invoice = () => {
+const Invoice = ({ after_submit, contract }) => {
   const [invoices, setInvoices] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [errors, setErrors] = useState(false)
@@ -47,10 +49,18 @@ const Invoice = () => {
         <section className="w-100">
           <div className="mask d-flex align-items-center h-100">
             <div className="container-fluid p-3 my-2 border-0 theme_color">
-              <div className="mb-3">
-                <CIcon icon={freeSet.cilList} size="lg" className="me-2" />
-                <strong className="text-black">Invoices</strong>
+              <div className="d-flex w-100 justify-content-between">
+                <div className="mb-3">
+                  <CIcon icon={freeSet.cilList} size="lg" className="me-2" />
+                  <strong className="text-black">Invoices</strong>
+                </div>
+                <div className="d-flex">
+                  {contract.contract_type == 'allotment' ? (
+                    <AddManualInvoice after_submit={after_submit} />
+                  ) : null}{' '}
+                </div>
               </div>
+
               <hr className="p-0 m-0 text-secondary" />
               {invoices.length >= 1 ? (
                 <div className="row justify-content-center">
@@ -126,3 +136,8 @@ const Invoice = () => {
   )
 }
 export default Invoice
+
+Invoice.propTypes = {
+  after_submit: PropTypes.func,
+  contract: PropTypes.object,
+}

@@ -5,7 +5,6 @@ import { formatdate } from '../../../../../services/CommonFunctions'
 import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import AddManualInvoice from './AddInvoice'
 import Invoices from './Invoice'
 
 export default function ShowContract() {
@@ -40,11 +39,7 @@ export default function ShowContract() {
                     <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
                     <strong className="text-black">Contract Details</strong>
                   </div>
-                  <div className="d-flex">
-                    {contract.contract_type == 'allotment' ? (
-                      <AddManualInvoice after_submit={loadInitialContractData} />
-                    ) : null}{' '}
-                  </div>
+                  <div className="d-flex"></div>
                 </div>
 
                 <hr className="text-secondary" />
@@ -93,20 +88,18 @@ export default function ShowContract() {
             <CTable responsive="sm" className="table table-striped mb-0">
               <thead>
                 <tr>
+                  <th>Name</th>
                   <th>Member Type</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
                   <th>Username</th>
                 </tr>
               </thead>
               <tbody>
                 {contract?.contract_members?.map((member, index) => (
                   <tr key={index}>
+                    <td>{member.member.first_name + ' ' + member.member.last_name || '-'}</td>
                     <td className="text-capitalize">
                       {member.member_type.replace(/_/g, ' ') || '-'}
                     </td>
-                    <td>{member.member.first_name || '-'}</td>
-                    <td>{member.member.last_name || '-'}</td>
                     <td>{member.member.username || '-'}</td>
                   </tr>
                 ))}
@@ -158,7 +151,7 @@ export default function ShowContract() {
         </CRow>
       </CCard>
       <CCard className="my-3 border-0">
-        <Invoices />
+        <Invoices after_submit={loadInitialContractData} contract={contract} />
       </CCard>
     </>
   )
