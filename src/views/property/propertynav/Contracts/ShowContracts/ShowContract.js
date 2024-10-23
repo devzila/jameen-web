@@ -26,9 +26,6 @@ export default function ShowContract() {
     }
   }
 
-  if (loading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
-
   return (
     <>
       <CCard className="my-3 border-0 ">

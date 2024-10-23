@@ -39,6 +39,12 @@ export default function Property() {
           <Route path="unit-types" name="Unit Types" element={<PropertyUnitTypes />} />
           <Route path="unit-types/:unittypeID/billableitems" element={<BillableItems />} />
           <Route path="unit/:unitId" name="Unit" element={<Showunit />} />
+          <Route
+            path="unit/:unitId/contract/:contractId"
+            name="Moving In"
+            element={<ShowContract />}
+          />
+
           <Route path="contracts/:contractId" name="Unit" element={<ShowContract />} />
           <Route
             path="contracts/:contractId/invoice/:invoiceId"
