@@ -10,7 +10,6 @@ import dafaultAvatar from 'src/assets/images/avatars/default.png'
 import UpdateRequestStatus from './UpdateRequestStatus'
 
 export default function MaintenanceTable({ data, refreshData, api_endpoint }) {
-  console.log(data)
   return (
     <div className="row justify-content-center">
       <div className="col-16">

@@ -17,28 +17,43 @@ const options = {
 
     // every time we make an http request, before getting the response back, this will run
     response: async ({ response, abort }) => {
+      console.log(response)
+
       const environment = process.env.NODE_ENV
-      if (response.status != 404 && response.status >= 400 && response.status < 420) {
+      console.log(environment)
+      if (
+        (response.status != 404 && response.status >= 400 && response.status < 420) ||
+        response.status == 500
+      ) {
         toast.dismiss()
         toast.error(
           <div>
-            <h2>Session expired</h2>
-            <p>Please login again to continue!</p>
-            <button
-              className="btn btn-primary"
-              style={{ width: '200px', borderRadius: '3px' }}
-              onClick={() => {
-                window.location.reload()
-                localStorage.clear()
-                sessionStorage.clear()
-              }}
-            >
-              Login
-            </button>
+            {response.status == 500 ? (
+              <div>
+                <div>{response.data.error} </div>
+                <div>{environment == 'development' ? response.data.exception : null}</div>
+              </div>
+            ) : (
+              <>
+                <h2>Session expired</h2>
+                <p>Please login again to continue!</p>
+                <button
+                  className="btn btn-primary"
+                  style={{ width: '200px', borderRadius: '3px' }}
+                  onClick={() => {
+                    window.location.reload()
+                    localStorage.clear()
+                    sessionStorage.clear()
+                  }}
+                >
+                  Login
+                </button>
+              </>
+            )}
           </div>,
           {
-            autoClose: false,
-            closeOnClick: false,
+            autoClose: response.status == 500,
+            closeOnClick: response.status == 500,
             pauseOnHover: false,
             draggable: false,
           },

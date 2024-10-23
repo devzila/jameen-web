@@ -6,6 +6,8 @@ import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import Invoices from './Invoice'
+import defaultAvatar from '../../../../../assets/images/avatars/default.png'
+import MovingInUnit from 'src/views/property/unit/MovingInUnit'
 
 export default function ShowContract() {
   const { propertyId, contractId } = useParams()
@@ -39,7 +41,15 @@ export default function ShowContract() {
                     <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
                     <strong className="text-black">Contract Details</strong>
                   </div>
-                  <div className="d-flex"></div>
+                  <div className="d-flex">
+                    {contract?.unit?.status === 'vacant' ? (
+                      <MovingInUnit
+                        unitId={contract?.unit?.id}
+                        unitNo={contract?.unit?.unit_no}
+                        after_submit={loadInitialContractData}
+                      />
+                    ) : null}
+                  </div>
                 </div>
 
                 <hr className="text-secondary" />
@@ -96,7 +106,10 @@ export default function ShowContract() {
               <tbody>
                 {contract?.contract_members?.map((member, index) => (
                   <tr key={index}>
-                    <td>{member.member.first_name + ' ' + member.member.last_name || '-'}</td>
+                    <td>
+                      {member?.member?.first_name ? <img width="23px" src={defaultAvatar} /> : null}
+                      {member.member.first_name + ' ' + member.member.last_name || '-'}
+                    </td>
                     <td className="text-capitalize">
                       {member.member_type.replace(/_/g, ' ') || '-'}
                     </td>

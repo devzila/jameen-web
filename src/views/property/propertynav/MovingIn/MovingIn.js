@@ -8,6 +8,8 @@ import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { formatdate } from '../../../../services/CommonFunctions'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import PickOwner from '../../unit/UnitFunctions/PickOwner'
+import MovingInUnit from '../../unit/MovingInUnit'
 
 const MovingIn = () => {
   const { get, response } = useFetch()
@@ -86,8 +88,7 @@ const MovingIn = () => {
                         <CIcon icon={freeSet.cilSearch} />
                       </button>
                     </div>
-
-                    {/* <AddContracts after_submit={refreshData} /> */}
+                    <MovingInUnit after_submit={refreshData} />{' '}
                   </div>
                 </CContainer>
               </CNavbar>
@@ -124,7 +125,8 @@ const MovingIn = () => {
                                     {running_contracts.contract_type.replace(/_/g, ' ') || '-'}
                                   </td>
                                   <td className="pt-3">
-                                    {running_contracts.contract_members.member_type || '-'}
+                                    {console.log(running_contracts.contract_members)}
+                                    {PickOwner(running_contracts.contract_members) || '-'}
                                   </td>
                                 </tr>
                               ))}

@@ -250,7 +250,6 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
                     <Form.Group>
                       <b>Document Name</b>
                       <Form.Control
-                        required
                         placeholder=" Name"
                         type="text"
                         {...register(`documents_attributes.${index}.name`)}

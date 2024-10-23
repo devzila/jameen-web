@@ -221,7 +221,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                     <Form.Group>
                       <b>Document Name</b>
                       <Form.Control
-                        required
                         placeholder=" Name"
                         type="text"
                         {...register(`documents_attributes.${index}.name`)}

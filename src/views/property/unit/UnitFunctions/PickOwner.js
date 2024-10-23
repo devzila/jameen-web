@@ -8,7 +8,9 @@ function PickOwner(contract) {
     .join(', ')
 
   const co_ownerNames = contract
-    ?.filter((member) => member.member_type === 'co_owner')
+    ?.filter(
+      (member) => member.member_type === 'co_owner' || member.member_type === 'primary_resident',
+    )
     .map((x) => x.member.name)
     .join(', ')
   const result = `Owner: ${ownerNames || 'NA'} \n Residents: ${co_ownerNames || 'NA'}`
@@ -24,7 +26,7 @@ function PickOwner(contract) {
       >
         <span className="d-inline-block" tabIndex={0}>
           <CButton color="white">
-            {(ownerNames ? ownerNames[0] : '') +
+            {(ownerNames ? ownerNames.split(',')[0] : '') +
               ' ' +
               (co_ownerNames && co_ownerNames.length > 1
                 ? co_ownerNames.split(',')[0] + ',...'

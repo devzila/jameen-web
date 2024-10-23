@@ -12,6 +12,7 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import AddContracts from './AddContracts'
 import FilterAccordionContract from './FilterAccordionContract'
+import PickOwner from '../../unit/UnitFunctions/PickOwner'
 
 const Contract = () => {
   const { get, response } = useFetch()
@@ -64,6 +65,7 @@ const Contract = () => {
     setSearchKeyword('')
   }
 
+  console.log(runningContracts)
   return (
     <>
       <section className="w-100 p-0 mt-2">
@@ -122,13 +124,13 @@ const Contract = () => {
                                   </td>
                                   <td>
                                     {formatdate(running_contracts.start_date) || '-'}
-                                    {formatdate(running_contracts.end_date) || ' - Present'}{' '}
+                                    {formatdate(running_contracts.end_date) || ' - Present'}
                                   </td>
                                   <td className="pt-3">
                                     {running_contracts.contract_type.replace(/_/g, ' ') || '-'}
                                   </td>
                                   <td className="pt-3">
-                                    {running_contracts.contract_members.member_type || '-'}
+                                    {PickOwner(running_contracts.contract_members) || '-'}
                                   </td>
                                 </tr>
                               ))}
