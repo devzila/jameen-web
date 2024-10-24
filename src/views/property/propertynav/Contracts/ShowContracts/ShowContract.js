@@ -8,6 +8,7 @@ import { freeSet } from '@coreui/icons'
 import Invoices from './Invoice'
 import defaultAvatar from '../../../../../assets/images/avatars/default.png'
 import MovingInUnit from 'src/views/property/unit/MovingInUnit'
+import AddDocuments from './AddDocuments'
 
 export default function ShowContract() {
   const { propertyId, contractId } = useParams()
@@ -31,26 +32,23 @@ export default function ShowContract() {
       <CCard className="my-3 border-0 ">
         <CRow>
           <CCol md="12">
-            <CCard className="p-3 my-1 border-0 theme_color">
-              <CListGroupItem>
-                <div className="d-flex w-100 justify-content-between">
-                  <div>
-                    <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-                    <strong className="text-black">Contract Details</strong>
-                  </div>
-                  <div className="d-flex">
-                    {contract?.unit?.status === 'vacant' ? (
-                      <MovingInUnit
-                        unitId={contract?.unit?.id}
-                        unitNo={contract?.unit?.unit_no}
-                        after_submit={loadInitialContractData}
-                      />
-                    ) : null}
-                  </div>
+            <CCard className="p-3 my-s1 border-0 theme_color">
+              <div className="d-flex w-100 justify-content-between">
+                <div>
+                  <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
+                  <strong className="text-black">Contract Details</strong>
                 </div>
-
-                <hr className="text-secondary" />
-              </CListGroupItem>
+                <div className="">
+                  {contract?.unit?.status === 'vacant' ? (
+                    <MovingInUnit
+                      unitId={contract?.unit?.id}
+                      unitNo={contract?.unit?.unit_no}
+                      after_submit={loadInitialContractData}
+                    />
+                  ) : null}
+                </div>
+              </div>
+              <hr className="text-secondary" />
               <CRow className="">
                 <CCol className="p-3 mt-0 fw-light">
                   Unit No
@@ -86,7 +84,7 @@ export default function ShowContract() {
       </CCard>
       <CCard className="border-0">
         <CCol md="12" className="m-0">
-          <CCard className="p-3 my-3 border-0 theme_color">
+          <CCard className="p-3 my-1 border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilPeople} size="lg" className="me-2" />
               <strong className="text-black">Members</strong>
@@ -123,11 +121,16 @@ export default function ShowContract() {
         <CRow>
           <CCol md="12">
             <CCard className=" p-3 my-3 mt-2 border-0 ">
-              <CListGroupItem>
-                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
-                <strong className="text-black">Documents</strong>
-                <hr className="text-secondary" />
-              </CListGroupItem>
+              <div className="d-flex align-items-center justify-content-between">
+                <div>
+                  <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+                  <strong className="text-black">Documents</strong>
+                </div>
+                <div>
+                  <AddDocuments />
+                </div>
+              </div>
+              <hr className="text-secondary" />
               {undefined?.length ? (
                 <CRow className="">
                   <CCol className="p-3 mt-0 fw-light">

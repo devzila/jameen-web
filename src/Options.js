@@ -17,10 +17,7 @@ const options = {
 
     // every time we make an http request, before getting the response back, this will run
     response: async ({ response, abort }) => {
-      console.log(response)
-
       const environment = process.env.NODE_ENV
-      console.log(environment)
       if (
         (response.status != 404 && response.status >= 400 && response.status < 420) ||
         response.status == 500

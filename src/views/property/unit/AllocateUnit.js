@@ -268,13 +268,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
               ))}
               <Col className="m-3 d-flex justify-content-center">
                 <CButton
-                  style={{
-                    border: '0px',
-                    color: '#00bfcc',
-                    backgroundColor: 'white',
-                    boxShadow: '5px  5px 20px ',
-                    borderRadius: '26px',
-                  }}
+                  className="btn custom-add-more"
                   onClick={() => append({ name: '', description: '', file: { data: '' } })}
                 >
                   <CIcon className="mt-1" icon={cilNoteAdd} />
@@ -283,24 +277,10 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
               </Col>
               <div className="text-center">
                 <CModalFooter>
-                  <Button
-                    data-mdb-ripple-init
-                    type="submit"
-                    className="btn  btn-primary btn-block"
-                    style={{
-                      marginTop: '5px',
-                      color: 'white',
-                      backgroundColor: '#00bfcc',
-                      border: '0px',
-                    }}
-                  >
+                  <Button data-mdb-ripple-init type="submit" className="btn  custom_theme_button">
                     Submit
                   </Button>
-                  <CButton
-                    color="secondary"
-                    style={{ border: '0px', color: 'white' }}
-                    onClick={handlClose}
-                  >
+                  <CButton className="btn  custom_grey_button" onClick={handlClose}>
                     Close
                   </CButton>
                 </CModalFooter>

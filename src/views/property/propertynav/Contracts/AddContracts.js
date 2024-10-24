@@ -291,13 +291,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
               ))}
               <Col className="m-3 d-flex justify-content-center">
                 <CButton
-                  style={{
-                    border: '0px',
-                    color: '#00bfcc',
-                    backgroundColor: 'white',
-                    boxShadow: '5px  5px 20px ',
-                    borderRadius: '26px',
-                  }}
+                  className="btn custom-add-more"
                   onClick={() => append({ name: '', description: '', file: { data: '' } })}
                 >
                   <CIcon className="mt-1" icon={cilNoteAdd} />

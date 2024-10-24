@@ -181,19 +181,10 @@ function AddInvoice({ after_submit }) {
                 ))}
               </Row>
               <Col className="m-3 d-flex justify-content-center border-0 bg-white">
-                <CButton
-                  style={{
-                    border: '0px',
-                    color: '#00bfcc',
-                    backgroundColor: 'white',
-                    boxShadow: '0px  0px 12px -6px ',
-                    borderRadius: '26px',
-                  }}
-                  onClick={() => append()}
-                >
+                <button className="btn custom-add-more" onClick={() => append()}>
                   <CIcon className="mt-1 mx-1" icon={freeSet.cilPlus} />
                   Add More Item
-                </CButton>
+                </button>
               </Col>
 
               <div className="text-center">

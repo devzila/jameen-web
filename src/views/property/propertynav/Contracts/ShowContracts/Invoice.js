@@ -48,16 +48,16 @@ const Invoice = ({ after_submit, contract }) => {
       <div>
         <section className="w-100">
           <div className="mask d-flex align-items-center h-100">
-            <div className="container-fluid p-3 my-2 border-0 theme_color">
+            <div className="container-fluid p-3 my-1 border-0 theme_color">
               <div className="d-flex w-100 justify-content-between">
                 <div className="mb-3">
                   <CIcon icon={freeSet.cilList} size="lg" className="me-2" />
                   <strong className="text-black">Invoices</strong>
                 </div>
-                <div className="d-flex">
+                <div>
                   {contract.contract_type == 'allotment' ? (
-                    <AddManualInvoice after_submit={after_submit} />
-                  ) : null}{' '}
+                    <AddManualInvoice after_submit={loadManualInvoices} />
+                  ) : null}
                 </div>
               </div>
 

@@ -88,7 +88,9 @@ const MovingIn = () => {
                         <CIcon icon={freeSet.cilSearch} />
                       </button>
                     </div>
-                    <MovingInUnit after_submit={refreshData} />{' '}
+                    <div>
+                      <MovingInUnit after_submit={refreshData} />{' '}
+                    </div>
                   </div>
                 </CContainer>
               </CNavbar>
