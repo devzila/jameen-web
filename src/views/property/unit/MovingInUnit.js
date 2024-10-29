@@ -66,7 +66,7 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
   }
 
   async function loadVacantUnits() {
-    let endpoint = `/v1/admin/premises/properties/${propertyId}/units?q[status_eq]=1&limit=-1`
+    let endpoint = `/v1/admin/premises/properties/1/allotments/movable?limit=-1`
     const data = await get(endpoint)
     console.log(data)
     if (response.ok) {

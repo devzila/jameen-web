@@ -18,33 +18,39 @@ const options = {
     // every time we make an http request, before getting the response back, this will run
     response: async ({ response, abort }) => {
       const environment = process.env.NODE_ENV
-      if (
-        (response.status != 404 && response.status >= 400 && response.status < 420) ||
-        response.status == 500
-      ) {
+      if ((response.status >= 400 && response.status < 420) || response.status == 500) {
         toast.dismiss()
         toast.error(
           <div>
-            {response.status == 500 ? (
+            {response.status == 404 ? (
               <div>
-                <div>{response.data.error} </div>
-                <div>{environment == 'development' ? response.data.exception : null}</div>
+                <div>{response.statusText} </div>
+                <div>{environment == 'development' ? response.url : null}</div>
               </div>
             ) : (
               <>
-                <h2>Session expired</h2>
-                <p>Please login again to continue!</p>
-                <button
-                  className="btn btn-primary"
-                  style={{ width: '200px', borderRadius: '3px' }}
-                  onClick={() => {
-                    window.location.reload()
-                    localStorage.clear()
-                    sessionStorage.clear()
-                  }}
-                >
-                  Login
-                </button>
+                {response.status == 500 ? (
+                  <div>
+                    <div>{response.data.error} </div>
+                    <div>{environment == 'development' ? response.data.exception : null}</div>
+                  </div>
+                ) : (
+                  <>
+                    <h2>Session expired</h2>
+                    <p>Please login again to continue!</p>
+                    <button
+                      className="btn custom_grey_button"
+                      style={{ width: '200px', borderRadius: '2px' }}
+                      onClick={() => {
+                        window.location.reload()
+                        localStorage.clear()
+                        sessionStorage.clear()
+                      }}
+                    >
+                      Login
+                    </button>
+                  </>
+                )}{' '}
               </>
             )}
           </div>,
