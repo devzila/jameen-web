@@ -99,8 +99,19 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
     setValue('documents_attributes', [{ name: '', description: '', file: { data: '' } }])
   }, [setValue])
 
-  //submit function
+  //remvoe emptydocuments
+  function removeEmptyDocuments(payload) {
+    console.log(payload)
+    const documents = payload.documents_attributes
+    console.log(documents)
+    payload.documents_attributes = documents.filter((doc) => {
+      return doc.name !== '' || doc.description !== '' || doc.file.data != undefined
+    })
 
+    return payload
+  }
+
+  //submit function
   async function onSubmit(data) {
     //resident array
     setSubmitLoader(true)
@@ -112,7 +123,8 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
 
     data.documents_attributes.map((element, index) => (element.file.data = temp_base64[index]))
 
-    const body = { ...data, resident_ids: assigned_resident_data }
+    const processed_data = removeEmptyDocuments(data)
+    const body = { ...processed_data, resident_ids: assigned_resident_data }
 
     await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/allotment`, {
       allotment: body,

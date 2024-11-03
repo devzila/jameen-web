@@ -25,14 +25,22 @@ const options = {
             {response.status == 404 ? (
               <div>
                 <div>{response.statusText} </div>
-                <div>{environment == 'development' ? response.url : null}</div>
+                <div>
+                  {environment == 'development'
+                    ? response.url
+                    : 'We are facing some technical issue. Please contact with your admin'}
+                </div>
               </div>
             ) : (
               <>
                 {response.status == 500 ? (
                   <div>
                     <div>{response.data.error} </div>
-                    <div>{environment == 'development' ? response.data.exception : null}</div>
+                    <div>
+                      {environment == 'development'
+                        ? response.data.exception
+                        : 'We are facing some technical issue. Please contact with your admin'}
+                    </div>
                   </div>
                 ) : (
                   <>

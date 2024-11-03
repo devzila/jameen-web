@@ -30,14 +30,21 @@ export default function TopCards({ refresh, filter_callback }) {
 
     const api = await get(endpoint)
     if (response.ok) {
-      setAllData(api.all)
-      setlast30Days(api.last_30days)
-      console.log(api)
+      setAllData(addAllCount(api.all))
+      setlast30Days(addAllCount(api.last_30days))
     }
   }
 
+  function addAllCount(data) {
+    const sum = data.requested + data.in_progress + data.cancelled + data.resolved + data.reopen
+    return { ...data, total: sum }
+  }
+
   const applyFilters = (type, date = false) => {
-    let query = `&q[status_eq]=${type}`
+    let query = '&q[status_eq]='
+    if (type != 5) {
+      query += type
+    }
 
     if (date) {
       const current_date = new Date()
@@ -53,26 +60,27 @@ export default function TopCards({ refresh, filter_callback }) {
     setActive(active_data)
     filter_callback(query)
   }
+  console.log(active)
   return (
     <Row className=" text-uppercase p-2">
       <Col
         className={`bg-white mx-1 rounded-1 shadow-sm p-3 text-nowrap mt-2 ${
           active['5'] ? 'theme_color' : null
         }`}
-        onClick={() => applyFilters('')}
+        onClick={() => applyFilters(5)}
       >
         <div className="d-flex justify-content-between">
           <b>ALL ISSUES</b>
           <CIcon icon={freeSet.cilNotes} size="xxl" className="d-block  mb-2 theme_color" />
         </div>
         <div>
-          <h3>{null || 0}</h3>
+          <h3>{allData.total || 0}</h3>
           <div>
             <Row className="mt-2" onClick={() => applyFilters('', true)}>
               <Col md="6">
                 <small className="fw-light "> Last 30 days : </small>
               </Col>
-              <Col md="2">{null || 0}</Col>
+              <Col md="2">{last30Days.total || 0}</Col>
             </Row>
           </div>
         </div>

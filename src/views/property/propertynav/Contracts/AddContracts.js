@@ -24,7 +24,7 @@ import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 export default function AllocateUnit({ unitId, unitNo, after_submit }) {
-  const { register, handleSubmit, setValue, control, reset } = useForm()
+  const { register, handleSubmit, setValue, control, reset, watch } = useForm()
   const { post, get, response } = useFetch()
   const [temp_base64, setTemp_base64] = useState([])
 
@@ -103,6 +103,18 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
     setValue('documents_attributes', [{ name: '', description: '', file: { data: '' } }])
   }, [setValue])
 
+  //remvoe emptydocuments
+  function removeEmptyDocuments(payload) {
+    console.log(payload)
+    const documents = payload.documents_attributes
+    console.log(documents)
+    payload.documents_attributes = documents.filter((doc) => {
+      return doc.name !== '' || doc.description !== '' || doc.file.data != undefined
+    })
+
+    return payload
+  }
+
   //submit function
 
   async function onSubmit(data) {
@@ -116,8 +128,9 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
 
     data.documents_attributes.map((element, index) => (element.file.data = temp_base64[index]))
 
-    const body = { ...data, resident_ids: assigned_resident_data }
-
+    const processed_data = removeEmptyDocuments(data)
+    const body = { ...processed_data, resident_ids: assigned_resident_data }
+    unitId = unitId || watch('unit_id')
     await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/allotment`, {
       allotment: body,
     })
@@ -243,7 +256,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                     <Form.Group>
                       <b>Document Name</b>
                       <Form.Control
-                        required
                         placeholder=" Name"
                         type="text"
                         {...register(`documents_attributes.${index}.name`)}

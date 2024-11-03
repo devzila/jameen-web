@@ -5,7 +5,6 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
 import { useParams } from 'react-router-dom'
-import Loading from 'src/components/loading/loading'
 
 import {
   CButton,
