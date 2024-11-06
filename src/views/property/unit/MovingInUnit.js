@@ -30,6 +30,7 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
   const [unit_id, setUnit_id] = useState(null)
 
   const [residents, setResidents] = useState([])
+  const [errors, setErrors] = useState([])
 
   const [visible, setVisible] = useState(false)
   const [submitLoader, setSubmitLoader] = useState(false)
@@ -154,6 +155,8 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
       setTemp_base64([])
     } else {
       setSubmitLoader(false)
+      setErrors(response?.data)
+
       toast(response.data?.message)
     }
   }

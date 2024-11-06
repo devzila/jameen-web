@@ -29,6 +29,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   const [temp_base64, setTemp_base64] = useState([])
 
   const [residents, setResidents] = useState([])
+  const [errors, setErrors] = useState([])
   const [units, setUnits] = useState([])
 
   const [visible, setVisible] = useState(false)
@@ -68,7 +69,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
       toast('Unable to load residents')
     }
   }
-  console.log(units)
   //useEffext
   useEffect(() => {
     loadInitialResidents()
@@ -77,7 +77,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
 
   //resident dropdown
 
-  //base64
   //base64
   const handleFileSelection = (e, index) => {
     const selectedFile = e.target.files[0]
@@ -143,6 +142,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
       setTemp_base64([])
     } else {
       setSubmitLoader(false)
+      setErrors(response?.data)
       toast(response.data?.message)
     }
   }

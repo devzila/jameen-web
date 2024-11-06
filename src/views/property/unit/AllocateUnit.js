@@ -26,6 +26,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   const { register, handleSubmit, setValue, control, reset } = useForm()
   const { post, get, response } = useFetch()
   const [temp_base64, setTemp_base64] = useState([])
+  const [errors, setErrors] = useState([])
 
   const [residents, setResidents] = useState([])
 
@@ -138,6 +139,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
       setTemp_base64([])
     } else {
       setSubmitLoader(false)
+      setErrors(response.data?.message)
       toast(response.data?.message)
     }
   }
