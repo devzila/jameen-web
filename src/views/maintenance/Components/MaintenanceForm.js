@@ -141,7 +141,7 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData, 
               <Form.Group>
                 <label>
                   Maintenance Category
-                  <small className="text-danger"> *{errors ? errors.building_id : null} </small>
+                  <small className="text-danger"> *{errors ? errors.category : null} </small>
                 </label>
 
                 <Controller
