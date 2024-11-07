@@ -69,7 +69,7 @@ export default function AddMaintenance({ afterSubmit }) {
                 <Col className="pr-3 mt-3" md="6">
                   <Form.Group>
                     <label>Name</label>
-                    <Form.Control required placeholder="Name" type="text" {...register('name')} />
+                    <Form.Control placeholder="Name" type="text" {...register('name')} />
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">

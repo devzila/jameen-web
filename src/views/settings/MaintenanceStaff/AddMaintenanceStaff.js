@@ -133,7 +133,9 @@ export default function AddMaintenanceStaff({ after_submit }) {
                   <Form.Group>
                     <label>
                       Username
-                      <small className="text-danger ">*{errors ? errors.username : null}</small>
+                      <small className="text-danger ">
+                        *{errors ? errors.username?.join(', ') : null}
+                      </small>
                     </label>
                     <Form.Control type="text" {...register('username')}></Form.Control>
                   </Form.Group>
