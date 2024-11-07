@@ -105,29 +105,28 @@ const MovingIn = () => {
                           <table className="table  table-striped mb-0">
                             <thead>
                               <tr>
-                                <th className="pt-3 pb-3 border-0">Unit No</th>
-                                <th className="pt-3 pb-3 border-0">Period</th>
-                                <th className="pt-3 pb-3 border-0">Contract Type</th>
-                                <th className="pt-3 pb-3 border-0">Member</th>
+                                <th className="py-3 border-0">Unit No</th>
+                                <th className="py-3 border-0">Period</th>
+                                <th className="py-3 border-0">Contract Type</th>
+                                <th className="py-3 border-0">Member</th>
                               </tr>
                             </thead>
                             <tbody>
                               {runningContracts.map((running_contracts) => (
                                 <tr key={running_contracts.id}>
-                                  <td className="pt-3">
+                                  <td className="py-2">
                                     <NavLink className="mx-2" to={`${running_contracts.id}`}>
                                       {running_contracts.unit.unit_no || '-'}
                                     </NavLink>
                                   </td>
-                                  <td>
+                                  <td className="py-2">
                                     {formatdate(running_contracts.start_date) || '-'}
                                     {formatdate(running_contracts.end_date) || ' - Present'}{' '}
                                   </td>
-                                  <td className="pt-3">
+                                  <td className="py-2">
                                     {running_contracts.contract_type.replace(/_/g, ' ') || '-'}
                                   </td>
-                                  <td className="pt-3">
-                                    {console.log(running_contracts.contract_members)}
+                                  <td className="p-2">
                                     {PickOwner(running_contracts.contract_members) || '-'}
                                   </td>
                                 </tr>

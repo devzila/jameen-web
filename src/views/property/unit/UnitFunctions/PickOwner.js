@@ -24,8 +24,8 @@ function PickOwner(contract) {
         placement="right"
         trigger={['hover', 'focus', 'click']}
       >
-        <span className="d-inline-block" tabIndex={0}>
-          <CButton color="white">
+        <span className="d-inline-block p-0" tabIndex={0}>
+          <CButton color="white" className="p-0">
             {(ownerNames ? ownerNames.split(',')[0] : '') +
               ' ' +
               (co_ownerNames && co_ownerNames.length > 1

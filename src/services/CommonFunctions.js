@@ -36,3 +36,10 @@ export function format_react_select(data, key) {
     return []
   }
 }
+
+export function cleanAvatar(payload) {
+  if (payload.avatar && (payload.avatar.data === '' || payload.avatar.data === undefined)) {
+    delete payload.avatar
+  }
+  return payload
+}
