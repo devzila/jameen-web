@@ -106,7 +106,7 @@ export default function Assets() {
                               <tr key={data.id}>
                                 <td>{data.name || '-'}</td>
                                 <td className="text-capitalize">
-                                  {data.asset_type.replace(/_/g, ' ') || '-'}
+                                  {data.asset_type?.replace(/_/g, ' ') || '-'}
                                 </td>
 
                                 <td>{data.description || '-'}</td>
