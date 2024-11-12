@@ -10,17 +10,24 @@ import { formatdate } from 'src/services/CommonFunctions'
 import { status_color } from 'src/services/CommonFunctions'
 import PropTypes from 'prop-types'
 import AddManualInvoice from './AddInvoice'
+import ShowInvoicePopup from './ShowInvoicePopup'
+import ShowInvoices from 'src/views/finance/ShowInvoices'
 
 const Invoice = ({ after_submit, contract }) => {
   const [invoices, setInvoices] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [visible, setVisible] = useState(false)
 
   const { propertyId, contractId } = useParams()
 
   const [searchKeyword, setSearchKeyword] = useState(null)
   const { get, response } = useFetch()
+
+  function handleClose() {
+    setVisible(false)
+  }
 
   useEffect(() => {
     loadManualInvoices()
@@ -48,7 +55,7 @@ const Invoice = ({ after_submit, contract }) => {
       <div>
         <section className="w-100">
           <div className="mask d-flex align-items-center h-100">
-            <div className="container-fluid p-3 my-1 border-0 theme_color">
+            <div className="container-fluid p-3  border-0 theme_color">
               <div className="d-flex w-100 justify-content-between">
                 <div className="mb-3">
                   <CIcon icon={freeSet.cilList} size="lg" className="me-2" />
@@ -90,7 +97,22 @@ const Invoice = ({ after_submit, contract }) => {
                           {invoices?.map((invoice) => (
                             <tr key={invoice.id}>
                               <th className="pt-3 ps-3 border-0" scope="row">
-                                <NavLink to={`invoice/${invoice.id}`}>{invoice.number}</NavLink>
+                                <ShowInvoicePopup
+                                  data={[{ header: 'Invoice', size: 'lg' }]}
+                                  component={
+                                    <button
+                                      type="button"
+                                      className="theme_color border-0 p-0"
+                                      data-mdb-ripple-init
+                                      onClick={() => setVisible(!visible)}
+                                    >
+                                      {invoice.number}
+                                    </button>
+                                  }
+                                  visible={visible}
+                                  body={<ShowInvoices invoice_id={invoice.id} />}
+                                  handleClose={handleClose}
+                                />
                               </th>
                               <td className="pt-3">
                                 {' '}

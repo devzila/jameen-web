@@ -7,10 +7,18 @@ import { UseFetch, useFetch } from 'use-http'
 import { status_color } from 'src/services/CommonFunctions'
 import InvoiceCancel from './InvoiceCancel'
 import InvoicePayment from './InvoicePayment'
-export default function ShowInvoices() {
+import PropTypes from 'prop-types'
+
+export default function ShowInvoices({ invoice_id }) {
   const { get, response } = useFetch()
   const [invoice, setInvoice] = useState({})
-  const { invoiceId } = useParams()
+  let { invoiceId } = useParams()
+
+  console.log(invoiceId)
+
+  if (invoiceId == undefined) {
+    invoiceId = invoice_id
+  }
 
   const getInvoice = async () => {
     const api = await get(`/v1/admin/invoices/${invoiceId}`)
@@ -189,4 +197,8 @@ export default function ShowInvoices() {
       </div>
     </div>
   )
+}
+
+ShowInvoices.propTypes = {
+  invoice_id: PropTypes.number,
 }

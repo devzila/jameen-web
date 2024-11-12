@@ -15,6 +15,12 @@ export default function ShowContract() {
   const { get, response, loading, error } = useFetch()
   const [contract, setContractData] = useState({})
 
+  const params = useParams()
+
+  console.log(params['*'].split('/')[0] == 'moving-in')
+
+  const for_moving_in = params['*'].split('/')[0] == 'moving-in'
+
   useEffect(() => {
     loadInitialContractData()
   }, [])
@@ -32,7 +38,7 @@ export default function ShowContract() {
       <CCard className="my-3 border-0 ">
         <CRow>
           <CCol md="12">
-            <CCard className="p-3 my-s1 border-0 theme_color">
+            <CCard className="p-3  border-0 theme_color">
               <div className="d-flex w-100 justify-content-between">
                 <div>
                   <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
@@ -48,7 +54,7 @@ export default function ShowContract() {
                   ) : null}
                 </div>
               </div>
-              <hr className="text-secondary" />
+              <hr className="text-secondary p-0 m-0" />
               <CRow className="">
                 <CCol className="p-3 mt-0 fw-light">
                   Unit No
@@ -84,11 +90,11 @@ export default function ShowContract() {
       </CCard>
       <CCard className="border-0">
         <CCol md="12" className="m-0">
-          <CCard className="p-3 my-1 border-0 theme_color">
+          <CCard className="p-3 border-0 theme_color">
             <CListGroupItem>
               <CIcon icon={freeSet.cilPeople} size="lg" className="me-2" />
               <strong className="text-black">Members</strong>
-              <hr className="text-secondary" />
+              <hr className="text-secondary p-0 mt-3" />
             </CListGroupItem>
             <CTable responsive="sm" className="table table-striped mb-0">
               <thead>
@@ -120,7 +126,7 @@ export default function ShowContract() {
       <CCard className="mt-3 border-0">
         <CRow>
           <CCol md="12">
-            <CCard className=" p-3 my-3 mt-2 border-0 ">
+            <CCard className=" p-3  border-0 ">
               <div className="d-flex align-items-center justify-content-between">
                 <div>
                   <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
@@ -130,7 +136,7 @@ export default function ShowContract() {
                   <AddDocuments />
                 </div>
               </div>
-              <hr className="text-secondary" />
+              <hr className="text-secondary m-0 p-0" />
               {undefined?.length ? (
                 <CRow className="">
                   <CCol className="p-3 mt-0 fw-light">
@@ -163,9 +169,13 @@ export default function ShowContract() {
           </CCol>
         </CRow>
       </CCard>
-      <CCard className="my-3 border-0">
-        <Invoices after_submit={loadInitialContractData} contract={contract} />
-      </CCard>
+      {for_moving_in ? (
+        ''
+      ) : (
+        <CCard className="my-3 border-0">
+          <Invoices after_submit={loadInitialContractData} contract={contract} />
+        </CCard>
+      )}
     </>
   )
 }

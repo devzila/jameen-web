@@ -11,15 +11,13 @@ import Properties from './Properties'
 import ShowInvoices from '../finance/ShowInvoices'
 import Invoices from './propertynav/Invoices'
 import MovingIn from './propertynav/MovingIn/MovingIn'
+import PropMaintenancesCategory from './propertynav/MaintenanceCategory/PropMaintenancesCat'
 
 export default function Property() {
   const PropertyUnit = React.lazy(() => import('../property/unit/Unit'))
   const ParkingLot = React.lazy(() => import('../property/propertynav/ParkingLot'))
   const PropUnitAllotment = React.lazy(() => import('./propertynav/Allotment/PropUnitAllotment'))
   const Contracts = React.lazy(() => import('./propertynav/Contracts/Contracts'))
-  const PropMaintenancesCategory = React.lazy(() =>
-    import('./propertynav/MaintenanceCategory/PropMaintenancesCat'),
-  )
   const ShowMaintance = React.lazy(() => import('../maintenance/ShowMaintance'))
   const Documents = React.lazy(() => import('../property/propertynav/Documents'))
   const Assets = React.lazy(() => import('./propertynav/Assets/Assets'))
