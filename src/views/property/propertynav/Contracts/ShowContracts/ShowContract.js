@@ -38,12 +38,12 @@ export default function ShowContract() {
       <CCard className="my-3 border-0 ">
         <CRow>
           <CCol md="12">
-            <CCard className="p-3  border-0 theme_color">
-              <div className="d-flex w-100 justify-content-between">
-                <div>
+            <CCard className="p-3 border-0 theme_color">
+              <div className="d-flex w-100 justify-content-between align-items-center">
+                <CListGroupItem>
                   <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
                   <strong className="text-black">Contract Details</strong>
-                </div>
+                </CListGroupItem>
                 <div className="">
                   {contract?.unit?.status === 'vacant' ? (
                     <MovingInUnit
@@ -94,7 +94,7 @@ export default function ShowContract() {
             <CListGroupItem>
               <CIcon icon={freeSet.cilPeople} size="lg" className="me-2" />
               <strong className="text-black">Members</strong>
-              <hr className="text-secondary p-0 mt-3" />
+              <hr className="text-secondary p-0 mt-1" />
             </CListGroupItem>
             <CTable responsive="sm" className="table table-striped mb-0">
               <thead>

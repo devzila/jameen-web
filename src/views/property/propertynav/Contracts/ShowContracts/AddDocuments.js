@@ -27,7 +27,7 @@ export default function AddDocuments({ after_submit }) {
   const [temp_base64, setTemp_base64] = useState([])
 
   const { register, handleSubmit, setValue, control, reset } = useForm()
-  const { get, patch, response } = useFetch()
+  const { get, post, response } = useFetch()
   const { propertyId, contractId } = useParams()
   useEffect(() => {
     fetchRoles()
@@ -56,8 +56,7 @@ export default function AddDocuments({ after_submit }) {
     data.documents_attributes.map((element, index) => (element.file.data = temp_base64[index]))
 
     const body = { ...data, resident_ids: assigned_resident_data }
-
-    await patch(`/v1/admin/premises/properties/${propertyId}/allotment${contractId}`, {
+    await post(`/v1/admin/premises/properties/${propertyId}/moving_in/${contractId}/documents`, {
       allotment: body,
     })
 

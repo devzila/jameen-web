@@ -47,7 +47,6 @@ export default function BillableItems() {
       const billableItemsData = await get(
         `/v1/admin/premises/properties/${propertyId}/unit_types/${unittypeID}/billable_items`,
       )
-      console.log(response)
       if (response.ok) {
         setLoading(false)
         setBillableItems(billableItemsData.data)
@@ -79,8 +78,8 @@ export default function BillableItems() {
       <CCol>
         <CRow>
           <CCol md="12">
-            <CCard className=" p-3 mt-2" style={{ border: '0px' }}>
-              <CListGroupItem className="d-flex justify-content-between">
+            <CCard className="px-3 py-2 mt-2 border-0">
+              <CListGroupItem className="d-flex justify-content-between align-items-center">
                 <div>
                   <CIcon
                     icon={freeSet.cilLineStyle}
@@ -94,7 +93,9 @@ export default function BillableItems() {
                   <EditUnitTypes id={unittypeID} />
                 </div>
               </CListGroupItem>
-              <CRow>
+              <hr className="text-secondary p-0 m-0" />
+
+              <CRow className="mt-2">
                 <CCol className=" mt-0 fw-light" style={{ color: '#00bfcc' }}>
                   Name
                   <CCardText
@@ -173,8 +174,12 @@ export default function BillableItems() {
         </CRow>
         <div>
           <Card className="border-0 mt-3 p-2 rounded-2">
-            <div className="d-flex  ms-2 justify-content-between">
-              <div className="fs-4 border-0">Billable Items</div>
+            <div className="d-flex  ms-2 justify-content-between align-items-center">
+              <strong className="d-flex justify-content-between align-items-center">
+                <CIcon icon={freeSet.cilDollar} size="xl" className="theme_color mx-1" />
+                Billable Items
+              </strong>
+
               <div className=" me-4 border-0">
                 <AddBillable after_submit={reload_callback} unittypeID={unittypeID} />
               </div>
