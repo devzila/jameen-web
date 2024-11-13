@@ -15,7 +15,7 @@ export default function CommonModal({ component, data, body, visible, handleClos
         onClose={handleClose}
         aria-labelledby="StaticBackdropExampleLabel"
       >
-        <CModalHeader>
+        <CModalHeader className="p-2 px-3">
           <div className="px-3 d-flex justify-content-between w-100">
             <div className=" d-flex text-secondary">
               <h4>{data[0].header}</h4>

@@ -20,60 +20,53 @@ import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useParams } from 'react-router-dom'
 
-export default function AddDocuments({ after_submit }) {
+export default function AddDocuments({ after_submit, moving_in }) {
   const [visible, setVisible] = useState(false)
 
-  const [roles_data, setRoles_data] = useState([])
   const [temp_base64, setTemp_base64] = useState([])
 
   const { register, handleSubmit, setValue, control, reset } = useForm()
-  const { get, post, response } = useFetch()
+  const { post, response } = useFetch()
   const { propertyId, contractId } = useParams()
   useEffect(() => {
-    fetchRoles()
     append()
   }, [])
 
   //initially append
   useEffect(() => {
-    setValue('documents_attributes', [{ name: '', description: '', file: { data: '' } }])
+    setValue('document', [{ name: '', description: '', file: { data: '' } }])
   }, [setValue])
 
   //dynamic form
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'documents_attributes',
+    name: 'document',
   })
 
   async function onSubmit(data) {
     //resident array
-    const assigned_resident_data =
-      data?.resident_ids?.length > 0 ? data.resident_ids.map((element) => element.value) : []
 
-    //filestobase64
-    temp_base64.map((x, index) => setValue(`documents_attributes.${index}.file.data`, x))
+    //filestobase64W
+    temp_base64.map((x, index) => setValue(`document.${index}.file.data`, x))
 
-    data.documents_attributes.map((element, index) => (element.file.data = temp_base64[index]))
+    data.document.map((element, index) => (element.file.data = temp_base64[index]))
 
-    const body = { ...data, resident_ids: assigned_resident_data }
-    await post(`/v1/admin/premises/properties/${propertyId}/moving_in/${contractId}/documents`, {
-      allotment: body,
-    })
+    await post(
+      `/v1/admin/premises/properties/${propertyId}/${
+        moving_in ? 'moving_in' : 'allotments'
+      }/${contractId}/documents`,
+      {
+        document: data.document[0],
+      },
+    )
 
     if (response.ok) {
-      toast('user added Successfully')
+      toast.success('Document added Successfully')
       after_submit()
       reset()
       setVisible(!visible)
     } else {
       toast(response.data?.message)
-    }
-  }
-
-  async function fetchRoles() {
-    const api = await get('/v1/admin/roles')
-    if (response.ok) {
-      setRoles_data(api.data)
     }
   }
 
@@ -90,7 +83,7 @@ export default function AddDocuments({ after_submit }) {
         temp_array64[index] = base64Result
         setTemp_base64(temp_array64)
 
-        // setValue(`documents_attributes.${index}.file.data`, base64Result)
+        // setValue(`document.${index}.file.data`, base64Result)
       }
 
       reader.readAsDataURL(selectedFile)
@@ -131,7 +124,7 @@ export default function AddDocuments({ after_submit }) {
                         required
                         placeholder=" Name"
                         type="text"
-                        {...register(`documents_attributes.${index}.name`)}
+                        {...register(`document.${index}.name`)}
                       ></Form.Control>
                     </Form.Group>
                   </Col>
@@ -144,7 +137,7 @@ export default function AddDocuments({ after_submit }) {
                       <Form.Control
                         type="file"
                         accept=".jpg, .jpeg, .png"
-                        {...register(`documents_attributes.${index}.file.data`)}
+                        {...register(`document.${index}.file.data`)}
                         onChange={(e) => handleFileSelection(e, index)}
                       ></Form.Control>
                     </Form.Group>
@@ -155,7 +148,7 @@ export default function AddDocuments({ after_submit }) {
                       <Form.Control
                         placeholder="Description"
                         type="text"
-                        {...register(`documents_attributes.${index}.description`)}
+                        {...register(`document.${index}.description`)}
                       ></Form.Control>
                     </Form.Group>
                   </Col>
@@ -212,4 +205,5 @@ export default function AddDocuments({ after_submit }) {
 
 AddDocuments.propTypes = {
   after_submit: PropTypes.func,
+  moving_in: PropTypes.bool,
 }

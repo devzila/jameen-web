@@ -8,7 +8,7 @@ import { freeSet } from '@coreui/icons'
 import Invoices from './Invoice'
 import defaultAvatar from '../../../../../assets/images/avatars/default.png'
 import MovingInUnit from 'src/views/property/unit/MovingInUnit'
-import AddDocuments from './AddDocuments'
+import ContractDocuments from './ContractDocuments'
 
 export default function ShowContract() {
   const { propertyId, contractId } = useParams()
@@ -16,8 +16,6 @@ export default function ShowContract() {
   const [contract, setContractData] = useState({})
 
   const params = useParams()
-
-  console.log(params['*'].split('/')[0] == 'moving-in')
 
   const for_moving_in = params['*'].split('/')[0] == 'moving-in'
 
@@ -122,53 +120,7 @@ export default function ShowContract() {
           </CCard>
         </CCol>
       </CCard>
-
-      <CCard className="mt-3 border-0">
-        <CRow>
-          <CCol md="12">
-            <CCard className=" p-3  border-0 ">
-              <div className="d-flex align-items-center justify-content-between">
-                <div>
-                  <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
-                  <strong className="text-black">Documents</strong>
-                </div>
-                <div>
-                  <AddDocuments />
-                </div>
-              </div>
-              <hr className="text-secondary m-0 p-0" />
-              {undefined?.length ? (
-                <CRow className="">
-                  <CCol className="p-3 mt-0 fw-light">
-                    <CCardText className="fw-normal text-black text-capitalize">
-                      {contract?.electricity_account_number || '-'}
-                    </CCardText>
-                  </CCol>
-                  <CCol className="p-3 mt-0 fw-light">
-                    <CCardText className="fw-normal text-black text-capitalize">
-                      {contract?.water_account_number || '-'}
-                    </CCardText>
-                  </CCol>
-                  <CCol className="p-3 mt-0 fw-light">
-                    <CCardText className="fw-normal text-black text-capitalize">
-                      {contract?.internal_extension_number || '-'}
-                    </CCardText>
-                  </CCol>
-                  <CCol className="p-3 mt-0 fw-light">
-                    <CCardText className="fw-normal text-black text-capitalize">
-                      {contract?.year_built || '-'}
-                    </CCardText>
-                  </CCol>
-                </CRow>
-              ) : (
-                <p className="text-center fst-italic text-secondary bg-white p-3">
-                  No Documents Found
-                </p>
-              )}
-            </CCard>
-          </CCol>
-        </CRow>
-      </CCard>
+      <ContractDocuments />
       {for_moving_in ? (
         ''
       ) : (

@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
 import AddResidents from './AddResidents'
-import EditResidents from './EditResidents'
-import ShowResidents from './ShowResidents'
+
 import Paginate from '../../components/Pagination'
 import Loading from 'src/components/loading/loading'
-import CustomDivToggle from 'src/components/CustomDivToggle'
 
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import { BsThreeDots } from 'react-icons/bs'
-import { Dropdown, Row, Col } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
@@ -98,12 +95,9 @@ const Residents = () => {
                     >
                       <tr>
                         <th className="pt-3 pb-3 border-0">Name</th>
-                        <th className="pt-3 pb-3 border-0">DOB</th>
                         <th className="pt-3 pb-3 border-0">Username </th>
                         <th className="pt-3 pb-3 border-0">Gender</th>
-                        <th className="pt-3 pb-3 border-0">Email</th>
-                        <th className="pt-3 pb-3 border-0">Mobile Number </th>
-                        <th className="pt-3 pb-3 border-0">Actions </th>
+                        <th className="pt-3 pb-3 border-0">Unit(s)</th>
                       </tr>
                     </thead>
 
@@ -115,28 +109,12 @@ const Residents = () => {
                               {residents.first_name + ' ' + residents.last_name}
                             </NavLink>
                           </th>
-                          <td className="pt-3 text-nowrap">{residents.dob}</td>
                           <td className="pt-3">{residents.username}</td>
                           <td className="pt-3">
                             {residents.gender?.charAt(0)?.toUpperCase() +
                               residents.gender?.slice(1)}
-                          </td>
-                          <td className="pt-3">{residents.email}</td>
-                          <td className="pt-3">
-                            {residents.phone_number.replace(/[()\-.]/g, ' ')}
-                          </td>
-
-                          <td className="text-center">
-                            <Dropdown key={residents.id}>
-                              <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                <BsThreeDots />
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                <EditResidents id={residents.id} />
-                                <ShowResidents id={residents.id} />
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </td>
+                          </td>{' '}
+                          <td className="pt-3"></td>
                         </tr>
                       ))}
                     </tbody>

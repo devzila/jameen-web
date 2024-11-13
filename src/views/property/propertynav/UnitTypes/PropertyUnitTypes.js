@@ -47,7 +47,7 @@ const PropertyUnitType = () => {
   async function loadInitialUnitsTypes() {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/unit_types?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[username_eq]=${searchKeyword}`
+      endpoint += `&q[name_eq]=${searchKeyword}`
     }
     const initialUnitTypes = await get(endpoint)
 

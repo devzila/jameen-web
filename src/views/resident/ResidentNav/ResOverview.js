@@ -7,6 +7,7 @@ import { freeSet } from '@coreui/icons'
 import logo from '../../../assets/images/avatars/default.png'
 import { formatdate } from 'src/services/CommonFunctions'
 import { toast } from 'react-toastify'
+import EditResidents from '../EditResidents'
 
 export default function ResOverview() {
   const { residentId } = useParams()
@@ -37,16 +38,24 @@ export default function ResOverview() {
           </CCard>
         </CCol>
         <CCol className="col">
-          <CCard className="p-3  my-3 border-0">
+          <CCard className="px-3 py-1 my-3 border-0">
             <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Resident Data</strong>
-              <hr style={{ color: '#C8C2C0' }} />
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <CIcon
+                    icon={freeSet.cilLineStyle}
+                    size="lg"
+                    className="me-2"
+                    style={{ color: '#00bfcc' }}
+                  />
+                  <strong>Resident Data</strong>
+                </div>
+                <div>
+                  <EditResidents id={residentId} />
+                </div>
+              </div>
+
+              <hr className="text-secondary mt-1 p-0" />
             </CListGroupItem>
             <CRow className="">
               <CCol className="p-3 mt-0 fw-light theme_color">
