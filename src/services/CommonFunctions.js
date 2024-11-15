@@ -43,3 +43,14 @@ export function cleanAvatar(payload) {
   }
   return payload
 }
+
+export function removeEmptyDocuments(payload) {
+  console.log(payload)
+  const documents = payload.documents_attributes
+  console.log(documents)
+  payload.documents_attributes = documents.filter((doc) => {
+    return doc.name !== '' || doc.description !== '' || doc.file.data != undefined
+  })
+
+  return payload
+}

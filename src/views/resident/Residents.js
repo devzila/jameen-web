@@ -11,6 +11,7 @@ import { Row, Col } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import ResidentUnitPicker from './ResidentNav/ResidentUnitPicker'
 
 const Residents = () => {
   const { get, response } = useFetch()
@@ -39,6 +40,7 @@ const Residents = () => {
         setLoading(false)
         setResidents(initialResidents.data)
         setPagination(initialResidents.pagination)
+        console.log(initialResidents)
       }
     } else {
       setErrors(true)
@@ -114,7 +116,9 @@ const Residents = () => {
                             {residents.gender?.charAt(0)?.toUpperCase() +
                               residents.gender?.slice(1)}
                           </td>{' '}
-                          <td className="pt-3"></td>
+                          <td className="pt-3">
+                            {residents.membership ? ResidentUnitPicker(residents.membership) : '-'}
+                          </td>
                         </tr>
                       ))}
                     </tbody>

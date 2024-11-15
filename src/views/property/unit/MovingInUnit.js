@@ -20,7 +20,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 
 import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import { format_react_select } from 'src/services/CommonFunctions'
+import { format_react_select, removeEmptyDocuments } from 'src/services/CommonFunctions'
 
 export default function MovingInUnit({ unitNo, unitId, after_submit }) {
   const { register, handleSubmit, setValue, control, watch, reset } = useForm()
@@ -139,9 +139,10 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
     data.documents_attributes.map((element, index) => (element.file.data = temp_base64[index]))
 
     const body = { ...data, resident_ids: assigned_resident_data }
+    const processed_data = removeEmptyDocuments(body)
 
     await post(`/v1/admin/premises/properties/${propertyId}/units/${updatedUnitId}/moving_in`, {
-      allotment: body,
+      allotment: processed_data,
     })
     if (response.ok) {
       toast('Moved In : Operation Successful')
