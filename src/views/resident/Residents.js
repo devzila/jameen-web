@@ -12,6 +12,7 @@ import { NavLink } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import ResidentUnitPicker from './ResidentNav/ResidentUnitPicker'
+import ResidentFIlters from './ResidentFIlters'
 
 const Residents = () => {
   const { get, response } = useFetch()
@@ -28,11 +29,16 @@ const Residents = () => {
     loadInitialResidents()
   }, [currentPage])
 
-  async function loadInitialResidents() {
+  async function loadInitialResidents(query) {
     let endpoint = `/v1/admin/members?page=${currentPage}`
     if (searchKeyword) {
       endpoint += `&q[username_cont]=${searchKeyword}`
     }
+    console.log(query)
+    if (typeof query === 'string') {
+      endpoint += query
+    }
+
     const initialResidents = await get(endpoint)
 
     if (response.ok) {
@@ -40,7 +46,10 @@ const Residents = () => {
         setLoading(false)
         setResidents(initialResidents.data)
         setPagination(initialResidents.pagination)
-        console.log(initialResidents)
+        console.log(initialResidents.data)
+        if (initialResidents.data.length == 0) {
+          toast.warn('No data found!')
+        }
       }
     } else {
       setErrors(true)
@@ -59,6 +68,7 @@ const Residents = () => {
         <CContainer fluid>
           <CNavbarBrand href="/residents">Residents</CNavbarBrand>
           <div className="d-flex justify-content-end">
+            <ResidentFIlters filter_callback={loadInitialResidents} />
             <div className="d-flex" role="search">
               <input
                 onChange={(e) => setSearchKeyword(e.target.value)}
