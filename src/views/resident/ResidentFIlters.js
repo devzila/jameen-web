@@ -68,13 +68,8 @@ export default function ResidentFIlters({ units_type, filter_callback }) {
         <Dropdown.Toggle
           id=" d-inline mx-2"
           variant="secondary"
-          className="ms-2 text-start h-100 w-100"
-          style={{
-            backgroundColor: 'white',
-            width: '15vw',
-            border: '1px solid #00bfcc',
-            borderRadius: '2px',
-          }}
+          className="ms-2 text-start h-100 w-100 bg-white rounded-0"
+          style={{ width: '15vw', border: '1px solid #00bfcc' }}
         >
           <CIcon icon={freeSet.cilFilter} />
           Filter

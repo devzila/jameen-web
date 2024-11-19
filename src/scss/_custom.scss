@@ -191,3 +191,12 @@ td {
   height: 200px;
   overflow: scroll;
 }
+
+.transparent-bg {
+  background-color: transparent !important;
+}
+
+.resident-unit-dropdown::after {
+  content: '';
+  display: none;
+}

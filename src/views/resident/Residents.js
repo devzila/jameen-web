@@ -114,21 +114,18 @@ const Residents = () => {
                     </thead>
 
                     <tbody>
-                      {residents.map((residents) => (
-                        <tr key={residents.id}>
+                      {residents.map((resident) => (
+                        <tr key={resident.id}>
                           <th className="pt-3 border-0 text-nowrap" scope="row">
-                            <NavLink to={`/resident/${residents.id}/overview`}>
-                              {residents.first_name + ' ' + residents.last_name}
+                            <NavLink to={`/resident/${resident.id}/overview`}>
+                              {resident.first_name + ' ' + resident.last_name}
                             </NavLink>
                           </th>
-                          <td className="pt-3">{residents.username}</td>
+                          <td className="pt-3">{resident.username}</td>
                           <td className="pt-3">
-                            {residents.gender?.charAt(0)?.toUpperCase() +
-                              residents.gender?.slice(1)}
+                            {resident.gender?.charAt(0)?.toUpperCase() + resident.gender?.slice(1)}
                           </td>{' '}
-                          <td className="pt-3">
-                            {residents.membership ? ResidentUnitPicker(residents.membership) : '-'}
-                          </td>
+                          <td className="pt-3">{ResidentUnitPicker(resident)}</td>
                         </tr>
                       ))}
                     </tbody>

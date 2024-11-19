@@ -6,6 +6,7 @@ import ResOverview from './ResOverview'
 import ResVehicles from './Vehicles/ResVehicles'
 import ResHistory from './ResHistory'
 import Residents from '../Residents'
+import ShowContract from 'src/views/property/propertynav/Contracts/ShowContracts/ShowContract'
 
 export default function ShowResidentPage() {
   return (
@@ -17,6 +18,11 @@ export default function ShowResidentPage() {
         <Route path="notes" name="Resident Notes" element={<ResNotes />} />
         <Route path="vehicles" name="Resident Vehicles" element={<ResVehicles />} />
         <Route path="history" name="Resident History" element={<ResHistory />} />
+        <Route
+          path="property/:propertyId/resident-contract/:contractId"
+          name="Contracts"
+          element={<ShowContract />}
+        />
       </Routes>
     </div>
   )

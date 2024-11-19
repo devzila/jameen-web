@@ -42,7 +42,7 @@ export default function ShowContract() {
                   <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
                   <strong className="text-black">Contract Details</strong>
                 </CListGroupItem>
-                <div className="">
+                <div>
                   {contract?.unit?.status === 'vacant' ? (
                     <MovingInUnit
                       unitId={contract?.unit?.id}

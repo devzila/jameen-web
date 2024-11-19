@@ -297,62 +297,6 @@ export default function ResOverview() {
           </CCard>
         </CCol>
       </CRow>
-
-      <CRow>
-        <CCol md="12">
-          <CCard className=" p-3 my-3 border-0">
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Invoice</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Electricity Account No.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.electricity_account_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Water Account No.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.water_account_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Internal Extension No.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.internal_extension_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Last Status Changed
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.year_built || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-            <CRow></CRow>
-          </CCard>
-        </CCol>
-      </CRow>
     </>
   )
 }
