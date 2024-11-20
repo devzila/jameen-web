@@ -114,7 +114,7 @@ export default function ResidentFIlters({ units_type, filter_callback }) {
             />
           </Dropdown.Item>
           <Dropdown.Item className="btn btn-teritary" href="#/action-3">
-            <label>Category</label>
+            <label>Property</label>
             <Controller
               name="property_select"
               render={({ field }) => (

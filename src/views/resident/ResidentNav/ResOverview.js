@@ -1,7 +1,7 @@
-import { CCol, CCard, CListGroupItem, CRow, CCardText, CImage } from '@coreui/react'
+import { CCol, CCard, CListGroupItem, CRow, CCardText, CCardBody } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { useParams } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import logo from '../../../assets/images/avatars/default.png'
@@ -294,6 +294,95 @@ export default function ResOverview() {
               </CCol>
             </CRow>
             <CRow></CRow>
+          </CCard>
+        </CCol>
+      </CRow>
+      <CRow>
+        <CCol md="12" className="m-0 mb-3">
+          <CCard className="p-3 mt-3 border-0 ">
+            <CListGroupItem>
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+              <strong className="text-black">Contract Info.</strong>
+              <hr className="text-secondary" />
+            </CListGroupItem>
+            <CRow>
+              {resident_data?.membership?.length >= 1 ? (
+                resident_data.membership.map((contract) => (
+                  <CCol md="4" key={contract.id}>
+                    <NavLink to={`contract/${contract.id}`}>
+                      <CCard className="shadow-sm border-0 rounded-2 mb-3 ">
+                        <CCardBody className="pt-0 mt-1">
+                          <CRow>
+                            <CCol md="12" className="theme_color">
+                              Contract
+                            </CCol>
+                          </CRow>
+                          <CRow>
+                            <CCol> Type :</CCol>
+                            <CCol className="text-capitalize">
+                              {contract.contract_type.replace('_', ' ') || '-'}
+                            </CCol>
+                          </CRow>
+
+                          <CCardText className=" m-0">
+                            <CRow>
+                              <CCol>Duration:</CCol>
+                              <CCol>
+                                {formatdate(contract.start_date) || '-'}
+                                {formatdate(contract.end_date) || ' - Present'}
+                              </CCol>
+                            </CRow>
+                          </CCardText>
+
+                          <CCardText className="m-0">
+                            <CRow>
+                              <CCol md="12" className="theme_color">
+                                Contract Members
+                              </CCol>
+                            </CRow>
+                          </CCardText>
+
+                          {contract.contract_members ? (
+                            contract.contract_members.map((members, index) => (
+                              <CCardText key={index} className="m-0  ps-1">
+                                <CRow>
+                                  <CCol>
+                                    {index + 1 + '.'} {members.member.name + ' ' || '-'}
+                                    <sub className="text-secondary">
+                                      {members.member_type.replace('_', ' ') || '-'}{' '}
+                                    </sub>
+                                  </CCol>
+                                </CRow>
+                              </CCardText>
+                            ))
+                          ) : (
+                            <p className="text-center  fst-italic">No Contract Members Found</p>
+                          )}
+
+                          <CCardText className=" m-0">
+                            <CRow>
+                              <CCol>Notes : </CCol>
+                              <CCol className="text-wrap ">
+                                <abbr
+                                  style={{ cursor: 'pointer' }}
+                                  className="text-decoration-none "
+                                  data-toggle="tooltip"
+                                  title={contract.notes || null}
+                                >
+                                  {contract.notes.slice(0, 15) + '...' || '-'}
+                                </abbr>
+                              </CCol>
+                            </CRow>
+                          </CCardText>
+                        </CCardBody>
+                      </CCard>
+                    </NavLink>
+                  </CCol>
+                ))
+              ) : (
+                <p className="text-center  fst-italic">No Contracts Found</p>
+              )}
+            </CRow>
           </CCard>
         </CCol>
       </CRow>

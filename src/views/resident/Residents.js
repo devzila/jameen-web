@@ -36,9 +36,10 @@ const Residents = () => {
     }
     console.log(query)
     if (typeof query === 'string') {
-      endpoint += query
+      // endpoint += query
     }
 
+    endpoint += `q[dob_gteq]=2005-02-07}`
     const initialResidents = await get(endpoint)
 
     if (response.ok) {

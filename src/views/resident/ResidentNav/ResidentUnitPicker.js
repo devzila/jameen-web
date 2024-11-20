@@ -17,12 +17,11 @@ function ResidentUnitPicker(resident) {
     .map((x) => [x.unit_contract.id, x.unit_contract.unit.unit_no])
 
   const result = `Owner: ${ownerNames || 'NA'} \n Residents: ${co_ownerNames || 'NA'} `
-  console.log(ownerNames)
   return (
     <div>
       <Dropdown>
         <Dropdown.Toggle className="ms-2 text-start text-black h-100 w-100 border-0 rounded-0 transparent-bg resident-unit-dropdown">
-          {(ownerNames && ownerNames.length > 1 ? ownerNames[0][1] : '') +
+          {(ownerNames && ownerNames.length > 1 ? ownerNames[0][1] + '...' : '') +
             ' ' +
             (co_ownerNames && co_ownerNames.length > 1 ? co_ownerNames[0][1] + ',...' : '-')}
         </Dropdown.Toggle>
