@@ -15,7 +15,7 @@ import PropMaintenancesCategory from './propertynav/MaintenanceCategory/PropMain
 
 export default function Property() {
   const PropertyUnit = React.lazy(() => import('../property/unit/Unit'))
-  const ParkingLot = React.lazy(() => import('../property/propertynav/ParkingLot'))
+  const ParkingLot = React.lazy(() => import('./propertynav/Parking/ParkingLot'))
   const PropUnitAllotment = React.lazy(() => import('./propertynav/Allotment/PropUnitAllotment'))
   const Contracts = React.lazy(() => import('./propertynav/Contracts/Contracts'))
   const ShowMaintance = React.lazy(() => import('../maintenance/ShowMaintance'))

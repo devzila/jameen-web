@@ -10,6 +10,7 @@ import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import AllotParking from '../../unit/ShowUnitModule/AllotParking'
 
 function ParkingLot() {
   const { propertyId } = useParams()
@@ -98,6 +99,7 @@ function ParkingLot() {
                   <CContainer fluid>
                     <CNavbarBrand href="#">Parkings</CNavbarBrand>
                     <div className="d-flex justify-content-end">
+                      <AllotParking />
                       <div className="d-flex" role="search">
                         <input
                           onChange={(e) => setSearchKeyword(e.target.value)}
