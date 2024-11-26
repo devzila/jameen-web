@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { NavLink, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
@@ -51,7 +51,7 @@ export default function EditBuilding() {
       navigate(`/properties/${propertyId}/Buildings`)
       setVisible(!visible)
       reset()
-      toast.success('Building added successfully')
+      toast.success('Building Updated successfully')
     } else {
       setErrors(response.data.errors)
       toast.error(response.data?.message || 'Unknown Error')
@@ -91,7 +91,7 @@ export default function EditBuilding() {
               </Form.Group>
             </Col>
           </Row>
-          <div className="text-center">
+          <div className="text-center mt-2">
             <CModalFooter>
               <Button
                 data-mdb-ripple-init
@@ -100,13 +100,10 @@ export default function EditBuilding() {
               >
                 Submit
               </Button>
-              <CButton
-                className="custom_grey_button"
-                color="secondary"
-                style={{ border: '0px', color: 'white' }}
-                onClick={handleClose}
-              >
-                Close
+              <CButton className="custom_grey_button">
+                <NavLink className="text-white" to={`/properties/${propertyId}/Buildings`}>
+                  Cancel
+                </NavLink>
               </CButton>
             </CModalFooter>
           </div>
