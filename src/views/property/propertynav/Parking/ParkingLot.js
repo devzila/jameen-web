@@ -21,11 +21,9 @@ function ParkingLot() {
   const [parkingLot, setParkingLot] = useState([])
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [refresh, setRefresh] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState('')
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [editable, setEditable] = useState({})
 
   const loadInitialParkingLot = async (searchTerm = '') => {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/parkings?page=${currentPage}&search=${searchTerm}`
@@ -53,38 +51,6 @@ function ParkingLot() {
     loadInitialParkingLot()
 
     setSearchKeyword('')
-  }
-
-  const toggleEditable = (id) => {
-    setEditable((prevEditable) => ({
-      ...prevEditable,
-      [id]: !prevEditable[id],
-    }))
-  }
-
-  const handleInputChange = (e, id) => {
-    const { name, value } = e.target
-    setParkingLot((prevParkingLot) =>
-      prevParkingLot.map((item) => (item.id === id ? { ...item, [name]: value } : item)),
-    )
-  }
-
-  const saveChanges = async (id) => {
-    const parking_ = parkingLot.find((item) => item.id === id)
-
-    await put(`/v1/admin/premises/properties/${propertyId}/parkings/${id}`, { parking: parking_ })
-
-    if (response.ok) {
-      toggleEditable(id)
-    }
-  }
-
-  const cancelEditing = (id) => {
-    const originalParking = parkingLot.find((item) => item.id === id)
-    setParkingLot((prevParkingLot) =>
-      prevParkingLot.map((item) => (item.id === id ? originalParking : item)),
-    )
-    toggleEditable(id)
   }
 
   return (
@@ -135,65 +101,15 @@ function ParkingLot() {
                             <th className="border-0">Parking Number</th>
                             <th className="border-0">Unit Number</th>
                             <th className="border-0">Vechile Number</th>
-                            <th className="border-0">ACTIONS</th>
                           </tr>
                         </thead>
 
                         <tbody>
                           {parkingLot.map((parking) => (
                             <tr key={parking.id}>
-                              <td>
-                                {editable[parking.id] ? (
-                                  <input
-                                    type="text"
-                                    name="parking_number"
-                                    value={parking.parking_number}
-                                    onChange={(e) => handleInputChange(e, parking.id)}
-                                  />
-                                ) : (
-                                  parking.parking_number
-                                )}
-                              </td>
+                              <td>{parking.parking_number}</td>
                               <td>{parking.unit.unit_no}</td>
                               <td>{parking.vehicle?.registration_no}</td>
-                              <td>
-                                {editable[parking.id] ? (
-                                  <>
-                                    <button
-                                      onClick={() => saveChanges(parking.id)}
-                                      className="btn custom_theme_button"
-                                    >
-                                      Save
-                                    </button>
-                                    <button
-                                      onClick={() => cancelEditing(parking.id)}
-                                      className="btn custom_grey_button"
-                                    >
-                                      Cancel
-                                    </button>
-                                  </>
-                                ) : (
-                                  <Dropdown key={parking.id}>
-                                    <Dropdown.Toggle
-                                      as={CustomDivToggle}
-                                      style={{ cursor: 'pointer' }}
-                                    >
-                                      <Dropdown.Menu>
-                                        <button
-                                          type="button"
-                                          className="tooltip_button"
-                                          data-mdb-ripple-init
-                                          onClick={() => toggleEditable(parking.id)}
-                                        >
-                                          Edit
-                                        </button>
-                                        {/* <ShowProperty propertyId={property.id} /> */}
-                                      </Dropdown.Menu>
-                                      <BsThreeDots />
-                                    </Dropdown.Toggle>
-                                  </Dropdown>
-                                )}
-                              </td>
                             </tr>
                           ))}
                         </tbody>
