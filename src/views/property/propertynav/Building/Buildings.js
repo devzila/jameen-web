@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { useParams } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
@@ -106,22 +106,11 @@ export default function Buildings() {
                         <tbody>
                           {buildings.map((data) => (
                             <tr key={data.id}>
-                              <td>{data.name}</td>
+                              <td>
+                                <NavLink to={`${data.id}/edit`}>{data.name}</NavLink>
+                              </td>
                               <td>{data.description}</td>
                               <td>{formatdate(data.created_at)}</td>
-                              <td>
-                                <Dropdown key={data.id}>
-                                  <Dropdown.Toggle
-                                    as={CustomDivToggle}
-                                    style={{ cursor: 'pointer' }}
-                                  >
-                                    <BsThreeDots />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu>
-                                    <EditBuilding id={data.id} after_submit={refresh_data} />
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </td>
                             </tr>
                           ))}
                         </tbody>
