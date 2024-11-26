@@ -30,11 +30,13 @@ export default function Buildings() {
 
   useEffect(() => {
     fetchBuildings()
-  }, [propertyId])
+  }, [propertyId, currentPage])
 
   async function fetchBuildings() {
     try {
-      const buildingsData = await get(`/v1/admin/premises/properties/${propertyId}/buildings`)
+      const buildingsData = await get(
+        `/v1/admin/premises/properties/${propertyId}/buildings?page=${currentPage}`,
+      )
       if (buildingsData && buildingsData.data) {
         setPagination(buildingsData.pagination)
         setBuildings(buildingsData.data)
