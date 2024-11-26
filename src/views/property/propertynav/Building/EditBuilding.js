@@ -65,7 +65,7 @@ export default function EditBuilding() {
 
   return (
     <>
-      <CContainer>
+      <CContainer className="bg-white p-1 rounded-1 mt-2 px-4">
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Row>
             <Col className="pr-3 mt-3" md="12">
