@@ -61,7 +61,6 @@ export default function ResidentFIlters({ units_type, filter_callback }) {
       setPropertyArray(format_react_select(initialProperties.data, ['id', 'name']))
     }
   }
-  console.log(property_array)
   return (
     <div className="mx-1">
       <Dropdown data-bs-theme="light" className="d-flex" autoClose="outside">

@@ -33,10 +33,13 @@ export default function Buildings() {
   }, [propertyId, currentPage])
 
   async function fetchBuildings() {
+    let endpoint = `/v1/admin/premises/properties/${propertyId}/buildings?page=${currentPage}`
+    if (searchKeyword) {
+      endpoint += `&q[name_cont]=${searchKeyword}`
+    }
     try {
-      const buildingsData = await get(
-        `/v1/admin/premises/properties/${propertyId}/buildings?page=${currentPage}`,
-      )
+      const buildingsData = await get(endpoint)
+
       if (buildingsData && buildingsData.data) {
         setPagination(buildingsData.pagination)
         setBuildings(buildingsData.data)
@@ -52,6 +55,13 @@ export default function Buildings() {
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
   }
+  const handleInputChange = (event) => {
+    const value = event.target.value
+    setSearchKeyword(value)
+    if (value === '') {
+      refresh_data()
+    }
+  }
 
   return (
     <>
@@ -66,14 +76,14 @@ export default function Buildings() {
                     <div className="d-flex justify-content-end">
                       <div className="d-flex" role="search">
                         <input
-                          onChange={(e) => setSearchKeyword(e.target.value)}
+                          onChange={handleInputChange}
                           className="form-control  custom_input"
                           type="search"
                           placeholder="Search"
                           aria-label="Search"
                         />
                         <button
-                          // onClick={loadInitialinvoices}
+                          onClick={fetchBuildings}
                           className="btn btn-outline-success custom_search_button"
                           type="submit"
                         >

@@ -29,17 +29,27 @@ const Residents = () => {
     loadInitialResidents()
   }, [currentPage])
 
+  useEffect(() => {
+    if (searchKeyword === '') {
+      loadInitialResidents()
+    }
+  }, [searchKeyword])
+
+  const handleInputChange = (event) => {
+    const value = event.target.value
+    setSearchKeyword(value)
+  }
+
   async function loadInitialResidents(query) {
     let endpoint = `/v1/admin/members?page=${currentPage}`
     if (searchKeyword) {
       endpoint += `&q[username_cont]=${searchKeyword}`
     }
-    console.log(query)
+    console.log(searchKeyword)
     if (typeof query === 'string') {
       // endpoint += query
     }
 
-    endpoint += `q[dob_gteq]=2005-02-07}`
     const initialResidents = await get(endpoint)
 
     if (response.ok) {
@@ -49,6 +59,7 @@ const Residents = () => {
         setPagination(initialResidents.pagination)
         console.log(initialResidents.data)
         if (initialResidents.data.length == 0) {
+          toast.dismiss()
           toast.warn('No data found!')
         }
       }
@@ -72,7 +83,7 @@ const Residents = () => {
             <ResidentFIlters filter_callback={loadInitialResidents} />
             <div className="d-flex" role="search">
               <input
-                onChange={(e) => setSearchKeyword(e.target.value)}
+                onChange={handleInputChange}
                 className="form-control  custom_input"
                 type="search"
                 placeholder="Search"
