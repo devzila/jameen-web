@@ -74,7 +74,29 @@ const CreditNote = () => {
               <CNavbar expand="lg" colorScheme="light" className="bg-white">
                 <CContainer fluid>
                   <CNavbarBrand>
-                    <Dropdown>
+                    <div>
+                      <button
+                        type="button"
+                        className={`bg-white small rounded-0 mx-2 border-0 theme-hover ${
+                          selectedOption == 'credit_notes' ? 'active-nav-bar-button' : ''
+                        } `}
+                        data-mdb-ripple-init
+                        onClick={() => handleOptionChange('credit_notes')}
+                      >
+                        Credit Notes
+                      </button>
+                      <button
+                        type="button"
+                        className={`bg-white small rounded-0 border-0 theme-hover ${
+                          selectedOption == 'invoices' ? 'active-nav-bar-button' : ''
+                        } `}
+                        data-mdb-ripple-init
+                        onClick={() => handleOptionChange('invoices')}
+                      >
+                        Invoice Template
+                      </button>
+                    </div>
+                    {/* <Dropdown>
                       <Dropdown.Toggle
                         variant="secondary"
                         className="custom_theme_button"
@@ -85,18 +107,18 @@ const CreditNote = () => {
                       <Dropdown.Menu className="rounded-0 border-0  shadow-lg">
                         <Dropdown.Item
                           onClick={() => handleOptionChange('credit_notes')}
-                          className="theme_color"
+                          className=".active-nav-bar-button"
                         >
                           Credit Notes
                         </Dropdown.Item>
                         <Dropdown.Item
                           onClick={() => handleOptionChange('invoices')}
-                          className="theme_color"
+                          className=".active-nav-bar-button"
                         >
                           Invoice Template
                         </Dropdown.Item>
                       </Dropdown.Menu>
-                    </Dropdown>
+                    </Dropdown> */}
                   </CNavbarBrand>
                   <div className="d-flex justify-content-end">
                     <AddTemp option={selectedOption} after_submit={refreshData} />

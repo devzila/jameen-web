@@ -206,3 +206,12 @@ label {
   font-family: sans-serif;
   font-weight: bold;
 }
+
+.active-nav-bar-button {
+  border-bottom: 2px solid #00bfcc !important;
+  color: #00bfcc;
+}
+
+.theme-hover:hover {
+  color: #00bfcc;
+}
