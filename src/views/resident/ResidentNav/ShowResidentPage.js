@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Route, Routes, useParams } from 'react-router-dom'
 import ResNav from './ResNav'
 import ResNotes from './ResNotes'
@@ -14,12 +14,14 @@ export default function ShowResidentPage() {
   return (
     <div>
       <ResNav />
-      <Routes>
-        <Route path="overview" name="Resident Overview" element={<ResOverview />} />
-        <Route path="notes" name="Resident Notes" element={<ResNotes />} />
-        <Route path="vehicles" name="Resident Vehicles" element={<ResVehicles />} />
-        <Route path="history" name="Resident History" element={<ResHistory />} />
-      </Routes>
+      <Suspense>
+        <Routes>
+          <Route path="overview" name="Resident Overview" element={<ResOverview />} />
+          <Route path="notes" name="Resident Notes" element={<ResNotes />} />
+          <Route path="vehicles" name="Resident Vehicles" element={<ResVehicles />} />
+          <Route path="history" name="Resident History" element={<ResHistory />} />
+        </Routes>
+      </Suspense>
     </div>
   )
 }

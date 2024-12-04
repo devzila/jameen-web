@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Route, Routes, useParams } from 'react-router-dom'
 import PostIndex from './PostIndex'
 
@@ -8,9 +8,11 @@ export default function NewsRoutes() {
 
   return (
     <div>
-      <Routes>
-        <Route path="posts" name="PostIndex" element={<PostIndex />} />
-      </Routes>
+      <Suspense>
+        <Routes>
+          <Route path="posts" name="PostIndex" element={<PostIndex />} />
+        </Routes>
+      </Suspense>
     </div>
   )
 }

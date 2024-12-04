@@ -16,20 +16,22 @@ export default function Index() {
     <>
       <Nav />
       <CContainer fluid>
-        <Routes path="/settings" element={<Role />}>
-          <Route path="roles" name="Role" element={<Role />} />
-          <Route path="users" name="User" element={<User />} />
-          <Route path="maintenance" name="Maintenance" element={<Maintenance />} />
-          <Route
-            path="maintenance-categories"
-            name="Maintenance Categories"
-            element={<MaintenanceCategories />}
-          />
-
-          <Route path="security" name="Security" element={<Security />} />
-          <Route path="integrations" name="Integrations" element={<Integrations />} />
-          <Route path="workflow" name="Workflow" element={<WorkFlow />} />
-        </Routes>
+        <Suspense>
+          <Routes>
+            <Route path="roles" name="Role" element={<Role />} />
+            <Route path="users" name="User" element={<User />} />
+            <Route path="maintenance" name="Maintenance" element={<Maintenance />} />
+            <Route
+              path="maintenance-categories"
+              name="Maintenance Categories"
+              element={<MaintenanceCategories />}
+            />
+            <Route path="*" element={<Navigate to="/settings/roles" replace />} />{' '}
+            <Route path="security" name="Security" element={<Security />} />
+            <Route path="integrations" name="Integrations" element={<Integrations />} />
+            <Route path="workflow" name="Workflow" element={<WorkFlow />} />
+          </Routes>
+        </Suspense>
       </CContainer>
     </>
   )

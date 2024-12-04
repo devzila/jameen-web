@@ -8,12 +8,12 @@ import { Maintenance } from './Maintenance'
 export default function DashboardRoutes() {
   return (
     <Container fluid>
-      <Routes>
+      <>
         <Route path="/" element={<Overview />} />
         <Route path="overview" element={<Overview />} />
         <Route path="finance" element={<Finance />} />
         <Route path="maintenance" element={<Maintenance />} />
-      </Routes>
+      </>
     </Container>
   )
 }
