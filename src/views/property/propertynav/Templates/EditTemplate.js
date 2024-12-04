@@ -52,7 +52,7 @@ export default function EditTemplate({ after_submit, id, option }) {
     if (response.ok) {
       setVisible(!visible)
       after_submit()
-      toast.success('Building added successfully')
+      toast.success('Template added successfully')
     } else {
       setErrors(response.data.errors)
       toast.error(response.data?.message || 'Unknown Error')
