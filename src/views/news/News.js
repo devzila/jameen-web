@@ -32,6 +32,7 @@ function News() {
       endpoint += `&q[title_eq]=${searchKeyword}`
     }
     const initialPosts = await get(endpoint)
+    console.log(initialPosts)
 
     if (response.ok) {
       if (initialPosts.data) {
