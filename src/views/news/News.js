@@ -10,6 +10,7 @@ import { freeSet } from '@coreui/icons'
 import Loading from 'src/components/loading/loading'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import Paginate from '../../components/Pagination'
+import { status_color } from 'src/services/CommonFunctions'
 
 function News() {
   const { get, response } = useFetch()
@@ -32,7 +33,6 @@ function News() {
       endpoint += `&q[title_eq]=${searchKeyword}`
     }
     const initialPosts = await get(endpoint)
-    console.log(initialPosts)
 
     if (response.ok) {
       if (initialPosts.data) {
@@ -89,11 +89,10 @@ function News() {
                       <tr>
                         <th className="pt-3 pb-3 border-0">Title</th>
                         <th className="pt-3 pb-3 border-0">Category</th>
-                        <th className="pt-3 pb-3 border-0">User ID</th>
-                        <th className="pt-3 pb-3 border-0">View Count</th>
-                        <th className="pt-3 pb-3 border-0">Like Count</th>
+                        <th className="pt-3 pb-3 border-0">User</th>
+                        <th className="pt-3 pb-3 border-0">Views</th>
+                        <th className="pt-3 pb-3 border-0">Likes</th>
                         <th className="pt-3 pb-3 border-0">Status</th>
-                        <th className="pt-3 pb-3 border-0">Action</th>
                       </tr>
                     </thead>
 
@@ -101,23 +100,16 @@ function News() {
                       {posts.map((post) => (
                         <tr key={post.id}>
                           <th className="pt-3 border-0" scope="row">
-                            <NavLink to={`${post.id}/posts`}>{post.title}</NavLink>
+                            <NavLink to={`${post.id}/view`}>{post.title}</NavLink>
                           </th>
-                          <td className="pt-3">{post.category}</td>
+                          <td className="pt-3 text-capitalize">{post.category}</td>
                           <td className="pt-3">{post.user_id}</td>
                           <td className="pt-3">{post.view_count}</td>
                           <td className="pt-3">{post.likes_count}</td>
-                          <td className="pt-3">{post.status}</td>
-
-                          <td>
-                            <Dropdown key={post.id}>
-                              <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                <BsThreeDots />
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                {/* Add dropdown menu items as necessary */}
-                              </Dropdown.Menu>
-                            </Dropdown>
+                          <td className="pt-3">
+                            <button className={`request-${status_color(post?.status)}`}>
+                              {post.status}
+                            </button>
                           </td>
                         </tr>
                       ))}
