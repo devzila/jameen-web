@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import { Form, Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
-import { CModalFooter, CContainer } from '@coreui/react'
+import { CModalFooter, CCard } from '@coreui/react'
 
 export default function EditNews({ data, callback }) {
   const { register, handleSubmit, control, reset, setValue } = useForm()
@@ -37,10 +37,10 @@ export default function EditNews({ data, callback }) {
 
   return (
     <>
-      <CContainer className="bg-white p-1 rounded-1 mt-3 px-4">
+      <CCard className="my-3 rounded-0 bg-white border-0 p-3 w-100">
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Row>
-            <Col className="pr-3 mt-3" md="12">
+            <Col className="pr-3 mt-1" md="12">
               <Form.Group>
                 <label>Title</label>
                 <Form.Control
@@ -77,7 +77,7 @@ export default function EditNews({ data, callback }) {
           </div>
         </Form>
         <div className="clearfix"></div>
-      </CContainer>
+      </CCard>
     </>
   )
 }
