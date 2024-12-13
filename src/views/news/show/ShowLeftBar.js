@@ -3,10 +3,9 @@ import CIcon from '@coreui/icons-react'
 import { CCard, CRow, CCol, CListGroupItem } from '@coreui/react'
 import React from 'react'
 import PropTypes from 'prop-types'
-
 import { formatdate, formatNumberCount } from 'src/services/CommonFunctions'
 
-export default function ShowLeftBar({ data }) {
+export default function ShowLeftBar({ data, delete_comment }) {
   return (
     <CCol md="3">
       <CCol md="12">
@@ -75,9 +74,19 @@ export default function ShowLeftBar({ data }) {
           </CListGroupItem>
           <CRow>
             {data?.comments?.length > 0 ? (
-              data.comments.map((comment, index) => <p key={index}>{comment?.comment || '-'}</p>)
+              data?.comments?.map((comment, index) => (
+                <div className="d-flex justify-content-between" key={index}>
+                  <p className="mx-2">{comment?.comment || '-'}</p>
+                  <CIcon
+                    className="text-danger mx-1"
+                    title="Delete Comment"
+                    icon={freeSet.cilDelete}
+                    onClick={() => delete_comment(comment.id)}
+                  />
+                </div>
+              ))
             ) : (
-              <small className="fst-italic text-center text-secondary p-5 m-4">
+              <small className="fst-italic text-center text-secondary py-5 my-4">
                 No comment found.
               </small>
             )}
@@ -89,4 +98,5 @@ export default function ShowLeftBar({ data }) {
 }
 ShowLeftBar.propTypes = {
   data: PropTypes.object,
+  delete_comment: PropTypes.func,
 }

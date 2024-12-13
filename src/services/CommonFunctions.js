@@ -22,6 +22,7 @@ export function status_color(status) {
     unallotted: 'green',
     cancelled: 'gray',
     occupied: 'gray',
+    published: 'green',
   }
 
   return statusColors[status] || 'gray'

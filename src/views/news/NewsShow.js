@@ -6,12 +6,14 @@ import useFetch from 'use-http'
 import { toast } from 'react-toastify'
 import ShowLeftBar from './show/ShowLeftBar'
 import EditNews from './EditNews'
+import ConfirmationPopup from '../shared/ConfirmationPopup'
 
 function NewsShow() {
   const { postId } = useParams()
   const [data, setData] = useState({})
   const [edit, setEdit] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [deleteVisible, setDeleteVisible] = useState(false)
   const navigate = useNavigate()
   useEffect(() => {
     fetchPost()
@@ -54,6 +56,14 @@ function NewsShow() {
     fetchPost()
   }
 
+  async function handleDeleteComment(id) {
+    await del(`/v1/admin/posts/${postId}/comments/${id}`, {})
+    if (response.ok) {
+      toast.success('Comment deleted succesfully.')
+      fetchPost()
+    }
+  }
+
   return (
     <>
       <div className="d-flex justify-content-end">
@@ -74,12 +84,24 @@ function NewsShow() {
             {data.status == 'draft' ? 'Publish' : 'Unpublish'}
           </button>
         )}
-        <button className="btn custom_red_button" onClick={deletePost}>
-          Delete
-        </button>
+        <ConfirmationPopup
+          sure_callback={deletePost}
+          message={{
+            header: 'Delete',
+            body: 'Are you sure want to delete this post?',
+            button_name: 'Delete',
+          }}
+          button={
+            <button className="btn custom_red_button" onClick={() => setDeleteVisible(true)}>
+              Delete
+            </button>
+          }
+          visible={deleteVisible}
+          hide_show={() => setDeleteVisible(!deleteVisible)}
+        />
       </div>
       <CRow>
-        <ShowLeftBar data={data} />
+        <ShowLeftBar data={data} delete_comment={handleDeleteComment} />
 
         <CCol md="9">
           {edit ? (
