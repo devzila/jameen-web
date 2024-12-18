@@ -73,23 +73,36 @@ export default function ShowLeftBar({ data, delete_comment }) {
             <hr className="text-secondary" />
           </CListGroupItem>
           <CRow>
-            {data?.comments?.length > 0 ? (
-              data?.comments?.map((comment, index) => (
-                <div className="d-flex justify-content-between" key={index}>
-                  <p className="mx-2">{comment?.comment || '-'}</p>
-                  <CIcon
-                    className="text-danger mx-1"
-                    title="Delete Comment"
-                    icon={freeSet.cilDelete}
-                    onClick={() => delete_comment(comment.id)}
-                  />
-                </div>
-              ))
-            ) : (
-              <small className="fst-italic text-center text-secondary py-5 my-4">
-                No comment found.
-              </small>
-            )}
+            <div style={{ maxHeight: '20vh', overflow: 'scroll' }}>
+              {/* add user and date  */}
+              {data?.comments?.length > 0 ? (
+                data?.comments?.map((comment, index) => (
+                  <section key={index}>
+                    <div className="d-flex justify-content-between m-0 p-0">
+                      <p className="mx-2">{comment?.description || '-'}</p>
+                      <CIcon
+                        className="text-danger mx-1"
+                        title="Delete Comment"
+                        icon={freeSet.cilDelete}
+                        onClick={() => delete_comment(comment.id)}
+                      />
+                    </div>
+                    <div className="d-flex justify-content-end">
+                      <small className="fst-italic text-secondary">
+                        {comment?.member?.first_name + comment?.member?.last_name} •
+                      </small>
+                      <small className="fst-italic text-secondary">
+                        {formatdate(comment?.created_at)}
+                      </small>{' '}
+                    </div>
+                  </section>
+                ))
+              ) : (
+                <small className="fst-italic text-center text-secondary py-5 my-4">
+                  No comment found.
+                </small>
+              )}
+            </div>
           </CRow>
         </CCard>
       </CCol>

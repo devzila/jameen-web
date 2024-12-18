@@ -60,7 +60,7 @@ export default function EditNews({ data, callback }) {
                   defaultValue={data?.content?.body}
                   rows={25}
                   placeholder="Content"
-                  {...register('content.body')}
+                  {...register('content')}
                 ></Form.Control>
               </Form.Group>
             </Col>

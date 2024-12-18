@@ -66,7 +66,7 @@ function NewsShow() {
 
   return (
     <>
-      <div className="d-flex justify-content-end">
+      <div className="d-flex justify-content-end" style={{ overflow: 'hidden' }}>
         {edit ? (
           ''
         ) : (

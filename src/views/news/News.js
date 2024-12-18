@@ -11,6 +11,7 @@ import Loading from 'src/components/loading/loading'
 import CustomDivToggle from '../../components/CustomDivToggle'
 import Paginate from '../../components/Pagination'
 import { status_color } from 'src/services/CommonFunctions'
+import AddNews from './show/AddNews'
 
 function News() {
   const { get, response } = useFetch()
@@ -72,6 +73,7 @@ function News() {
                 <CIcon icon={freeSet.cilSearch} />
               </button>
             </div>
+            <AddNews after_submit={loadInitialPosts} />
             {/* Add News button goes here */}
           </div>
         </CContainer>
