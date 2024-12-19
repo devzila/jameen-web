@@ -5,6 +5,7 @@ import { AppContent, AppSidebar, AppHeader } from '../components/index'
 import { AuthContext, initialAuthState, reducer } from '../contexts/AuthContext'
 import Login from '../views/pages/login/Login'
 import ForgotPassword from 'src/views/pages/password/ForgotPassword'
+import PasswordForm from 'src/views/pages/password/PasswordForm'
 
 const DefaultLayout = () => {
   const [state, dispatch] = React.useReducer(reducer, initialAuthState)
@@ -12,7 +13,8 @@ const DefaultLayout = () => {
     <AuthContext.Provider value={{ state, dispatch }}>
       {!state.isAutheticated ? (
         // <Login />
-        <ForgotPassword />
+        // <ForgotPassword />
+        <PasswordForm />
       ) : (
         <div>
           <Provider
