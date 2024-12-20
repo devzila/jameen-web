@@ -23,7 +23,7 @@ export default function PasswordForm() {
     length: null,
     upperCase: null,
     lowerCase: null,
-    digit: null,
+    isLesserThan: true,
     specialChar: null,
     match: false,
   })
@@ -32,9 +32,10 @@ export default function PasswordForm() {
     setPassword(input)
     setDisabled(true)
     const isLongEnough = input.length >= 8
+
     const hasUpperCase = /[A-Z]/.test(input)
     const hasLowerCase = /[a-z]/.test(input)
-    const hasDigit = /\d/.test(input)
+    const isLesserThan = input.length <= 40
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(input)
 
     setValidations((prev) => ({
@@ -42,7 +43,7 @@ export default function PasswordForm() {
       length: isLongEnough,
       upperCase: hasUpperCase,
       lowerCase: hasLowerCase,
-      digit: hasDigit,
+      isLesserThan: isLesserThan,
       specialChar: hasSpecialChar,
     }))
   }
@@ -52,9 +53,7 @@ export default function PasswordForm() {
       ...prev,
       match: input === password,
     }))
-    if (input === password) {
-      setDisabled(false)
-    }
+    input === password ? setDisabled(false) : setDisabled(true)
   }
 
   function getValidationColor(data) {
@@ -66,11 +65,11 @@ export default function PasswordForm() {
     toast.success('Password changed succesfully.')
   }
   return (
-    <CContainer fluid>
+    <CContainer className="bg-light" fluid>
       <CRow className="justify-content-center vh-100">
         <CCol className="d-flex-center" md={6}>
           <CCardGroup>
-            <CCard className=" rounded-0 border-0 shadow-lg">
+            <CCard className=" rounded-0 border-0 shadow-sm">
               <CCardHeader className="d-flex-center align-items-end bg-white py-3">
                 <img className="logo-img" src={jameenlogo} />
                 <h2 className="text-monospace theme_color m-0 px-3">Jameen</h2>
@@ -118,24 +117,10 @@ export default function PasswordForm() {
                               ? '⬤ At least 8 characters long'
                               : '⬤ At least 8 characters long'}
                           </li>
-                          <li className={getValidationColor(validations.upperCase)}>
-                            {validations.upperCase
-                              ? '⬤ At least one uppercase letter'
-                              : '⬤ At least one uppercase letter'}
+                          <li className={getValidationColor(validations.isLesserThan)}>
+                            ⬤ Maximum 40 character long
                           </li>
-                          <li className={getValidationColor(validations.lowerCase)}>
-                            {validations.lowerCase
-                              ? '⬤ At least one lowercase letter'
-                              : '⬤ At least one lowercase letter'}
-                          </li>
-                          <li className={getValidationColor(validations.digit)}>
-                            {validations.digit ? '⬤ At least one digit' : '⬤ At least one digit'}
-                          </li>
-                          <li className={getValidationColor(validations.specialChar)}>
-                            {validations.specialChar
-                              ? '⬤ At least one special character'
-                              : '⬤ At least one special character'}
-                          </li>
+
                           {confirmPassword.length ? (
                             <li className={getValidationColor(validations.match)}>
                               {validations.match ? '⬤ Passwords match' : '⬤ Passwords do not match'}

@@ -11,15 +11,17 @@ import {
   CCardFooter,
 } from '@coreui/react'
 import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import jameenlogo from 'src/assets/images/jameen-logo.png'
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('')
+  const navigate = useNavigate()
   const initiateOtpRequest = (e) => {
     e.preventDefault()
     toast.success('OTP sent succesfully.')
+    navigate('/email-sent')
   }
   return (
     <CContainer fluid>

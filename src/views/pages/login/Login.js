@@ -16,6 +16,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { AuthContext } from '../../../contexts/AuthContext'
+import { NavLink } from 'react-router-dom'
 
 const Login = () => {
   const { dispatch } = React.useContext(AuthContext)
@@ -129,9 +130,9 @@ const Login = () => {
                         </button>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
+                        <NavLink className="text-secondary" to={'/forgot-password'}>
                           Forgot password?
-                        </CButton>
+                        </NavLink>
                       </CCol>
                     </CRow>
                   </CForm>
