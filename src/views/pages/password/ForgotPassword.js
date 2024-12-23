@@ -24,17 +24,17 @@ export default function ForgotPassword() {
     navigate('/email-sent')
   }
   return (
-    <CContainer fluid>
+    <CContainer fluid className="bg-light p-0">
       <CRow className="justify-content-center vh-100">
         <CCol className="d-flex-center" md={6}>
           <CCardGroup>
-            <CCard className=" rounded-0 border-0 shadow-lg">
+            <CCard className="rounded-0 border-0 shadow">
               <CCardHeader className="d-flex-center align-items-end bg-white py-3">
                 <img className="logo-img" src={jameenlogo} />
                 <h2 className="text-monospace theme_color m-0 px-3">Jameen</h2>
               </CCardHeader>
-              <CCardBody className="p-5">
-                <div className="text-secondary text-monospace">
+              <CCardBody className="px-5 pt-5 pb-3">
+                <div className="text-secondary text-monospace p-0">
                   <p className="p-0 m-0">Enter your email address or username below to</p>
                   <p className="mb-3"> reset your password.</p>
                 </div>
@@ -44,7 +44,7 @@ export default function ForgotPassword() {
                       <label className="form-label text-secondary">
                         Email or Username <span className="text-danger">*</span>
                       </label>
-                      <div className="input-group rounded-0 my-1">
+                      <div className="input-group rounded-0 my-3">
                         <span className="input-group-text rounded-0">
                           <CIcon icon={freeSet.cilUser} size="lg" />
                         </span>
@@ -60,8 +60,8 @@ export default function ForgotPassword() {
                       </div>
                     </div>
                     <div className="col-12">
-                      <div className="d-grid mt-5">
-                        <button className="custom_theme_button p-3 rounded-0 m-0" type="submit">
+                      <div className="d-grid mt-3">
+                        <button className="custom_theme_button p-2 rounded-0 m-0" type="submit">
                           Next
                         </button>
                       </div>
@@ -69,17 +69,11 @@ export default function ForgotPassword() {
                   </div>
                 </form>
               </CCardBody>
-              <CCardFooter className="border-0 bg-white">
-                <div className="row">
-                  <div className=" d-flex justify-content-center mt-2 mb-4 ">
-                    <NavLink className="mx-2 text-secondary" to="/login">
-                      Log In
-                    </NavLink>
-                    <span>•</span>
-                    <NavLink className="mx-2 text-secondary" to="/register">
-                      Register
-                    </NavLink>
-                  </div>
+              <CCardFooter className="border-0 bg-white mb-3">
+                <div className=" d-flex justify-content-center  mb-3 ">
+                  <NavLink className="mx-2 text-secondary" to="/login">
+                    Log In
+                  </NavLink>
                 </div>
               </CCardFooter>
             </CCard>

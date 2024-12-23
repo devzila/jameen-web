@@ -16,7 +16,7 @@ import jameenlogo from 'src/assets/images/jameen-logo.png'
 
 export default function EmailSent() {
   return (
-    <CContainer className="bg-light" fluid>
+    <CContainer className="bg-light p-0" fluid>
       <CRow className="justify-content-center vh-100">
         <CCol className="d-flex-center" md={6}>
           <CCardGroup>
@@ -43,10 +43,6 @@ export default function EmailSent() {
                   <div className=" d-flex justify-content-center mt-2 mb-4 ">
                     <NavLink className="mx-2 text-secondary" to="/login">
                       Log In
-                    </NavLink>
-                    <span>•</span>
-                    <NavLink className="mx-2 text-secondary" to="/register">
-                      Register
                     </NavLink>
                   </div>
                 </div>

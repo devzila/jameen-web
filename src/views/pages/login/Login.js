@@ -12,11 +12,15 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CCardHeader,
+  CCardFooter,
 } from '@coreui/react'
+
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { AuthContext } from '../../../contexts/AuthContext'
 import { NavLink } from 'react-router-dom'
+import jameenlogo from 'src/assets/images/jameen-logo.png'
 
 const Login = () => {
   const { dispatch } = React.useContext(AuthContext)
@@ -83,66 +87,73 @@ const Login = () => {
   }
 
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
-      <CContainer>
-        <CRow className="justify-content-center">
-          <CCol md={6}>
-            <CCardGroup>
-              <CCard className="p-4">
-                <CCardBody>
-                  <CForm onSubmit={handleFormSubmit}>
-                    <h1>Login</h1>
-                    <p className="text-medium-emphasis">Sign In to your Jameen account</p>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilUser} />
-                      </CInputGroupText>
-                      <CFormInput
-                        placeholder="Username"
-                        autoComplete="username"
-                        name="email"
-                        id="password"
-                        value={data.email}
-                        onChange={handleInputChange}
-                      />
-                    </CInputGroup>
-                    <CInputGroup className="mb-4">
-                      <CInputGroupText>
-                        <CIcon icon={cilLockLocked} />
-                      </CInputGroupText>
-                      <CFormInput
-                        type="password"
-                        placeholder="Password"
-                        autoComplete="current-password"
-                        name="password"
-                        value={data.password}
-                        onChange={handleInputChange}
-                      />
-                    </CInputGroup>
-                    <CRow>
-                      <CCol xs={6}>
-                        <button
-                          disabled={data.isSubmitting}
-                          color="primary"
-                          className="btn btn-primary"
-                        >
-                          {data.isSubmitting ? 'Loading...' : 'Login'}
-                        </button>
-                      </CCol>
-                      <CCol xs={6} className="text-right">
+    <CContainer fluid className="bg-light p-0 m-0 gx-0">
+      <CRow className="justify-content-center vh-100">
+        <CCol className="d-flex-center" md={6}>
+          <CCardGroup style={{ width: '475px' }}>
+            <CCard className="rounded-0 border-0 shadow">
+              <CCardHeader className="d-flex-center align-items-end bg-white py-3">
+                <img className="logo-img" src={jameenlogo} />
+                <h2 className="text-monospace theme_color m-0 px-3">Jameen</h2>
+              </CCardHeader>
+              <CCardBody className="px-5 pt-5 pb-3">
+                <div className="text-secondary text-monospace">
+                  <h1>Login</h1>
+                </div>
+                <CForm onSubmit={handleFormSubmit}>
+                  <CInputGroup className="mb-3 w-100">
+                    <CInputGroupText className="rounded-0">
+                      <CIcon icon={cilUser} />
+                    </CInputGroupText>
+                    <CFormInput
+                      placeholder="Username"
+                      autoComplete="username"
+                      name="email"
+                      id="password"
+                      value={data.email}
+                      onChange={handleInputChange}
+                    />
+                  </CInputGroup>
+                  <CInputGroup className="mb-4 ">
+                    <CInputGroupText className="rounded-0">
+                      <CIcon icon={cilLockLocked} />
+                    </CInputGroupText>
+                    <CFormInput
+                      type="password"
+                      placeholder="Password"
+                      autoComplete="current-password"
+                      name="password"
+                      value={data.password}
+                      onChange={handleInputChange}
+                    />
+                  </CInputGroup>
+                  <CRow>
+                    <CCol>
+                      <button
+                        disabled={data.isSubmitting}
+                        color="primary"
+                        className="btn w-100 custom_theme_button "
+                      >
+                        {data.isSubmitting ? 'Loading...' : 'Login'}
+                      </button>
+                    </CCol>
+                  </CRow>
+                  <CCardFooter className="border-0 bg-white mt-3 mb-3">
+                    <div className="row">
+                      <div className=" d-flex justify-content-center mt-2 ">
                         <NavLink className="text-secondary" to={'/forgot-password'}>
                           Forgot password?
                         </NavLink>
-                      </CCol>
-                    </CRow>
-                  </CForm>
-                </CCardBody>
-              </CCard>
-            </CCardGroup>
-          </CCol>
-        </CRow>
-      </CContainer>
-    </div>
+                      </div>
+                    </div>
+                  </CCardFooter>
+                </CForm>
+              </CCardBody>
+            </CCard>
+          </CCardGroup>
+        </CCol>
+      </CRow>
+    </CContainer>
   )
 }
 

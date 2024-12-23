@@ -10,7 +10,7 @@ export default function AuthenticationRoutes() {
   const EmailSent = React.lazy(() => import('../views/pages/password/EmailSent'))
 
   return (
-    <CContainer fluid>
+    <CContainer fluid className="g-0 p-1 overflow-hidden">
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/forgot-password" name="Forgot Password" element={<ForgotPassword />} />
