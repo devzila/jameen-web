@@ -31,7 +31,7 @@ function News() {
   async function loadInitialPosts() {
     let endpoint = `/v1/admin/posts?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[title_eq]=${searchKeyword}`
+      endpoint += `&q[title_cont]=${searchKeyword}`
     }
     const initialPosts = await get(endpoint)
 

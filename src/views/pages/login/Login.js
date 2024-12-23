@@ -19,7 +19,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { AuthContext } from '../../../contexts/AuthContext'
-import { NavLink } from 'react-router-dom'
+import { Navigate, NavLink, useNavigate } from 'react-router-dom'
 import jameenlogo from 'src/assets/images/jameen-logo.png'
 
 const Login = () => {
@@ -30,6 +30,8 @@ const Login = () => {
     isSubmitting: false,
     errorMessage: null,
   }
+  const navigate = useNavigate()
+
   const [data, setData] = React.useState(initialState)
   const handleInputChange = (event) => {
     setData({
@@ -65,6 +67,7 @@ const Login = () => {
           type: 'LOGIN',
           payload: resJson,
         })
+        navigate('/')
       })
       .catch((error) => {
         if (!('json' in error) || error.status === 404) {
@@ -131,8 +134,7 @@ const Login = () => {
                     <CCol>
                       <button
                         disabled={data.isSubmitting}
-                        color="primary"
-                        className="btn w-100 custom_theme_button "
+                        className="custom_theme_button w-100 p-2"
                       >
                         {data.isSubmitting ? 'Loading...' : 'Login'}
                       </button>
