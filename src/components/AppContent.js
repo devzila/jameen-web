@@ -14,7 +14,6 @@ const PropertyRoutes = React.lazy(() => import('../views/property/PropertyRoutes
 const MaintenanceCategory = React.lazy(() => import('../views/maintenance/Maintenance'))
 const MaintenaceRoutes = React.lazy(() => import('../views/maintenance/MaintenanceRoutes'))
 const Visitor = React.lazy(() => import('../views/visitor/Visitor'))
-const Operation = React.lazy(() => import('../views/operation/Operation'))
 const News = React.lazy(() => import('../views/news/News'))
 const NewsRoutes = React.lazy(() => import('../views/news/NewsRoutes'))
 
@@ -60,7 +59,6 @@ const AppContent = () => {
             element={<ShowMaintance />}
           />
           <Route path="/visitor" name="Visitor" element={<Visitor />} />
-          <Route path="/operation" name="Operation" element={<Operation />} />
           <Route path="/news" name="News" element={<News />} />
           <Route path="/news/:postId/*" name="Post" element={<NewsRoutes />} />
 

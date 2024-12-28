@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import CIcon from '@coreui/icons-react'
 import {
   cilMoney,
@@ -59,12 +59,7 @@ const _nav = [
     to: 'visitor',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Operations',
-    to: 'operation',
-    icon: <CIcon icon={cibLaunchpad} customClassName="nav-icon" />,
-  },
+
   {
     component: CNavItem,
     name: 'News/Posts',

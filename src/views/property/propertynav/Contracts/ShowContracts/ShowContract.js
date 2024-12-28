@@ -17,7 +17,8 @@ export default function ShowContract() {
 
   const params = useParams()
 
-  const for_moving_in = params['*'].split('/')[0] == 'moving-in'
+  const for_moving_in =
+    params['*'].split('/')[0] == 'moving-in' || params['*'].split('/')[2] == 'moving_in'
 
   useEffect(() => {
     loadInitialContractData()

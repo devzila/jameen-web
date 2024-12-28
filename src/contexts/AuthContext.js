@@ -7,6 +7,7 @@ export const initialAuthState = {
   isAutheticated: localStorage.getItem('token') !== null,
   user: JSON.parse(localStorage.getItem('user')),
   token: localStorage.getItem('token'),
+  roles: JSON.parse(localStorage.getItem('user'))?.role,
 }
 
 export const reducer = (state, action) => {
@@ -15,15 +16,17 @@ export const reducer = (state, action) => {
       localStorage.setItem('user', JSON.stringify(action.payload.object))
       localStorage.setItem('token', action.payload.token)
       loadMetaData()
+
       return {
         ...state,
         isAutheticated: true,
-        user: action.payload.user,
+        user: action.payload.object,
         token: action.payload.token,
+        roles: action.payload.object.roles,
       }
     case 'LOGOUT':
       localStorage.clear()
-      return { ...state, isAutheticated: false, user: null, token: null }
+      return { ...state, isAutheticated: false, user: null, token: null, roles: null }
     default:
       return state
   }

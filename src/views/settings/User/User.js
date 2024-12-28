@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import useFetch from 'use-http'
 import AddUser from './AddUser'
 import ShowUser from './ShowUser'
@@ -13,6 +13,7 @@ import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import { AuthContext } from 'src/contexts/AuthContext'
 
 function Index() {
   const [users, setUsers] = useState([])
@@ -23,6 +24,10 @@ function Index() {
 
   const [searchKeyword, setSearchKeyword] = useState(null)
   const { get, response } = useFetch()
+
+  const { roles } = useContext(AuthContext)?.state
+
+  const user_privileges = roles?.privileges?.users
 
   useEffect(() => {
     loadInitialusers()
@@ -84,7 +89,7 @@ function Index() {
                             <CIcon icon={freeSet.cilSearch} />
                           </button>
                         </div>
-                        <AddUser after_submit={refresh_data} />
+                        {user_privileges?.create ? <AddUser after_submit={refresh_data} /> : null}
                       </div>
                     </CContainer>
                   </CNavbar>
@@ -126,8 +131,10 @@ function Index() {
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  <EditUser userId={user.id} after_submit={refresh_data} />
-                                  <ShowUser userId={user.id} />
+                                  {user_privileges?.edit ? (
+                                    <EditUser userId={user.id} after_submit={refresh_data} />
+                                  ) : null}
+                                  {user_privileges?.view ? <ShowUser userId={user.id} /> : null}
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

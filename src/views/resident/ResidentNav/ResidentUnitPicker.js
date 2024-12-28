@@ -3,18 +3,19 @@ import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 function ResidentUnitPicker(resident) {
+  console.log(resident)
   const contract = resident.membership
   const property = resident.property_id
   const residentId = resident.id
   const ownerNames = contract
     ?.filter((member) => member.member_type === 'owner')
-    .map((x) => [x.unit_contract.id, x.unit_contract.unit.unit_no])
+    .map((x) => [x.unit_contract.id, x.unit_contract.unit.unit_no, x.unit_contract.contract_type])
 
   const co_ownerNames = contract
     ?.filter(
       (member) => member.member_type === 'co_owner' || member.member_type === 'primary_resident',
     )
-    .map((x) => [x.unit_contract.id, x.unit_contract.unit.unit_no])
+    .map((x) => [x.unit_contract.id, x.unit_contract.unit.unit_no, x.unit_contract.contract_type])
 
   const result = `Owner: ${ownerNames || 'NA'} \n Residents: ${co_ownerNames || 'NA'} `
   return (
@@ -30,10 +31,7 @@ function ResidentUnitPicker(resident) {
           <Dropdown.Item eventKey="1">
             <p className="d-inline me-1">Owner:</p>
             {ownerNames.map((i, index) => (
-              <NavLink
-                key={index}
-                to={`${residentId}/property/${property}/resident-contract/${i[0]}`}
-              >
+              <NavLink key={index} to={`${residentId}/property/${property}/${i[2]}/${i[0]}`}>
                 {i[1]}
               </NavLink>
             ))}
@@ -42,10 +40,7 @@ function ResidentUnitPicker(resident) {
             <p className="d-inline me-1"> Co-Owner:</p>
 
             {co_ownerNames.map((i, index) => (
-              <NavLink
-                key={index}
-                to={`${residentId}/property/${property}/resident-contract/${i[0]}`}
-              >
+              <NavLink key={index} to={`${residentId}/property/${property}/${i[2]}/${i[0]}`}>
                 {i[1]}
               </NavLink>
             ))}

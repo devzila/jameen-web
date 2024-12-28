@@ -43,7 +43,7 @@ const Invoice = ({ after_submit, contract }) => {
         setLoading(false)
         setInvoices(manual_invoices.data)
       }
-    } else if (response.ok) {
+    } else {
       setErrors(true)
       setLoading(false)
       toast.error('Error')

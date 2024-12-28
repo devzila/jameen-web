@@ -178,9 +178,9 @@ export default function ShowUser({ userId }) {
               </div>
               <div className="text-center">
                 <CModalFooter>
-                  <CButton color="secondary" onClick={() => setVisible(false)}>
+                  <button className="p-2 custom_grey_button" onClick={() => setVisible(false)}>
                     Close
-                  </CButton>
+                  </button>
                 </CModalFooter>
               </div>
             </div>

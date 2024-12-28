@@ -134,9 +134,13 @@ const Login = () => {
                     <CCol>
                       <button
                         disabled={data.isSubmitting}
-                        className="custom_theme_button w-100 p-2"
+                        className={`custom_theme_button w-100 ${data.isSubmitting ? 'p-0' : 'p-2'}`}
                       >
-                        {data.isSubmitting ? 'Loading...' : 'Login'}
+                        {data.isSubmitting ? (
+                          <span className="spinner-border"></span>
+                        ) : (
+                          <span>Login</span>
+                        )}
                       </button>
                     </CCol>
                   </CRow>
