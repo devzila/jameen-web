@@ -10,8 +10,11 @@ const options = {
     // every time we make an http request, this will run 1st before the request is made
     // url, path and route are supplied to the interceptor
     // request options can be modified and must be returned
+
     request: async ({ options, url, path, route }) => {
       options.headers.Authorization = localStorage.getItem('token')
+      options.headers.CompanySlug = window.location.hostname.split('.')[0]
+
       return options
     },
 

@@ -50,6 +50,7 @@ const Login = () => {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
+        CompanySlug: window.location.hostname.split('.')[0],
       },
       body: JSON.stringify({
         username: data.email,

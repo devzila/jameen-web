@@ -8,6 +8,7 @@ export default function AuthenticationRoutes() {
   const NewPassword = React.lazy(() => import('../views/pages/password/PasswordForm'))
   const Login = React.lazy(() => import('../views/pages/login/Login'))
   const EmailSent = React.lazy(() => import('../views/pages/password/EmailSent'))
+  const FindCompany = React.lazy(() => import('../views/pages/company_subdomain/FindCompany'))
 
   return (
     <CContainer fluid className="g-0 p-1 overflow-hidden">
@@ -18,6 +19,7 @@ export default function AuthenticationRoutes() {
           <Route path="/login" name="Login" element={<Login />} />
           <Route path="/" name="Login" element={<Login />} />
           <Route path="/email-sent" element={<EmailSent />} />
+          <Route path="/company-gateway" element={<FindCompany />} />
         </Routes>
       </Suspense>
     </CContainer>
