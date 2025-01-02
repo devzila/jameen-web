@@ -15,6 +15,7 @@ import {
   CCardHeader,
   CCardFooter,
 } from '@coreui/react'
+import { freeSet } from '@coreui/icons'
 
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
@@ -32,6 +33,12 @@ const Login = () => {
   }
   const navigate = useNavigate()
 
+  const domain_array = window.location.hostname.split('.')
+  const sub_domain_present = domain_array[0]
+
+  const valid_subdomain =
+    process.env.NODE_ENV == 'development' ? domain_array.length > 1 : domain_array.length > 3
+  console.log(valid_subdomain)
   const [data, setData] = React.useState(initialState)
   const handleInputChange = (event) => {
     setData({
@@ -50,7 +57,7 @@ const Login = () => {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        CompanySlug: window.location.hostname.split('.')[0],
+        'company-slug': window.location.hostname.split('.')[0],
       },
       body: JSON.stringify({
         username: data.email,
@@ -118,7 +125,7 @@ const Login = () => {
                       onChange={handleInputChange}
                     />
                   </CInputGroup>
-                  <CInputGroup className="mb-4 ">
+                  <CInputGroup className="mb-3">
                     <CInputGroupText className="rounded-0">
                       <CIcon icon={cilLockLocked} />
                     </CInputGroupText>
@@ -131,6 +138,23 @@ const Login = () => {
                       onChange={handleInputChange}
                     />
                   </CInputGroup>
+                  {valid_subdomain ? (
+                    <div className="input-group rounded-0 mb-4">
+                      <span className="input-group-text rounded-0">
+                        <CIcon icon={freeSet.cilBuilding} size="lg" />
+                      </span>
+                      <input
+                        type="text"
+                        className="form-control p-2"
+                        name="text"
+                        disabled
+                        value={sub_domain_present}
+                        required
+                      />
+                    </div>
+                  ) : (
+                    ''
+                  )}
                   <CRow>
                     <CCol>
                       <button
@@ -147,10 +171,18 @@ const Login = () => {
                   </CRow>
                   <CCardFooter className="border-0 bg-white mt-3 mb-3">
                     <div className="row">
-                      <div className=" d-flex justify-content-center mt-2 ">
-                        <NavLink className="text-secondary" to={'/forgot-password'}>
+                      <div className=" d-flex-center mt-2 ">
+                        <NavLink className="text-secondary mx-1" to={'/forgot-password'}>
                           Forgot password?
                         </NavLink>
+                        <span className="text-secondary">●</span>
+                        <a
+                          className="text-secondary mx-1"
+                          target="_self"
+                          href={`${process.env.REACT_APP_BASE_URL}/company-gateway`}
+                        >
+                          {`Company's Gateway`}
+                        </a>
                       </div>
                     </div>
                   </CCardFooter>

@@ -13,7 +13,7 @@ const options = {
 
     request: async ({ options, url, path, route }) => {
       options.headers.Authorization = localStorage.getItem('token')
-      options.headers.CompanySlug = window.location.hostname.split('.')[0]
+      options.headers['company-slug'] = window.location.hostname.split('.')[0]
 
       return options
     },

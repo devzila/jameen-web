@@ -21,7 +21,29 @@ export default function FindCompany() {
 
   const fetchCompanySubDomain = (e) => {
     e.preventDefault()
-    window.location.href = `http://${company_name}.localhost:3001`
+    fetch(`${process.env.REACT_APP_API_URL}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'company-slug': company_name,
+      },
+      method: 'GET',
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json()
+        } else {
+          return res.json().then((errorData) => {
+            toast.error(errorData.message || 'An error occurred')
+            throw new Error(errorData.message || 'An error occurred')
+          })
+        }
+      })
+      .then((data) => {
+        window.location.href = `http://${company_name}.localhost:3001`
+      })
+      .catch((error) => {
+        console.log('Error fetching data:', error)
+      })
   }
   return (
     <CContainer fluid className="bg-light p-0">
