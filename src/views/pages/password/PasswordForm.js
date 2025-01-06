@@ -9,7 +9,7 @@ import {
   CCardFooter,
 } from '@coreui/react'
 import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import jameenlogo from 'src/assets/images/jameen-logo.png'
 import { status_color } from 'src/services/CommonFunctions'
@@ -18,6 +18,10 @@ export default function PasswordForm() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [disabled, setDisabled] = useState(true)
+  const [searchParams] = useSearchParams()
+
+  const token = searchParams.get('token')
+  const navigate = useNavigate()
 
   const [validations, setValidations] = useState({
     length: null,
@@ -62,7 +66,34 @@ export default function PasswordForm() {
   }
   const initiateUpdatePassword = (e) => {
     e.preventDefault()
-    toast.success('Password changed succesfully.')
+    e.preventDefault()
+    fetch(`${process.env.REACT_APP_API_URL}/v1/admin/auth/passwords/${token}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'company-slug': window.location.hostname.split('.')[0],
+      },
+      body: JSON.stringify({
+        token: token,
+        password: password,
+        password_confirmation: confirmPassword,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json()
+        }
+        return res.json().then((errData) => {
+          throw new Error(errData.message || 'An error occurred')
+        })
+      })
+      .then((r) => {
+        toast.success(r?.message || 'Password changed succesfully.')
+        navigate('/login')
+      })
+      .catch((err) => {
+        toast.error(err.message || 'Unknown error occured!')
+      })
   }
   return (
     <CContainer className="bg-light" fluid>
@@ -134,7 +165,7 @@ export default function PasswordForm() {
                     <div className="col-12">
                       <div className="d-grid ">
                         <button
-                          className="custom_theme_button p-3 rounded-0 m-0"
+                          className="custom_theme_button p-2 rounded-0 m-0"
                           type="submit"
                           disabled={disabled}
                         >
@@ -147,13 +178,9 @@ export default function PasswordForm() {
               </CCardBody>
               <CCardFooter className="border-0 bg-white">
                 <div className="row">
-                  <div className=" d-flex justify-content-center mt-2 mb-4 ">
+                  <div className=" d-flex justify-content-center  mb-4 ">
                     <NavLink className="mx-2 text-secondary" to="/login">
                       Log In
-                    </NavLink>
-                    <span>•</span>
-                    <NavLink className="mx-2 text-secondary" to="/register">
-                      Register
                     </NavLink>
                   </div>
                 </div>

@@ -20,8 +20,29 @@ export default function ForgotPassword() {
   const navigate = useNavigate()
   const initiateOtpRequest = (e) => {
     e.preventDefault()
-    toast.success('OTP sent succesfully.')
-    navigate('/email-sent')
+    fetch(`${process.env.REACT_APP_API_URL}/v1/admin/auth/passwords`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        'company-slug': window.location.hostname.split('.')[0],
+      },
+      body: JSON.stringify({
+        email: email,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json()
+        }
+        throw res
+      })
+      .then((r) => {
+        toast.success(r?.message || 'OTP sent succesfully.')
+        navigate('/email-sent')
+      })
+      .catch((err) => {
+        toast.error('Unknown error occured!')
+      })
   }
   return (
     <CContainer fluid className="bg-light p-0">
