@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import React, { Suspense, useEffect } from 'react'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import { CContainer } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
 
@@ -9,11 +9,24 @@ export default function AuthenticationRoutes() {
   const Login = React.lazy(() => import('../views/pages/login/Login'))
   const EmailSent = React.lazy(() => import('../views/pages/password/EmailSent'))
   const FindCompany = React.lazy(() => import('../views/pages/company_subdomain/FindCompany'))
+  const navigate = useNavigate()
+
+  const domain_array = window.location.hostname.split('.')
+
+  const valid_subdomain =
+    process.env.NODE_ENV == 'development' ? domain_array.length > 1 : domain_array.length > 3
+
+  useEffect(() => {
+    if (!valid_subdomain && window.location.pathname != '/company-gateway') {
+      navigate('/company-gateway')
+    }
+  }, [])
 
   return (
     <CContainer fluid className="g-0 p-1 overflow-hidden">
       <Suspense fallback={<Loading />}>
         <Routes>
+          <Route path="*" name="Login" element={<Login />} />
           <Route path="/forgot-password" name="Forgot Password" element={<ForgotPassword />} />
           <Route path="/reset-password" name="Password" element={<NewPassword />} />
           <Route path="/login" name="Login" element={<Login />} />

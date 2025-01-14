@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import {
   CButton,
@@ -38,7 +38,7 @@ const Login = () => {
 
   const valid_subdomain =
     process.env.NODE_ENV == 'development' ? domain_array.length > 1 : domain_array.length > 3
-  console.log(valid_subdomain)
+
   const [data, setData] = React.useState(initialState)
   const handleInputChange = (event) => {
     setData({
@@ -60,7 +60,7 @@ const Login = () => {
         'company-slug': window.location.hostname.split('.')[0],
       },
       body: JSON.stringify({
-        username: data.email,
+        email: data.email,
         password: data.password,
       }),
     })
@@ -117,8 +117,8 @@ const Login = () => {
                       <CIcon icon={cilUser} />
                     </CInputGroupText>
                     <CFormInput
-                      placeholder="Username"
-                      autoComplete="username"
+                      placeholder="Email"
+                      autoComplete="email"
                       name="email"
                       id="password"
                       value={data.email}
@@ -172,16 +172,16 @@ const Login = () => {
                   <CCardFooter className="border-0 bg-white mt-3 mb-3">
                     <div className="row">
                       <div className=" d-flex-center mt-2 ">
-                        <NavLink className="text-secondary mx-1" to={'/forgot-password'}>
+                        <NavLink className="text-secondary " to={'/forgot-password'}>
                           Forgot password?
                         </NavLink>
-                        <span className="text-secondary">●</span>
+                        <span className="text-secondary mx-1"> | </span>
                         <a
-                          className="text-secondary mx-1"
+                          className="text-secondary"
                           target="_self"
                           href={`${process.env.REACT_APP_BASE_URL}/company-gateway`}
                         >
-                          {`Company's Gateway`}
+                          Login with another company
                         </a>
                       </div>
                     </div>
