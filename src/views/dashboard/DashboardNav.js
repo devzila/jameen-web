@@ -1,9 +1,7 @@
 import { freeSet } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import PropTypes from 'prop-types'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { toast } from 'react-toastify'
 
 export default function DashboardNav() {
   return (

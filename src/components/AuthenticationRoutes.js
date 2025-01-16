@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react'
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { CContainer } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
 
@@ -12,13 +12,24 @@ export default function AuthenticationRoutes() {
   const navigate = useNavigate()
 
   const domain_array = window.location.hostname.split('.')
+  const location = useLocation()
+  const params = useParams()
+  const redirect_url =
+    params['*'] !== 'login' &&
+    params['*'] !== 'company-gateway' &&
+    params['*'] !== 'email-sent' &&
+    params['*'] !== 'forgot-password' &&
+    params['*'] !== 'reset-password'
+      ? `?redirect=${params['*']}`
+      : ''
 
+  console.log(redirect_url)
+  const redirect_string = location.search.length == 0 ? redirect_url : location.search
   const valid_subdomain =
     process.env.NODE_ENV == 'development' ? domain_array.length > 1 : domain_array.length > 3
-
   useEffect(() => {
     if (!valid_subdomain && window.location.pathname != '/company-gateway') {
-      navigate('/company-gateway')
+      navigate(`/company-gateway${redirect_string}`)
     }
   }, [])
 

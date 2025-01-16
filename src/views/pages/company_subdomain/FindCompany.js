@@ -11,7 +11,7 @@ import {
   CCardFooter,
 } from '@coreui/react'
 import React, { useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useLoaderData, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import jameenlogo from 'src/assets/images/jameen-logo.png'
 
@@ -19,6 +19,9 @@ export default function FindCompany() {
   const [company_name, setCompanyName] = useState('')
   const navigate = useNavigate()
 
+  const location = useLocation()
+  const pathname = location.search?.split('?redirect=')[1] || 'login'
+  console.log(pathname)
   const fetchCompanySubDomain = (e) => {
     e.preventDefault()
     fetch(`${process.env.REACT_APP_API_URL}`, {
@@ -39,7 +42,7 @@ export default function FindCompany() {
         }
       })
       .then((data) => {
-        window.location.href = `http://${company_name}.localhost:3001`
+        window.location.href = `http://${company_name}.localhost:3001/${pathname}`
       })
       .catch((error) => {
         console.log('Error fetching data:', error)

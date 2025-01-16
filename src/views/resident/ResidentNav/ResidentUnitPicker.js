@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 function ResidentUnitPicker(resident) {
-  console.log(resident)
   const contract = resident.membership
   const property = resident.property_id
   const residentId = resident.id

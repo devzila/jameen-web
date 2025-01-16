@@ -45,7 +45,6 @@ const Residents = () => {
     if (searchKeyword) {
       endpoint += `&q[username_cont]=${searchKeyword}`
     }
-    console.log(searchKeyword)
     if (typeof query === 'string') {
       // endpoint += query
     }
@@ -57,7 +56,6 @@ const Residents = () => {
         setLoading(false)
         setResidents(initialResidents.data)
         setPagination(initialResidents.pagination)
-        console.log(initialResidents.data)
         if (initialResidents.data.length == 0) {
           toast.dismiss()
           toast.warn('No data found!')

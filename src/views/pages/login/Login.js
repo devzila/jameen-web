@@ -14,13 +14,14 @@ import {
   CRow,
   CCardHeader,
   CCardFooter,
+  CNav,
 } from '@coreui/react'
 import { freeSet } from '@coreui/icons'
 
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { AuthContext } from '../../../contexts/AuthContext'
-import { Navigate, NavLink, useNavigate } from 'react-router-dom'
+import { Navigate, NavLink, useLocation, useNavigate, useParams } from 'react-router-dom'
 import jameenlogo from 'src/assets/images/jameen-logo.png'
 
 const Login = () => {
@@ -33,6 +34,12 @@ const Login = () => {
   }
   const navigate = useNavigate()
 
+  const params = useParams()
+  const location = useLocation()
+  const redirect_path = location.pathname || '/'
+  const gateway_redirect_string =
+    redirect_path == '/' || redirect_path == '/login' ? '' : `?redirect=${redirect_path.slice(1)}`
+  console.log(redirect_path)
   const domain_array = window.location.hostname.split('.')
   const sub_domain_present = domain_array[0]
 
@@ -75,7 +82,7 @@ const Login = () => {
           type: 'LOGIN',
           payload: resJson,
         })
-        navigate('/')
+        navigate(redirect_path)
       })
       .catch((error) => {
         if (!('json' in error) || error.status === 404) {
@@ -179,7 +186,7 @@ const Login = () => {
                         <a
                           className="text-secondary"
                           target="_self"
-                          href={`${process.env.REACT_APP_BASE_URL}/company-gateway`}
+                          href={`${process.env.REACT_APP_BASE_URL}/company-gateway${gateway_redirect_string}`}
                         >
                           Login with another company
                         </a>
