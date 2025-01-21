@@ -8,6 +8,7 @@ import { BsThreeDots } from 'react-icons/bs'
 import AddEditMaintenance from './AddEditMaintenance'
 import dafaultAvatar from 'src/assets/images/avatars/default.png'
 import UpdateRequestStatus from './UpdateRequestStatus'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function MaintenanceTable({ data, refreshData, api_endpoint }) {
   return (
@@ -62,16 +63,26 @@ export default function MaintenanceTable({ data, refreshData, api_endpoint }) {
                         <BsThreeDots />
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                        <AddEditMaintenance
-                          type="edit"
-                          api_endpoint={api_endpoint}
-                          id={item.id}
-                          refreshData={refreshData}
+                        <CheckPermissions
+                          component={
+                            <AddEditMaintenance
+                              type="edit"
+                              api_endpoint={api_endpoint}
+                              id={item.id}
+                              refreshData={refreshData}
+                            />
+                          }
+                          keys={['maintenance', 'edit']}
                         />
-                        <UpdateRequestStatus
-                          id={item.id}
-                          api_endpoint={api_endpoint}
-                          refreshData={refreshData}
+                        <CheckPermissions
+                          component={
+                            <UpdateRequestStatus
+                              id={item.id}
+                              api_endpoint={api_endpoint}
+                              refreshData={refreshData}
+                            />
+                          }
+                          keys={['maintenance', 'edit']}
                         />
                       </Dropdown.Menu>
                     </Dropdown>

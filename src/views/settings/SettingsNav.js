@@ -6,7 +6,7 @@ import { AuthContext } from 'src/contexts/AuthContext'
 export default function SettingsNav() {
   const { role } = useContext(AuthContext)?.state
   const settings_privileges = role?.privileges
-
+  console.log(role)
   const navLinks = [
     { name: 'Role', url: '/settings/roles' },
     { name: 'User ', url: '/settings/users' },

@@ -14,6 +14,7 @@ import { Dropdown, Row, Col } from 'react-bootstrap'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { AuthContext } from 'src/contexts/AuthContext'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 function Index() {
   const [users, setUsers] = useState([])
@@ -89,7 +90,11 @@ function Index() {
                             <CIcon icon={freeSet.cilSearch} />
                           </button>
                         </div>
-                        {user_privileges?.create ? <AddUser after_submit={refresh_data} /> : null}
+                        <CheckPermissions
+                          component={<AddUser after_submit={refresh_data} />}
+                          keys={['user', 'create']}
+                        />
+                        {/* {user_privileges?.create ? : null} */}
                       </div>
                     </CContainer>
                   </CNavbar>
@@ -131,10 +136,16 @@ function Index() {
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  {user_privileges?.edit ? (
-                                    <EditUser userId={user.id} after_submit={refresh_data} />
-                                  ) : null}
-                                  {user_privileges?.view ? <ShowUser userId={user.id} /> : null}
+                                  <CheckPermissions
+                                    component={
+                                      <EditUser userId={user.id} after_submit={refresh_data} />
+                                    }
+                                    keys={['user', 'edit']}
+                                  />
+                                  <CheckPermissions
+                                    component={<ShowUser userId={user.id} />}
+                                    keys={['user', 'view']}
+                                  />
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

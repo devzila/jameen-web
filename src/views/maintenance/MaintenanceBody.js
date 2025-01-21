@@ -17,6 +17,7 @@ import AddEditMaintenance from './Components/AddEditMaintenance'
 import MaintenanceaFilter from './Components/MaintenanceaFilter'
 import MaintenanceSort from './Components/MaintenanceSort'
 import PropTypes from 'prop-types'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function MaintanceBody({ api_endpoint }) {
   const { get, response, error } = useFetch()
@@ -108,12 +109,16 @@ export default function MaintanceBody({ api_endpoint }) {
                           <CIcon icon={freeSet.cilSearch} />
                         </button>
                       </div>
-
-                      <AddEditMaintenance
-                        type="add"
-                        id={0}
-                        refreshData={loaddMaintenanceRequests}
-                        api_endpoint={api_endpoint}
+                      <CheckPermissions
+                        component={
+                          <AddEditMaintenance
+                            type="add"
+                            id={0}
+                            refreshData={loaddMaintenanceRequests}
+                            api_endpoint={api_endpoint}
+                          />
+                        }
+                        keys={['maintenance', 'create']}
                       />
                     </div>
                   </div>
