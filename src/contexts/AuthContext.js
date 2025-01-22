@@ -11,10 +11,12 @@ export const initialAuthState = {
 }
 
 export const reducer = (state, action) => {
+  console.log(action.payload.object)
   switch (action.type) {
     case 'LOGIN':
       localStorage.setItem('user', JSON.stringify(action.payload.object))
       localStorage.setItem('token', action.payload.token)
+      localStorage.setItem('token', action.payload.object.role)
       loadMetaData()
 
       return {
@@ -22,7 +24,7 @@ export const reducer = (state, action) => {
         isAutheticated: true,
         user: action.payload.object,
         token: action.payload.token,
-        roles: action.payload.object.roles,
+        roles: action.payload.object.role,
       }
     case 'LOGOUT':
       localStorage.clear()

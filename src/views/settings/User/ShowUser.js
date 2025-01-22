@@ -88,15 +88,7 @@ export default function ShowUser({ userId }) {
                           </td>
                           <td className="text-primary text-black-50">{user?.name}</td>
                         </tr>
-                        <tr>
-                          <td>
-                            <strong>
-                              <span className="glyphicon glyphicon-user  text-primary"></span>
-                              Username
-                            </strong>
-                          </td>
-                          <td className="text-primary text-black-50">{user.username}</td>
-                        </tr>
+
                         <tr>
                           <td>
                             <strong>

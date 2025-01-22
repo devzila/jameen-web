@@ -85,7 +85,6 @@ export default function EditUser({ userId, after_submit }) {
         setValue('name', api.data.name)
         setValue('email', api.data.email)
         setValue('mobile_number', api.data.mobile_number)
-        setValue('username', api.data.username)
         setValue('password', api.data.password)
         setValue('role_id', api.data.role.id)
         setValue('active', api.data.active)
@@ -123,7 +122,7 @@ export default function EditUser({ userId, after_submit }) {
 
     await patch(`/v1/admin/users/${userId}`, { user: body })
     if (response.ok) {
-      toast('User Data Edited Successfully')
+      toast.success('User Data Edited Successfully')
       setVisible(!visible)
       after_submit()
     } else {
@@ -181,11 +180,25 @@ export default function EditUser({ userId, after_submit }) {
               </Row>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Row>
+                  <Col md="1" className="pr-1 mt-5">
+                    <Form.Group className="form-check form-switch">
+                      <Form.Control
+                        className="form-check-input"
+                        type="checkbox"
+                        role="switch"
+                        id="flexSwitchCheckDefault"
+                        defaultValue={userData.active}
+                        {...register('active')}
+                      ></Form.Control>
+                      <label className="form-check-label">Active</label>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
                   <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
                       <label>Name</label>
                       <Form.Control
-                        // defaultValue={users.name}
                         placeholder="Full Name"
                         type="text"
                         {...register('name')}
@@ -203,31 +216,6 @@ export default function EditUser({ userId, after_submit }) {
                       ></Form.Control>
                     </Form.Group>
                   </Col>
-                  <Col md="1"></Col>
-                </Row>
-                <Row>
-                  <Col className="pr-1 mt-3" md="6">
-                    <Form.Group>
-                      <label>Username</label>
-                      <Form.Control
-                        defaultValue={userData.username}
-                        placeholder="UserName"
-                        type="text"
-                        {...register('username')}
-                      ></Form.Control>
-                    </Form.Group>
-                  </Col>
-                  <Col className="pr-1 mt-3" md="6">
-                    <Form.Group>
-                      <label>Password</label>
-                      <Form.Control
-                        defaultValue={userData.password}
-                        placeholder="Password"
-                        type="text"
-                        {...register('password')}
-                      ></Form.Control>
-                    </Form.Group>
-                  </Col>
                 </Row>
                 <Row>
                   <Col className="pr-1 mt-3" md="6">
@@ -241,7 +229,20 @@ export default function EditUser({ userId, after_submit }) {
                       ></Form.Control>
                     </Form.Group>
                   </Col>
-                  <Col className="pr-1 mt-3" md="4">
+                  <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <label>Password</label>
+                      <Form.Control
+                        defaultValue={userData.password}
+                        placeholder="Password"
+                        type="password"
+                        {...register('password')}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
                       <label>Phone No</label>
                       <Form.Control
@@ -250,19 +251,6 @@ export default function EditUser({ userId, after_submit }) {
                         type="text"
                         {...register('mobile_number')}
                       ></Form.Control>
-                    </Form.Group>
-                  </Col>
-                  <Col className="pr-1 mt-4" md="2">
-                    <Form.Group className="form-check form-switch">
-                      <Form.Control
-                        className="form-check-input"
-                        type="checkbox"
-                        role="switch"
-                        id="flexSwitchCheckDefault"
-                        defaultValue={userData.active}
-                        {...register('active')}
-                      ></Form.Control>
-                      <label className="form-check-label">Active</label>
                     </Form.Group>
                   </Col>
                 </Row>
@@ -295,7 +283,7 @@ export default function EditUser({ userId, after_submit }) {
                 </CModalTitle>
 
                 <Row>
-                  <Col className="pr-1 mt-1" md="12">
+                  <Col className="pr-1 mt-1" md="6">
                     <Form.Group>
                       <Controller
                         name="role_id"

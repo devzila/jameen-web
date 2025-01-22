@@ -113,7 +113,6 @@ function Index() {
                           <th className="pt-3 pb-3 border-0">Name</th>
                           <th className="pt-3 pb-3 border-0">Email</th>
                           <th className="pt-3 pb-3 border-0">Phone Number</th>
-                          <th className="pt-3 pb-3 border-0">Username</th>
                           <th className="pt-3 pb-3 border-0">Role</th>
                           <th className="pt-3 pb-3 border-0">Action </th>
                         </tr>
@@ -127,7 +126,6 @@ function Index() {
                             </th>
                             <td className="pt-3">{user.email}</td>
                             <td className="pt-3">{user.mobile_number}</td>
-                            <td className="pt-3">{user.username}</td>
                             <td className="pt-3">{user.role.name}</td>
 
                             <td>
@@ -153,7 +151,7 @@ function Index() {
                         ))}
                       </tbody>
                     </table>
-                    {loading && <Loading />}
+                    {loading ? <Loading /> : null}
                     {errors == true ? toast('We are facing a technical issue at our end.') : null}
                   </div>
                 </div>

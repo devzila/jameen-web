@@ -141,6 +141,21 @@ export default function UserForm({ after_submit }) {
                 </div>
               </Row>
               <Row>
+                <Col className="pr-1 mt-3" md="2">
+                  <Form.Group className="mt-4 form-check form-switch">
+                    <label>Active</label>
+
+                    <Form.Control
+                      className="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      defaultChecked={true}
+                      {...register('active')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>
@@ -167,18 +182,16 @@ export default function UserForm({ after_submit }) {
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-3 mt-3" md="6">
+                <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>
-                      Username
-                      <small className="text-danger">
-                        *{errors ? errors.username?.join(', ') : null}
-                      </small>
+                      Email
+                      <small className="text-danger"> *{errors ? errors.email : null} </small>
                     </label>
                     <Form.Control
-                      placeholder="UserName"
+                      placeholder="abc@example.com"
                       type="text"
-                      {...register('username')}
+                      {...register('email')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -200,19 +213,6 @@ export default function UserForm({ after_submit }) {
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>
-                      Email
-                      <small className="text-danger"> *{errors ? errors.email : null} </small>
-                    </label>
-                    <Form.Control
-                      placeholder="abc@example.com"
-                      type="text"
-                      {...register('email')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="4">
-                  <Form.Group>
-                    <label>
                       Phone No{' '}
                       <small className="text-danger">
                         {' '}
@@ -223,19 +223,6 @@ export default function UserForm({ after_submit }) {
                       placeholder="Phone Number"
                       type="text"
                       {...register('mobile_number')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="2">
-                  <Form.Group className="mt-4 form-check form-switch">
-                    <label>Active</label>
-
-                    <Form.Control
-                      className="form-check-input"
-                      type="checkbox"
-                      role="switch"
-                      defaultChecked={true}
-                      {...register('active')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>

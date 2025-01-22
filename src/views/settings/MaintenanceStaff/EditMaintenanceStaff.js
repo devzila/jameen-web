@@ -39,7 +39,6 @@ export default function EditMaintenanceStaff({ after_submit, id }) {
         setValue('email', api.data.email)
         setValue('mobile_number', api.data.mobile_number)
         setValue('username', api.data.username)
-        // setValue('property_ids')
       }
     } catch (error) {
       console.error('Error fetching Security Staff:', error)
@@ -142,15 +141,6 @@ export default function EditMaintenanceStaff({ after_submit, id }) {
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>
-                      Username
-                      <small className="text-danger ">*{errors ? errors.username : null}</small>
-                    </label>
-                    <Form.Control type="text" {...register('username')}></Form.Control>
-                  </Form.Group>
-                </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>

@@ -2,15 +2,12 @@ export function processPrivileges(role, keys) {
   if (role?.is_admin) {
     return true
   } else {
-    return getValueByPath(role, keys)
+    return getRolesValueFromKeys(role, keys)
   }
 }
 
-function getValueByPath(roles, keys) {
-  return keys.reduce((item, key) => {
-    if (item && key in item) {
-      return item[key]
-    }
-    return false
+function getRolesValueFromKeys(roles, keys) {
+  return keys.reduce((acc, key) => {
+    return acc && acc[key] !== undefined ? acc[key] : false
   }, roles)
 }

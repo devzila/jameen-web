@@ -24,21 +24,17 @@ export default function Index() {
         <Suspense>
           <Routes>
             <Route path="users" name="User" element={<User />} />
-            {roles?.privileges?.settings?.manage ? (
-              <>
-                <Route path="roles" name="Role" element={<Role />} />
-                <Route path="maintenance" name="Maintenance" element={<Maintenance />} />
-                <Route
-                  path="maintenance-categories"
-                  name="Maintenance Categories"
-                  element={<MaintenanceCategories />}
-                />
-                <Route path="*" element={<Navigate to="/settings/roles" replace />} />{' '}
-                <Route path="security" name="Security" element={<Security />} />
-                <Route path="integrations" name="Integrations" element={<Integrations />} />
-                <Route path="workflow" name="Workflow" element={<WorkFlow />} />
-              </>
-            ) : null}
+            <Route path="roles" name="Role" element={<Role />} />
+            <Route path="maintenance" name="Maintenance" element={<Maintenance />} />
+            <Route
+              path="maintenance-categories"
+              name="Maintenance Categories"
+              element={<MaintenanceCategories />}
+            />
+            <Route path="*" element={<Navigate to="/settings/roles" replace />} />{' '}
+            <Route path="security" name="Security" element={<Security />} />
+            <Route path="integrations" name="Integrations" element={<Integrations />} />
+            <Route path="workflow" name="Workflow" element={<WorkFlow />} />
           </Routes>
         </Suspense>
       </CContainer>
