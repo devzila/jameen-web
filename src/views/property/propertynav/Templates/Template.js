@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { Dropdown } from 'react-bootstrap'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import { Row, Col } from 'react-bootstrap'
 import { BsThreeDots } from 'react-icons/bs'
 import { formatdate } from '../../../../services/CommonFunctions'
-
+import CheckPermissions from 'src/permissions/CheckPermissions'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import EditTemplate from './EditTemplate'
 import { useParams } from 'react-router-dom'
@@ -96,32 +95,12 @@ const CreditNote = () => {
                         Invoice Template
                       </button>
                     </div>
-                    {/* <Dropdown>
-                      <Dropdown.Toggle
-                        variant="secondary"
-                        className="custom_theme_button"
-                        id="dropdown-basic"
-                      >
-                        {selectedOption?.replace('_', ' ').toUpperCase()}
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu className="rounded-0 border-0  shadow-lg">
-                        <Dropdown.Item
-                          onClick={() => handleOptionChange('credit_notes')}
-                          className=".active-nav-bar-button"
-                        >
-                          Credit Notes
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          onClick={() => handleOptionChange('invoices')}
-                          className=".active-nav-bar-button"
-                        >
-                          Invoice Template
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown> */}
                   </CNavbarBrand>
                   <div className="d-flex justify-content-end">
-                    <AddTemp option={selectedOption} after_submit={refreshData} />
+                    <CheckPermissions
+                      component={<AddTemp option={selectedOption} after_submit={refreshData} />}
+                      keys={['credit_note', 'create']}
+                    />
                   </div>
                 </CContainer>
               </CNavbar>
@@ -160,10 +139,15 @@ const CreditNote = () => {
                                       <BsThreeDots />
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
-                                      <EditTemplate
-                                        id={credit_notes.id}
-                                        after_submit={refreshData}
-                                        option={selectedOption}
+                                      <CheckPermissions
+                                        component={
+                                          <EditTemplate
+                                            id={credit_notes.id}
+                                            after_submit={refreshData}
+                                            option={selectedOption}
+                                          />
+                                        }
+                                        keys={['credit_note', 'update']}
                                       />
                                     </Dropdown.Menu>
                                   </Dropdown>

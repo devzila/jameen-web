@@ -5,7 +5,6 @@ import { processPrivileges } from './PrivilegesFunctions'
 
 export default function CheckPermissions({ component, keys }) {
   const { roles } = useContext(AuthContext)?.state
-  console.log(useContext(AuthContext))
   const has_access = processPrivileges(roles, keys)
 
   console.log(has_access)

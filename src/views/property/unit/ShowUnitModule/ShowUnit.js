@@ -14,6 +14,7 @@ import Delete from '../DeleteUnit'
 import AllocateUnit from '../AllocateUnit'
 import MovingInUnit from '../MovingInUnit'
 import AddParking from './AllotParking'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function Showunit() {
   const { propertyId, unitId } = useParams()
@@ -69,7 +70,10 @@ export default function Showunit() {
                     <strong className="text-black">Unit Information</strong>
                   </div>
                   <div className="d-flex">
-                    <Edit unitId={unitId} after_submit={refresh_data} />
+                    <CheckPermissions
+                      component={<Edit unitId={unitId} after_submit={refresh_data} />}
+                      keys={['maintenance', 'create']}
+                    />
 
                     {unit.status === 'unallotted' ? (
                       <>

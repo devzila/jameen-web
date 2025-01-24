@@ -12,6 +12,7 @@ import FilterAccordion from './UnitFunctions/FilterAccordioan'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { status_color } from 'src/services/CommonFunctions'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 function Unit() {
   const { get, response, error } = useFetch()
@@ -115,7 +116,11 @@ function Unit() {
                       </button>
                     </div>
                     <FilterAccordion filter_callback={filter_callback} units_type={unit_type} />
-                    <Add after_submit={refresh_data} />
+
+                    <CheckPermissions
+                      component={<Add after_submit={refresh_data} />}
+                      keys={['unit', 'create']}
+                    />
                   </div>
                 </CContainer>
               </CNavbar>

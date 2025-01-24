@@ -16,6 +16,7 @@ import EditVisitor from './EditVisitor'
 import DeleteVisitor from './DeleteVisitor'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function Visitor() {
   const [pagination, setPagination] = useState(null)
@@ -80,7 +81,8 @@ export default function Visitor() {
                   <CIcon icon={freeSet.cilSearch} />
                 </button>
               </div>
-              <AddVisitor />
+
+              <CheckPermissions component={<AddVisitor />} keys={['visitor', 'create']} />
             </div>
           </CContainer>
         </CNavbar>
@@ -136,9 +138,15 @@ export default function Visitor() {
                               <BsThreeDots />
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                              <EditVisitor visitorId={visitor.id} />
+                              <CheckPermissions
+                                component={<EditVisitor visitorId={visitor.id} />}
+                                keys={['visitor', 'edit']}
+                              />{' '}
+                              <CheckPermissions
+                                component={<DeleteVisitor visitorId={visitor.id} />}
+                                keys={['visitor', 'delete']}
+                              />
                               <ShowVisitor visitorId={visitor.id} />
-                              <DeleteVisitor visitorId={visitor.id} />
                             </Dropdown.Menu>
                           </Dropdown>
                         </td>

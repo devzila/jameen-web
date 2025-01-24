@@ -21,7 +21,6 @@ export default function FindCompany() {
 
   const location = useLocation()
   const pathname = location.search?.split('?redirect=')[1] || 'login'
-  console.log(pathname)
   const fetchCompanySubDomain = (e) => {
     e.preventDefault()
     fetch(`${process.env.REACT_APP_API_URL}`, {

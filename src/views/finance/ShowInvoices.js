@@ -8,6 +8,7 @@ import { status_color } from 'src/services/CommonFunctions'
 import InvoiceCancel from './InvoiceCancel'
 import InvoicePayment from './InvoicePayment'
 import PropTypes from 'prop-types'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function ShowInvoices({ invoice_id }) {
   const { get, response } = useFetch()
@@ -69,8 +70,14 @@ export default function ShowInvoices({ invoice_id }) {
                   />
                   {invoice?.status === 'pending' ? (
                     <>
-                      <InvoicePayment invoice={invoice} aftersubmit={getInvoice} />
-                      <InvoiceCancel id={invoice.id} aftersubmit={getInvoice} />
+                      <CheckPermissions
+                        component={<InvoicePayment invoice={invoice} aftersubmit={getInvoice} />}
+                        keys={['invoice', 'can_mark_as_paid']}
+                      />
+                      <CheckPermissions
+                        component={<InvoiceCancel id={invoice.id} aftersubmit={getInvoice} />}
+                        keys={['invoice', 'cancel']}
+                      />
                     </>
                   ) : null}
                 </div>

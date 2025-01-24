@@ -38,8 +38,10 @@ const Login = () => {
   const location = useLocation()
   const redirect_path = location.pathname || '/'
   const gateway_redirect_string =
-    redirect_path == '/' || redirect_path == '/login' ? '' : `?redirect=${redirect_path.slice(1)}`
-  console.log(redirect_path)
+    redirect_path == '' || redirect_path == '/' || redirect_path == '/login'
+      ? ''
+      : `?redirect=${redirect_path.slice(1)}`
+
   const domain_array = window.location.hostname.split('.')
   const sub_domain_present = domain_array[0]
 

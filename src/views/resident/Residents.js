@@ -13,6 +13,7 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import ResidentUnitPicker from './ResidentNav/ResidentUnitPicker'
 import ResidentFIlters from './ResidentFIlters'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 const Residents = () => {
   const { get, response } = useFetch()
@@ -95,7 +96,8 @@ const Residents = () => {
                 <CIcon icon={freeSet.cilSearch} />
               </button>
             </div>
-            <AddResidents />
+
+            <CheckPermissions component={<AddResidents />} keys={['resident', 'create']} />
           </div>
         </CContainer>
       </CNavbar>

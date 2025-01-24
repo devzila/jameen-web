@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import ShowLeftBar from './show/ShowLeftBar'
 import EditNews from './EditNews'
 import ConfirmationPopup from '../shared/ConfirmationPopup'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 function NewsShow() {
   const { postId } = useParams()
@@ -70,19 +71,29 @@ function NewsShow() {
         {edit ? (
           ''
         ) : (
-          <button className="btn custom_theme_button" onClick={handleEditSavePost}>
-            Edit
-          </button>
+          <CheckPermissions
+            component={
+              <button className="btn custom_theme_button" onClick={handleEditSavePost}>
+                Edit
+              </button>
+            }
+            keys={['posts', 'edit']}
+          />
         )}
         {edit ? (
           ''
         ) : (
-          <button
-            className="btn custom_theme_button"
-            onClick={() => callPublishUnpublish(data.status)}
-          >
-            {data.status == 'draft' ? 'Publish' : 'Unpublish'}
-          </button>
+          <CheckPermissions
+            component={
+              <button
+                className="btn custom_theme_button"
+                onClick={() => callPublishUnpublish(data.status)}
+              >
+                {data.status == 'draft' ? 'Publish' : 'Unpublish'}
+              </button>
+            }
+            keys={['posts', 'edit']}
+          />
         )}
         <ConfirmationPopup
           sure_callback={deletePost}
@@ -105,7 +116,10 @@ function NewsShow() {
 
         <CCol md="9">
           {edit ? (
-            <EditNews data={data} callback={handleEditSavePost} />
+            <CheckPermissions
+              component={<EditNews data={data} callback={handleEditSavePost} />}
+              keys={['posts', 'edit']}
+            />
           ) : (
             <CCard className="my-3 rounded-0 bg-white border-0 p-3">
               <div>

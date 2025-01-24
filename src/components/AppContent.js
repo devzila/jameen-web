@@ -18,13 +18,9 @@ const News = React.lazy(() => import('../views/news/News'))
 const NewsRoutes = React.lazy(() => import('../views/news/NewsRoutes'))
 
 const Report = React.lazy(() => import('../views/report/Report'))
-const Settings = React.lazy(() => import('../views/settings/Index'))
+const SettingsRoutes = React.lazy(() => import('../views/settings/SettingRoutes'))
 const Page404 = React.lazy(() => import('../views/Page404'))
-const User = React.lazy(() => import('../views/settings/User/User'))
-const Role = React.lazy(() => import('../views/settings/Role/Role'))
-const MovingOut = React.lazy(() => import('../views/settings/MovingOut'))
 
-const Allotment = React.lazy(() => import('../views/settings/Allotment'))
 const ShowUnit = React.lazy(() => import('../views/property/unit/ShowUnitModule/ShowUnit'))
 const ResidentRoutes = React.lazy(() => import('../views/resident/ResidentNav/ResidentRoutes'))
 const ShowInvoices = React.lazy(() => import('../views/finance/ShowInvoices'))
@@ -65,12 +61,8 @@ const AppContent = () => {
           <Route path="/news/:postId/*" name="Post" element={<NewsRoutes />} />
 
           <Route path="/report" name="Report" element={<Report />} />
-          <Route path="/settings/*" name="Settings" element={<Settings />}>
-            <Route path="users" name="User" element={<User />} />
-            <Route path="roles" name="Role" element={<Role />} />
-            <Route path="allotment" name="Allotment" element={<Allotment />} />
-            <Route path="moving-out" name="Moving Out" element={<MovingOut />} />
-          </Route>
+          <Route path="/settings/*" name="Settings" element={<SettingsRoutes />} />
+
           <Route path="*" element={<Page404 />} />
         </Routes>
       </Suspense>

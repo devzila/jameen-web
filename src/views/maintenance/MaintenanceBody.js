@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { Row, Col } from 'react-bootstrap'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import CustomDivToggle from '../../components/CustomDivToggle'
 import Loader from 'src/components/loading/loading'
 import Paginate from 'src/components/Pagination'
-import { useParams } from 'react-router-dom'
 import TopCards from 'src/views/maintenance/Components/TopCards'
 
 import CIcon from '@coreui/icons-react'
@@ -118,7 +116,7 @@ export default function MaintanceBody({ api_endpoint }) {
                             api_endpoint={api_endpoint}
                           />
                         }
-                        keys={['maintenance', 'create']}
+                        keys={['maintenance_requests', 'create']}
                       />
                     </div>
                   </div>

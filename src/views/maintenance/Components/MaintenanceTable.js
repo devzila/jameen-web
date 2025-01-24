@@ -72,7 +72,7 @@ export default function MaintenanceTable({ data, refreshData, api_endpoint }) {
                               refreshData={refreshData}
                             />
                           }
-                          keys={['maintenance', 'edit']}
+                          keys={['maintenance_requests', 'edit']}
                         />
                         <CheckPermissions
                           component={
@@ -82,7 +82,7 @@ export default function MaintenanceTable({ data, refreshData, api_endpoint }) {
                               refreshData={refreshData}
                             />
                           }
-                          keys={['maintenance', 'edit']}
+                          keys={['maintenance_requests', 'cancel']}
                         />
                       </Dropdown.Menu>
                     </Dropdown>

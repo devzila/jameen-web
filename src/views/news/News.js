@@ -2,16 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { useFetch } from 'use-http'
 import { toast } from 'react-toastify'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import { BsThreeDots } from 'react-icons/bs'
-import { Dropdown, Row, Col } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import Loading from 'src/components/loading/loading'
-import CustomDivToggle from '../../components/CustomDivToggle'
 import Paginate from '../../components/Pagination'
 import { status_color } from 'src/services/CommonFunctions'
 import AddNews from './show/AddNews'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 function News() {
   const { get, response } = useFetch()
@@ -73,7 +72,10 @@ function News() {
                 <CIcon icon={freeSet.cilSearch} />
               </button>
             </div>
-            <AddNews after_submit={loadInitialPosts} />
+            <CheckPermissions
+              component={<AddNews after_submit={loadInitialPosts} />}
+              keys={['posts', 'create']}
+            />
             {/* Add News button goes here */}
           </div>
         </CContainer>

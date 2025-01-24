@@ -7,7 +7,7 @@ import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 
 // sidebar nav config
-import navigation from '../_nav'
+import navigation from '../SideBarContent'
 import { AuthContext } from 'src/contexts/AuthContext'
 
 const AppSidebar = () => {

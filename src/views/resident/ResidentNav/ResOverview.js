@@ -8,6 +8,7 @@ import logo from '../../../assets/images/avatars/default.png'
 import { formatdate } from 'src/services/CommonFunctions'
 import { toast } from 'react-toastify'
 import EditResidents from '../EditResidents'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function ResOverview() {
   const { residentId } = useParams()
@@ -51,7 +52,10 @@ export default function ResOverview() {
                   <strong>Resident Data</strong>
                 </div>
                 <div>
-                  <EditResidents id={residentId} />
+                  <CheckPermissions
+                    component={<EditResidents id={residentId} />}
+                    keys={['resident', 'update']}
+                  />
                 </div>
               </div>
 

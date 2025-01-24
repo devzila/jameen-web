@@ -3,7 +3,7 @@ import { Navigate, Route, Routes, Link, Outlet } from 'react-router-dom'
 import { CContainer, CSpinner } from '@coreui/react'
 import SettingsNav from './SettingsNav'
 import Role from './Role/Role'
-import { AuthContext } from './../../contexts/AuthContext'
+import { AuthContext } from '../../contexts/AuthContext'
 
 export default function Index() {
   const User = React.lazy(() => import('./User/User'))
