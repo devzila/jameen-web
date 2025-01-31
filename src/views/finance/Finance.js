@@ -11,10 +11,7 @@ import { status_color } from 'src/services/CommonFunctions'
 import PickOwner from '../property/unit/UnitFunctions/PickOwner'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import InvoicePayment from './InvoicePayment'
-import InvoiceCancel from './InvoiceCancel'
 import { formatdate } from 'src/services/CommonFunctions'
-import ShowInvoices from './ShowInvoices'
 import { NavLink } from 'react-router-dom'
 
 const Finance = () => {

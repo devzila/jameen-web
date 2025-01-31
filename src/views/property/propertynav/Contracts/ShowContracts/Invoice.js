@@ -12,6 +12,7 @@ import PropTypes from 'prop-types'
 import AddManualInvoice from './AddInvoice'
 import ShowInvoicePopup from './ShowInvoicePopup'
 import ShowInvoices from 'src/views/finance/ShowInvoices'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 const Invoice = ({ after_submit, contract }) => {
   const [invoices, setInvoices] = useState([])
@@ -63,7 +64,10 @@ const Invoice = ({ after_submit, contract }) => {
                 </div>
                 <div>
                   {contract.contract_type == 'allotment' ? (
-                    <AddManualInvoice after_submit={loadManualInvoices} />
+                    <CheckPermissions
+                      component={<AddManualInvoice after_submit={loadManualInvoices} />}
+                      keys={['invoice', 'create']}
+                    />
                   ) : null}
                 </div>
               </div>
@@ -115,7 +119,6 @@ const Invoice = ({ after_submit, contract }) => {
                                 />
                               </th>
                               <td className="pt-3">
-                                {' '}
                                 {invoice
                                   ? `${invoice.total_amount} (${
                                       invoice.amount + ' + ' + invoice.vat_amount

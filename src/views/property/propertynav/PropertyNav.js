@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function PropertyNav() {
   return (
@@ -10,9 +11,15 @@ export default function PropertyNav() {
             <div>
               <NavLink to="overview"> Overview </NavLink>
             </div>
-            <div>
-              <NavLink to="unit">Unit</NavLink>
-            </div>
+            <CheckPermissions
+              component={
+                <div>
+                  <NavLink to="unit">Unit</NavLink>
+                </div>
+              }
+              keys={['unit', 'view']}
+            />
+
             <div>
               <NavLink to="unit-types"> Unit Types </NavLink>
             </div>
@@ -22,21 +29,46 @@ export default function PropertyNav() {
             <div>
               <NavLink to="ParkingLot"> Parking Lot </NavLink>
             </div>
-            <div>
-              <NavLink to="Contracts"> Contracts </NavLink>
-            </div>
-            <div>
-              <NavLink to="moving-in"> Moving In </NavLink>
-            </div>
-            <div>
-              <NavLink to="maintenance-requests"> Maintenance </NavLink>
-            </div>
+            <CheckPermissions
+              component={
+                <div>
+                  <NavLink title="Allotment" to="Contracts">
+                    Contracts
+                  </NavLink>
+                </div>
+              }
+              keys={['operation', 'manage_allotment']}
+            />
+            <CheckPermissions
+              component={
+                <div>
+                  <NavLink to="moving-in"> Moving In </NavLink>
+                </div>
+              }
+              keys={['operation', 'manage_moving_in']}
+            />
+            <CheckPermissions
+              component={
+                <div>
+                  <NavLink to="maintenance-requests"> Maintenance </NavLink>
+                </div>
+              }
+              keys={['maintenance_requests', 'view']}
+            />
+
             <div>
               <NavLink to="templates"> Templates </NavLink>
             </div>
-            <div>
-              <NavLink to="Invoices"> Invoices </NavLink>
-            </div>
+
+            <CheckPermissions
+              component={
+                <div>
+                  <NavLink to="Invoices"> Invoices </NavLink>
+                </div>
+              }
+              keys={['invoice', 'view']}
+            />
+
             <div>
               <NavLink to="assets"> Assets </NavLink>
             </div>

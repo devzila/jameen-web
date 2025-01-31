@@ -1,14 +1,11 @@
-import React, { useContext, useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import React from 'react'
+import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { AuthContext } from 'src/contexts/AuthContext'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function SettingsNav() {
-  const { role } = useContext(AuthContext)?.state
-  const settings_privileges = role?.privileges
-  console.log(role)
   const navLinks = [
-    { name: 'Role', url: '/settings/roles' },
+    { name: 'Role', url: '/settings/roles', keys: ['roles', 'view'] },
     { name: 'User ', url: '/settings/users' },
     { name: 'Security Staff', url: '/settings/security' },
     { name: 'Maintenance Staff', url: '/settings/maintenance' },
@@ -21,9 +18,15 @@ export default function SettingsNav() {
       <div className="new-settings-menu container-fluid ms-2">
         <div className="menu-list">
           {navLinks.map((link, index) => (
-            <div key={index}>
-              <NavLink to={link.url}>{link.name}</NavLink>
-            </div>
+            <CheckPermissions
+              component={
+                <div key={index}>
+                  <NavLink to={link.url}>{link.name}</NavLink>
+                </div>
+              }
+              key={index}
+              keys={link.keys}
+            />
           ))}
         </div>
       </div>

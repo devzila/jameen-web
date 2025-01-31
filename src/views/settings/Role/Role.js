@@ -16,6 +16,7 @@ import DeleteRoles from './DeleteRoles'
 import { formatdate } from 'src/services/CommonFunctions'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function Role() {
   const [pagination, setPagination] = useState(null)
@@ -129,9 +130,17 @@ export default function Role() {
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  <EditRoles roleId={role.id} after_submit={refresh_data} />
+                                  <CheckPermissions
+                                    component={
+                                      <>
+                                        <EditRoles roleId={role.id} after_submit={refresh_data} />
+                                        <DeleteRoles roleId={role.id} after_submit={refresh_data} />
+                                      </>
+                                    }
+                                    keys={[]}
+                                    // ['roles','manage']
+                                  />
                                   <ShowRoles roleId={role.id} />
-                                  <DeleteRoles roleId={role.id} after_submit={refresh_data} />
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

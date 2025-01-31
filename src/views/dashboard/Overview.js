@@ -74,15 +74,16 @@ export default function Overview() {
           <CCard className="p-3 my-3 border-0">
             <table>
               <thead>
-                <tr className="text-center text-uppercase fw-bold">Residents</tr>
+                <tr className="text-center text-uppercase fw-bold">
+                  <td>Residents </td>
+                </tr>
               </thead>
               <tbody>
                 {overview_data
                   ? Object.entries(overview_data.resident).map((item) => (
                       <tr key={item} className="border-bottom ">
-                        <td className="text-capitalize">{item[0].replace(/_/g, ' ')}</td>
+                        <td className="text-capitalize p-1">{item[0].replace(/_/g, ' ')}</td>
                         <td>{item[1]}</td>
-                        <hr />
                       </tr>
                     ))
                   : null}
@@ -94,16 +95,17 @@ export default function Overview() {
           <CCard className="p-3 my-3 border-0">
             <table>
               <thead>
-                <tr className="text-center text-uppercase fw-bold">Maintenance Requests</tr>
+                <tr className="text-center text-uppercase fw-bold">
+                  <td>Maintenance Requests </td>
+                </tr>
               </thead>
               <tbody>
                 {overview_data
                   ? Object.entries(overview_data.maintenance_requests).map((item) => (
                       <>
                         <tr key={item} className="border-bottom ">
-                          <td className="text-capitalize">{item[0].replace(/_/g, ' ')}</td>
+                          <td className="text-capitalize p-1">{item[0].replace(/_/g, ' ')}</td>
                           <td>{item[1]}</td>
-                          <hr />
                         </tr>
                       </>
                     ))
@@ -116,15 +118,16 @@ export default function Overview() {
           <CCard className="p-3 my-3 border-0">
             <table>
               <thead>
-                <tr className="text-center text-uppercase fw-bold">Maintenance Requests checks</tr>
+                <tr className="text-center text-uppercase fw-bold">
+                  <td>Maintenance Requests checks</td>
+                </tr>
               </thead>
               <tbody>
                 {overview_data
                   ? Object.entries(overview_data.finance).map((item) => (
                       <tr key={item} className="border-bottom ">
-                        <td className="text-capitalize">{item[0].replace(/_/g, ' ')}</td>
+                        <td className="text-capitalize p-1">{item[0].replace(/_/g, ' ')}</td>
                         <td>{item[1]}</td>
-                        <hr />
                       </tr>
                     ))
                   : null}

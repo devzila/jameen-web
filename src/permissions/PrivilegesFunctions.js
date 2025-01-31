@@ -1,9 +1,5 @@
 export function processPrivileges(role, keys) {
-  if (role?.is_admin) {
-    return true
-  } else {
-    return getRolesValueFromKeys(role, keys)
-  }
+  return getRolesValueFromKeys(role, keys)
 }
 
 function getRolesValueFromKeys(roles, keys) {

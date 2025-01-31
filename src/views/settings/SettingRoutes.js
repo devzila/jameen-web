@@ -31,7 +31,7 @@ export default function Index() {
               name="Maintenance Categories"
               element={<MaintenanceCategories />}
             />
-            <Route path="*" element={<Navigate to="/settings/roles" replace />} />{' '}
+            <Route path="*" element={<Navigate to="/settings/users" replace />} />
             <Route path="security" name="Security" element={<Security />} />
             <Route path="integrations" name="Integrations" element={<Integrations />} />
             <Route path="workflow" name="Workflow" element={<WorkFlow />} />

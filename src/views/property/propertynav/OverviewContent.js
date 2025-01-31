@@ -9,6 +9,7 @@ import { formatdate } from 'src/services/CommonFunctions'
 import EditProperty from '../EditProperty'
 import DeleteProperty from '../DeleteProperty'
 import defaultbuilding from 'src/assets/images/default-building.png'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function OverviewContent(propsd) {
   const { propertyId } = useParams()
@@ -73,8 +74,15 @@ export default function OverviewContent(propsd) {
                     <strong className="text-black">Overview</strong>
                   </div>
                   <div className="d-flex justify-content-end mb-2">
-                    <EditProperty propertyId={propertyId} />
-                    <DeleteProperty propertyId={propertyId} />
+                    <CheckPermissions
+                      component={
+                        <>
+                          <EditProperty propertyId={propertyId} />
+                          <DeleteProperty propertyId={propertyId} />
+                        </>
+                      }
+                      keys={['property', 'manage']}
+                    />
                   </div>
                 </div>
                 <hr className="text-secondary" />

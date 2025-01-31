@@ -22,8 +22,6 @@ export default function TopCards({ refresh, filter_callback }) {
   }, [refresh])
 
   const getStatsData = async () => {
-    console.log(propertyId)
-
     const endpoint = propertyId
       ? `/v1/admin/premises/properties/${propertyId}/maintenance_request_stats`
       : `/v1/admin/maintenance/stats`
@@ -60,7 +58,6 @@ export default function TopCards({ refresh, filter_callback }) {
     setActive(active_data)
     filter_callback(query)
   }
-  console.log(active)
   return (
     <Row className=" text-uppercase p-2">
       <Col

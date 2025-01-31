@@ -15,7 +15,6 @@ export const reducer = (state, action) => {
     case 'LOGIN':
       localStorage.setItem('user', JSON.stringify(action.payload.object))
       localStorage.setItem('token', action.payload.token)
-      localStorage.setItem('token', action.payload.object.role)
       loadMetaData()
 
       return {

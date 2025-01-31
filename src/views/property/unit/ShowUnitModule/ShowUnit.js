@@ -72,24 +72,36 @@ export default function Showunit() {
                   <div className="d-flex">
                     <CheckPermissions
                       component={<Edit unitId={unitId} after_submit={refresh_data} />}
-                      keys={['maintenance', 'create']}
+                      keys={['unit', 'create']}
                     />
 
                     {unit.status === 'unallotted' ? (
                       <>
-                        <AllocateUnit
-                          unitId={unitId}
-                          unitNo={unit.unit_no}
-                          after_submit={refresh_data}
+                        <CheckPermissions
+                          component={
+                            <>
+                              <AllocateUnit
+                                unitId={unitId}
+                                unitNo={unit.unit_no}
+                                after_submit={refresh_data}
+                              />
+                              <Delete unitId={unitId} after_submit={refresh_data} />
+                            </>
+                          }
+                          keys={['operation', 'manage_allotment']}
                         />
-                        <Delete unitId={unitId} after_submit={refresh_data} />
                       </>
                     ) : null}
                     {unit.status === 'vacant' ? (
-                      <MovingInUnit
-                        unitId={unitId}
-                        unitNo={unit.unit_no}
-                        after_submit={refresh_data}
+                      <CheckPermissions
+                        component={
+                          <MovingInUnit
+                            unitId={unitId}
+                            unitNo={unit.unit_no}
+                            after_submit={refresh_data}
+                          />
+                        }
+                        keys={['operation', 'manage_moving_in']}
                       />
                     ) : null}
                   </div>
@@ -405,8 +417,14 @@ export default function Showunit() {
                           </CRow>
                         </CCardText>
                         <div className="d-flex justify-content-end">
-                          <InvoicePayment invoice={invoice} />
-                          <InvoiceCancel id={invoice.id} />
+                          <CheckPermissions
+                            component={<InvoicePayment invoice={invoice} />}
+                            keys={['invoice', 'can_mark_as_paid']}
+                          />
+                          <CheckPermissions
+                            component={<InvoiceCancel id={invoice.id} />}
+                            keys={['invoice', 'cancel']}
+                          />
                         </div>
                       </CCardBody>
                     </CCard>
