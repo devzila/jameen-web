@@ -8,6 +8,8 @@ export default function AuthenticationRoutes() {
   const NewPassword = React.lazy(() => import('../views/pages/password/PasswordForm'))
   const Login = React.lazy(() => import('../views/pages/login/Login'))
   const EmailSent = React.lazy(() => import('../views/pages/password/EmailSent'))
+  const OtpSent = React.lazy(() => import('../views/pages/password/OtpSent'))
+
   const FindCompany = React.lazy(() => import('../views/pages/company_subdomain/FindCompany'))
   const navigate = useNavigate()
 
@@ -41,6 +43,7 @@ export default function AuthenticationRoutes() {
           <Route path="/forgot-password" name="Forgot Password" element={<ForgotPassword />} />
           <Route path="/reset-password" name="Password" element={<NewPassword />} />
           <Route path="/login" name="Login" element={<Login />} />
+          <Route path="/password-updated" name="Jameen" element={<OtpSent />} />
           <Route path="/" name="Login" element={<Login />} />
           <Route path="/email-sent" element={<EmailSent />} />
           <Route path="/company-gateway" element={<FindCompany />} />

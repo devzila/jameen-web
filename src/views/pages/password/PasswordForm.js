@@ -89,7 +89,7 @@ export default function PasswordForm() {
       })
       .then((r) => {
         toast.success(r?.message || 'Password changed succesfully.')
-        navigate('/login')
+        navigate('/password-updated')
       })
       .catch((err) => {
         toast.error(err.message || 'Unknown error occured!')
