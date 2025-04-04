@@ -61,7 +61,7 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
         setResidents(trimResidents(initialResidents.data))
       }
     } else {
-      toast('Unable to load residents')
+      toast.error('Unable to load residents')
     }
   }
 

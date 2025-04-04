@@ -52,7 +52,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
         setResidents(trimResidents(initialResidents.data))
       }
     } else {
-      toast('Unable to load residents')
+      toast.error('Unable to load residents')
     }
   }
 

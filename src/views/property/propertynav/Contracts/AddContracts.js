@@ -55,7 +55,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
         setResidents(format_react_select(initialResidents.data, ['id', ['first_name']]))
       }
     } else {
-      toast('Unable to load residents')
+      toast.error('Unable to load residents')
     }
   }
 
@@ -66,7 +66,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
         setUnits(format_react_select(initialUnits.data, ['id', 'unit_no']))
       }
     } else {
-      toast('Unable to load residents')
+      toast.error('Unable to load residents')
     }
   }
   //useEffext
