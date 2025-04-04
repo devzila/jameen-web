@@ -21,6 +21,7 @@ export default function FindCompany() {
 
   const location = useLocation()
   const host_url = document.location.host
+  const protocol = document.location.protocol
   const pathname = location.search?.split('?redirect=')[1] || 'login'
   const fetchCompanySubDomain = (e) => {
     e.preventDefault()
@@ -42,7 +43,7 @@ export default function FindCompany() {
         }
       })
       .then((data) => {
-        window.location.href = `http://${company_name}.${host_url}/${pathname}`
+        window.location.href = `${protocol}//${company_name}.${host_url}/${pathname}`
       })
       .catch((error) => {
         console.log('Error fetching data:', error)
