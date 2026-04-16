@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import '../../../scss/_custom.scss'
-import { BsThreeDots } from 'react-icons/bs'
 import Loading from 'src/components/loading/loading'
-import { Row, Col, Dropdown } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import Paginate from '../../../components/Pagination'
 import { NavLink, useParams } from 'react-router-dom'
-
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import CustomDivToggle from '../../../components/CustomDivToggle'
 import Add from './AddUnit'
-import Edit from './EditUnit'
-import Delete from './DeleteUnit'
 import PickOwner from './UnitFunctions/PickOwner'
-import AllocateUnit from './AllocateUnit'
 import FilterAccordion from './UnitFunctions/FilterAccordioan'
-import MovingInUnit from './MovingInUnit'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import { status_color } from 'src/services/CommonFunctions'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 function Unit() {
   const { get, response, error } = useFetch()
@@ -41,7 +36,6 @@ function Unit() {
 
   async function loadUnitTypes() {
     let endpoint = await get(`/v1/admin/premises/properties/${propertyId}/unit_types`)
-    console.log(endpoint)
 
     if (response.ok) {
       const temp_unit = await endpoint.data.map((data) => ({
@@ -68,7 +62,6 @@ function Unit() {
     }
 
     const initialUnits = await get(endpoint)
-    console.log(initialUnits)
 
     if (response.ok) {
       setErrors(false)
@@ -88,22 +81,6 @@ function Unit() {
   }
   const refresh_data = () => {
     loadInitialUnits()
-  }
-
-  function status_color(status) {
-    switch (status) {
-      case 'unallotted':
-        return 'rgb(0, 128, 0)'
-        break
-      case 'vacant':
-        return 'rgba(0, 120, 0,0.7)'
-        break
-      case 'occupied':
-        return 'grey'
-        break
-      default:
-        return 'white'
-    }
   }
 
   function filter_callback(queries) {
@@ -139,7 +116,11 @@ function Unit() {
                       </button>
                     </div>
                     <FilterAccordion filter_callback={filter_callback} units_type={unit_type} />
-                    <Add after_submit={refresh_data} />
+
+                    <CheckPermissions
+                      component={<Add after_submit={refresh_data} />}
+                      keys={['unit', 'create']}
+                    />
                   </div>
                 </CContainer>
               </CNavbar>
@@ -158,11 +139,12 @@ function Unit() {
                       >
                         <tr>
                           <th className="pt-3 pb-3 border-0  ">Unit Number</th>
+                          <th className="pt-3 pb-3 border-0  "> Type </th>
                           <th className="pt-3 pb-3 border-0  ">Bed/Bath </th>
                           <th className="pt-3 pb-3 border-0  ">Year Built</th>
                           <th className="pt-3 pb-3 border-0  ">Owner/Resident</th>
+                          <th className="pt-3 pb-3 border-0  ">Open Invoices</th>
                           <th className="pt-3 pb-3 border-0  ">Status</th>
-                          <th className="pt-3 pb-3 border-0 text-center ">Action </th>
                         </tr>
                       </thead>
 
@@ -174,8 +156,9 @@ function Unit() {
                                 {unit.unit_no}
                               </NavLink>
                             </td>
+                            <td className="pt-3 pb-2">{unit?.unit_type?.name || '-'}</td>
 
-                            <td className="pt-3 pb-2 text-center">
+                            <td className="pt-3 pb-2 text-start">
                               {unit.bedrooms_number + '  /  ' + unit.bathrooms_number}
                             </td>
                             <td className="pt-3 pb-2">{unit.year_built}</td>
@@ -184,60 +167,11 @@ function Unit() {
                                 ? PickOwner(unit.running_contracts[0]?.contract_members)
                                 : '-'}
                             </td>
+                            <td className="pt-3 pb-2">-</td>
                             <td className="pt-3 pb-2 ">
-                              <button
-                                className="text-center"
-                                style={{
-                                  backgroundColor: `${status_color(unit.status)}`,
-                                  border: '0px',
-                                  padding: '1px',
-                                  borderRadius: '2px',
-                                  color: 'white',
-                                  cursor: 'default',
-                                  width: '120px',
-                                }}
-                              >
+                              <button className={`request-${status_color(unit?.status)}`}>
                                 {unit.status}
                               </button>
-                            </td>
-
-                            <td>
-                              <Dropdown key={unit.id} className="text-center">
-                                <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                  <BsThreeDots />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  <Edit unitId={unit.id} after_submit={refresh_data} />
-                                  <NavLink
-                                    style={{
-                                      border: 'none',
-                                      color: '#00bfcc',
-                                      marginLeft: '35%',
-                                      textDecorationLine: 'none',
-                                    }}
-                                    to={`/properties/${propertyId}/units/${unit.id}`}
-                                  >
-                                    Show
-                                  </NavLink>
-
-                                  <Delete unitId={unit.id} after_submit={refresh_data} />
-
-                                  {unit.status === 'unallotted' ? (
-                                    <AllocateUnit
-                                      unitId={unit.id}
-                                      unitNo={unit.unit_no}
-                                      after_submit={refresh_data}
-                                    />
-                                  ) : null}
-                                  {unit.status === 'vacant' ? (
-                                    <MovingInUnit
-                                      unitId={unit.id}
-                                      unitNo={unit.unit_no}
-                                      after_submit={refresh_data}
-                                    />
-                                  ) : null}
-                                </Dropdown.Menu>
-                              </Dropdown>
                             </td>
                           </tr>
                         ))}
@@ -245,11 +179,8 @@ function Unit() {
                     </table>
                     {loading && <Loading />}
                     {errors && (
-                      <p
-                        className="d-flex justify-content-cente"
-                        style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
-                      >
-                        There is a technical issue at Backend
+                      <p className="text-center small text-danger fst-italic">
+                        {process.env.REACT_APP_ERROR_MESSAGE}
                       </p>
                     )}
                   </div>

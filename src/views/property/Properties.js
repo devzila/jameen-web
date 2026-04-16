@@ -1,20 +1,14 @@
 import React, { Suspense, useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import AddProperty from './AddProperty'
-import { Dropdown } from 'react-bootstrap'
-import { NavLink, Link } from 'react-router-dom'
-import { Row, Col } from 'react-bootstrap'
-import { BsThreeDots, BsList, BsGrid3X3Gap } from 'react-icons/bs' // Import BsList icon for property list view
+import { NavLink } from 'react-router-dom'
+import { BsList, BsGrid3X3Gap } from 'react-icons/bs' // Import BsList icon for property list view
 import Loading from 'src/components/loading/loading'
-import CustomDivToggle from '../../components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@coreui/react'
-import ShowProperty from './ShowProperty'
-import EditProperty from './EditProperty'
-import OverviewContent from './propertynav/OverviewContent'
+
 import PropertyCardView from './PropertyCardView'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import loading from 'src/components/loading/loading'
 
 function Property() {
   const { get, response, error } = useFetch()
@@ -23,7 +17,6 @@ function Property() {
 
   const [properties, setProperties] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [refresh, setRefresh] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState('')
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -33,7 +26,6 @@ function Property() {
     let endpoint = `/v1/admin/premises/properties?search=${searchKeyword}`
 
     const initialProperties = await get(endpoint)
-    console.log(initialProperties)
 
     if (response.ok) {
       setLoading(false)
@@ -68,7 +60,7 @@ function Property() {
         <section style={{ width: '100%', padding: '0px' }}>
           <div>
             <div className="mask d-flex align-items-center h-100">
-              <div className="container-fluid">
+              <div className="w-100">
                 <CNavbar expand="lg" colorScheme="light" className="bg-white">
                   <CContainer fluid>
                     <CNavbarBrand href="#">Property</CNavbarBrand>
@@ -131,7 +123,6 @@ function Property() {
                                 <th className="border-0">USE TYPE</th>
                                 <th className="border-0">UNIT COUNT</th>
                                 <th className="border-0">PAYMENT TERM</th>
-                                <th className="border-0">ACTIONS</th>
                               </tr>
                             </thead>
 
@@ -155,34 +146,14 @@ function Property() {
                                   <td style={{ textTransform: 'capitalize' }}>
                                     {property.payment_term?.replace(/_/g, ' ')}
                                   </td>
-                                  <td>
-                                    <Dropdown key={property.id}>
-                                      <Dropdown.Toggle
-                                        as={CustomDivToggle}
-                                        style={{ cursor: 'pointer' }}
-                                      >
-                                        <Dropdown.Menu>
-                                          <EditProperty
-                                            propertyId={property.id}
-                                            after_submit={refresh_data}
-                                          />
-                                          <ShowProperty propertyId={property.id} />
-                                        </Dropdown.Menu>
-                                        <BsThreeDots />
-                                      </Dropdown.Toggle>
-                                    </Dropdown>
-                                  </td>
                                 </tr>
                               ))}
                             </tbody>
                           </table>
-                          {loading && <Loading />}
-                          {errors && (
-                            <p
-                              className="d-flex justify-content-cente"
-                              style={{ color: 'red', fontSize: 'x-large', marginLeft: '30%' }}
-                            >
-                              There is a technical issue at Backend
+                          {loading ?? <Loading />}
+                          {errors ?? (
+                            <p className="text-center small text-danger fst-italic">
+                              {process.env.REACT_APP_ERROR_MESSAGE}
                             </p>
                           )}
                         </div>

@@ -1,15 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Card, Button, Dropdown } from 'react-bootstrap'
 import { NavLink, Link } from 'react-router-dom'
-import { BsThreeDots } from 'react-icons/bs'
-import CustomDivToggle from '../../components/CustomDivToggle'
-import EditProperty from './EditProperty'
-import ShowProperty from './ShowProperty'
 import { CCol, CCard, CRow, CCardText, CCardBody } from '@coreui/react'
+import defaultimage from 'src/assets/images/default-building.png'
 
 function PropertyCardView({ property }) {
-  console.log(property)
   return (
     <>
       <CRow>
@@ -18,8 +13,8 @@ function PropertyCardView({ property }) {
             <CRow>
               {property.map((property) => (
                 <CCol key={property.id} md="3">
-                  <CCard className="shadow-lg border-0 rounded-2 mb-3">
-                    <CCardText className="card">
+                  <CCard className="shadow-sm border-0 rounded-2 mb-3">
+                    <div className="card">
                       <Link to={`/properties/${property.id}/overview`}>
                         <CRow>
                           <CCol className="position-relative text-center">
@@ -35,39 +30,12 @@ function PropertyCardView({ property }) {
                               }}
                               title="Avatar"
                               className="isTooltip"
-                              src={
-                                property.photo
-                                  ? property.photo
-                                  : 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJ1aWxkaW5nc3xlbnwwfHwwfHx8MA%3D%3D'
-                              }
+                              src={property.photo ? property.photo : defaultimage}
                               data-original-title="Property"
                             />
                           </CCol>
                         </CRow>
                       </Link>
-                    </CCardText>
-
-                    <div className="position-absolute top-0 end-0">
-                      <Dropdown key={property.id} className=" text-center p-3">
-                        <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                          <BsThreeDots />
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          <EditProperty propertyId={property.id} />
-                          <Link
-                            style={{
-                              border: '2px',
-                              color: '#00bfcc',
-                              marginLeft: '4%',
-                              textDecorationLine: 'none',
-                            }}
-                            to={`/properties/${property.id}/overview`}
-                            className="custom_tooltip_botton"
-                          >
-                            Show
-                          </Link>
-                        </Dropdown.Menu>
-                      </Dropdown>
                     </div>
 
                     <CCardBody className="pt-2">
@@ -75,7 +43,7 @@ function PropertyCardView({ property }) {
                         <CCol className="d-flex justify-content-end "></CCol>
                       </CRow>
                       <CRow>
-                        <CCol md="8" className="text-black">
+                        <CCol md="8" className="text-black text-nowrap text-capitalize">
                           {property?.name || '-'}
                           <br></br>
                           <CCol className="text-secondary">
@@ -86,7 +54,7 @@ function PropertyCardView({ property }) {
                         </CCol>
                       </CRow>
                       <br></br>
-                      <CCardText className=" m-2">
+                      <div className="m-2">
                         <CRow>
                           <CCol md="5" className="text-black ">
                             <NavLink to={`/properties/${property.id}/Buildings`}>
@@ -99,8 +67,8 @@ function PropertyCardView({ property }) {
                             </NavLink>
                           </CCol>
                         </CRow>
-                      </CCardText>
-                      <CCardText className="m-2">
+                      </div>
+                      <div className="m-2">
                         <CRow>
                           <CCol md="5" className="text-black text-capitalize">
                             {property?.use_type || '-'}
@@ -109,7 +77,7 @@ function PropertyCardView({ property }) {
                             {property?.payment_term.replace(/_/g, ' ') || '-'} Payment
                           </CCol>
                         </CRow>
-                      </CCardText>
+                      </div>
                     </CCardBody>
                   </CCard>
                 </CCol>

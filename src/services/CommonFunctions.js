@@ -1,11 +1,10 @@
+import { useFetch } from 'use-http'
 export function formatdate(isoDate) {
   if (isoDate) {
     const date = new Date(isoDate)
     const options = { day: '2-digit', month: 'short', year: 'numeric' }
 
     const formatted_date = date.toLocaleDateString('en-US', options) || '-'
-
-    console.log(formatted_date)
 
     return formatted_date
   } else {
@@ -14,18 +13,55 @@ export function formatdate(isoDate) {
 }
 
 export function status_color(status) {
-  switch (status) {
-    case 'pending':
-      return 'rgb(255, 68, 51)'
-    case 'due':
-      return 'rgba(0, 120, 0,0.7)'
+  const statusColors = {
+    pending: 'red',
+    requested: 'red',
+    due: 'orange',
+    vacant: 'orange',
+    paid: 'green',
+    unallotted: 'green',
+    cancelled: 'gray',
+    occupied: 'gray',
+    published: 'green',
+  }
 
-    case 'paid':
-      return 'green'
+  return statusColors[status] || 'gray'
+}
+export function format_react_select(data, key) {
+  if (data) {
+    return data.map((e) => ({
+      value: e[key[0]],
+      label: e[key[1]],
+    }))
+  } else {
+    return []
+  }
+}
 
-    case 'cancelled':
-      return 'grey'
-    default:
-      return 'white'
+export function cleanAvatar(payload) {
+  if (payload.avatar && (payload.avatar.data === '' || payload.avatar.data === undefined)) {
+    delete payload.avatar
+  }
+  return payload
+}
+
+export function removeEmptyDocuments(payload) {
+  console.log(payload)
+  const documents = payload.documents_attributes
+  console.log(documents)
+  payload.documents_attributes = documents.filter((doc) => {
+    return doc.name !== '' || doc.description !== '' || doc.file.data != undefined
+  })
+
+  return payload
+}
+
+export function formatNumberCount(num) {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + 'm'
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'k'
+  } else {
+    return num
   }
 }

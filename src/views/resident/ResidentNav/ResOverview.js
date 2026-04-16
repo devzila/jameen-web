@@ -1,18 +1,19 @@
-import { CCol, CCard, CListGroupItem, CCardImage, CRow, CCardText, CImage } from '@coreui/react'
+import { CCol, CCard, CListGroupItem, CRow, CCardText, CCardBody } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { useParams, Link } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import logo from '../../../assets/images/avatars/default.png'
 import { formatdate } from 'src/services/CommonFunctions'
 import { toast } from 'react-toastify'
+import EditResidents from '../EditResidents'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function ResOverview() {
   const { residentId } = useParams()
 
   const [resident_data, setResident_data] = useState({})
-  const [visible, setVisible] = useState(false)
   const { get, response } = useFetch()
 
   useEffect(() => {
@@ -29,25 +30,36 @@ export default function ResOverview() {
 
   return (
     <>
-      <CRow>
-        <CCol md="4">
-          <CCard className=" p-5  m-3 border-0  " style={{ backgroundColor: '#00bfcc' }}>
-            <div className="d-flex align-items-center justify-content-center h-100 ">
+      <CRow className="bg-white mt-2 m-1 p-1 rounded-2 border-0">
+        <CCol md="4" sm="6">
+          <CCard className="p-5 my-3 border-0 text-center" style={{ backgroundColor: '#00bfcc' }}>
+            <div className="">
               <img className="rounded-circle w-50 " src={resident_data.avatar || logo} />
             </div>
           </CCard>
         </CCol>
-        <CCol md="8">
-          <CCard className=" pt-3 pb-1 px-3  my-3 me-3  border-0">
+        <CCol className="col">
+          <CCard className="px-3 py-1 my-3 border-0">
             <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Resident Data</strong>
-              <hr style={{ color: '#C8C2C0' }} />
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <CIcon
+                    icon={freeSet.cilLineStyle}
+                    size="lg"
+                    className="me-2"
+                    style={{ color: '#00bfcc' }}
+                  />
+                  <strong>Resident Data</strong>
+                </div>
+                <div>
+                  <CheckPermissions
+                    component={<EditResidents id={residentId} />}
+                    keys={['resident', 'update']}
+                  />
+                </div>
+              </div>
+
+              <hr className="text-secondary mt-1 p-0" />
             </CListGroupItem>
             <CRow className="">
               <CCol className="p-3 mt-0 fw-light theme_color">
@@ -88,16 +100,16 @@ export default function ResOverview() {
               </CCol>
             </CRow>
             <CRow>
-              <CCol className="p-3 mt-0 fw-light theme_color">
+              <CCol className="p-3 mt-0 fw-light theme_color col-lg-3 col-sm-3">
                 Email
                 <CCardText
-                  className="fw-normal"
+                  className="fw-normal text-nowrap"
                   style={{ color: 'black', textTransform: 'capitalize' }}
                 >
                   {resident_data?.email || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
+              <CCol className="p-3 mt-0 fw-light theme_color text-nowrap col-lg-3 col-sm-6">
                 Phone No.
                 <CCardText
                   className="fw-normal"
@@ -106,10 +118,10 @@ export default function ResOverview() {
                   {resident_data?.phone_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                D.OB.
+              <CCol className="p-3 mt-0 fw-light theme_color  col-lg-3 col-sm-6">
+                D.O.B.
                 <CCardText
-                  className="fw-normal"
+                  className="fw-normal "
                   style={{ color: 'black', textTransform: 'capitalize' }}
                 >
                   {formatdate(resident_data?.dob) || '-'}
@@ -121,8 +133,8 @@ export default function ResOverview() {
       </CRow>
 
       <CRow>
-        <CCol md="2">
-          <CCard className=" p-3 m-3 border-0">
+        <CCol md="2" sm="12">
+          <CCard className="p-3 my-3 border-0">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -159,8 +171,8 @@ export default function ResOverview() {
             </CRow>
           </CCard>
         </CCol>
-        <CCol md="10">
-          <CCard className=" px-3 pt-4 my-3 me-3 border-0">
+        <CCol md="10" sm="12">
+          <CCard className=" p-3 my-3 border-0">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -235,8 +247,8 @@ export default function ResOverview() {
       </CRow>
 
       <CRow>
-        <CCol md="12">
-          <CCard className=" p-3 m-3 border-0">
+        <CCol md="12" sm="12">
+          <CCard className=" p-3 my-3 border-0">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -289,59 +301,92 @@ export default function ResOverview() {
           </CCard>
         </CCol>
       </CRow>
-
       <CRow>
-        <CCol md="12">
-          <CCard className=" p-3 m-3 border-0">
+        <CCol md="12" className="m-0 mb-3">
+          <CCard className="p-3 mt-3 border-0 ">
             <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Invoice</strong>
-              <hr style={{ color: '#C8C2C0' }} />
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+              <strong className="text-black">Contract Info.</strong>
+              <hr className="text-secondary" />
             </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Electricity Account No.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.electricity_account_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Water Account No.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.water_account_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Internal Extension No.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.internal_extension_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Last Status Changed
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.year_built || '-'}
-                </CCardText>
-              </CCol>
+            <CRow>
+              {resident_data?.membership?.length >= 1 ? (
+                resident_data.membership.map((contract) => (
+                  <CCol md="4" key={contract.id}>
+                    <NavLink to={`contract/${contract.id}`}>
+                      <CCard className="shadow-sm border-0 rounded-2 mb-3 ">
+                        <CCardBody className="pt-0 mt-1">
+                          <CRow>
+                            <CCol md="12" className="theme_color">
+                              Contract
+                            </CCol>
+                          </CRow>
+                          <CRow>
+                            <CCol> Type :</CCol>
+                            <CCol className="text-capitalize">
+                              {contract.contract_type.replace('_', ' ') || '-'}
+                            </CCol>
+                          </CRow>
+
+                          <CCardText className=" m-0">
+                            <CRow>
+                              <CCol>Duration:</CCol>
+                              <CCol>
+                                {formatdate(contract.start_date) || '-'}
+                                {formatdate(contract.end_date) || ' - Present'}
+                              </CCol>
+                            </CRow>
+                          </CCardText>
+
+                          <CCardText className="m-0">
+                            <CRow>
+                              <CCol md="12" className="theme_color">
+                                Contract Members
+                              </CCol>
+                            </CRow>
+                          </CCardText>
+
+                          {contract.contract_members ? (
+                            contract.contract_members.map((members, index) => (
+                              <CCardText key={index} className="m-0  ps-1">
+                                <CRow>
+                                  <CCol>
+                                    {index + 1 + '.'} {members.member.name + ' ' || '-'}
+                                    <sub className="text-secondary">
+                                      {members.member_type.replace('_', ' ') || '-'}{' '}
+                                    </sub>
+                                  </CCol>
+                                </CRow>
+                              </CCardText>
+                            ))
+                          ) : (
+                            <p className="text-center  fst-italic">No Contract Members Found</p>
+                          )}
+
+                          <CCardText className=" m-0">
+                            <CRow>
+                              <CCol>Notes : </CCol>
+                              <CCol className="text-wrap ">
+                                <abbr
+                                  style={{ cursor: 'pointer' }}
+                                  className="text-decoration-none "
+                                  data-toggle="tooltip"
+                                  title={contract.notes || null}
+                                >
+                                  {contract.notes.slice(0, 15) + '...' || '-'}
+                                </abbr>
+                              </CCol>
+                            </CRow>
+                          </CCardText>
+                        </CCardBody>
+                      </CCard>
+                    </NavLink>
+                  </CCol>
+                ))
+              ) : (
+                <p className="text-center  fst-italic">No Contracts Found</p>
+              )}
             </CRow>
-            <CRow></CRow>
           </CCard>
         </CCol>
       </CRow>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import useFetch from 'use-http'
 import AddUser from './AddUser'
 import ShowUser from './ShowUser'
@@ -13,6 +13,8 @@ import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import { AuthContext } from 'src/contexts/AuthContext'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 function Index() {
   const [users, setUsers] = useState([])
@@ -23,6 +25,10 @@ function Index() {
 
   const [searchKeyword, setSearchKeyword] = useState(null)
   const { get, response } = useFetch()
+
+  const { roles } = useContext(AuthContext)?.state
+
+  const user_privileges = roles?.privileges?.users
 
   useEffect(() => {
     loadInitialusers()
@@ -40,7 +46,6 @@ function Index() {
         setLoading(false)
         setUsers(initialusers.data)
         setPagination(initialusers.pagination)
-        console.log(users)
       }
     } else {
       setErrors(true)
@@ -85,7 +90,11 @@ function Index() {
                             <CIcon icon={freeSet.cilSearch} />
                           </button>
                         </div>
-                        <AddUser after_submit={refresh_data} />
+                        <CheckPermissions
+                          component={<AddUser after_submit={refresh_data} />}
+                          keys={['user', 'create']}
+                        />
+                        {/* {user_privileges?.create ? : null} */}
                       </div>
                     </CContainer>
                   </CNavbar>
@@ -104,7 +113,6 @@ function Index() {
                           <th className="pt-3 pb-3 border-0">Name</th>
                           <th className="pt-3 pb-3 border-0">Email</th>
                           <th className="pt-3 pb-3 border-0">Phone Number</th>
-                          <th className="pt-3 pb-3 border-0">Username</th>
                           <th className="pt-3 pb-3 border-0">Role</th>
                           <th className="pt-3 pb-3 border-0">Action </th>
                         </tr>
@@ -118,7 +126,6 @@ function Index() {
                             </th>
                             <td className="pt-3">{user.email}</td>
                             <td className="pt-3">{user.mobile_number}</td>
-                            <td className="pt-3">{user.username}</td>
                             <td className="pt-3">{user.role.name}</td>
 
                             <td>
@@ -127,8 +134,16 @@ function Index() {
                                   <BsThreeDots />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                  <EditUser userId={user.id} after_submit={refresh_data} />
-                                  <ShowUser userId={user.id} />
+                                  <CheckPermissions
+                                    component={
+                                      <EditUser userId={user.id} after_submit={refresh_data} />
+                                    }
+                                    keys={['user', 'edit']}
+                                  />
+                                  <CheckPermissions
+                                    component={<ShowUser userId={user.id} />}
+                                    keys={['user', 'view']}
+                                  />
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>
@@ -136,7 +151,7 @@ function Index() {
                         ))}
                       </tbody>
                     </table>
-                    {loading && <Loading />}
+                    {loading ? <Loading /> : null}
                     {errors == true ? toast('We are facing a technical issue at our end.') : null}
                   </div>
                 </div>

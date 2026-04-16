@@ -47,10 +47,9 @@ const PropertyUnitType = () => {
   async function loadInitialUnitsTypes() {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/unit_types?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[username_eq]=${searchKeyword}`
+      endpoint += `&q[name_cont]=${searchKeyword}`
     }
     const initialUnitTypes = await get(endpoint)
-    console.log(initialUnitTypes)
 
     if (response.ok) {
       if (initialUnitTypes.data) {
@@ -115,8 +114,6 @@ const PropertyUnitType = () => {
                         <th className="pt-3 pb-3 border-0">Area </th>
                         <th className="pt-3 pb-3 border-0">Maintenace/sqft</th>
                         <th className="pt-3 pb-3 border-0">Last Updated</th>
-
-                        <th className="pt-3 pb-3 border-0 text-center">Actions</th>
                       </tr>
                     </thead>
 
@@ -133,20 +130,6 @@ const PropertyUnitType = () => {
                           </td>
 
                           <td className="pt-3 border-0 ">{formatdate(unit_type?.updated_at)}</td>
-
-                          <td className="border-0">
-                            <Dropdown key={unit_type.id} className="text-center ">
-                              <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                <BsThreeDots />
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                <EditUnitTypes
-                                  id={unit_type.id}
-                                  after_submit={loadInitialUnitsTypes}
-                                />
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </td>
                         </tr>
                       ))}
                     </tbody>

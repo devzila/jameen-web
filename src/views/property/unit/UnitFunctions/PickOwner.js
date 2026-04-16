@@ -2,14 +2,15 @@ import { CPopover, CButton } from '@coreui/react'
 import React from 'react'
 
 function PickOwner(contract) {
-  console.log(contract)
   const ownerNames = contract
     ?.filter((member) => member.member_type === 'owner')
     .map((x) => x.member.name)
     .join(', ')
 
   const co_ownerNames = contract
-    ?.filter((member) => member.member_type === 'co_owner')
+    ?.filter(
+      (member) => member.member_type === 'co_owner' || member.member_type === 'primary_resident',
+    )
     .map((x) => x.member.name)
     .join(', ')
   const result = `Owner: ${ownerNames || 'NA'} \n Residents: ${co_ownerNames || 'NA'}`
@@ -23,9 +24,9 @@ function PickOwner(contract) {
         placement="right"
         trigger={['hover', 'focus', 'click']}
       >
-        <span className="d-inline-block" tabIndex={0}>
-          <CButton color="white">
-            {(ownerNames ? ownerNames[0] : '') +
+        <span className="d-inline-block p-0" tabIndex={0}>
+          <CButton color="white" className="p-0">
+            {(ownerNames ? ownerNames.split(',')[0] : '') +
               ' ' +
               (co_ownerNames && co_ownerNames.length > 1
                 ? co_ownerNames.split(',')[0] + ',...'

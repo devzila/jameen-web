@@ -22,6 +22,8 @@ export default function PropertyForm({ after_submit }) {
   const [imageView, setImageView] = useState('')
   const [useTypeOptions, setUseTypeOptions] = useState([])
   const [paymentTermOptions, setPaymentTermOptions] = useState([])
+  const [errors, setErrors] = useState({})
+  const [disabled, setDisabled] = useState(false)
 
   const { register, handleSubmit, control, watch, reset } = useForm()
   const { get, post, response } = useFetch()
@@ -38,7 +40,7 @@ export default function PropertyForm({ after_submit }) {
       const propertyPaymentTermsOptions = Object.entries(api.property_payment_terms).map(
         ([key, value]) => ({
           value: value,
-          label: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' '),
+          label: key.charAt(0).toUpperCase() + key.slice(1)?.replace(/_/g, ' '),
         }),
       )
       setPaymentTermOptions(propertyPaymentTermsOptions)
@@ -72,8 +74,6 @@ export default function PropertyForm({ after_submit }) {
 
     const apiResponse = await post(`/v1/admin/premises/properties`, { property: body })
 
-    console.log(response)
-
     if (response.ok) {
       toast.success('Property added successfully')
       setVisible(!visible)
@@ -81,8 +81,10 @@ export default function PropertyForm({ after_submit }) {
       reset()
       setImageView('')
     } else {
-      toast.error(apiResponse.data?.message)
+      setErrors(response.data.errors)
+      toast.error(response.data?.message)
     }
+    setDisabled(false)
   }
 
   return (
@@ -146,19 +148,24 @@ export default function PropertyForm({ after_submit }) {
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Name</label>
+                    <label>
+                      Name
+                      <small className="text-danger"> *{errors ? errors.name : null} </small>
+                    </label>
                     <Form.Control
-                      required
                       placeholder="Full Name"
                       type="text"
-                      {...register('name', { required: ' Name is required.' })}
+                      {...register('name')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
 
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>City</label>
+                    <label>
+                      City
+                      <small className="text-danger"> *{errors ? errors.city : null} </small>
+                    </label>
                     <Form.Control
                       placeholder="City"
                       type="text"
@@ -168,9 +175,11 @@ export default function PropertyForm({ after_submit }) {
                 </Col>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>Address</label>
+                    <label>
+                      Address
+                      <small className="text-danger"> *{errors ? errors.address : null} </small>
+                    </label>
                     <Form.Control
-                      required
                       placeholder="Address"
                       type="text"
                       {...register('address')}
@@ -224,6 +233,7 @@ export default function PropertyForm({ after_submit }) {
                     data-mdb-ripple-init
                     type="submit"
                     className="btn  btn-primary btn-block custom_theme_button"
+                    disabled={disabled}
                   >
                     Submit
                   </Button>

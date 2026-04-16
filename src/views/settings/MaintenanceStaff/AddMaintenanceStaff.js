@@ -132,17 +132,8 @@ export default function AddMaintenanceStaff({ after_submit }) {
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>
-                      Username
-                      <small className="text-danger ">*{errors ? errors.username : null}</small>
-                    </label>
-                    <Form.Control type="text" {...register('username')}></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>
                       Password
-                      <small className="text-danger ">{errors ? errors.password : null}</small>
+                      <small className="text-danger ">*{errors ? errors.password : null}</small>
                     </label>
                     <Form.Control type="password" {...register('password')}></Form.Control>
                   </Form.Group>
@@ -151,7 +142,7 @@ export default function AddMaintenanceStaff({ after_submit }) {
                   <Form.Group>
                     <label>
                       Mobile No.
-                      <small className="text-danger">*{errors ? errors.mobile_number : null}</small>
+                      {/* <small className="text-danger">*{errors ? errors.mobile_number : null}</small> */}
                     </label>
 
                     <Form.Control type="text" {...register('mobile_number')}></Form.Control>

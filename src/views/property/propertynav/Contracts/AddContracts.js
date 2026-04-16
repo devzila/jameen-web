@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import Select from 'react-select'
 import { useParams } from 'react-router-dom'
 import Loading from 'src/components/loading/loading'
+import { format_react_select } from 'src/services/CommonFunctions'
 
 import {
   CButton,
@@ -23,11 +24,13 @@ import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 export default function AllocateUnit({ unitId, unitNo, after_submit }) {
-  const { register, handleSubmit, setValue, control, reset } = useForm()
+  const { register, handleSubmit, setValue, control, reset, watch } = useForm()
   const { post, get, response } = useFetch()
   const [temp_base64, setTemp_base64] = useState([])
 
   const [residents, setResidents] = useState([])
+  const [errors, setErrors] = useState([])
+  const [units, setUnits] = useState([])
 
   const [visible, setVisible] = useState(false)
   const [submitLoader, setSubmitLoader] = useState(false)
@@ -49,18 +52,23 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
 
     if (response.ok) {
       if (initialResidents.data) {
-        setResidents(trimResidents(initialResidents.data))
+        setResidents(format_react_select(initialResidents.data, ['id', ['first_name']]))
       }
     } else {
-      toast('Unable to load residents')
+      toast.error('Unable to load residents')
     }
   }
 
   const loadInitalUnits = async () => {
-    const api = await get(`/v1/admin/premises/properties/${propertyId}/allotments`)
-    console.log(api)
+    const initialUnits = await get(`/v1/admin/premises/properties/${propertyId}/units?limit=-1`)
+    if (response.ok) {
+      if (initialUnits.data) {
+        setUnits(format_react_select(initialUnits.data, ['id', 'unit_no']))
+      }
+    } else {
+      toast.error('Unable to load residents')
+    }
   }
-
   //useEffext
   useEffect(() => {
     loadInitialResidents()
@@ -68,18 +76,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   }, [])
 
   //resident dropdown
-  let resident_array = []
-  function trimResidents(obj) {
-    obj.forEach((element) => {
-      resident_array.push({
-        value: element.id,
-        label: element.first_name + ' ' + element.last_name,
-      })
-    })
-    return resident_array
-  }
 
-  //base64
   //base64
   const handleFileSelection = (e, index) => {
     const selectedFile = e.target.files[0]
@@ -105,6 +102,18 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
     setValue('documents_attributes', [{ name: '', description: '', file: { data: '' } }])
   }, [setValue])
 
+  //remvoe emptydocuments
+  function removeEmptyDocuments(payload) {
+    console.log(payload)
+    const documents = payload.documents_attributes
+    console.log(documents)
+    payload.documents_attributes = documents.filter((doc) => {
+      return doc.name !== '' || doc.description !== '' || doc.file.data != undefined
+    })
+
+    return payload
+  }
+
   //submit function
 
   async function onSubmit(data) {
@@ -118,8 +127,9 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
 
     data.documents_attributes.map((element, index) => (element.file.data = temp_base64[index]))
 
-    const body = { ...data, resident_ids: assigned_resident_data }
-
+    const processed_data = removeEmptyDocuments(data)
+    const body = { ...processed_data, resident_ids: assigned_resident_data }
+    unitId = unitId || watch('unit_id')
     await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/allotment`, {
       allotment: body,
     })
@@ -132,6 +142,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
       setTemp_base64([])
     } else {
       setSubmitLoader(false)
+      setErrors(response?.data)
       toast(response.data?.message)
     }
   }
@@ -162,24 +173,24 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
           <CModalTitle id="StaticBackdropExampleLabel">Add </CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <CContainer className="bg-white  mt-5 py-2">
+          <CContainer className="bg-white  mt-1">
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
-                <Col className="pr-1 mt-3 " md="12">
+                <Col className="pr-1 mt-1 " md="12">
                   <label>
                     <b>Unit No: </b> <small className="text-danger"> *</small>
                   </label>
 
                   {unitNo}
 
-                  <Form.Group className=" col-12">
+                  <Form.Group className="col-12">
                     <Controller
                       name="unit_id"
                       render={({ field }) => (
                         <Select
                           {...field}
-                          options={residents}
-                          value={residents.find((c) => c.value === field.value)}
+                          options={units}
+                          value={units.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
                         />
                       )}
@@ -245,7 +256,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                     <Form.Group>
                       <b>Document Name</b>
                       <Form.Control
-                        required
                         placeholder=" Name"
                         type="text"
                         {...register(`documents_attributes.${index}.name`)}
@@ -293,13 +303,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
               ))}
               <Col className="m-3 d-flex justify-content-center">
                 <CButton
-                  style={{
-                    border: '0px',
-                    color: '#00bfcc',
-                    backgroundColor: 'white',
-                    boxShadow: '5px  5px 20px ',
-                    borderRadius: '26px',
-                  }}
+                  className="btn custom-add-more"
                   onClick={() => append({ name: '', description: '', file: { data: '' } })}
                 >
                   <CIcon className="mt-1" icon={cilNoteAdd} />
@@ -308,6 +312,13 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
               </Col>
               <div className="text-center">
                 <CModalFooter>
+                  <CButton
+                    className="custom_grey_button"
+                    color="secondary"
+                    onClick={() => setVisible(false)}
+                  >
+                    Close
+                  </CButton>
                   <Button data-mdb-ripple-init type="submit" className="custom_theme_button">
                     Submit
                   </Button>

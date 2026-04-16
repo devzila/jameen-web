@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
 import AddResidents from './AddResidents'
-import EditResidents from './EditResidents'
-import ShowResidents from './ShowResidents'
+
 import Paginate from '../../components/Pagination'
 import Loading from 'src/components/loading/loading'
-import CustomDivToggle from 'src/components/CustomDivToggle'
 
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import { BsThreeDots } from 'react-icons/bs'
-import { Dropdown, Row, Col } from 'react-bootstrap'
-import { Link, NavLink } from 'react-router-dom'
+import { Row, Col } from 'react-bootstrap'
+import { NavLink } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import ResidentUnitPicker from './ResidentNav/ResidentUnitPicker'
+import ResidentFIlters from './ResidentFIlters'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 const Residents = () => {
   const { get, response } = useFetch()
@@ -30,11 +30,26 @@ const Residents = () => {
     loadInitialResidents()
   }, [currentPage])
 
-  async function loadInitialResidents() {
+  useEffect(() => {
+    if (searchKeyword === '') {
+      loadInitialResidents()
+    }
+  }, [searchKeyword])
+
+  const handleInputChange = (event) => {
+    const value = event.target.value
+    setSearchKeyword(value)
+  }
+
+  async function loadInitialResidents(query) {
     let endpoint = `/v1/admin/members?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[username_eq]=${searchKeyword}`
+      endpoint += `&q[username_cont]=${searchKeyword}`
     }
+    if (typeof query === 'string') {
+      // endpoint += query
+    }
+
     const initialResidents = await get(endpoint)
 
     if (response.ok) {
@@ -42,6 +57,10 @@ const Residents = () => {
         setLoading(false)
         setResidents(initialResidents.data)
         setPagination(initialResidents.pagination)
+        if (initialResidents.data.length == 0) {
+          toast.dismiss()
+          toast.warn('No data found!')
+        }
       }
     } else {
       setErrors(true)
@@ -49,6 +68,8 @@ const Residents = () => {
     }
   }
   function handlePageClick(e) {
+    setResidents([])
+    setLoading(true)
     setCurrentPage(e.selected + 1)
   }
 
@@ -58,9 +79,10 @@ const Residents = () => {
         <CContainer fluid>
           <CNavbarBrand href="/residents">Residents</CNavbarBrand>
           <div className="d-flex justify-content-end">
+            <ResidentFIlters filter_callback={loadInitialResidents} />
             <div className="d-flex" role="search">
               <input
-                onChange={(e) => setSearchKeyword(e.target.value)}
+                onChange={handleInputChange}
                 className="form-control  custom_input"
                 type="search"
                 placeholder="Search"
@@ -74,7 +96,8 @@ const Residents = () => {
                 <CIcon icon={freeSet.cilSearch} />
               </button>
             </div>
-            <AddResidents />
+
+            <CheckPermissions component={<AddResidents />} keys={['resident', 'create']} />
           </div>
         </CContainer>
       </CNavbar>
@@ -96,53 +119,31 @@ const Residents = () => {
                     >
                       <tr>
                         <th className="pt-3 pb-3 border-0">Name</th>
-                        <th className="pt-3 pb-3 border-0">DOB</th>
                         <th className="pt-3 pb-3 border-0">Username </th>
                         <th className="pt-3 pb-3 border-0">Gender</th>
-                        <th className="pt-3 pb-3 border-0">Email</th>
-                        <th className="pt-3 pb-3 border-0">Mobile Number </th>
+                        <th className="pt-3 pb-3 border-0">Unit(s)</th>
                       </tr>
                     </thead>
 
                     <tbody>
-                      {residents.map((residents) => (
-                        <tr key={residents.id}>
-                          <th className="pt-3 border-0" scope="row">
-                            <NavLink to={`/resident/${residents.id}/overview`}>
-                              {residents.first_name + ' ' + residents.last_name}
+                      {residents.map((resident) => (
+                        <tr key={resident.id}>
+                          <th className="pt-3 border-0 text-nowrap" scope="row">
+                            <NavLink to={`/resident/${resident.id}/overview`}>
+                              {resident.first_name + ' ' + resident.last_name}
                             </NavLink>
                           </th>
-                          <td className="pt-3">{residents.dob}</td>
-                          <td className="pt-3">{residents.username}</td>
+                          <td className="pt-3">{resident.username}</td>
                           <td className="pt-3">
-                            {residents.gender.charAt(0).toUpperCase() + residents.gender.slice(1)}
-                          </td>
-                          <td className="pt-3">{residents.email}</td>
-                          <td className="pt-3">
-                            {residents.phone_number
-                              .replace('(', ' ')
-                              .replace(')', ' ')
-                              .replace('.', ' ')
-                              .replace(/-/g, ' ')}
-                          </td>
-
-                          <td>
-                            <Dropdown key={residents.id}>
-                              <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                <BsThreeDots />
-                              </Dropdown.Toggle>
-                              <Dropdown.Menu>
-                                <EditResidents id={residents.id} />
-                                <ShowResidents id={residents.id} />
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </td>
+                            {resident.gender?.charAt(0)?.toUpperCase() + resident.gender?.slice(1)}
+                          </td>{' '}
+                          <td className="pt-3">{ResidentUnitPicker(resident)}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                  {loading ?? <Loading />}
-                  {errors && toast('Unable To Load data')}
+                  {loading && <Loading />}
+                  {errors ?? toast('Unable To Load data')}
                 </div>
               </div>
             </div>

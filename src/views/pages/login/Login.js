@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { toast } from 'react-toastify'
 import {
   CButton,
@@ -12,10 +12,17 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CCardHeader,
+  CCardFooter,
+  CNav,
 } from '@coreui/react'
+import { freeSet } from '@coreui/icons'
+
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { AuthContext } from '../../../contexts/AuthContext'
+import { Navigate, NavLink, useLocation, useNavigate, useParams } from 'react-router-dom'
+import jameenlogo from 'src/assets/images/jameen-logo.png'
 
 const Login = () => {
   const { dispatch } = React.useContext(AuthContext)
@@ -25,6 +32,22 @@ const Login = () => {
     isSubmitting: false,
     errorMessage: null,
   }
+  const navigate = useNavigate()
+
+  const params = useParams()
+  const location = useLocation()
+  const redirect_path = location.pathname || '/'
+  const gateway_redirect_string =
+    redirect_path == '' || redirect_path == '/' || redirect_path == '/login'
+      ? ''
+      : `?redirect=${redirect_path.slice(1)}`
+
+  const domain_array = window.location.hostname.split('.')
+  const sub_domain_present = domain_array[0]
+
+  const valid_subdomain =
+    process.env.NODE_ENV == 'development' ? domain_array.length > 1 : domain_array.length > 3
+
   const [data, setData] = React.useState(initialState)
   const handleInputChange = (event) => {
     setData({
@@ -43,9 +66,10 @@ const Login = () => {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
+        'company-slug': window.location.hostname.split('.')[0],
       },
       body: JSON.stringify({
-        username: data.email,
+        email: data.email,
         password: data.password,
       }),
     })
@@ -60,10 +84,11 @@ const Login = () => {
           type: 'LOGIN',
           payload: resJson,
         })
+        navigate(redirect_path)
       })
       .catch((error) => {
-        if (!('json' in error) || error.status == 404) {
-          toast('Unknown Error Occured. Server response not received.')
+        if (!('json' in error) || error.status === 404) {
+          toast.error('Unknown Error Occured. Server response not received.')
           setData({
             ...data,
             isSubmitting: false,
@@ -71,7 +96,7 @@ const Login = () => {
           return
         }
         error.json().then((response) => {
-          toast(response.message)
+          toast.error(response.message)
           setData({
             ...data,
             isSubmitting: false,
@@ -82,66 +107,101 @@ const Login = () => {
   }
 
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
-      <CContainer>
-        <CRow className="justify-content-center">
-          <CCol md={6}>
-            <CCardGroup>
-              <CCard className="p-4">
-                <CCardBody>
-                  <CForm onSubmit={handleFormSubmit}>
-                    <h1>Login</h1>
-                    <p className="text-medium-emphasis">Sign In to your Jameen account</p>
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
-                        <CIcon icon={cilUser} />
-                      </CInputGroupText>
-                      <CFormInput
-                        placeholder="Username"
-                        autoComplete="username"
-                        name="email"
-                        id="password"
-                        value={data.email}
-                        onChange={handleInputChange}
+    <CContainer fluid className="bg-light p-0 m-0 gx-0">
+      <CRow className="justify-content-center vh-100">
+        <CCol className="d-flex-center" md={6}>
+          <CCardGroup style={{ width: '475px' }}>
+            <CCard className="rounded-0 border-0 shadow">
+              <CCardHeader className="d-flex-center align-items-end bg-white py-3">
+                <img className="logo-img" src={jameenlogo} />
+                <h2 className="text-monospace theme_color m-0 px-3">Jameen</h2>
+              </CCardHeader>
+              <CCardBody className="px-5 pt-5 pb-3">
+                <div className="text-secondary text-monospace">
+                  <h1>Login</h1>
+                </div>
+                <CForm onSubmit={handleFormSubmit}>
+                  <CInputGroup className="mb-3 w-100">
+                    <CInputGroupText className="rounded-0">
+                      <CIcon icon={cilUser} />
+                    </CInputGroupText>
+                    <CFormInput
+                      placeholder="Email"
+                      autoComplete="email"
+                      name="email"
+                      id="password"
+                      value={data.email}
+                      onChange={handleInputChange}
+                    />
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CInputGroupText className="rounded-0">
+                      <CIcon icon={cilLockLocked} />
+                    </CInputGroupText>
+                    <CFormInput
+                      type="password"
+                      placeholder="Password"
+                      autoComplete="current-password"
+                      name="password"
+                      value={data.password}
+                      onChange={handleInputChange}
+                    />
+                  </CInputGroup>
+                  {valid_subdomain ? (
+                    <div className="input-group rounded-0 mb-4">
+                      <span className="input-group-text rounded-0">
+                        <CIcon icon={freeSet.cilBuilding} size="lg" />
+                      </span>
+                      <input
+                        type="text"
+                        className="form-control p-2"
+                        name="text"
+                        disabled
+                        value={sub_domain_present}
+                        required
                       />
-                    </CInputGroup>
-                    <CInputGroup className="mb-4">
-                      <CInputGroupText>
-                        <CIcon icon={cilLockLocked} />
-                      </CInputGroupText>
-                      <CFormInput
-                        type="password"
-                        placeholder="Password"
-                        autoComplete="current-password"
-                        name="password"
-                        value={data.password}
-                        onChange={handleInputChange}
-                      />
-                    </CInputGroup>
-                    <CRow>
-                      <CCol xs={6}>
-                        <button
-                          disabled={data.isSubmitting}
-                          color="primary"
-                          className="btn btn-primary"
-                        >
-                          {data.isSubmitting ? 'Loading...' : 'Login'}
-                        </button>
-                      </CCol>
-                      <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                  <CRow>
+                    <CCol>
+                      <button
+                        disabled={data.isSubmitting}
+                        className={`custom_theme_button w-100 ${data.isSubmitting ? 'p-0' : 'p-2'}`}
+                      >
+                        {data.isSubmitting ? (
+                          <span className="spinner-border"></span>
+                        ) : (
+                          <span>Login</span>
+                        )}
+                      </button>
+                    </CCol>
+                  </CRow>
+                  <CCardFooter className="border-0 bg-white mt-3 mb-3">
+                    <div className="row">
+                      <div className=" d-flex-center mt-2 ">
+                        <NavLink className="text-secondary " to={'/forgot-password'}>
                           Forgot password?
-                        </CButton>
-                      </CCol>
-                    </CRow>
-                  </CForm>
-                </CCardBody>
-              </CCard>
-            </CCardGroup>
-          </CCol>
-        </CRow>
-      </CContainer>
-    </div>
+                        </NavLink>
+                        <span className="text-secondary mx-1"> | </span>
+                        <a
+                          className="text-secondary"
+                          target="_self"
+                          href={`${process.env.REACT_APP_BASE_URL}/company-gateway${gateway_redirect_string}`}
+                        >
+                          Login with another company
+                        </a>
+                      </div>
+                    </div>
+                  </CCardFooter>
+                </CForm>
+              </CCardBody>
+            </CCard>
+          </CCardGroup>
+        </CCol>
+      </CRow>
+    </CContainer>
   )
 }
 

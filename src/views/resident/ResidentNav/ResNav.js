@@ -23,8 +23,6 @@ export default function ResNav() {
           </div>
         </div>
         <Outlet />
-
-        {/*<div className="clearfix">{children || <User />}</div>*/}
       </div>
     </div>
   )

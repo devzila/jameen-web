@@ -33,7 +33,6 @@ export default function AddSecurityStaff({ after_submit }) {
 
     const body = { ...data, property_ids: assigned_properties_data }
 
-    console.log(data)
     const apiResponse = await post(`/v1/admin/security_staffs`, {
       security_staff: body,
     })
@@ -41,7 +40,7 @@ export default function AddSecurityStaff({ after_submit }) {
       setVisible(!visible)
       after_submit()
       reset()
-      toast('Item added successfully')
+      toast.success('Staff Added successfully')
     } else {
       setErrors(response.data.errors)
       toast(response.data?.message)
@@ -132,15 +131,6 @@ export default function AddSecurityStaff({ after_submit }) {
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>
-                      Username
-                      <small className="text-danger ">*{errors ? errors.username : null}</small>
-                    </label>
-                    <Form.Control type="text" {...register('username')}></Form.Control>
-                  </Form.Group>
-                </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>

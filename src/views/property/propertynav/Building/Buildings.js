@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { useParams } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
@@ -18,7 +18,6 @@ import EditBuilding from './EditBuilding'
 
 export default function Buildings() {
   const [buildings, setBuildings] = useState([])
-  const [invoices, setInvoices] = useState([])
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [errors, setErrors] = useState(false)
@@ -31,12 +30,16 @@ export default function Buildings() {
 
   useEffect(() => {
     fetchBuildings()
-  }, [propertyId])
+  }, [propertyId, currentPage])
 
   async function fetchBuildings() {
+    let endpoint = `/v1/admin/premises/properties/${propertyId}/buildings?page=${currentPage}`
+    if (searchKeyword) {
+      endpoint += `&q[name_cont]=${searchKeyword}`
+    }
     try {
-      const buildingsData = await get(`/v1/admin/premises/properties/${propertyId}/buildings`)
-      console.log(buildingsData)
+      const buildingsData = await get(endpoint)
+
       if (buildingsData && buildingsData.data) {
         setPagination(buildingsData.pagination)
         setBuildings(buildingsData.data)
@@ -52,6 +55,13 @@ export default function Buildings() {
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
   }
+  const handleInputChange = (event) => {
+    const value = event.target.value
+    setSearchKeyword(value)
+    if (value === '') {
+      refresh_data()
+    }
+  }
 
   return (
     <>
@@ -66,14 +76,14 @@ export default function Buildings() {
                     <div className="d-flex justify-content-end">
                       <div className="d-flex" role="search">
                         <input
-                          onChange={(e) => setSearchKeyword(e.target.value)}
+                          onChange={handleInputChange}
                           className="form-control  custom_input"
                           type="search"
                           placeholder="Search"
                           aria-label="Search"
                         />
                         <button
-                          // onClick={loadInitialinvoices}
+                          onClick={fetchBuildings}
                           className="btn btn-outline-success custom_search_button"
                           type="submit"
                         >
@@ -106,22 +116,11 @@ export default function Buildings() {
                         <tbody>
                           {buildings.map((data) => (
                             <tr key={data.id}>
-                              <td>{data.name}</td>
+                              <td>
+                                <NavLink to={`${data.id}/edit`}>{data.name}</NavLink>
+                              </td>
                               <td>{data.description}</td>
                               <td>{formatdate(data.created_at)}</td>
-                              <td>
-                                <Dropdown key={data.id}>
-                                  <Dropdown.Toggle
-                                    as={CustomDivToggle}
-                                    style={{ cursor: 'pointer' }}
-                                  >
-                                    <BsThreeDots />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu>
-                                    <EditBuilding id={data.id} after_submit={refresh_data} />
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </td>
                             </tr>
                           ))}
                         </tbody>

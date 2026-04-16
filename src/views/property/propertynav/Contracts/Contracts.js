@@ -12,7 +12,7 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import AddContracts from './AddContracts'
 import FilterAccordionContract from './FilterAccordionContract'
-import ManualInvoice from './ManualInvoice'
+import PickOwner from '../../unit/UnitFunctions/PickOwner'
 
 const Contract = () => {
   const { get, response } = useFetch()
@@ -30,8 +30,7 @@ const Contract = () => {
   }, [currentPage, searchKeyword])
 
   async function loadInitialRunningContracts(queries) {
-    let endpoint = `/v1/admin/premises/properties/${propertyId}/contracts?page=${currentPage}`
-    console.log(queries)
+    let endpoint = `/v1/admin/premises/properties/${propertyId}/allotments?page=${currentPage}`
     if (queries) {
       endpoint += `&type=${queries}`
     }
@@ -39,7 +38,6 @@ const Contract = () => {
       endpoint += `&q=${searchKeyword}`
     }
     const initialRunningContracts = await get(endpoint)
-    console.log('Initial Running Contracts:', initialRunningContracts)
 
     if (response.ok) {
       if (initialRunningContracts.data) {
@@ -93,10 +91,7 @@ const Contract = () => {
                         <CIcon icon={freeSet.cilSearch} />
                       </button>
                     </div>
-                    <FilterAccordionContract
-                      filterCallback={filter_callback}
-                      contracts_type={contract_type}
-                    />
+
                     <AddContracts after_submit={refreshData} />
                   </div>
                 </CContainer>
@@ -112,50 +107,29 @@ const Contract = () => {
                           <table className="table  table-striped mb-0">
                             <thead>
                               <tr>
-                                <th className="pt-3 pb-3 border-0">Unit No</th>
-                                <th className="pt-3 pb-3 border-0">Period</th>
-                                <th className="pt-3 pb-3 border-0">Contract Type</th>
-                                <th className="pt-3 pb-3 border-0">Member</th>
-                                <th className="pt-3 pb-3 border-0">Notes</th>
-                                <th className="pt-3 pb-3 border-0">Actions</th>
+                                <th className="py-3 border-0">Unit No</th>
+                                <th className="py-3 border-0">Period</th>
+                                <th className="py-3 border-0">Contract Type</th>
+                                <th className="py-3 border-0">Member</th>
                               </tr>
                             </thead>
                             <tbody>
                               {runningContracts.map((running_contracts) => (
                                 <tr key={running_contracts.id}>
-                                  <td className="pt-3">
+                                  <td className="py-2">
                                     <NavLink className="mx-2" to={`${running_contracts.id}`}>
                                       {running_contracts.unit.unit_no || '-'}
                                     </NavLink>
                                   </td>
-                                  <td>
+                                  <td className="py-2">
                                     {formatdate(running_contracts.start_date) || '-'}
-                                    {formatdate(running_contracts.end_date) || ' - Present'}{' '}
+                                    {formatdate(running_contracts.end_date) || ' - Present'}
                                   </td>
-                                  <td className="pt-3">
+                                  <td className="py-2">
                                     {running_contracts.contract_type.replace(/_/g, ' ') || '-'}
                                   </td>
-                                  <td className="pt-3">
-                                    {running_contracts.contract_members.member_type || '-'}
-                                  </td>
-                                  <td className="pt-3">{running_contracts.notes || '-'}</td>
-                                  <td>
-                                    <Dropdown>
-                                      <Dropdown.Toggle
-                                        as={CustomDivToggle}
-                                        style={{ cursor: 'pointer' }}
-                                      >
-                                        <BsThreeDots />
-                                      </Dropdown.Toggle>
-                                      <Dropdown.Menu>
-                                        {running_contracts.contract_type == 'allotment' ? (
-                                          <ManualInvoice
-                                            after_submit={loadInitialRunningContracts}
-                                            allotmentId={running_contracts.id}
-                                          />
-                                        ) : null}
-                                      </Dropdown.Menu>
-                                    </Dropdown>
+                                  <td className="py-2">
+                                    {PickOwner(running_contracts.contract_members) || '-'}
                                   </td>
                                 </tr>
                               ))}

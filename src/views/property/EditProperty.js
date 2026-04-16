@@ -4,6 +4,7 @@ import useFetch from 'use-http'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
+import defaultbuilding from 'src/assets/images/default-building.png'
 
 import {
   CButton,
@@ -15,7 +16,6 @@ import {
   CContainer,
 } from '@coreui/react'
 import { Button, Form, Row, Col } from 'react-bootstrap'
-import { id } from 'date-fns/locale'
 
 export default function EditProperty(props) {
   const [property, setProperty] = useState({})
@@ -76,6 +76,7 @@ export default function EditProperty(props) {
       setValue('use_type', endpoint.data.use_type)
       setValue('unit_counts', endpoint.data.unit_counts)
       setValue('payment_term', endpoint.data.payment_term)
+      setProperty(endpoint.data)
     } else {
       toast.error(response.data?.message)
     }
@@ -99,7 +100,7 @@ export default function EditProperty(props) {
       <div>
         <button
           type="button"
-          className="tooltip_button d-flex"
+          className="btn custom_theme_button d-flex"
           data-mdb-ripple-init
           onClick={() => setVisible(!visible)}
         >
@@ -132,13 +133,7 @@ export default function EditProperty(props) {
                     }}
                     title="Avatar"
                     className="img-circle img-thumbnail isTooltip  "
-                    src={
-                      property.photo
-                        ? property.photo
-                        : imageView
-                        ? imageView
-                        : 'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJ1aWxkaW5nc3xlbnwwfHwwfHx8MA%3D%3D'
-                    }
+                    src={property.photo ? property.photo : imageView ? imageView : defaultbuilding}
                     data-original-title="Usuario"
                   />
                 </div>
@@ -249,5 +244,5 @@ export default function EditProperty(props) {
 }
 
 EditProperty.propTypes = {
-  propertyId: PropTypes.number.isRequired,
+  propertyId: PropTypes.string.isRequired,
 }

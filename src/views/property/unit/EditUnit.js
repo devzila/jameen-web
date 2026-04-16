@@ -26,7 +26,7 @@ export default function Edit({ unitId, after_submit }) {
 
   useEffect(() => {
     getUnitData()
-    fetchUnits() // Assuming you want to populate the unit types for the dropdown
+    fetchUnitsTypes() // Assuming you want to populate the unit types for the dropdown
   }, [])
 
   async function getUnitData() {
@@ -49,7 +49,7 @@ export default function Edit({ unitId, after_submit }) {
     } catch (e) {}
   }
 
-  async function fetchUnits() {
+  async function fetchUnitsTypes() {
     const api = await get(`/v1/admin/premises/properties/${propertyId}/unit_types`)
     if (response.ok) {
       setUnits_data(trimUnits(api))
@@ -69,11 +69,11 @@ export default function Edit({ unitId, after_submit }) {
       unit: data,
     })
     if (response.ok) {
-      toast('Unit Data Edited Successfully')
+      toast.success('Unit Data Edited Successfully')
       after_submit()
       setVisible(false)
     } else {
-      toast(response.data?.message || 'Failed to edit unit data')
+      toast.error(response.data?.message || 'Failed to edit unit data')
     }
   }
 
@@ -82,7 +82,7 @@ export default function Edit({ unitId, after_submit }) {
       <div>
         <button
           type="button"
-          className="tooltip_button"
+          className="btn custom_theme_button"
           data-mdb-ripple-init
           onClick={() => setVisible(!visible)}
         >
@@ -112,7 +112,7 @@ export default function Edit({ unitId, after_submit }) {
                           <Select
                             {...field}
                             options={units_data}
-                            value={units_data.find((c) => c.label === unitData.unit_type_name)}
+                            value={units_data.find((c) => c.value === field.value)}
                             onChange={(val) => field.onChange(val.value)}
                           />
                         )}
@@ -240,6 +240,6 @@ export default function Edit({ unitId, after_submit }) {
 }
 
 Edit.propTypes = {
-  unitId: PropTypes.number,
+  unitId: PropTypes.string,
   after_submit: PropTypes.func,
 }

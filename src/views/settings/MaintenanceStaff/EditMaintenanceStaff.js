@@ -34,13 +34,11 @@ export default function EditMaintenanceStaff({ after_submit, id }) {
   async function fetchSecurityStaff() {
     try {
       const api = await get(`/v1/admin/maintenance_staffs/${id}`)
-      console.log(api)
       if (api && api.data) {
         setValue('name', api.data.name)
         setValue('email', api.data.email)
         setValue('mobile_number', api.data.mobile_number)
         setValue('username', api.data.username)
-        // setValue('property_ids')
       }
     } catch (error) {
       console.error('Error fetching Security Staff:', error)
@@ -62,11 +60,9 @@ export default function EditMaintenanceStaff({ after_submit, id }) {
   }
 
   async function onSubmit(data) {
-    console.log(data)
     const assigned_properties_data =
       data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
     const body = { ...data, property_ids: assigned_properties_data }
-    console.log(body)
     const apiResponse = await put(`/v1/admin/security_staffs/${id}`, {
       security_staff: body,
     })
@@ -145,15 +141,6 @@ export default function EditMaintenanceStaff({ after_submit, id }) {
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>
-                      Username
-                      <small className="text-danger ">*{errors ? errors.username : null}</small>
-                    </label>
-                    <Form.Control type="text" {...register('username')}></Form.Control>
-                  </Form.Group>
-                </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>

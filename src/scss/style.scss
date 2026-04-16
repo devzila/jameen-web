@@ -13,38 +13,77 @@ $enable-rtl: true;
 @import 'custom';
 
 * {
-  ::-webkit-scrollbar {
-    display: none;
-  }
-  a {
-    color: #00bfcc;
-    text-decoration-line: none;
-  }
-  input {
-    border: 1px solid #00bfcc;
-    padding-block-start: 5px;
-  }
+  // border: 1px dashed red;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+b {
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+a {
+  color: #00bfcc;
+  text-decoration-line: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+input {
+  border: 1px solid #00bfcc;
+  padding-block-start: 5px;
+  outline: 0px;
 }
 
 input:focus,
-.form-control:focus {
+.form-control:focus,
+input:focus-visible {
   box-shadow: none;
   border-color: gray;
+  outline: 0px;
 }
 
 .react-select__input:focus {
   border-color: gray;
   box-shadow: none;
+  outline: 0px;
+}
+.form-check-input:checked {
+  background-color: gray !important;
+  border: none;
 }
 
+.custom-add-more {
+  border: 0px;
+  color: rgb(0, 191, 204);
+  background-color: #fff;
+  box-shadow: 0px 0px 14px -7px;
+  border-radius: 26px;
+}
+.custom-add-more:hover {
+  color: black;
+  background-color: white !important;
+}
 .modal-content {
-  box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.37);
-  border-radius: 4px;
+  border-radius: 2px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border: 0px;
 }
 .modal {
-  background: rgba(255, 255, 255, 0.15);
-
-  // backdrop-filter: blur(1px);
+  // background: radial-gradient(rgba(0, 0, 0, 0.55));
+  border: 0px;
+  background: radial-gradient(circle, rgba(17, 14, 15, 0.2) 2%, rgba(0, 0, 0, 0.337) 100%);
+  // backdrop-filter: blur(0.5px);
 }
 
 .modal-content,
@@ -73,7 +112,7 @@ label {
   border-radius: 2px;
   background-color: #00bfcc;
   color: white;
-  margin-left: 4px;
+  margin-inline: 3px;
   height: 100%;
   border: 0px;
   white-space: nowrap;
@@ -81,6 +120,7 @@ label {
 
 .custom_background_color {
   background-color: #00bfcc !important;
+  height: fit-content;
 }
 
 .custom_theme_button:hover {
@@ -93,9 +133,22 @@ label {
   color: white;
   border-radius: 2px;
   background-color: rgba(128, 128, 128, 0.952);
+  margin-inline: 3px;
 }
 .custom_grey_button:hover {
   background-color: rgba(128, 128, 128, 0.849);
+  color: white;
+}
+
+.custom_red_button {
+  border: 0px;
+  color: white;
+  border-radius: 2px;
+  background-color: #e55353;
+  margin-inline: 3px;
+}
+.custom_red_button:hover {
+  background-color: #e55353de;
   color: white;
 }
 
@@ -107,6 +160,7 @@ label {
 .theme_color {
   color: #00bfcc;
 }
+
 .tooltip_button {
   color: #00bfcc;
   background-color: white;
@@ -121,4 +175,43 @@ label {
 
 .react-select-container {
   color: pink;
+}
+
+.dropdown-menu {
+  border-radius: 2px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border: 0px;
+}
+
+.btn-close {
+  --cui-btn-close-focus-shadow: none;
+}
+
+.custom_border {
+  border: 1px solid #d3d3d359;
+}
+
+.card-animations {
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.card-animations:hover {
+  transform: scale(1.01);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.monospace-bold {
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+.active-nav-bar-button {
+  border-bottom: 2px solid #00bfcc !important;
+  color: #00bfcc;
+}
+
+.theme-hover:hover {
+  color: #00bfcc;
 }

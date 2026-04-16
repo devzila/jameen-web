@@ -3,16 +3,13 @@ import { useFetch } from 'use-http'
 import { toast } from 'react-toastify'
 import Paginate from '../../../components/Pagination'
 import Loading from 'src/components/loading/loading'
-import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import { BsThreeDots } from 'react-icons/bs'
-import { Dropdown, Row, Col } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
+import { Row, Col } from 'react-bootstrap'
+import { NavLink, useParams } from 'react-router-dom'
 import PickOwner from '../unit/UnitFunctions/PickOwner'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import InvoicePayment from 'src/views/finance/InvoicePayment'
-import InvoiceCancel from 'src/views/finance/InvoiceCancel'
+
 import { formatdate } from 'src/services/CommonFunctions'
 import { status_color } from 'src/services/CommonFunctions'
 
@@ -38,14 +35,12 @@ const Finance = () => {
       endpoint += `&q[_cont]=${searchKeyword}`
     }
     let initial_invoices = await get(endpoint)
-    console.log(initial_invoices)
 
     if (response.ok) {
       if (initial_invoices.data) {
         setLoading(false)
         setInvoices(initial_invoices.data)
         setPagination(initial_invoices.pagination)
-        console.log(initial_invoices)
       }
     } else if (response.ok) {
       setErrors(true)
@@ -64,7 +59,7 @@ const Finance = () => {
         <section className="w-100 p-0 mt-2">
           <div>
             <div className="mask d-flex align-items-center h-100">
-              <div className="container-fluid">
+              <div className="container-fluid p-0">
                 <CNavbar expand="lg" colorScheme="light" className="bg-white">
                   <CContainer fluid>
                     <CNavbarBrand href="#">Invoices</CNavbarBrand>
@@ -119,8 +114,8 @@ const Finance = () => {
                           <tbody>
                             {invoices?.map((invoice) => (
                               <tr key={invoice.id}>
-                                <th className="pt-3" scope="row" style={{ color: '#666666' }}>
-                                  {invoice.number}
+                                <th className="pt-3 ps-3 border-0" scope="row">
+                                  <NavLink to={`${invoice.id}`}>{invoice.number}</NavLink>
                                 </th>
                                 <td className="pt-3">
                                   {invoice?.unit_contract?.unit?.unit_no || '-'}
@@ -137,33 +132,9 @@ const Finance = () => {
                                 </td>{' '}
                                 <td className="pt-3">{invoice?.due_date || '-'}</td>
                                 <td className="pt-3">
-                                  <button
-                                    className=" text-center  text-white border-0 p-0.7 m-0 rounded-0  "
-                                    style={{
-                                      backgroundColor: `${status_color(invoice.status)}`,
-
-                                      cursor: 'default',
-                                      width: '120px',
-                                    }}
-                                  >
+                                  <button className={`request-${status_color(invoice?.status)}`}>
                                     {invoice.status}
                                   </button>
-                                </td>
-                                <td>
-                                  <Dropdown key={invoice.id}>
-                                    <Dropdown.Toggle
-                                      as={CustomDivToggle}
-                                      style={{ cursor: 'pointer' }}
-                                    >
-                                      <BsThreeDots />
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                      <div className="d-flex">
-                                        <InvoicePayment invoice={invoice} />
-                                        <InvoiceCancel id={invoice.id} />
-                                      </div>
-                                    </Dropdown.Menu>
-                                  </Dropdown>
                                 </td>
                               </tr>
                             ))}

@@ -3,14 +3,14 @@ import { Provider, useFetch } from 'use-http'
 import options from '../Options'
 import { AppContent, AppSidebar, AppHeader } from '../components/index'
 import { AuthContext, initialAuthState, reducer } from '../contexts/AuthContext'
-import Login from '../views/pages/login/Login'
+import AuthenticationRoutes from 'src/components/AuthenticationRoutes'
 
 const DefaultLayout = () => {
   const [state, dispatch] = React.useReducer(reducer, initialAuthState)
   return (
     <AuthContext.Provider value={{ state, dispatch }}>
       {!state.isAutheticated ? (
-        <Login />
+        <AuthenticationRoutes />
       ) : (
         <div>
           <Provider

@@ -48,12 +48,10 @@ export default function EditSecurityStaff({ after_submit, id }) {
   async function fetchSecurityStaff() {
     try {
       const securityStaffData = await get(`/v1/admin/security_staffs/${id}`)
-      console.log(securityStaffData)
       if (securityStaffData && securityStaffData.data) {
         setValue('name', securityStaffData.data.name)
         setValue('email', securityStaffData.data.email)
         setValue('mobile_number', securityStaffData.data.mobile_number)
-        setValue('username', securityStaffData.data.username)
       }
     } catch (error) {
       console.error('Error fetching Security Staff:', error)
@@ -61,7 +59,6 @@ export default function EditSecurityStaff({ after_submit, id }) {
   }
 
   async function onSubmit(data) {
-    console.log(data)
     const assigned_properties_data =
       data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
 
@@ -73,7 +70,7 @@ export default function EditSecurityStaff({ after_submit, id }) {
     if (response.ok) {
       setVisible(!visible)
       after_submit()
-      toast('Staff added successfully')
+      toast.success('Staff Data Updated successfully')
     } else {
       setErrors(response.data.errors)
       toast(response.data?.message)
@@ -145,15 +142,6 @@ export default function EditSecurityStaff({ after_submit, id }) {
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>
-                      Username
-                      <small className="text-danger ">*{errors ? errors.username : null}</small>
-                    </label>
-                    <Form.Control type="text" {...register('username')}></Form.Control>
-                  </Form.Group>
-                </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>

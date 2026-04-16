@@ -26,6 +26,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   const { register, handleSubmit, setValue, control, reset } = useForm()
   const { post, get, response } = useFetch()
   const [temp_base64, setTemp_base64] = useState([])
+  const [errors, setErrors] = useState([])
 
   const [residents, setResidents] = useState([])
 
@@ -52,7 +53,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
         setResidents(trimResidents(initialResidents.data))
       }
     } else {
-      toast('Unable to load residents')
+      toast.error('Unable to load residents')
     }
   }
 
@@ -99,8 +100,19 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
     setValue('documents_attributes', [{ name: '', description: '', file: { data: '' } }])
   }, [setValue])
 
-  //submit function
+  //remvoe emptydocuments
+  function removeEmptyDocuments(payload) {
+    console.log(payload)
+    const documents = payload.documents_attributes
+    console.log(documents)
+    payload.documents_attributes = documents.filter((doc) => {
+      return doc.name !== '' || doc.description !== '' || doc.file.data != undefined
+    })
 
+    return payload
+  }
+
+  //submit function
   async function onSubmit(data) {
     //resident array
     setSubmitLoader(true)
@@ -112,7 +124,8 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
 
     data.documents_attributes.map((element, index) => (element.file.data = temp_base64[index]))
 
-    const body = { ...data, resident_ids: assigned_resident_data }
+    const processed_data = removeEmptyDocuments(data)
+    const body = { ...processed_data, resident_ids: assigned_resident_data }
 
     await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/allotment`, {
       allotment: body,
@@ -126,6 +139,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
       setTemp_base64([])
     } else {
       setSubmitLoader(false)
+      setErrors(response.data?.message)
       toast(response.data?.message)
     }
   }
@@ -138,7 +152,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
     <div>
       <button
         type="button"
-        className="tooltip_button "
+        className="custom_theme_button "
         data-mdb-ripple-init
         onClick={() => setVisible(true)}
       >
@@ -221,7 +235,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                     <Form.Group>
                       <b>Document Name</b>
                       <Form.Control
-                        required
                         placeholder=" Name"
                         type="text"
                         {...register(`documents_attributes.${index}.name`)}
@@ -269,13 +282,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
               ))}
               <Col className="m-3 d-flex justify-content-center">
                 <CButton
-                  style={{
-                    border: '0px',
-                    color: '#00bfcc',
-                    backgroundColor: 'white',
-                    boxShadow: '5px  5px 20px ',
-                    borderRadius: '26px',
-                  }}
+                  className="btn custom-add-more"
                   onClick={() => append({ name: '', description: '', file: { data: '' } })}
                 >
                   <CIcon className="mt-1" icon={cilNoteAdd} />
@@ -284,24 +291,10 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
               </Col>
               <div className="text-center">
                 <CModalFooter>
-                  <Button
-                    data-mdb-ripple-init
-                    type="submit"
-                    className="btn  btn-primary btn-block"
-                    style={{
-                      marginTop: '5px',
-                      color: 'white',
-                      backgroundColor: '#00bfcc',
-                      border: '0px',
-                    }}
-                  >
+                  <Button data-mdb-ripple-init type="submit" className="btn  custom_theme_button">
                     Submit
                   </Button>
-                  <CButton
-                    color="secondary"
-                    style={{ border: '0px', color: 'white' }}
-                    onClick={handlClose}
-                  >
+                  <CButton className="btn  custom_grey_button" onClick={handlClose}>
                     Close
                   </CButton>
                 </CModalFooter>
@@ -315,7 +308,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   )
 }
 AllocateUnit.propTypes = {
-  unitId: PropTypes.number,
+  unitId: PropTypes.string,
   unitNo: PropTypes.string,
   after_submit: PropTypes.func,
 }

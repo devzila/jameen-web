@@ -36,13 +36,11 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
     setUnit_type(temp2_unit_type)
   }
 
-  console.log(unit_type)
   React.useEffect(() => {
     fetchLocalData()
   }, [])
 
   async function onSubmit(data) {
-    console.log(data)
     const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/unit_types`, {
       unit_type: data,
     })

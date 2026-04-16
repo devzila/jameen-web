@@ -16,7 +16,7 @@ import {
   CContainer,
 } from '@coreui/react'
 
-export default function AddBillable({ after_submit, id }) {
+export default function EditVehicles({ after_submit, id }) {
   const { register, handleSubmit, setValue, reset } = useForm()
   const { get, put, response } = useFetch()
 
@@ -33,8 +33,6 @@ export default function AddBillable({ after_submit, id }) {
   async function getUserData() {
     let api = await get(`/v1/admin/members/${residentId}/vehicles/${id}`)
 
-    console.log(api)
-
     if (response.ok) {
       if (api.data) {
         setValue('brand_name', api.data.brand_name)
@@ -47,7 +45,6 @@ export default function AddBillable({ after_submit, id }) {
   }
 
   async function onSubmit(data) {
-    console.log(data)
     const apiResponse = await put(`/v1/admin/members/${residentId}/vehicles/${id}`, {
       vehicle: data,
     })
@@ -175,7 +172,7 @@ export default function AddBillable({ after_submit, id }) {
   )
 }
 
-AddBillable.propTypes = {
+EditVehicles.propTypes = {
   after_submit: PropTypes.func,
   id: PropTypes.number,
 }

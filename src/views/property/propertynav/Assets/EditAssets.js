@@ -32,9 +32,7 @@ export default function EditAssets({ after_submit, id }) {
 
   async function loadAsset() {
     const endpoint = await get(`/v1/admin/premises/properties/${propertyId}/assets/${id}`)
-    console.log(response.ok)
     if (response.ok) {
-      console.log(endpoint)
       setValue('name', endpoint.data.name)
       setValue('description', endpoint.data.description)
       setValue('asset_type', endpoint.data.asset_type)

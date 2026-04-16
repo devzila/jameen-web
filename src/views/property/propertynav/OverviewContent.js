@@ -6,7 +6,10 @@ import { useParams, Link } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { formatdate } from 'src/services/CommonFunctions'
-import logo from '../../../assets/images/avatars/default.png'
+import EditProperty from '../EditProperty'
+import DeleteProperty from '../DeleteProperty'
+import defaultbuilding from 'src/assets/images/default-building.png'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function OverviewContent(propsd) {
   const { propertyId } = useParams()
@@ -30,20 +33,17 @@ export default function OverviewContent(propsd) {
 
       setMember_info(contractMembers || [])
     } else {
-      console.log('No running contracts found')
     }
 
     if (response.ok) {
       setProperty(api.data)
     }
   }
-  const handleDelete = async () => {
-    console.log('Deleting property...')
-  }
+  const handleDelete = async () => {}
 
   return (
     <>
-      <CContainer>
+      <CContainer fluid>
         <CRow>
           <CCol className="mt-3" md="4">
             <CCard
@@ -54,16 +54,13 @@ export default function OverviewContent(propsd) {
                 <img
                   style={{
                     width: '100%',
-                    height: '255px',
-                    borderRadius: '0px',
+                    height: '233px',
+                    borderRadius: '4px',
                     display: 'block',
                     margin: '0 auto',
                     objectFit: 'cover',
                   }}
-                  src={
-                    property.photo ||
-                    'https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJ1aWxkaW5nc3xlbnwwfHwwfHx8MA%3D%3D'
-                  }
+                  src={property.photo || defaultbuilding}
                 />
               </div>
             </CCard>
@@ -71,20 +68,23 @@ export default function OverviewContent(propsd) {
           <CCol className="mt-3" md="8">
             <CCard className=" p-3 my-3 mb-3   border-0 theme_color">
               <CListGroupItem>
-                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-                <strong className="text-black">Overview</strong>
-                {/* <div className="d-flex justify-content-end mb-2">
-                <CButton color="primary" className="me-2">
-                  <Link to={`/edit/${propertyId}`}>
-                    <CIcon icon={freeSet.cilPencil} className="me-1" />
-                    Edit
-                  </Link>
-                </CButton>
-                <CButton color="danger" onClick={handleDelete}>
-                  <CIcon icon={freeSet.cilTrash} className="me-1" />
-                  Delete
-                </CButton>
-                </div> */}
+                <div className="d-flex justify-content-between">
+                  <div>
+                    <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
+                    <strong className="text-black">Overview</strong>
+                  </div>
+                  <div className="d-flex justify-content-end mb-2">
+                    <CheckPermissions
+                      component={
+                        <>
+                          <EditProperty propertyId={propertyId} />
+                          <DeleteProperty propertyId={propertyId} />
+                        </>
+                      }
+                      keys={['property', 'manage']}
+                    />
+                  </div>
+                </div>
                 <hr className="text-secondary" />
               </CListGroupItem>
               <CRow className="">
@@ -94,45 +94,45 @@ export default function OverviewContent(propsd) {
                     {property?.name || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light">
+                <CCol className="p-2 mt-0 fw-light">
                   City
                   <CCardText className="fw-normal text-black text-capitalize">
                     {property?.city || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light">
+                <CCol className="p-2 mt-0 fw-light">
                   Use Type
                   <CCardText className="fw-normal text-black text-capitalize">
                     {property?.use_type || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light">
+                <CCol className="p-2 mt-0 fw-light">
                   Payment Term
                   <CCardText className="fw-normal text-black text-capitalize">
-                    {property?.payment_term || '-'}
+                    {property?.payment_term?.replace('_', ' ') || '-'}
                   </CCardText>
                 </CCol>
               </CRow>
               <CRow>
-                <CCol className="p-3 mt-0 fw-light">
+                <CCol className="p-2 mt-0 fw-light">
                   Overdue Days
                   <CCardText className="fw-normal text-black text-capitalize">
                     {property?.invoice_overdue_days || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light">
+                <CCol className="p-2 mt-0 fw-light">
                   Invoice No Prefix
                   <CCardText className="fw-normal text-black text-capitalize">
                     {property?.invoice_no_prefix || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light">
+                <CCol className="p-2 mt-0 fw-light">
                   Invoice Day
                   <CCardText className="fw-normal text-black text-capitalize">
                     {property?.invoice_day || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light">
+                <CCol className="p-2 mt-0 fw-light">
                   Created At
                   <CCardText className="fw-normal text-black text-capitalize">
                     {formatdate(property?.created_at)}
@@ -148,29 +148,29 @@ export default function OverviewContent(propsd) {
             <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
               <CListGroupItem>
                 <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
-                <strong className="text-black">property Billing Details</strong>
+                <strong className="text-black">Billing Info.</strong>
                 <hr className="text-secondary" />
               </CListGroupItem>
               <CRow className="">
-                <CCol className="p-3 mt-0 fw-light">
+                <CCol className="p-2 mt-0 fw-light">
                   Electricity Account No.
                   <CCardText className="fw-normal text-black text-capitalize">
                     {property?.electricity_account_number || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light">
+                <CCol className="p-2 mt-0 fw-light">
                   Water Account No.
                   <CCardText className="fw-normal text-black text-capitalize">
                     {property?.water_account_number || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light">
+                <CCol className="p-2 mt-0 fw-light">
                   Internal Extension No.
                   <CCardText className="fw-normal text-black text-capitalize">
                     {property?.internal_extension_number || '-'}
                   </CCardText>
                 </CCol>
-                <CCol className="p-3 mt-0 fw-light">
+                <CCol className="p-2 mt-0 fw-light">
                   Last Status Changed
                   <CCardText className="fw-normal text-black text-capitalize">
                     {property?.year_built || '-'}

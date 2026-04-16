@@ -34,14 +34,12 @@ export default function Assets() {
   async function fetchAssets() {
     try {
       const assetsData = await get(`/v1/admin/premises/properties/${propertyId}/assets`)
-      console.log(assetsData)
       if (assetsData && assetsData.data) {
         setAssets(assetsData.data)
         setLoading(false)
       }
     } catch (error) {
       toast.error(error.error)
-      console.log('sdd')
       console.error('Error fetching billable items:', error)
     }
   }
@@ -108,7 +106,7 @@ export default function Assets() {
                               <tr key={data.id}>
                                 <td>{data.name || '-'}</td>
                                 <td className="text-capitalize">
-                                  {data.asset_type.replace(/_/g, ' ') || '-'}
+                                  {data.asset_type?.replace(/_/g, ' ') || '-'}
                                 </td>
 
                                 <td>{data.description || '-'}</td>

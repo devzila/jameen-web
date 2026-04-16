@@ -29,19 +29,15 @@ export default function MaintenanceStaff() {
     try {
       const api = await get(`/v1/admin/maintenance_staffs`)
 
-      console.log(api)
       if (api && api.data) {
         setLoading(false)
         setMaintenanceData(api.data)
-
-        console.log(api)
       }
     } catch (error) {
       console.error('Error fetching billable items:', error)
     }
   }
 
-  console.log(maintenanceData)
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
   }

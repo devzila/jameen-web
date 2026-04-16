@@ -11,10 +11,7 @@ import { status_color } from 'src/services/CommonFunctions'
 import PickOwner from '../property/unit/UnitFunctions/PickOwner'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import InvoicePayment from './InvoicePayment'
-import InvoiceCancel from './InvoiceCancel'
 import { formatdate } from 'src/services/CommonFunctions'
-import ShowInvoices from './ShowInvoices'
 import { NavLink } from 'react-router-dom'
 
 const Finance = () => {
@@ -36,16 +33,13 @@ const Finance = () => {
     if (searchKeyword) {
       endpoint += `&q[number_cont]=${searchKeyword}`
     }
-    console.log(endpoint)
     let initial_invoices = await get(endpoint)
-    console.log(initial_invoices)
 
     if (response.ok) {
       if (initial_invoices.data) {
         setLoading(false)
         setInvoices(initial_invoices.data)
         setPagination(initial_invoices.pagination)
-        console.log(initial_invoices)
       }
     } else if (response.ok) {
       setErrors(true)
@@ -122,7 +116,7 @@ const Finance = () => {
                               scope="row"
                               style={{ color: '#666666' }}
                             >
-                              <NavLink to={`${invoice.id}/view`}>{invoice.number}</NavLink>
+                              <NavLink to={`invoice/${invoice.id}`}>{invoice.number}</NavLink>
                             </th>
                             <td className="pt-3">
                               {invoice?.unit_contract?.unit?.unit_no || '- '}
@@ -141,42 +135,9 @@ const Finance = () => {
                             <td className="pt-3">{invoice?.due_date || '-'}</td>
 
                             <td className="pt-3">
-                              <button
-                                className=" text-center border-0  rounded-0 text-white"
-                                style={{
-                                  backgroundColor: `${status_color(invoice?.status)}`,
-                                  cursor: 'default',
-                                  width: '120px',
-                                }}
-                              >
+                              <button className={`request-${status_color(invoice?.status)}`}>
                                 {invoice?.status || '-'}
                               </button>
-                            </td>
-
-                            <td>
-                              <Dropdown key={invoice.id}>
-                                <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                                  <BsThreeDots />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  <div className="d-flex">
-                                    {invoice?.status === 'pending' ? (
-                                      <>
-                                        <InvoicePayment
-                                          invoice={invoice}
-                                          aftersubmit={loadInitialinvoices}
-                                        />
-                                        <InvoiceCancel
-                                          id={invoice.id}
-                                          aftersubmit={loadInitialinvoices}
-                                        />
-                                        <button className="btn tooltip_button"> Download</button>
-                                      </>
-                                    ) : null}
-                                    {/* <ShowInvoices /> */}
-                                  </div>
-                                </Dropdown.Menu>
-                              </Dropdown>
                             </td>
                           </tr>
                         ))}

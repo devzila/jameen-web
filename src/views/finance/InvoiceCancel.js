@@ -81,5 +81,5 @@ export default function InvoiceCancel({ id }) {
 }
 
 InvoiceCancel.propTypes = {
-  id: PropTypes.object,
+  id: PropTypes.number,
 }

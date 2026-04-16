@@ -5,7 +5,6 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
 import { useParams } from 'react-router-dom'
-import Loading from 'src/components/loading/loading'
 
 import {
   CButton,
@@ -21,13 +20,17 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 
 import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
+import { format_react_select, removeEmptyDocuments } from 'src/services/CommonFunctions'
 
 export default function MovingInUnit({ unitNo, unitId, after_submit }) {
   const { register, handleSubmit, setValue, control, watch, reset } = useForm()
   const { post, get, response } = useFetch()
   const [temp_base64, setTemp_base64] = useState([])
+  const [vacantUnits, setVacantUnit] = useState([])
+  const [unit_id, setUnit_id] = useState(null)
 
   const [residents, setResidents] = useState([])
+  const [errors, setErrors] = useState([])
 
   const [visible, setVisible] = useState(false)
   const [submitLoader, setSubmitLoader] = useState(false)
@@ -39,6 +42,12 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
     control,
     name: 'documents_attributes',
   })
+
+  //useEffext
+  useEffect(() => {
+    loadInitialResidents()
+    loadVacantUnits()
+  }, [])
 
   //resident api call
 
@@ -52,14 +61,18 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
         setResidents(trimResidents(initialResidents.data))
       }
     } else {
-      toast('Unable to load residents')
+      toast.error('Unable to load residents')
     }
   }
 
-  //useEffext
-  useEffect(() => {
-    loadInitialResidents()
-  }, [])
+  async function loadVacantUnits() {
+    let endpoint = `/v1/admin/premises/properties/1/allotments/movable?limit=-1`
+    const data = await get(endpoint)
+    console.log(data)
+    if (response.ok) {
+      setVacantUnit(format_react_select(data.data, ['id', 'unit_no']))
+    }
+  }
 
   //resident dropdown
   let resident_array = []
@@ -73,7 +86,6 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
     return resident_array
   }
 
-  //base64
   //base64
   const handleFileSelection = (e, index) => {
     const selectedFile = e.target.files[0]
@@ -109,6 +121,13 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
   //submit function
 
   async function onSubmit(data) {
+    let updatedUnitId = undefined
+    updatedUnitId = unitId || unit_id
+
+    if (updatedUnitId == undefined) {
+      toast.error('Please select a unit from the dropdown.')
+      return
+    }
     //resident array
     setSubmitLoader(true)
     const assigned_resident_data =
@@ -120,19 +139,25 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
     data.documents_attributes.map((element, index) => (element.file.data = temp_base64[index]))
 
     const body = { ...data, resident_ids: assigned_resident_data }
+    const processed_data = removeEmptyDocuments(body)
 
-    await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/moving_in`, {
-      allotment: body,
+    await post(`/v1/admin/premises/properties/${propertyId}/units/${updatedUnitId}/moving_in`, {
+      allotment: processed_data,
     })
     if (response.ok) {
       toast('Moved In : Operation Successful')
       reset()
+      updatedUnitId = undefined
       after_submit()
+      loadVacantUnits()
       setSubmitLoader(false)
       setVisible(false)
+      setUnit_id(null)
       setTemp_base64([])
     } else {
       setSubmitLoader(false)
+      setErrors(response?.data)
+
       toast(response.data?.message)
     }
   }
@@ -145,7 +170,7 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
     <div>
       <button
         type="button"
-        className="tooltip_button "
+        className="btn custom_theme_button "
         data-mdb-ripple-init
         onClick={() => setVisible(true)}
       >
@@ -164,14 +189,39 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
         </CModalHeader>
         <CModalBody>
           <CContainer>
+            <Row>
+              <Col className="pr-1 mt-3" md="4">
+                <label>
+                  <b>Unit No: </b>
+                  {unitNo ? unitNo : null}
+                </label>
+                {unitNo ? null : (
+                  <Col className="pr-1 mt-3">
+                    <Form.Group>
+                      <Controller
+                        required
+                        name="unit_id"
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={vacantUnits}
+                            value={vacantUnits?.find((c) => c.value === field.value)}
+                            onChange={(val) => {
+                              field.onChange(val.value)
+                              setUnit_id(val.value)
+                            }}
+                          />
+                        )}
+                        control={control}
+                        placeholder="Role"
+                      />
+                    </Form.Group>
+                  </Col>
+                )}
+              </Col>
+            </Row>
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
-                <Col className="pr-1 mt-3" md="10">
-                  <label>
-                    <b>Unit No: </b>
-                    {unitNo}
-                  </label>
-                </Col>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>
@@ -250,7 +300,6 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
                     <Form.Group>
                       <b>Document Name</b>
                       <Form.Control
-                        required
                         placeholder=" Name"
                         type="text"
                         {...register(`documents_attributes.${index}.name`)}
@@ -298,13 +347,7 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
               ))}
               <Col className="m-3 d-flex justify-content-center">
                 <CButton
-                  style={{
-                    border: '0px',
-                    color: '#00bfcc',
-                    backgroundColor: 'white',
-                    boxShadow: '5px  5px 20px ',
-                    borderRadius: '26px',
-                  }}
+                  className=" btn custom-add-more"
                   onClick={() => append({ name: '', description: '', file: { data: '' } })}
                 >
                   <CIcon className="mt-1" icon={cilNoteAdd} />
@@ -313,24 +356,10 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
               </Col>
               <div className="text-center">
                 <CModalFooter>
-                  <Button
-                    data-mdb-ripple-init
-                    type="submit"
-                    className="btn  btn-primary btn-block"
-                    style={{
-                      marginTop: '5px',
-                      color: 'white',
-                      backgroundColor: '#00bfcc',
-                      border: '0px',
-                    }}
-                  >
+                  <Button data-mdb-ripple-init type="submit" className="btn  custom_theme_button">
                     Submit
                   </Button>
-                  <CButton
-                    color="secondary"
-                    style={{ border: '0px', color: 'white' }}
-                    onClick={handlClose}
-                  >
+                  <CButton className="btn custom_grey_button" onClick={handlClose}>
                     Close
                   </CButton>
                 </CModalFooter>
@@ -344,7 +373,7 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
   )
 }
 MovingInUnit.propTypes = {
-  unitId: PropTypes.number,
+  unitId: PropTypes.string,
   unitNo: PropTypes.string,
   after_submit: PropTypes.func,
 }

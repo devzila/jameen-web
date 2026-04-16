@@ -16,10 +16,13 @@ import {
 } from '@coreui/react'
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
+import { cleanAvatar } from 'src/services/CommonFunctions'
 
 export default function AddResidents() {
   const [visible, setVisible] = useState(false)
   const [properties_data, setProperties_data] = useState([])
+  const [errors, setErrors] = useState({})
+
   const [imageView, setImageView] = useState('')
 
   const { register, handleSubmit, control, watch, setValue } = useForm()
@@ -76,13 +79,14 @@ export default function AddResidents() {
   //Post Data
   async function onSubmit(data) {
     const form_data = { ...data, avatar: { data: imageView } }
-
-    await post(`/v1/admin/members`, { member: form_data })
+    const cleaned_form_data = cleanAvatar(form_data)
+    await post(`/v1/admin/members`, { member: cleaned_form_data })
 
     if (response.ok) {
       toast('Resident added Successfully')
       setVisible(!visible)
     } else {
+      setErrors(response.data.errors)
       toast(response.data?.message || response.statusText || 'Internet Not Working')
     }
   }
@@ -199,7 +203,10 @@ export default function AddResidents() {
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Password</label>
+                    <label>
+                      Password
+                      <small className="text-danger"> *{errors ? errors.password : null} </small>
+                    </label>
                     <Form.Control
                       placeholder="Password"
                       type="password"
@@ -243,7 +250,10 @@ export default function AddResidents() {
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>Assigned Properties</label>
+                    <label>
+                      Assigned Properties
+                      <small className="text-danger"> *{errors ? errors.property : null} </small>
+                    </label>
 
                     <Controller
                       name="property_id"

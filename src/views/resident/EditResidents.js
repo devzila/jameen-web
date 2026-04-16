@@ -105,7 +105,7 @@ export default function EditResidents(props) {
     <div>
       <button
         type="button"
-        className="tooltip_button"
+        className="btn custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >

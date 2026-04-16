@@ -3,6 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { CBadge } from '@coreui/react'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export const AppSidebarNav = ({ items }) => {
   const location = useLocation()
@@ -24,16 +25,11 @@ export const AppSidebarNav = ({ items }) => {
     const { component, name, badge, icon, ...rest } = item
     const Component = component
     return (
-      <Component
-        {...(rest.to &&
-          !rest.items && {
-            component: NavLink,
-          })}
-        key={index}
-        {...rest}
-      >
-        {navLink(name, icon, badge)}
-      </Component>
+      <NavLink to={rest.to}>
+        <Component key={index} {...rest}>
+          {navLink(name, icon, badge)}
+        </Component>
+      </NavLink>
     )
   }
   const navGroup = (item, index) => {
@@ -57,7 +53,13 @@ export const AppSidebarNav = ({ items }) => {
   return (
     <React.Fragment>
       {items &&
-        items.map((item, index) => (item.items ? navGroup(item, index) : navItem(item, index)))}
+        items.map((item, index) => (
+          <CheckPermissions
+            component={item.items ? navGroup(item, index) : navItem(item, index)}
+            keys={item.keys_data}
+            key={index}
+          />
+        ))}
     </React.Fragment>
   )
 }

@@ -1,0 +1,19 @@
+import React from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import Overview from './Overview'
+import Finance from './Finance'
+import { Container } from 'react-bootstrap'
+import { Maintenance } from './Maintenance'
+
+export default function DashboardRoutes() {
+  return (
+    <Container fluid>
+      <Routes>
+        <Route path="/" element={<Navigate to="/dashboard/overview" />} />
+        <Route path="overview" element={<Overview />} />
+        <Route path="finance" element={<Finance />} />
+        <Route path="maintenance" element={<Maintenance />} />
+      </Routes>
+    </Container>
+  )
+}

@@ -5,15 +5,25 @@ import { useParams } from 'react-router-dom'
 import { formatdate } from 'src/services/CommonFunctions'
 import { UseFetch, useFetch } from 'use-http'
 import { status_color } from 'src/services/CommonFunctions'
+import InvoiceCancel from './InvoiceCancel'
+import InvoicePayment from './InvoicePayment'
+import PropTypes from 'prop-types'
+import CheckPermissions from 'src/permissions/CheckPermissions'
 
-export default function ShowInvoices() {
+export default function ShowInvoices({ invoice_id }) {
   const { get, response } = useFetch()
   const [invoice, setInvoice] = useState({})
-  const { invoiceId } = useParams()
+  let { invoiceId } = useParams()
+
+  console.log(invoiceId)
+
+  if (invoiceId == undefined) {
+    invoiceId = invoice_id
+  }
 
   const getInvoice = async () => {
     const api = await get(`/v1/admin/invoices/${invoiceId}`)
-    console.log(api)
+
     if (response.ok) {
       setInvoice(api.data)
     }
@@ -21,36 +31,56 @@ export default function ShowInvoices() {
 
   async function downloadFile() {
     const api = await get(`/v1/admin/invoices/${invoiceId}.pdf`)
+    downloadPdf(api, invoice.number)
+  }
 
-    console.log(api)
+  const downloadPdf = (pdfString, fileName) => {
+    const blob = new Blob([pdfString], { type: 'application/pdf' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = fileName
+    a.target = '_blank'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
   }
 
   useEffect(() => {
     getInvoice()
   }, [])
   return (
-    <div className="container mt-6 mb-7 rounded-0">
+    <div className="container mt-4 mb-5 rounded-0">
       <div className="row justify-content-center">
         <div className="col-lg-12 col-xl-7">
           <div className="card rounded-1 mb-2">
             <div className="card-body p-4">
               <div className="d-flex justify-content-between ">
-                <button
-                  className=" text-center border-0 rounded-0 text-white"
-                  style={{
-                    backgroundColor: `${status_color(invoice?.status)}`,
-                    cursor: 'pointer',
-                    width: '120px',
-                  }}
-                >
+                <button className={`request-${status_color(invoice?.status)}`}>
                   {invoice?.status || '-'}
                 </button>
-                <CIcon
-                  icon={freeSet.cilFile}
-                  className="theme_color"
-                  size="xl"
-                  onClick={downloadFile}
-                />
+
+                <div className="d-flex align-items-center">
+                  <CIcon
+                    icon={freeSet.cilPrint}
+                    className="theme_color"
+                    size="xxl"
+                    onClick={downloadFile}
+                    title="Download"
+                  />
+                  {invoice?.status === 'pending' ? (
+                    <>
+                      <CheckPermissions
+                        component={<InvoicePayment invoice={invoice} aftersubmit={getInvoice} />}
+                        keys={['invoice', 'can_mark_as_paid']}
+                      />
+                      <CheckPermissions
+                        component={<InvoiceCancel id={invoice.id} aftersubmit={getInvoice} />}
+                        keys={['invoice', 'cancel']}
+                      />
+                    </>
+                  ) : null}
+                </div>
               </div>
               <div className="border-bottom border-top border-gray-200 pt-4 mt-4">
                 <div className="row">
@@ -98,7 +128,7 @@ export default function ShowInvoices() {
                       <tr key={items.id}>
                         <td className="px-0">
                           {items?.item_name || '-'}
-                          <small>({items?.item_type.replace(/_/g, ' ') || '-'})</small>
+                          <small>({items?.item_type?.replace(/_/g, ' ') || '-'})</small>
                         </td>
 
                         <td className="text-end px-1 font-monospace">{items?.vat_amount || '-'}</td>
@@ -174,4 +204,8 @@ export default function ShowInvoices() {
       </div>
     </div>
   )
+}
+
+ShowInvoices.propTypes = {
+  invoice_id: PropTypes.number,
 }

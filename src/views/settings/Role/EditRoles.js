@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import Select, { NonceProvider } from 'react-select'
 import PropTypes from 'prop-types'
 import '../../../scss/_roles.scss'
 
@@ -23,8 +22,9 @@ export default function EditRoles({ roleId, after_submit }) {
   const [loading, setLoading] = useState(true)
   const [errors, setErrors] = useState(false)
   const [privileges_data, setPrivileges_data] = useState({})
+  const [data, setData] = useState({})
 
-  const { register, handleSubmit, control, watch, reset, setValue } = useForm()
+  const { register, handleSubmit, setValue } = useForm()
   const { get, put, response } = useFetch()
 
   async function loadInitialroles() {
@@ -35,17 +35,7 @@ export default function EditRoles({ roleId, after_submit }) {
     if (response.ok) {
       if (initialroles.data) {
         setLoading(false)
-        setValue('name', initialroles.data.name)
-        setValue('description', initialroles.data.description)
-        setValue('privileges.users.create', initialroles.data.privileges.users.create)
-        setValue('privileges.users.view', initialroles.data.privileges.users.view)
-        setValue('privileges.users.delete', initialroles.data.privileges.users.delete)
-        setValue('privileges.users.update', initialroles.data.privileges.users.update)
-        setValue('privileges.users.add_notes', initialroles.data.privileges.users.add_notes)
-        setValue('privileges.maintenance.view', initialroles.data.privileges.maintenance.view)
-        setValue('privileges.maintenance.create', initialroles.data.privileges.maintenance.create)
-        setValue('privileges.maintenance.delete', initialroles.data.privileges.maintenance.delete)
-        setValue('privileges.settings.manage', initialroles.data.privileges.settings.manage)
+        setData(initialroles.data)
         if (initialroles.data.privileges) {
           setPrivileges_data(initialroles.data.privileges)
         }
@@ -62,10 +52,11 @@ export default function EditRoles({ roleId, after_submit }) {
   async function onSubmit(data) {
     const api = await put(`/v1/admin/roles/${roleId}`, { role: data })
     if (response.ok) {
-      toast('Roles Edited Successfully')
+      toast.success('Roles Updated Successfully')
       after_submit()
 
       setVisible(!visible)
+      loadInitialroles()
     } else {
       toast(response.data?.message)
     }
@@ -100,7 +91,12 @@ export default function EditRoles({ roleId, after_submit }) {
               <Col className="pr-1 mt-3" md="12">
                 <Form.Group>
                   <label>Name</label>
-                  <Form.Control placeholder="Name" type="text" {...register('name')}></Form.Control>
+                  <Form.Control
+                    defaultValue={data.name}
+                    placeholder="Name"
+                    type="text"
+                    {...register('name')}
+                  ></Form.Control>
                 </Form.Group>
               </Col>
             </Row>
@@ -112,6 +108,7 @@ export default function EditRoles({ roleId, after_submit }) {
                     required
                     placeholder="Description"
                     type="text"
+                    defaultValue={data.description}
                     {...register('description')}
                   ></Form.Control>
                 </Form.Group>
@@ -140,11 +137,13 @@ export default function EditRoles({ roleId, after_submit }) {
                         <ul className="list-group list-group-flush">
                           <li className="list-group-item" style={{ textTransform: 'capitalize' }}>
                             {inner_keys.replace(/_/g, ' ')}
+
                             <label className="checkbox">
                               <input
                                 type="checkbox"
                                 {...register(`privileges.${outer_keys}.${inner_keys}`)}
                               />
+                              {setValue(`privileges.${outer_keys}.${inner_keys}`, inner_values)}
                               <span className="default"></span>
                             </label>
                           </li>

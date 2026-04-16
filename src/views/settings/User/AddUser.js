@@ -15,12 +15,14 @@ import {
   CModalTitle,
   CContainer,
 } from '@coreui/react'
+import { cleanAvatar } from 'src/services/CommonFunctions'
 
 export default function UserForm({ after_submit }) {
   const [visible, setVisible] = useState(false)
   const [imageView, setImageView] = useState('')
   const [properties_data, setProperties_data] = useState([])
   const [roles_data, setRoles_data] = useState([])
+  const [errors, setErrors] = useState({})
 
   const { register, handleSubmit, control, reset } = useForm()
   const { get, post, response } = useFetch()
@@ -79,7 +81,8 @@ export default function UserForm({ after_submit }) {
       data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
 
     const body = { ...data, property_ids: assigned_properties_data, avatar: { data: imageView } }
-    await post(`/v1/admin/users`, { user: body })
+    const processed_data = cleanAvatar(body)
+    await post(`/v1/admin/users`, { user: processed_data })
     if (response.ok) {
       toast('user added Successfully')
       after_submit()
@@ -87,6 +90,7 @@ export default function UserForm({ after_submit }) {
 
       setVisible(!visible)
     } else {
+      setErrors(response.data.errors)
       toast(response.data?.message)
     }
   }
@@ -137,14 +141,31 @@ export default function UserForm({ after_submit }) {
                 </div>
               </Row>
               <Row>
+                <Col className="pr-1 mt-3" md="2">
+                  <Form.Group className="mt-4 form-check form-switch">
+                    <label>Active</label>
+
+                    <Form.Control
+                      className="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      defaultChecked={true}
+                      {...register('active')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Name</label>
+                    <label>
+                      Name
+                      <small className="text-danger"> *{errors ? errors.name : null} </small>
+                    </label>
                     <Form.Control
-                      required
                       placeholder="Full Name"
                       type="text"
-                      {...register('name', { required: ' Name is required.' })}
+                      {...register('name')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -161,20 +182,25 @@ export default function UserForm({ after_submit }) {
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-3 mt-3" md="6">
+                <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Username</label>
+                    <label>
+                      Email
+                      <small className="text-danger"> *{errors ? errors.email : null} </small>
+                    </label>
                     <Form.Control
-                      required
-                      placeholder="UserName"
+                      placeholder="abc@example.com"
                       type="text"
-                      {...register('username')}
+                      {...register('email')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Password</label>
+                    <label>
+                      Password
+                      <small className="text-danger"> *{errors ? errors.password : null} </small>
+                    </label>
                     <Form.Control
                       placeholder="Password"
                       type="password"
@@ -186,34 +212,17 @@ export default function UserForm({ after_submit }) {
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Email</label>
-                    <Form.Control
-                      placeholder="abc@example.com"
-                      type="text"
-                      {...register('email')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="4">
-                  <Form.Group>
-                    <label>Phone No</label>
+                    <label>
+                      Phone No{' '}
+                      <small className="text-danger">
+                        {' '}
+                        *{errors ? errors.mobile_number : null}{' '}
+                      </small>
+                    </label>
                     <Form.Control
                       placeholder="Phone Number"
                       type="text"
                       {...register('mobile_number')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="2">
-                  <Form.Group className="mt-4 form-check form-switch">
-                    <label>Active</label>
-
-                    <Form.Control
-                      className="form-check-input"
-                      type="checkbox"
-                      role="switch"
-                      defaultChecked={true}
-                      {...register('active')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -242,14 +251,13 @@ export default function UserForm({ after_submit }) {
                 </Col>
               </Row>
 
-              {/* Modal part 2 role */}
-              <CModalTitle className="mt-3" id="StaticBackdropExampleLabel">
-                Role
-              </CModalTitle>
-
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
+                    <label>
+                      Role
+                      <small className="text-danger"> *{errors ? errors.role : null} </small>
+                    </label>
                     <Controller
                       name="role_id"
                       render={({ field }) => (

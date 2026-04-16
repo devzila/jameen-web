@@ -169,7 +169,7 @@ function Add({ after_submit }) {
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>
-                      Unit Type{' '}
+                      Unit Type
                       <small className="text-danger"> *{errors ? errors.unit_type : null} </small>
                     </label>
 

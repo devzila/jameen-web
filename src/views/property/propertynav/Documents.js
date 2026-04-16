@@ -19,7 +19,6 @@ export default function Documents() {
   async function fetchDocuments() {
     try {
       const documentsData = await get(`/v1/admin/premises/properties/${propertyId}/Documents`)
-      console.log(documentsData)
       if (documentsData && documentsData.data) {
         setDocuments(documentsData.data)
       }
