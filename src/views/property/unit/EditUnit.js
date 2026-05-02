@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
 import {
@@ -23,10 +23,13 @@ export default function Edit({ unitId, after_submit }) {
   const { get, put, response } = useFetch()
   const [unitData, setUnitData] = useState({})
   const [units_data, setUnits_data] = useState([])
+  const [buildings_data, setBuildings_data] = useState([])
+  const [errors, setErrors] = useState({})
 
   useEffect(() => {
     getUnitData()
     fetchUnitsTypes() // Assuming you want to populate the unit types for the dropdown
+    fetchBuildings()
   }, [])
 
   async function getUnitData() {
@@ -43,6 +46,7 @@ export default function Edit({ unitId, after_submit }) {
         setValue('water_account_number', api.data.water_account_number || '-')
         setValue('internal_extension_number', api.data.internal_extension_number || '-')
         setValue('unit_type_id', api.data.unit_type.id)
+        setValue('building_id', api.data.building?.id)
       } else {
         toast('Unable to load data.')
       }
@@ -56,16 +60,34 @@ export default function Edit({ unitId, after_submit }) {
     }
   }
 
+  async function fetchBuildings() {
+    const api = await get(`/v1/admin/premises/properties/${propertyId}/buildings`)
+    if (response.ok && api.data) {
+      setBuildings_data(trimBuildings(api.data))
+    }
+  }
+
   function trimUnits(units) {
     let unit_id_array = []
-    units.data.map((e) => {
+    units.data.forEach((e) => {
       unit_id_array.push({ value: e.id, label: e.name })
     })
     return unit_id_array
   }
 
+  function trimBuildings(buildings) {
+    if (buildings) {
+      return buildings.map((e) => ({
+        value: e?.id,
+        label: e?.name,
+      }))
+    } else {
+      return []
+    }
+  }
+
   async function onSubmit(data) {
-    const api = await put(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`, {
+    await put(`/v1/admin/premises/properties/${propertyId}/units/${unitId}`, {
       unit: data,
     })
     if (response.ok) {
@@ -73,6 +95,7 @@ export default function Edit({ unitId, after_submit }) {
       after_submit()
       setVisible(false)
     } else {
+      setErrors(response.data.errors)
       toast.error(response.data?.message || 'Failed to edit unit data')
     }
   }
@@ -93,7 +116,10 @@ export default function Edit({ unitId, after_submit }) {
           size="xl"
           visible={visible}
           backdrop="static"
-          onClose={() => setVisible(false)}
+          onClose={() => {
+            setVisible(false)
+            setErrors({})
+          }}
           aria-labelledby="StaticBackdropExampleLabel"
         >
           <CModalHeader>
@@ -205,6 +231,29 @@ export default function Edit({ unitId, after_submit }) {
                         defaultValue={unitData.internal_extension_number}
                         type="string"
                         {...register('internal_extension_number')}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <label>
+                        Building
+                        <small className="text-danger">
+                          {' '}
+                          *{errors ? errors.building_id : null}{' '}
+                        </small>
+                      </label>
+                      <Controller
+                        name="building_id"
+                        render={({ field }) => (
+                          <Select
+                            {...field}
+                            options={buildings_data}
+                            value={buildings_data.find((c) => c.value === field.value)}
+                            onChange={(val) => field.onChange(val.value)}
+                          />
+                        )}
+                        control={control}
                       />
                     </Form.Group>
                   </Col>
