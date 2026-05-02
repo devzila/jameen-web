@@ -138,7 +138,7 @@ function Unit() {
                         }}
                       >
                         <tr>
-                          <th className="pt-3 pb-3 border-0  ">Unit Number</th>
+                          <th className="pt-3 pb-3 border-0  ">Building / Unit</th>
                           <th className="pt-3 pb-3 border-0  "> Type </th>
                           <th className="pt-3 pb-3 border-0  ">Bed/Bath </th>
                           <th className="pt-3 pb-3 border-0  ">Year Built</th>
@@ -149,32 +149,44 @@ function Unit() {
                       </thead>
 
                       <tbody>
-                        {units.map((unit) => (
-                          <tr key={unit.id}>
-                            <td className="pt-3 pb-2">
-                              <NavLink className="mx-2 p-0" to={`${unit.id}`}>
-                                {unit.unit_no}
-                              </NavLink>
-                            </td>
-                            <td className="pt-3 pb-2">{unit?.unit_type?.name || '-'}</td>
+                        {units.map((unit) => {
+                          const buildingLabel =
+                            unit.building?.name ||
+                            unit.building?.tower_no ||
+                            unit.building?.tower_name ||
+                            unit.building_id ||
+                            ''
+                          const unitLabel = buildingLabel
+                            ? `${buildingLabel} - ${unit.unit_no}`
+                            : unit.unit_no
 
-                            <td className="pt-3 pb-2 text-start">
-                              {unit.bedrooms_number + '  /  ' + unit.bathrooms_number}
-                            </td>
-                            <td className="pt-3 pb-2">{unit.year_built}</td>
-                            <td className="pt-3 pb-2">
-                              {unit.running_contracts[0]?.contract_members
-                                ? PickOwner(unit.running_contracts[0]?.contract_members)
-                                : '-'}
-                            </td>
-                            <td className="pt-3 pb-2">-</td>
-                            <td className="pt-3 pb-2 ">
-                              <button className={`request-${status_color(unit?.status)}`}>
-                                {unit.status}
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                          return (
+                            <tr key={unit.id}>
+                              <td className="pt-3 pb-2">
+                                <NavLink className="mx-2 p-0" to={`${unit.id}`}>
+                                  {unitLabel}
+                                </NavLink>
+                              </td>
+                              <td className="pt-3 pb-2">{unit?.unit_type?.name || '-'}</td>
+
+                              <td className="pt-3 pb-2 text-start">
+                                {unit.bedrooms_number + '  /  ' + unit.bathrooms_number}
+                              </td>
+                              <td className="pt-3 pb-2">{unit.year_built}</td>
+                              <td className="pt-3 pb-2">
+                                {unit.running_contracts[0]?.contract_members
+                                  ? PickOwner(unit.running_contracts[0]?.contract_members)
+                                  : '-'}
+                              </td>
+                              <td className="pt-3 pb-2">-</td>
+                              <td className="pt-3 pb-2 ">
+                                <button className={`request-${status_color(unit?.status)}`}>
+                                  {unit.status}
+                                </button>
+                              </td>
+                            </tr>
+                          )
+                        })}
                       </tbody>
                     </table>
                     {loading && <Loading />}
