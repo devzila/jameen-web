@@ -1,8 +1,8 @@
 {
   "name": "Jameen",
-  "version": "0.0.1",
-  "description": "Jameen Admin Interface",
-  "homepage": ".",
+  "version": "1.0.0",
+  "description": "Jameen tenant/organization Interface",
+  "homepage": "/",
   "author": "The Devzila Team (https://devzila.com)",
   "scripts": {
     "build": "react-scripts build",
