@@ -70,7 +70,7 @@ export default function PropertyForm({ after_submit }) {
   }
 
   async function onSubmit(data) {
-    const body = { ...data, avatar: { data: imageView } }
+    const body = { ...data, pin_code: data.pincode, avatar: { data: imageView } }
 
     const apiResponse = await post(`/v1/admin/premises/properties`, { property: body })
 
@@ -188,7 +188,20 @@ export default function PropertyForm({ after_submit }) {
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-1 mt-3" md="12">
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>
+                      Pincode
+                      <small className="text-danger"> *{errors ? errors.pincode : null} </small>
+                    </label>
+                    <Form.Control
+                      placeholder="Pincode"
+                      type="text"
+                      {...register('pincode')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Use Type</label>
                     <Controller
