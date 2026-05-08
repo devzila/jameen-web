@@ -26,6 +26,7 @@ export default function PropertyForm({ after_submit }) {
   const [disabled, setDisabled] = useState(false)
 
   const { register, handleSubmit, control, watch, reset } = useForm()
+
   const { get, post, response } = useFetch()
 
   async function fetchProperties() {
@@ -43,6 +44,7 @@ export default function PropertyForm({ after_submit }) {
           label: key.charAt(0).toUpperCase() + key.slice(1)?.replace(/_/g, ' '),
         }),
       )
+
       setPaymentTermOptions(propertyPaymentTermsOptions)
       setUseTypeOptions(propertyUseTypesOptions)
     }
@@ -70,20 +72,29 @@ export default function PropertyForm({ after_submit }) {
   }
 
   async function onSubmit(data) {
-    const body = { ...data, avatar: { data: imageView } }
+    setDisabled(true)
 
-    const apiResponse = await post(`/v1/admin/premises/properties`, { property: body })
+    const body = {
+      ...data,
+      avatar: { data: imageView },
+    }
+
+    await post('/v1/admin/premises/properties', {
+      property: body,
+    })
 
     if (response.ok) {
       toast.success('Property added successfully')
-      setVisible(!visible)
+      setVisible(false)
       after_submit()
       reset()
       setImageView('')
+      setErrors({})
     } else {
-      setErrors(response.data.errors)
+      setErrors(response.data.errors || {})
       toast.error(response.data?.message)
     }
+
     setDisabled(false)
   }
 
@@ -91,12 +102,13 @@ export default function PropertyForm({ after_submit }) {
     <div>
       <button
         type="button"
-        className="btn s-3 custom_theme_button "
+        className="btn s-3 custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(!visible)}
       >
         Add Property
       </button>
+
       <CModal
         alignment="center"
         size="xl"
@@ -108,6 +120,7 @@ export default function PropertyForm({ after_submit }) {
         <CModalHeader>
           <CModalTitle id="StaticBackdropExampleLabel">Add Property Details</CModalTitle>
         </CModalHeader>
+
         <CModalBody>
           <CContainer>
             <Form onSubmit={handleSubmit(onSubmit)}>
@@ -118,13 +131,12 @@ export default function PropertyForm({ after_submit }) {
                     style={{
                       width: '300px',
                       height: '300px',
-
                       marginTop: '2%',
                       marginLeft: '4%',
                       borderRadius: '50%',
                     }}
                     title="Avatar"
-                    className="img-circle img-thumbnail isTooltip  "
+                    className="img-circle img-thumbnail isTooltip"
                     src={
                       imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'
                     }
@@ -132,31 +144,59 @@ export default function PropertyForm({ after_submit }) {
                   />
                 </div>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Avatar Image</label>
+
                     <Form.Control
                       type="file"
                       accept=".jpg, .jpeg, .png"
                       {...register('avatar')}
                       onChange={(e) => handleFileSelection(e)}
-                    ></Form.Control>
+                    />
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>
                       Name
-                      <small className="text-danger"> *{errors ? errors.name : null} </small>
+                      <small className="text-danger"> *{errors?.name}</small>
                     </label>
+
+                    <Form.Control placeholder="Property Name" type="text" {...register('name')} />
+                  </Form.Group>
+                </Col>
+
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>
+                      Address Line 1<small className="text-danger"> *{errors?.address}</small>
+                    </label>
+
                     <Form.Control
-                      placeholder="Full Name"
+                      placeholder="Address Line 1"
                       type="text"
-                      {...register('name')}
-                    ></Form.Control>
+                      {...register('address')}
+                    />
+                  </Form.Group>
+                </Col>
+
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>
+                      Address Line 2<small className="text-danger"> *{errors?.address_line2}</small>
+                    </label>
+
+                    <Form.Control
+                      placeholder="Address Line 2"
+                      type="text"
+                      {...register('address_line2')}
+                    />
                   </Form.Group>
                 </Col>
 
@@ -164,35 +204,44 @@ export default function PropertyForm({ after_submit }) {
                   <Form.Group>
                     <label>
                       City
-                      <small className="text-danger"> *{errors ? errors.city : null} </small>
+                      <small className="text-danger"> *{errors?.city}</small>
                     </label>
-                    <Form.Control
-                      placeholder="City"
-                      type="text"
-                      {...register('city')}
-                    ></Form.Control>
+
+                    <Form.Control placeholder="City" type="text" {...register('city')} />
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="12">
+
+                <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>
-                      Address
-                      <small className="text-danger"> *{errors ? errors.address : null} </small>
+                      State
+                      <small className="text-danger"> *{errors?.state}</small>
                     </label>
-                    <Form.Control
-                      placeholder="Address"
-                      type="text"
-                      {...register('address')}
-                    ></Form.Control>
+
+                    <Form.Control placeholder="State" type="text" {...register('state')} />
+                  </Form.Group>
+                </Col>
+
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>
+                      Pin Code
+                      <small className="text-danger"> *{errors?.pin_code}</small>
+                    </label>
+
+                    <Form.Control placeholder="Pin Code" type="text" {...register('pin_code')} />
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Use Type</label>
+
                     <Controller
                       name="use_type"
+                      control={control}
                       render={({ field }) => (
                         <Select
                           {...field}
@@ -201,17 +250,19 @@ export default function PropertyForm({ after_submit }) {
                           onChange={(val) => field.onChange(val.value)}
                         />
                       )}
-                      control={control}
                     />
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Payment Term</label>
+
                     <Controller
                       name="payment_term"
+                      control={control}
                       render={({ field }) => (
                         <Select
                           classNamePrefix="react-select"
@@ -221,7 +272,6 @@ export default function PropertyForm({ after_submit }) {
                           onChange={(val) => field.onChange(val.value)}
                         />
                       )}
-                      control={control}
                     />
                   </Form.Group>
                 </Col>
@@ -230,19 +280,20 @@ export default function PropertyForm({ after_submit }) {
               <div className="text-center">
                 <CModalFooter>
                   <Button
-                    data-mdb-ripple-init
                     type="submit"
-                    className="btn  btn-primary btn-block custom_theme_button"
+                    className="btn btn-primary btn-block custom_theme_button"
                     disabled={disabled}
                   >
                     Submit
                   </Button>
+
                   <CButton className="custom_grey_button" onClick={() => setVisible(false)}>
                     Close
                   </CButton>
                 </CModalFooter>
               </div>
             </Form>
+
             <div className="clearfix"></div>
           </CContainer>
         </CModalBody>
