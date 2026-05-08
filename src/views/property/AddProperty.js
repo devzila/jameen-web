@@ -4,7 +4,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
-
+import avtar from 'src/assets/images/avtar.jpeg'
 import {
   CButton,
   CModal,
@@ -125,9 +125,7 @@ export default function PropertyForm({ after_submit }) {
                     }}
                     title="Avatar"
                     className="img-circle img-thumbnail isTooltip  "
-                    src={
-                      imageView ? imageView : 'https://bootdey.com/img/Content/avatar/avatar7.png'
-                    }
+                    src={avtar}
                     data-original-title="Usuario"
                   />
                 </div>
