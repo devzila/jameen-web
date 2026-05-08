@@ -3,7 +3,7 @@ import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { Button, Form, Row, Col } from 'react-bootstrap'
+import { Button, Form, Row, Col, InputGroup } from 'react-bootstrap'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
 
@@ -96,7 +96,6 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Description</label>
-
                     <Form.Control type="text" {...register('description')}></Form.Control>
                   </Form.Group>
                 </Col>
@@ -114,16 +113,18 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>
-                      Monthly Maintenace Amout / SQFT.
+                      Monthly Maintenace Amount / SQFT.
                       <small className="text-danger ">
                         *{errors ? errors.monthly_maintenance_amount_per_sqft : null}
                       </small>
                     </label>
-
-                    <Form.Control
-                      type="integer"
-                      {...register('monthly_maintenance_amount_per_sqft')}
-                    ></Form.Control>
+                    <InputGroup>
+                      <Form.Control
+                        type="integer"
+                        {...register('monthly_maintenance_amount_per_sqft')}
+                      />
+                      <InputGroup.Text>$</InputGroup.Text>
+                    </InputGroup>
                   </Form.Group>
                 </Col>
               </Row>
