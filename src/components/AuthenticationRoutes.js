@@ -28,7 +28,7 @@ export default function AuthenticationRoutes() {
   console.log(redirect_url)
   const redirect_string = location.search.length == 0 ? redirect_url : location.search
   const valid_subdomain =
-    process.env.NODE_ENV == 'development' ? domain_array.length > 1 : domain_array.length > 3
+    process.env.NODE_ENV == 'development' ? domain_array.length > 1 : domain_array.length > 2
   useEffect(() => {
     if (!valid_subdomain && window.location.pathname != '/company-gateway') {
       navigate(`/company-gateway${redirect_string}`)

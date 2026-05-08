@@ -48,8 +48,9 @@ function PropertyCardView({ property }) {
                           <br></br>
                           <CCol className="text-secondary">
                             {property?.address || '-'}
-                            <span className="mx-1"></span>
-                            {property?.city}
+                            <br />
+                            {property?.city || '-'} |{' '}
+                            {property?.pincode || property?.pin_code || '-'}
                           </CCol>
                         </CCol>
                       </CRow>

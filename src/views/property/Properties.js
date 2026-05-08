@@ -120,6 +120,8 @@ function Property() {
                               <tr>
                                 <th className="border-0">NAME</th>
                                 <th className="border-0">CITY</th>
+                                <th className="border-0">ADDRESS</th>
+                                <th className="border-0">PINCODE</th>
                                 <th className="border-0">USE TYPE</th>
                                 <th className="border-0">UNIT COUNT</th>
                                 <th className="border-0">PAYMENT TERM</th>
@@ -135,6 +137,8 @@ function Property() {
                                     </NavLink>
                                   </td>
                                   <td>{property.city}</td>
+                                  <td>{property.address || '-'}</td>
+                                  <td>{property.pincode || property.pin_code || '-'}</td>
                                   <td style={{ textTransform: 'uppercase' }}>
                                     {property.use_type}
                                   </td>
