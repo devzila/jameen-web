@@ -117,6 +117,30 @@ function Add({ after_submit }) {
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>
+                      Unit Type
+                      <small className="text-danger"> *{errors ? errors.unit_type : null} </small>
+                    </label>
+
+                    <Controller
+                      name="unit_type_id"
+                      render={({ field }) => (
+                        <Select
+                          type="text"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          {...field}
+                          value={units_data.find((c) => c.value === field.value)}
+                          onChange={(val) => field.onChange(val.value)}
+                          options={units_data}
+                        />
+                      )}
+                      control={control}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>
                       Unit-Number
                       <small className="text-danger"> *{errors ? errors.unit_no : null} </small>
                     </label>
@@ -124,17 +148,6 @@ function Add({ after_submit }) {
                       defaultValue={unitData.no}
                       type="integer"
                       {...register('unit_no')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Bedroom No.</label>
-
-                    <Form.Control
-                      defaultValue={unitData.bedrooms_number}
-                      type="integer"
-                      {...register('bedrooms_number')}
                     ></Form.Control>
                   </Form.Group>
                 </Col>
@@ -166,28 +179,41 @@ function Add({ after_submit }) {
                 </Col>
               </Row>
               <Row>
-                <Col className="pr-1 mt-3" md="6">
+                <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>
-                      Unit Type
-                      <small className="text-danger"> *{errors ? errors.unit_type : null} </small>
+                      Building
+                      <small className="text-danger"> *{errors ? errors.building_id : null} </small>
                     </label>
 
                     <Controller
-                      name="unit_type_id"
+                      name="building_id"
                       render={({ field }) => (
                         <Select
                           type="text"
                           className="basic-multi-select"
                           classNamePrefix="select"
                           {...field}
-                          value={units_data.find((c) => c.value === field.value)}
+                          value={buildings_data.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
-                          options={units_data}
+                          options={buildings_data}
                         />
                       )}
                       control={control}
                     />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Bedroom No.</label>
+
+                    <Form.Control
+                      defaultValue={unitData.bedrooms_number}
+                      type="integer"
+                      {...register('bedrooms_number')}
+                    ></Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
@@ -221,30 +247,6 @@ function Add({ after_submit }) {
                       type="string"
                       {...register('internal_extension_number')}
                     ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <label>
-                      Building
-                      <small className="text-danger"> *{errors ? errors.building_id : null} </small>
-                    </label>
-
-                    <Controller
-                      name="building_id"
-                      render={({ field }) => (
-                        <Select
-                          type="text"
-                          className="basic-multi-select"
-                          classNamePrefix="select"
-                          {...field}
-                          value={buildings_data.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
-                          options={buildings_data}
-                        />
-                      )}
-                      control={control}
-                    />
                   </Form.Group>
                 </Col>
               </Row>
