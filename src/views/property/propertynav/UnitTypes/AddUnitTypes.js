@@ -123,7 +123,7 @@ export default function AddUnitTypes({ after_submit, unittypeID }) {
                         type="integer"
                         {...register('monthly_maintenance_amount_per_sqft')}
                       />
-                      <InputGroup.Text>$</InputGroup.Text>
+                      <InputGroup.Text>₹</InputGroup.Text>
                     </InputGroup>
                   </Form.Group>
                 </Col>

@@ -125,8 +125,8 @@ const PropertyUnitType = () => {
                           </th>
                           <td className="pt-3 border-0  text-capitalize">{unit_type.use_type}</td>
                           <td className="pt-3 border-0 ">{unit_type.sqft}</td>
-                          <td className="pt-3 border-0 ">
-                            {unit_type.monthly_maintenance_amount_per_sqft}$
+                          <td className="text-center">
+                            {unit_type.monthly_maintenance_amount_per_sqft}₹
                           </td>
 
                           <td className="pt-3 border-0 ">{formatdate(unit_type?.updated_at)}</td>
