@@ -16,7 +16,7 @@ import {
   CContainer,
 } from '@coreui/react'
 function Add({ after_submit }) {
-  const { register, handleSubmit, control } = useForm()
+  const { register, handleSubmit, control, reset } = useForm()
   const { get, post, response } = useFetch()
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
@@ -27,6 +27,24 @@ function Add({ after_submit }) {
   // =========================
   // BUILDINGS
   // =========================
+  useEffect(() => {
+    if (visible) {
+      reset({
+        unit_type_id: '',
+        unit_no: '',
+        bathrooms_number: '',
+        year_built: '',
+        building_id: '',
+        bedrooms_number: '',
+        electricity_account_number: '',
+        water_account_number: '',
+        internal_extension_number: '',
+      })
+      setUnitData({})
+      setErrors({})
+    }
+  }, [visible, reset])
+
   function trimBuildings(buildings) {
     if (buildings) {
       return buildings.map((e) => ({
@@ -78,6 +96,7 @@ function Add({ after_submit }) {
     if (response.ok) {
       setVisible(false)
       setErrors({})
+      reset()
       after_submit()
       toast.success('Unit added successfully')
     } else {
