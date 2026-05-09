@@ -185,10 +185,7 @@ function Add({ after_submit }) {
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>
-                      Building
-                      <small className="text-danger">*{errors?.building_id}</small>
-                    </label>
+                    <label>Building</label>
                     <Controller
                       name="building_id"
                       control={control}
