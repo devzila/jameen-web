@@ -181,28 +181,6 @@ export default function AddResidents() {
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>Phone No</label>
-                    <Form.Control
-                      placeholder="Phone Number"
-                      type="text"
-                      {...register('phone_number')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="pr-3 mt-3" md="6">
-                  <Form.Group>
-                    <label>Username</label>
-                    <Form.Control
-                      placeholder="UserName"
-                      type="text"
-                      {...register('username')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
                     <label>
                       Password
                       <small className="text-danger"> *{errors ? errors.password : null} </small>
@@ -215,7 +193,28 @@ export default function AddResidents() {
                   </Form.Group>
                 </Col>
               </Row>
-
+              <Row>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>Phone No</label>
+                    <Form.Control
+                      placeholder="Phone Number"
+                      type="text"
+                      {...register('phone_number')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>D.O.B</label>
+                    <Form.Control
+                      placeholder="Date of Birth"
+                      type="date"
+                      {...register('dob')}
+                    ></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
@@ -232,45 +231,6 @@ export default function AddResidents() {
                       )}
                       control={control}
                       placeholder="Role"
-                    />
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>D.O.B</label>
-                    <Form.Control
-                      placeholder="Date of Birth"
-                      type="date"
-                      {...register('dob')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <label>
-                      Assigned Properties
-                      <small className="text-danger"> *{errors ? errors.property : null} </small>
-                    </label>
-
-                    <Controller
-                      name="property_id"
-                      render={({ field }) => (
-                        <Select
-                          s
-                          type="text"
-                          className="basic-multi-select"
-                          classNamePrefix="select"
-                          {...field}
-                          options={properties_data}
-                          value={gender.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
-                        />
-                      )}
-                      control={control}
-                      placeholder="Assigned Properties"
                     />
                   </Form.Group>
                 </Col>

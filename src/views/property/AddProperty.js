@@ -234,6 +234,20 @@ export default function PropertyForm({ after_submit }) {
               </Row>
 
               <Row>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>
+                      Invoice Prefix
+                      <small className="text-danger"> *{errors?.invoice_prefix}</small>
+                    </label>
+
+                    <Form.Control
+                      placeholder="Invoice Prefix"
+                      type="text"
+                      {...register('invoice_prefix')}
+                    />
+                  </Form.Group>
+                </Col>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Use Type</label>

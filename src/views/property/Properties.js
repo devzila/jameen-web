@@ -120,6 +120,8 @@ function Property() {
                               <tr>
                                 <th className="border-0">NAME</th>
                                 <th className="border-0">CITY</th>
+                                <th className="border-0">STATE</th>
+                                <th className="border-0">PINCODE</th>
                                 <th className="border-0">USE TYPE</th>
                                 <th className="border-0">UNIT COUNT</th>
                                 <th className="border-0">PAYMENT TERM</th>
@@ -134,15 +136,23 @@ function Property() {
                                       {property.name}
                                     </NavLink>
                                   </td>
+
                                   <td>{property.city}</td>
+
+                                  <td style={{ textTransform: 'capitalize' }}>{property.state}</td>
+
+                                  <td>{property.pin_code}</td>
+
                                   <td style={{ textTransform: 'uppercase' }}>
                                     {property.use_type}
                                   </td>
+
                                   <td align="center">
                                     <NavLink to={`/properties/${property.id}/units`}>
                                       {property.units_count}
                                     </NavLink>
                                   </td>
+
                                   <td style={{ textTransform: 'capitalize' }}>
                                     {property.payment_term?.replace(/_/g, ' ')}
                                   </td>
