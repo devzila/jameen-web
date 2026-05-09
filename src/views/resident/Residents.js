@@ -119,7 +119,6 @@ const Residents = () => {
                     >
                       <tr>
                         <th className="pt-3 pb-3 border-0">Name</th>
-                        <th className="pt-3 pb-3 border-0">Username </th>
                         <th className="pt-3 pb-3 border-0">Gender</th>
                         <th className="pt-3 pb-3 border-0">Unit(s)</th>
                       </tr>
@@ -133,7 +132,6 @@ const Residents = () => {
                               {resident.first_name + ' ' + resident.last_name}
                             </NavLink>
                           </th>
-                          <td className="pt-3">{resident.username}</td>
                           <td className="pt-3">
                             {resident.gender?.charAt(0)?.toUpperCase() + resident.gender?.slice(1)}
                           </td>{' '}
