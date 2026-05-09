@@ -30,6 +30,11 @@ function Unit() {
   const [unit_type, setUnit_type] = useState([])
 
   useEffect(() => {
+    if (searchKeyword.trim() === '') {
+      loadInitialUnits()
+    }
+  }, [searchKeyword])
+  useEffect(() => {
     loadInitialUnits()
     loadUnitTypes()
   }, [currentPage])
@@ -149,6 +154,13 @@ function Unit() {
                       </thead>
 
                       <tbody>
+                        {!loading && units.length === 0 && (
+                          <tr>
+                            <td colSpan="7" className="text-center py-4 text-muted">
+                              No matching units found.
+                            </td>
+                          </tr>
+                        )}
                         {units.map((unit) => (
                           <tr key={unit.id}>
                             <td className="pt-3 pb-2">
