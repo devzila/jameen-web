@@ -30,6 +30,11 @@ function Unit() {
   const [unit_type, setUnit_type] = useState([])
 
   useEffect(() => {
+    if (searchKeyword.trim() === '') {
+      loadInitialUnits()
+    }
+  }, [searchKeyword])
+  useEffect(() => {
     loadInitialUnits()
     loadUnitTypes()
   }, [currentPage])

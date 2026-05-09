@@ -16,7 +16,6 @@ import {
   CContainer,
 } from '@coreui/react'
 import { Button, Form, Row, Col } from 'react-bootstrap'
-
 export default function EditProperty(props) {
   const [property, setProperty] = useState({})
   const [useTypeOptions, setUseTypeOptions] = useState([])
