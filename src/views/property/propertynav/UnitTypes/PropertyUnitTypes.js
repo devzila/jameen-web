@@ -112,7 +112,7 @@ const PropertyUnitType = () => {
                         <th className="pt-3 pb-3 border-0 ">Name</th>
                         <th className="pt-3 pb-3 border-0">Use Type</th>
                         <th className="pt-3 pb-3 border-0">Area </th>
-                        <th className="pt-3 pb-3 border-0">Maintenace/sqft</th>
+                        <th className="text-center pt-3 pb-3 border-0">Maintenace/sqft</th>
                         <th className="pt-3 pb-3 border-0">Last Updated</th>
                       </tr>
                     </thead>
