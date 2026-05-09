@@ -10,6 +10,7 @@ import EditProperty from '../EditProperty'
 import DeleteProperty from '../DeleteProperty'
 import defaultbuilding from 'src/assets/images/default-building.png'
 import CheckPermissions from 'src/permissions/CheckPermissions'
+import ansal from 'src/assets/images/ansal.avif'
 
 export default function OverviewContent(propsd) {
   const { propertyId } = useParams()
@@ -60,7 +61,7 @@ export default function OverviewContent(propsd) {
                     margin: '0 auto',
                     objectFit: 'cover',
                   }}
-                  src={property.photo || defaultbuilding}
+                  src={ansal}
                 />
               </div>
             </CCard>
