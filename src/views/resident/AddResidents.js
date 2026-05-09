@@ -17,8 +17,9 @@ import {
 
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import { cleanAvatar } from 'src/services/CommonFunctions'
+import PropTypes from 'prop-types'
 
-export default function AddResidents() {
+export default function AddResidents({ after_submit }) {
   const [visible, setVisible] = useState(false)
   const [properties_data, setProperties_data] = useState([])
   const [errors, setErrors] = useState({})
@@ -84,6 +85,7 @@ export default function AddResidents() {
 
     if (response.ok) {
       toast('Resident added Successfully')
+      after_submit()
       setVisible(!visible)
     } else {
       setErrors(response.data.errors)
@@ -261,4 +263,7 @@ export default function AddResidents() {
       </CModal>
     </div>
   )
+}
+AddResidents.propTypes = {
+  after_submit: PropTypes.func,
 }
