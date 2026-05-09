@@ -89,15 +89,6 @@ export default function ResOverview() {
                   {resident_data?.gender || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Username
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.username || '-'}
-                </CCardText>
-              </CCol>
             </CRow>
             <CRow>
               <CCol className="p-3 mt-0 fw-light theme_color col-lg-3 col-sm-3">
