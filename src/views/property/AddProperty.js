@@ -4,7 +4,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
-import avtar from 'src/assets/images/images.jpeg'
+import avtar from 'src/assets/images/default-building.png'
 
 import {
   CButton,
