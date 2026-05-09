@@ -239,7 +239,7 @@ export default function PropertyForm({ after_submit }) {
                   <Form.Group>
                     <label>
                       Invoice Prefix
-                      <small className="text-danger"> *{errors?.invoice_prefix}</small>
+                      <small className="text-danger"> *{errors?.invoice_no_prefix}</small>
                     </label>
 
                     <Form.Control
