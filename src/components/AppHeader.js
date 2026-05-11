@@ -18,6 +18,7 @@ import { AppHeaderDropdown } from './header/index'
 const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  const company = JSON.parse(localStorage.getItem('company'))
 
   return (
     <CHeader position="sticky" className="mb-4">
@@ -28,11 +29,12 @@ const AppHeader = () => {
         >
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
-        <CHeaderNav className="d-none d-md-flex me-auto">
+        <CHeaderNav className="d-none d-md-flex me-auto align-items-center">
           <CNavItem>
             <AppBreadcrumb />
           </CNavItem>
         </CHeaderNav>
+
         <CHeaderNav>
           <CNavItem>
             <CNavLink href="#">

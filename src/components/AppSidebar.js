@@ -15,7 +15,7 @@ const AppSidebar = () => {
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
-  const { role } = useContext(AuthContext)?.state
+  const { role, company } = useContext(AuthContext)?.state || {}
 
   return (
     <CSidebar
@@ -27,7 +27,20 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <img src={logo} height={35} style={{ textAlign: 'left' }} alt="Jameen Logo" />
+        <img
+          src={
+            company?.logo ||
+            `https://ui-avatars.com/api/?name=${company?.name || 'Company'}&background=random`
+          }
+          alt="Company Logo"
+          style={{
+            width: '45px',
+            height: '45px',
+            borderRadius: '50%',
+            objectFit: 'cover',
+            marginRight: '10px',
+          }}
+        />
 
         <p className="sidebar-brand-full mx-2 my-0 "> Jameen </p>
       </CSidebarBrand>
