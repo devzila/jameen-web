@@ -42,7 +42,7 @@ const AppSidebar = () => {
           }}
         />
 
-        <p className="sidebar-brand-full mx-2 my-0 "> Jameen </p>
+        <p className="sidebar-brand-full mx-2 my-0 "> Company </p>
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
