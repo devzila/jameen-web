@@ -16,7 +16,7 @@ import {
   CContainer,
 } from '@coreui/react'
 function Add({ after_submit }) {
-  const { register, handleSubmit, control } = useForm()
+  const { register, handleSubmit, control, reset } = useForm()
   const { get, post, response } = useFetch()
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
@@ -76,6 +76,7 @@ function Add({ after_submit }) {
       unit: data,
     })
     if (response.ok) {
+      reset()
       setVisible(false)
       setErrors({})
       after_submit()
@@ -89,6 +90,7 @@ function Add({ after_submit }) {
   // CLOSE MODAL
   // =========================
   function handleClose() {
+    reset()
     setVisible(false)
     setErrors({})
   }
