@@ -97,7 +97,10 @@ const Residents = () => {
               </button>
             </div>
 
-            <CheckPermissions component={<AddResidents />} keys={['resident', 'create']} />
+            <CheckPermissions
+              component={<AddResidents after_submit={loadInitialResidents} />}
+              keys={['resident', 'create']}
+            />
           </div>
         </CContainer>
       </CNavbar>
