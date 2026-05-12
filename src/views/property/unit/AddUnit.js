@@ -16,7 +16,7 @@ import {
   CContainer,
 } from '@coreui/react'
 function Add({ after_submit }) {
-  const { register, handleSubmit, control } = useForm()
+  const { register, handleSubmit, control, reset } = useForm()
   const { get, post, response } = useFetch()
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
@@ -76,6 +76,7 @@ function Add({ after_submit }) {
       unit: data,
     })
     if (response.ok) {
+      reset()
       setVisible(false)
       setErrors({})
       after_submit()
@@ -89,6 +90,7 @@ function Add({ after_submit }) {
   // CLOSE MODAL
   // =========================
   function handleClose() {
+    reset()
     setVisible(false)
     setErrors({})
   }
@@ -185,10 +187,7 @@ function Add({ after_submit }) {
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>
-                      Building
-                      <small className="text-danger">*{errors?.building_id}</small>
-                    </label>
+                    <label>Building</label>
                     <Controller
                       name="building_id"
                       control={control}
