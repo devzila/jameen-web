@@ -10,12 +10,36 @@ import 'simplebar/dist/simplebar.min.css'
 import navigation from '../SideBarContent'
 import { AuthContext } from 'src/contexts/AuthContext'
 
+const DEFAULT_COMPANY_NAME = 'Jameen'
+const COMPANY_NAME_STYLE = {
+  flex: 1,
+  minWidth: 0,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  display: 'block',
+  WebkitMaskImage: 'linear-gradient(to right, black 92%, transparent 100%)',
+  maskImage: 'linear-gradient(to right, black 92%, transparent 100%)',
+}
+
 const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
-  const { role } = useContext(AuthContext)?.state
+  const authState = useContext(AuthContext)?.state
+  const companyFromState = authState?.company
+
+  let companyFromStorage = null
+  try {
+    companyFromStorage = JSON.parse(localStorage.getItem('company'))
+  } catch (_error) {
+    companyFromStorage = null
+  }
+
+  const company = companyFromState || companyFromStorage
+  const companyName = company?.name || DEFAULT_COMPANY_NAME
+  const companyLogo = company?.logo_url || logo
 
   return (
     <CSidebar
@@ -26,10 +50,17 @@ const AppSidebar = () => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}
     >
-      <CSidebarBrand className="d-none d-md-flex" to="/">
-        <img src={logo} height={35} style={{ textAlign: 'left' }} alt="Jameen Logo" />
+      <CSidebarBrand className="d-none d-md-flex" style={{ overflow: 'hidden' }} to="/">
+        <img
+          src={companyLogo}
+          height={35}
+          style={{ textAlign: 'left' }}
+          alt={`${companyName} Logo`}
+        />
 
-        <p className="sidebar-brand-full mx-2 my-0 "> Jameen </p>
+        <p className="sidebar-brand-full mx-2 my-0" style={COMPANY_NAME_STYLE} title={companyName}>
+          {companyName}
+        </p>
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
