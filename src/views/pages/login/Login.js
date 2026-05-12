@@ -24,6 +24,8 @@ import { AuthContext } from '../../../contexts/AuthContext'
 import { Navigate, NavLink, useLocation, useNavigate, useParams } from 'react-router-dom'
 import jameenlogo from 'src/assets/images/jameen-logo.png'
 
+const DEFAULT_APP_NAME = 'Jameen'
+
 const Login = () => {
   const { dispatch } = React.useContext(AuthContext)
   const initialState = {
@@ -49,6 +51,59 @@ const Login = () => {
     process.env.NODE_ENV == 'development' ? domain_array.length > 1 : domain_array.length > 3
 
   const [data, setData] = React.useState(initialState)
+  const [branding, setBranding] = React.useState({
+    name: DEFAULT_APP_NAME,
+    logo: jameenlogo,
+  })
+  const [useDefaultLogo, setUseDefaultLogo] = React.useState(false)
+
+  useEffect(() => {
+    setUseDefaultLogo(false)
+  }, [branding.logo])
+
+  useEffect(() => {
+    const domain_array = window.location.hostname.split('.')
+    const companyIdentifier = domain_array[0]
+    const shouldFetchCompany =
+      (process.env.NODE_ENV === 'development' && domain_array.length > 1) ||
+      (process.env.NODE_ENV !== 'development' && domain_array.length > 2)
+
+    if (!shouldFetchCompany) {
+      return undefined
+    }
+
+    const controller = new AbortController()
+
+    fetch(
+      `${process.env.REACT_APP_API_URL}/v1/admin/company/${encodeURIComponent(companyIdentifier)}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'company-slug': companyIdentifier,
+        },
+        signal: controller.signal,
+      },
+    )
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Company fetch failed')
+        }
+        return res.json()
+      })
+      .then((company) => {
+        setBranding({
+          name: company?.name || DEFAULT_APP_NAME,
+          logo: company?.logo_url || jameenlogo,
+        })
+      })
+      .catch(() => {
+        // Keep default logo and app name when the request fails or is aborted.
+      })
+
+    return () => controller.abort()
+  }, [])
+
   const handleInputChange = (event) => {
     setData({
       ...data,
@@ -113,8 +168,13 @@ const Login = () => {
           <CCardGroup style={{ width: '475px' }}>
             <CCard className="rounded-0 border-0 shadow">
               <CCardHeader className="d-flex-center align-items-end bg-white py-3">
-                <img className="logo-img" src={jameenlogo} />
-                <h2 className="text-monospace theme_color m-0 px-3">Jameen</h2>
+                <img
+                  className="logo-img"
+                  src={useDefaultLogo ? jameenlogo : branding.logo}
+                  alt={`${branding.name} Logo`}
+                  onError={() => setUseDefaultLogo(true)}
+                />
+                <h2 className="text-monospace theme_color m-0 px-3">{branding.name}</h2>
               </CCardHeader>
               <CCardBody className="px-5 pt-5 pb-3">
                 <div className="text-secondary text-monospace">
