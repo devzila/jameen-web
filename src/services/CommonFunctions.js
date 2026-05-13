@@ -29,10 +29,22 @@ export function status_color(status) {
 }
 export function format_react_select(data, key) {
   if (data) {
-    return data.map((e) => ({
-      value: e[key[0]],
-      label: e[key[1]],
-    }))
+    return data.map((e) => {
+      const labelKey = key[1]
+      let label
+      if (Array.isArray(labelKey)) {
+        label = labelKey
+          .map((k) => e[k])
+          .filter((v) => v != null && String(v).trim() !== '')
+          .join(' ')
+      } else {
+        label = e[labelKey]
+      }
+      return {
+        value: e[key[0]],
+        label,
+      }
+    })
   } else {
     return []
   }

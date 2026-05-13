@@ -46,13 +46,19 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   //resident api call
 
   async function loadInitialResidents() {
-    let endpoint = `/v1/admin/premises/properties/${propertyId}/residents?limit=-1`
+    let endpoint = `/v1/admin/members?limit=-1`
 
     const initialResidents = await get(endpoint)
 
     if (response.ok) {
       if (initialResidents.data) {
-        setResidents(format_react_select(initialResidents.data, ['id', ['first_name']]))
+        setResidents(
+          initialResidents.data.map((m) => ({
+            value: m.id,
+            label: [m.first_name, m.last_name].filter(Boolean).join(' ').trim() || '—',
+            email: (m.email || '').trim(),
+          })),
+        )
       }
     } else {
       toast.error('Unable to load residents')
@@ -216,6 +222,14 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                           classNamePrefix="select"
                           {...field}
                           options={residents}
+                          formatOptionLabel={(option) => (
+                            <span>
+                              {option.label}
+                              {option.email ? (
+                                <small className="text-muted ms-1">({option.email})</small>
+                              ) : null}
+                            </span>
+                          )}
                         />
                       )}
                       control={control}
