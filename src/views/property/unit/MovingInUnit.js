@@ -3,7 +3,7 @@ import PropTypes, { element } from 'prop-types'
 import useFetch from 'use-http'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import Select from 'react-select'
+import SearchableSelect from 'src/components/SearchableSelect'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -20,7 +20,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 
 import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import { format_react_select, removeEmptyDocuments } from 'src/services/CommonFunctions'
+import { removeEmptyDocuments } from 'src/services/CommonFunctions'
 
 export default function MovingInUnit({ unitNo, unitId, after_submit }) {
   const { register, handleSubmit, setValue, control, watch, reset } = useForm()
@@ -43,16 +43,29 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
     name: 'documents_attributes',
   })
 
-  //useEffext
+  //useEffext — load when modal opens; units list only when user must pick a unit (no unitNo)
   useEffect(() => {
-    loadInitialResidents()
-    loadVacantUnits()
-  }, [])
+    if (!visible || !propertyId) {
+      return undefined
+    }
+    let cancelled = false
+    const load = async () => {
+      if (!unitNo) {
+        await loadVacantUnits()
+        if (cancelled) return
+      }
+      await loadInitialResidents()
+    }
+    load()
+    return () => {
+      cancelled = true
+    }
+  }, [visible, propertyId, unitNo])
 
   //resident api call
 
   async function loadInitialResidents() {
-    let endpoint = `/v1/admin/premises/properties/${propertyId}/residents?limit=-1`
+    let endpoint = `/v1/admin/members?limit=-1`
 
     const initialResidents = await get(endpoint)
 
@@ -66,24 +79,30 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
   }
 
   async function loadVacantUnits() {
-    let endpoint = `/v1/admin/premises/properties/1/allotments/movable?limit=-1`
-    const data = await get(endpoint)
-    console.log(data)
-    if (response.ok) {
-      setVacantUnit(format_react_select(data.data, ['id', 'unit_no']))
+    if (!propertyId) return
+    const endpoint = `/v1/admin/premises/properties/${propertyId}/units?moving_in_eligible=true&limit=-1`
+    const result = await get(endpoint)
+    if (!response.ok) {
+      setVacantUnit([])
+      toast.error('Unable to load units')
+      return
     }
+    const rows = Array.isArray(result?.data) ? result.data : []
+    setVacantUnit(
+      rows.map((u) => ({
+        value: u.id,
+        label: String(u.unit_no ?? ''),
+        buildingName: (u.building?.name || '').trim(),
+      })),
+    )
   }
 
-  //resident dropdown
-  let resident_array = []
   function trimResidents(obj) {
-    obj.forEach((element) => {
-      resident_array.push({
-        value: element.id,
-        label: element.first_name + ' ' + element.last_name,
-      })
-    })
-    return resident_array
+    return obj.map((element) => ({
+      value: element.id,
+      label: `${element.first_name || ''} ${element.last_name || ''}`.trim() || '—',
+      email: (element.email || '').trim(),
+    }))
   }
 
   //base64
@@ -149,7 +168,6 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
       reset()
       updatedUnitId = undefined
       after_submit()
-      loadVacantUnits()
       setSubmitLoader(false)
       setVisible(false)
       setUnit_id(null)
@@ -202,18 +220,30 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
                         required
                         name="unit_id"
                         render={({ field }) => (
-                          <Select
+                          <SearchableSelect
                             {...field}
                             options={vacantUnits}
-                            value={vacantUnits?.find((c) => c.value === field.value)}
+                            value={vacantUnits?.find((c) => c.value === field.value) ?? null}
                             onChange={(val) => {
-                              field.onChange(val.value)
-                              setUnit_id(val.value)
+                              field.onChange(val?.value ?? null)
+                              setUnit_id(val?.value ?? null)
                             }}
+                            placeholder="Search or select unit number"
+                            className="basic-multi-select"
+                            classNamePrefix="select"
+                            isMulti={false}
+                            searchKeys={['buildingName']}
+                            formatOptionLabel={(option) => (
+                              <span>
+                                {option.label}
+                                {option.buildingName ? (
+                                  <small className="text-muted ms-1">({option.buildingName})</small>
+                                ) : null}
+                              </span>
+                            )}
                           />
                         )}
                         control={control}
-                        placeholder="Role"
                       />
                     </Form.Group>
                   </Col>
@@ -231,17 +261,26 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
                     <Controller
                       name="resident_ids"
                       render={({ field }) => (
-                        <Select
+                        <SearchableSelect
                           isMulti
                           type="text"
                           className="basic-multi-select"
                           classNamePrefix="select"
                           {...field}
                           options={residents}
+                          searchKeys={['email']}
+                          placeholder="Search residents by name or email"
+                          formatOptionLabel={(option) => (
+                            <span>
+                              {option.label}
+                              {option.email ? (
+                                <small className="text-muted ms-1">({option.email})</small>
+                              ) : null}
+                            </span>
+                          )}
                         />
                       )}
                       control={control}
-                      placeholder="Assigned Properties"
                     />
                   </Form.Group>
                 </Col>
@@ -255,15 +294,33 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
                     <Controller
                       name="primary_resident_id"
                       render={({ field }) => (
-                        <Select
+                        <SearchableSelect
                           {...field}
-                          options={primary_resident_array}
-                          value={primary_resident_array?.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
+                          options={
+                            Array.isArray(primary_resident_array) ? primary_resident_array : []
+                          }
+                          value={
+                            Array.isArray(primary_resident_array)
+                              ? primary_resident_array.find((c) => c.value === field.value) ?? null
+                              : null
+                          }
+                          onChange={(val) => field.onChange(val?.value ?? null)}
+                          placeholder="Search or select primary resident"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          isMulti={false}
+                          searchKeys={['email']}
+                          formatOptionLabel={(option) => (
+                            <span>
+                              {option.label}
+                              {option.email ? (
+                                <small className="text-muted ms-1">({option.email})</small>
+                              ) : null}
+                            </span>
+                          )}
                         />
                       )}
                       control={control}
-                      placeholder="Role"
                     />
                   </Form.Group>
                 </Col>
