@@ -196,9 +196,12 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                         <SearchableSelect
                           {...field}
                           options={units}
-                          value={units.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
-                          placeholder="Select unit"
+                          value={units.find((c) => c.value === field.value) ?? null}
+                          onChange={(val) => field.onChange(val?.value ?? null)}
+                          placeholder="Search or select unit number"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          isMulti={false}
                         />
                       )}
                       control={control}
