@@ -3,7 +3,7 @@ import PropTypes, { element } from 'prop-types'
 import useFetch from 'use-http'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import Select from 'react-select'
+import SearchableSelect from 'src/components/SearchableSelect'
 import { useParams } from 'react-router-dom'
 import Loading from 'src/components/loading/loading'
 import { format_react_select } from 'src/services/CommonFunctions'
@@ -193,15 +193,15 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                     <Controller
                       name="unit_id"
                       render={({ field }) => (
-                        <Select
+                        <SearchableSelect
                           {...field}
                           options={units}
                           value={units.find((c) => c.value === field.value)}
                           onChange={(val) => field.onChange(val.value)}
+                          placeholder="Select unit"
                         />
                       )}
                       control={control}
-                      placeholder="Role"
                     />
                   </Form.Group>
                 </Col>
@@ -215,13 +215,15 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                     <Controller
                       name="resident_ids"
                       render={({ field }) => (
-                        <Select
+                        <SearchableSelect
                           isMulti
                           type="text"
                           className="basic-multi-select"
                           classNamePrefix="select"
                           {...field}
                           options={residents}
+                          searchKeys={['email']}
+                          placeholder="Search residents by name or email"
                           formatOptionLabel={(option) => (
                             <span>
                               {option.label}
@@ -233,7 +235,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                         />
                       )}
                       control={control}
-                      placeholder="Assigned Properties"
                     />
                   </Form.Group>
                 </Col>
