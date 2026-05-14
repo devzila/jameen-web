@@ -57,6 +57,23 @@ const UserProfile = () => {
 
               <hr className="border-secondary opacity-25 my-4" />
 
+              <div>
+                <h2 className="h6 text-secondary mb-3">Assigned properties</h2>
+                {Array.isArray(user?.properties) && user.properties.length > 0 ? (
+                  <ul className="list-unstyled mb-0">
+                    {user.properties.map((p) => (
+                      <li key={p.id} className="mb-1">
+                        {p.name || '—'}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted mb-0">—</p>
+                )}
+              </div>
+
+              <hr className="border-secondary opacity-25 my-4" />
+
               <CRow className="align-items-center g-3">
                 <CCol xs={12} md>
                   <p className="text-muted mb-0">Password reset link will be sent on your email.</p>
