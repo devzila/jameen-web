@@ -25,6 +25,17 @@ import CIcon from '@coreui/icons-react'
 import { AuthContext } from './../../contexts/AuthContext'
 import defaultAvatar from '../../assets/images/avatars/default.png'
 
+function resolveUserAvatarSrc(user) {
+  if (!user) return defaultAvatar
+  const fromUrl =
+    typeof user.avatar_url === 'string' && user.avatar_url.trim() !== ''
+      ? user.avatar_url.trim()
+      : null
+  if (fromUrl) return fromUrl
+  if (user.avatar?.path) return user.avatar.path
+  return defaultAvatar
+}
+
 const AppHeaderDropdown = () => {
   const navigate = useNavigate()
   const { state, dispatch } = React.useContext(AuthContext)
@@ -38,10 +49,7 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar
-          src={state.user?.avatar?.path == null ? defaultAvatar : state.user?.avatar?.path}
-          size="md"
-        />
+        <CAvatar src={resolveUserAvatarSrc(state.user)} size="md" />
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
@@ -74,7 +82,13 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownHeader className="bg-light fw-semibold py-2">Settings</CDropdownHeader>
-        <CDropdownItem href="#">
+        <CDropdownItem
+          href="#"
+          onClick={(e) => {
+            e.preventDefault()
+            navigate('/profile')
+          }}
+        >
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>

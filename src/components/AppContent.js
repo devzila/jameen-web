@@ -25,6 +25,7 @@ const ShowUnit = React.lazy(() => import('../views/property/unit/ShowUnitModule/
 const ResidentRoutes = React.lazy(() => import('../views/resident/ResidentNav/ResidentRoutes'))
 const ShowInvoices = React.lazy(() => import('../views/finance/ShowInvoices'))
 const DashboardRoutes = React.lazy(() => import('../views/dashboard/DashboardRoutes'))
+const UserProfile = React.lazy(() => import('../views/profile/UserProfile'))
 
 const AppContent = () => {
   return (
@@ -62,6 +63,7 @@ const AppContent = () => {
 
           <Route path="/report" name="Report" element={<Report />} />
           <Route path="/settings/*" name="Settings" element={<SettingsRoutes />} />
+          <Route path="/profile" name="Profile" element={<UserProfile />} />
 
           <Route path="*" element={<Page404 />} />
         </Routes>
