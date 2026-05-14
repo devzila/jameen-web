@@ -256,7 +256,9 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData, 
             </Col> */}
             <Col className="pr-1 mt-3" md="6">
               <Form.Group>
-                <label>Title</label>
+                <label>
+                  Title <small className="text-danger"> *{errors ? errors.title : null} </small>
+                </label>
                 <Form.Control
                   defaultValue={edit_data.title}
                   type="string"
