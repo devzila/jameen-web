@@ -1,4 +1,4 @@
-import { CCol, CCard, CListGroupItem, CRow, CCardText, CTable } from '@coreui/react'
+import { CCol, CCard, CListGroupItem, CRow, CCardText, CTable, CFormTextarea } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { formatdate } from '../../../../../services/CommonFunctions'
@@ -76,12 +76,6 @@ export default function ShowContract() {
                     {formatdate(contract.end_date) || 'present Day'}{' '}
                   </CCardText>
                 </CCol>
-                <CCol className=" mt-0 fw-light">
-                  Notes
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {contract.notes || '-'}
-                  </CCardText>
-                </CCol>
               </CRow>
             </CCard>
           </CCol>
@@ -118,6 +112,18 @@ export default function ShowContract() {
                 ))}
               </tbody>
             </CTable>
+          </CCard>
+        </CCol>
+      </CCard>
+      <CCard className="my-3 border-0">
+        <CCol md="12" className="m-0">
+          <CCard className="p-3 border-0 theme_color">
+            <CListGroupItem>
+              <CIcon icon={freeSet.cilNotes} size="lg" className="me-2" />
+              <strong className="text-black">Notes</strong>
+              <hr className="text-secondary p-0 mt-1" />
+              <CFormTextarea placeholder="Enter your notes here..." rows={4} className="mt-2" />
+            </CListGroupItem>
           </CCard>
         </CCol>
       </CCard>
