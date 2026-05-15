@@ -81,7 +81,7 @@ export default function ShowContract() {
           </CCol>
         </CRow>
       </CCard>
-      <CCard className="border-0">
+      <CCard className="my-3border-0">
         <CCol md="12" className="m-0">
           <CCard className="p-3 border-0 theme_color">
             <CListGroupItem>
@@ -94,7 +94,6 @@ export default function ShowContract() {
                 <tr>
                   <th>Name</th>
                   <th>Member Type</th>
-                  <th>Username</th>
                 </tr>
               </thead>
               <tbody>
@@ -107,7 +106,6 @@ export default function ShowContract() {
                     <td className="text-capitalize">
                       {member.member_type.replace(/_/g, ' ') || '-'}
                     </td>
-                    <td>{member.member.username || '-'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -117,12 +115,12 @@ export default function ShowContract() {
       </CCard>
       <CCard className="my-3 border-0">
         <CCol md="12" className="m-0">
-          <CCard className="p-3 border-0 theme_color">
+          <CCard className="p-3 border-0">
             <CListGroupItem>
               <CIcon icon={freeSet.cilNotes} size="lg" className="me-2" />
               <strong className="text-black">Notes</strong>
               <hr className="text-secondary p-0 mt-1" />
-              <CFormTextarea placeholder="Enter your notes here..." rows={4} className="mt-2" />
+              <div className="mt-2"> {contract?.notes?.replace(/_/g, ' ')} </div>
             </CListGroupItem>
           </CCard>
         </CCol>
