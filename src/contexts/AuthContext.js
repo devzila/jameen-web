@@ -27,6 +27,13 @@ export const reducer = (state, action) => {
         token: action.payload.token,
         roles: action.payload.object.role,
       }
+    case 'UPDATE_USER':
+      localStorage.setItem('user', JSON.stringify(action.payload))
+      return {
+        ...state,
+        user: action.payload,
+        roles: action.payload?.role,
+      }
     case 'LOGOUT':
       localStorage.clear()
       return { ...state, isAutheticated: false, user: null, company: null, token: null, roles: {} }
