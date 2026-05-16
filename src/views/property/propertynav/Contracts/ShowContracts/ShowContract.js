@@ -1,4 +1,13 @@
-import { CCol, CCard, CListGroupItem, CRow, CCardText, CTable, CFormTextarea } from '@coreui/react'
+import {
+  CAvatar,
+  CCol,
+  CCard,
+  CListGroupItem,
+  CRow,
+  CCardText,
+  CTable,
+  CFormTextarea,
+} from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { formatdate } from '../../../../../services/CommonFunctions'
@@ -10,6 +19,13 @@ import defaultAvatar from '../../../../../assets/images/avatars/default.png'
 import MovingInUnit from 'src/views/property/unit/MovingInUnit'
 import ContractDocuments from './ContractDocuments'
 
+function resolveMemberAvatarSrc(avatar) {
+  if (typeof avatar === 'string' && avatar.trim() !== '') {
+    return avatar.trim()
+  }
+  return defaultAvatar
+}
+
 export default function ShowContract() {
   const { propertyId, contractId } = useParams()
   const { get, response, loading, error } = useFetch()
@@ -17,8 +33,8 @@ export default function ShowContract() {
 
   const params = useParams()
 
-  const for_moving_in =
-    params['*'].split('/')[0] == 'moving-in' || params['*'].split('/')[2] == 'moving_in'
+  const pathParts = (params['*'] || '').split('/')
+  const for_moving_in = pathParts[0] === 'moving-in' || pathParts[2] === 'moving_in'
 
   useEffect(() => {
     loadInitialContractData()
@@ -97,17 +113,28 @@ export default function ShowContract() {
                 </tr>
               </thead>
               <tbody>
-                {contract?.contract_members?.map((member, index) => (
-                  <tr key={index}>
-                    <td>
-                      {member?.member?.first_name ? <img width="23px" src={defaultAvatar} /> : null}
-                      {member.member.first_name + ' ' + member.member.last_name || '-'}
-                    </td>
-                    <td className="text-capitalize">
-                      {member.member_type.replace(/_/g, ' ') || '-'}
-                    </td>
-                  </tr>
-                ))}
+                {contract?.contract_members?.map((member, index) => {
+                  const memberName =
+                    [member?.member?.first_name, member?.member?.last_name]
+                      .filter(Boolean)
+                      .join(' ')
+                      .trim() || '—'
+                  const avatarSrc = resolveMemberAvatarSrc(member?.member?.avatar)
+
+                  return (
+                    <tr key={member?.member?.id ?? index}>
+                      <td>
+                        <div className="d-flex align-items-center gap-2">
+                          <CAvatar src={avatarSrc} size="md" className="flex-shrink-0" />
+                          <span>{memberName}</span>
+                        </div>
+                      </td>
+                      <td className="text-capitalize">
+                        {member?.member_type?.replace(/_/g, ' ') || '-'}
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </CTable>
           </CCard>

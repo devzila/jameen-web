@@ -19,8 +19,8 @@ export default function ContractDocuments() {
   const { propertyId, contractId } = useParams()
   const params = useParams()
 
-  const for_moving_in =
-    params['*'].split('/')[0] == 'moving-in' || params['*'].split('/')[2] == 'moving_in'
+  const pathParts = (params['*'] || '').split('/')
+  const for_moving_in = pathParts[0] === 'moving-in' || pathParts[2] === 'moving_in'
 
   console.log(for_moving_in)
   const fetchContract = async () => {
