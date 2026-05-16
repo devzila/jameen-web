@@ -11,10 +11,7 @@ import Paginate from '../../../../components/Pagination'
 import { formatdate } from '../../../../services/CommonFunctions'
 import AddBuilding from './AddBuilding'
 
-import { Dropdown, Row, Col } from 'react-bootstrap'
-import CustomDivToggle from 'src/components/CustomDivToggle'
-import { BsThreeDots } from 'react-icons/bs'
-import EditBuilding from './EditBuilding'
+import { Row, Col } from 'react-bootstrap'
 
 export default function Buildings() {
   const [buildings, setBuildings] = useState([])
@@ -25,132 +22,125 @@ export default function Buildings() {
 
   const { propertyId } = useParams()
 
-  const [searchKeyword, setSearchKeyword] = useState(null)
+  const [searchKeyword, setSearchKeyword] = useState('')
+
   const { get, response } = useFetch()
 
+  // ✅ SINGLE SOURCE OF TRUTH FETCH
   useEffect(() => {
     fetchBuildings()
-  }, [propertyId, currentPage])
+  }, [propertyId, currentPage, searchKeyword])
 
   async function fetchBuildings() {
+    setLoading(true)
+
     let endpoint = `/v1/admin/premises/properties/${propertyId}/buildings?page=${currentPage}`
-    if (searchKeyword) {
-      endpoint += `&q[name_cont]=${searchKeyword}`
+
+    if (searchKeyword?.trim()) {
+      endpoint += `&q[name_cont]=${encodeURIComponent(searchKeyword.trim())}`
     }
+
     try {
       const buildingsData = await get(endpoint)
 
-      if (buildingsData && buildingsData.data) {
-        setPagination(buildingsData.pagination)
+      if (response.ok && buildingsData?.data) {
         setBuildings(buildingsData.data)
-        setLoading(false)
+        setPagination(buildingsData.pagination)
+        setErrors(false)
+      } else {
+        setErrors(true)
       }
     } catch (error) {
-      console.error('Error fetching billable items:', error)
+      console.error('API Error:', error)
+      setErrors(true)
+    } finally {
+      setLoading(false)
     }
   }
-  function refresh_data() {
-    fetchBuildings()
-  }
+
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
   }
+
   const handleInputChange = (event) => {
-    const value = event.target.value
-    setSearchKeyword(value)
-    if (value === '') {
-      refresh_data()
-    }
+    setCurrentPage(1) // reset page on search
+    setSearchKeyword(event.target.value)
+  }
+
+  function refresh_data() {
+    fetchBuildings()
   }
 
   return (
-    <>
-      <div>
-        <section className="w-100 p-0 mt-2">
-          <div>
-            <div className="mask d-flex align-items-center h-100">
-              <div className="w-100">
-                <CNavbar expand="lg" colorScheme="light" className="bg-white">
-                  <CContainer fluid>
-                    <CNavbarBrand href="#">Buildings</CNavbarBrand>
-                    <div className="d-flex justify-content-end">
-                      <div className="d-flex" role="search">
-                        <input
-                          onChange={handleInputChange}
-                          className="form-control  custom_input"
-                          type="search"
-                          placeholder="Search"
-                          aria-label="Search"
-                        />
-                        <button
-                          onClick={fetchBuildings}
-                          className="btn btn-outline-success custom_search_button"
-                          type="submit"
-                        >
-                          <CIcon icon={freeSet.cilSearch} />
-                        </button>
-                      </div>
-                      <AddBuilding after_submit={refresh_data} />
-                    </div>
-                  </CContainer>
-                </CNavbar>
-                <hr className="p-0 m-0 text-secondary" />
-                <div className="row justify-content-center">
-                  <div className="col-12">
-                    <div className="table-responsive bg-white">
-                      <table className="table  table-striped mb-0">
-                        <thead
-                          style={{
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            overFlow: 'hidden',
-                          }}
-                        >
-                          <tr>
-                            <th className="pt-3 pb-3 border-0">Name</th>
-                            <th className="pt-3 pb-3 border-0">Description</th>
-                            <th className="pt-3 pb-3 border-0">Created At </th>
-                          </tr>
-                        </thead>
+    <section className="w-100 p-0 mt-2">
+      <CNavbar expand="lg" colorScheme="light" className="bg-white">
+        <CContainer fluid>
+          <CNavbarBrand>Buildings</CNavbarBrand>
 
-                        <tbody>
-                          {buildings.map((data) => (
-                            <tr key={data.id}>
-                              <td>
-                                <NavLink to={`${data.id}/edit`}>{data.name}</NavLink>
-                              </td>
-                              <td>{data.description}</td>
-                              <td>{formatdate(data.created_at)}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      {loading && <Loading />}
-                      {errors == true ? toast('We are facing a technical issue at our end.') : null}
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div className="d-flex justify-content-end">
+            <div className="d-flex">
+              <input
+                value={searchKeyword}
+                onChange={handleInputChange}
+                className="form-control custom_input"
+                type="search"
+                placeholder="Search"
+              />
+
+              <button onClick={fetchBuildings} className="btn btn-outline-success" type="button">
+                <CIcon icon={freeSet.cilSearch} />
+              </button>
             </div>
+
+            <AddBuilding after_submit={refresh_data} />
           </div>
-          <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
-            <Row>
-              <Col md="12">
-                {pagination?.total_pages > 1 ? (
-                  <Paginate
-                    onPageChange={handlePageClick}
-                    pageRangeDisplayed={pagination.per_page}
-                    pageCount={pagination.total_pages}
-                    forcePage={currentPage - 1}
-                  />
-                ) : (
-                  <br />
-                )}
-              </Col>
-            </Row>
-          </CNavbar>
-        </section>
+        </CContainer>
+      </CNavbar>
+
+      <hr />
+
+      <div className="table-responsive bg-white">
+        <table className="table table-striped mb-0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Created At</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {buildings.map((data) => (
+              <tr key={data.id}>
+                <td>
+                  <NavLink to={`${data.id}/edit`}>{data.name}</NavLink>
+                </td>
+                <td>{data.description}</td>
+                <td>{formatdate(data.created_at)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {loading && <Loading />}
+
+        {errors && toast('We are facing a technical issue at our end.')}
       </div>
-    </>
+
+      <CNavbar className="bg-light d-flex justify-content-center">
+        <Row>
+          <Col md="12">
+            {pagination?.total_pages > 1 && (
+              <Paginate
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={pagination.per_page}
+                pageCount={pagination.total_pages}
+                forcePage={currentPage - 1}
+              />
+            )}
+          </Col>
+        </Row>
+      </CNavbar>
+    </section>
   )
 }
