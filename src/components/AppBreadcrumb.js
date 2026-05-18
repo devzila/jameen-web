@@ -14,6 +14,13 @@ const AppBreadcrumb = () => {
     return parts[parts.length - 1]
   }
 
+  function breadcrumbHref(pathname) {
+    if (pathname === '/finance/invoice') {
+      return '/finance'
+    }
+    return pathname
+  }
+
   const getBreadcrumbs = (location) => {
     const breadcrumbs = []
     location.split('/').reduce((prev, curr, index, array) => {
@@ -22,6 +29,7 @@ const AppBreadcrumb = () => {
       routeName &&
         breadcrumbs.push({
           pathname: currentPathname,
+          href: breadcrumbHref(currentPathname),
           name: routeName,
           active: index + 1 === array.length ? true : false,
         })
@@ -41,7 +49,7 @@ const AppBreadcrumb = () => {
         return (
           <CBreadcrumbItem
             className="text-uppercase "
-            {...(breadcrumb.active ? { active: true } : { href: breadcrumb.pathname })}
+            {...(breadcrumb.active ? { active: true } : { href: breadcrumb.href })}
             key={index}
           >
             <div className="m-0 p-0">
