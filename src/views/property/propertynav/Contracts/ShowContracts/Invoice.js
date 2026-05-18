@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useFetch } from 'use-http'
 import { toast } from 'react-toastify'
 import Loading from 'src/components/loading/loading'
-import { NavLink, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import { Form } from 'react-bootstrap'
 
 import { formatdate } from 'src/services/CommonFunctions'
 import { status_color } from 'src/services/CommonFunctions'
@@ -14,16 +15,25 @@ import ShowInvoicePopup from './ShowInvoicePopup'
 import ShowInvoices from 'src/views/finance/ShowInvoices'
 import CheckPermissions from 'src/permissions/CheckPermissions'
 
+const INVOICE_STATUS_OPTIONS = [
+  { value: '', label: 'All statuses' },
+  { value: '1', label: 'Pending' },
+  { value: '2', label: 'Due' },
+  { value: '3', label: 'Paid' },
+  { value: '4', label: 'Partial paid' },
+  { value: '5', label: 'Cancelled' },
+]
+
 const Invoice = ({ after_submit, contract }) => {
   const [invoices, setInvoices] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
-  const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
   const [visible, setVisible] = useState(false)
 
   const { propertyId, contractId } = useParams()
 
-  const [searchKeyword, setSearchKeyword] = useState(null)
+  const [searchInput, setSearchInput] = useState('')
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const [statusFilter, setStatusFilter] = useState('')
   const { get, response } = useFetch()
 
   function handleClose() {
@@ -32,23 +42,49 @@ const Invoice = ({ after_submit, contract }) => {
 
   useEffect(() => {
     loadManualInvoices()
-  }, [currentPage])
+  }, [propertyId, contractId, searchKeyword, statusFilter])
 
-  //contract invoice
   async function loadManualInvoices() {
-    const endpoint = `/v1/admin/premises/properties/${propertyId}/allotments/${contractId}/invoices`
-    let manual_invoices = await get(endpoint)
+    setLoading(true)
+    let endpoint = `/v1/admin/premises/properties/${propertyId}/allotments/${contractId}/invoices`
+    const params = []
+    if (searchKeyword?.trim()) {
+      params.push(`q[number_cont]=${encodeURIComponent(searchKeyword.trim())}`)
+    }
+    if (statusFilter !== '') {
+      params.push(`q[status_eq]=${statusFilter}`)
+    }
+    if (params.length) {
+      endpoint += `?${params.join('&')}`
+    }
+
+    const manual_invoices = await get(endpoint)
 
     if (response.ok) {
       if (manual_invoices.data) {
-        setLoading(false)
         setInvoices(manual_invoices.data)
       }
     } else {
-      setErrors(true)
-      setLoading(false)
-      toast.error('Error')
+      toast.error('We are facing a technical issue at our end.')
     }
+    setLoading(false)
+  }
+
+  function applySearch(e) {
+    e?.preventDefault()
+    setSearchKeyword(searchInput.trim())
+  }
+
+  function handleSearchInputChange(e) {
+    const value = e.target.value
+    setSearchInput(value)
+    if (value === '') {
+      setSearchKeyword('')
+    }
+  }
+
+  function handleStatusFilterChange(e) {
+    setStatusFilter(e.target.value)
   }
 
   return (
@@ -57,12 +93,38 @@ const Invoice = ({ after_submit, contract }) => {
         <section className="w-100">
           <div className="mask d-flex align-items-center h-100">
             <div className="container-fluid p-3  border-0 theme_color">
-              <div className="d-flex w-100 justify-content-between">
-                <div className="mb-3">
+              <div className="d-flex w-100 justify-content-between align-items-center flex-wrap gap-2">
+                <div className="mb-3 mb-md-0">
                   <CIcon icon={freeSet.cilList} size="lg" className="me-2" />
                   <strong className="text-black">Invoices</strong>
                 </div>
-                <div>
+                <div className="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                  <Form.Select
+                    aria-label="Filter by invoice status"
+                    className="custom_input"
+                    style={{ width: 'auto', minWidth: '160px' }}
+                    value={statusFilter}
+                    onChange={handleStatusFilterChange}
+                  >
+                    {INVOICE_STATUS_OPTIONS.map((opt) => (
+                      <option key={opt.value || 'all'} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  <form className="d-flex" role="search" onSubmit={applySearch}>
+                    <input
+                      value={searchInput}
+                      onChange={handleSearchInputChange}
+                      className="form-control custom_input"
+                      type="search"
+                      placeholder="Search"
+                      aria-label="Search"
+                    />
+                    <button className="btn btn-outline-success custom_search_button" type="submit">
+                      <CIcon icon={freeSet.cilSearch} />
+                    </button>
+                  </form>
                   {contract.contract_type == 'allotment' ? (
                     <CheckPermissions
                       component={<AddManualInvoice after_submit={loadManualInvoices} />}
@@ -73,7 +135,9 @@ const Invoice = ({ after_submit, contract }) => {
               </div>
 
               <hr className="p-0 m-0 text-secondary" />
-              {invoices.length >= 1 ? (
+              {loading && invoices.length === 0 ? (
+                <Loading />
+              ) : invoices.length >= 1 ? (
                 <div className="row justify-content-center">
                   <div className="col-12">
                     <div className="table-responsive bg-white">
@@ -141,8 +205,7 @@ const Invoice = ({ after_submit, contract }) => {
                           ))}
                         </tbody>
                       </table>
-                      {loading ?? <Loading />}
-                      {errors == true ? toast('We are facing a technical issue at our end.') : null}
+                      {loading && <Loading />}
                     </div>
                   </div>
                 </div>
