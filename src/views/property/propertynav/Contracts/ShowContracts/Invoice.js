@@ -178,7 +178,7 @@ const Invoice = ({ after_submit, contract }) => {
                                     </button>
                                   }
                                   visible={visible}
-                                  body={<ShowInvoices invoice_id={invoice.id} />}
+                                  body={<ShowInvoices invoice_id={invoice.id} embedded />}
                                   handleClose={handleClose}
                                 />
                               </th>
