@@ -31,8 +31,8 @@ const MovingIn = () => {
     if (queries) {
       endpoint += `&type=${queries}`
     }
-    if (searchKeyword) {
-      endpoint += `&q=${searchKeyword}`
+    if (searchKeyword?.trim()) {
+      endpoint += `&q[unit_unit_no_cont]=${encodeURIComponent(searchKeyword.trim())}`
     }
     const initialRunningContracts = await get(endpoint)
 
