@@ -57,7 +57,9 @@ export default function ShowContract() {
               <div className="d-flex w-100 justify-content-between align-items-center">
                 <CListGroupItem>
                   <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2" />
-                  <strong className="text-black">Contract Details</strong>
+                  <strong className="text-black">
+                    {for_moving_in ? 'Moving In Details' : 'Contract Details'}
+                  </strong>
                 </CListGroupItem>
                 <div>
                   {contract?.unit?.status === 'vacant' ? (
