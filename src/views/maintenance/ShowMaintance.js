@@ -56,13 +56,13 @@ export default function ShowMaintance() {
               <CCol className="p-3 mt-0 fw-light">
                 Last Status Changed
                 <CCardText className="fw-normal text-black text-capitalize">
-                  {data?.last_status_changed_date || '-'}
+                  {data?.maintainable?.last_status_changed_date || '-'}
                 </CCardText>
               </CCol>
               <CCol className="p-3 mt-0 fw-light">
                 Owner
                 <CCardText className="fw-normal text-black text-capitalize">
-                  {data?.data_type?.use_type || '-'}
+                  {data?.property?.use_type || '-'}
                 </CCardText>
               </CCol>
             </CRow>
@@ -70,7 +70,7 @@ export default function ShowMaintance() {
               <CCol className="p-3 mt-0 fw-light">
                 Available Date
                 <CCardText className="fw-normal text-black text-capitalize">
-                  {data?.data_type?.description || '-'}
+                  {data?.available_date || '-'}
                 </CCardText>
               </CCol>
             </CRow>
