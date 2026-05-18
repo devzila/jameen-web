@@ -6,13 +6,22 @@ import Loading from 'src/components/loading/loading'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
-import { Dropdown, Row, Col } from 'react-bootstrap'
+import { Row, Col, Form } from 'react-bootstrap'
 import { status_color } from 'src/services/CommonFunctions'
 import PickOwner from '../property/unit/UnitFunctions/PickOwner'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { formatdate } from 'src/services/CommonFunctions'
 import { NavLink } from 'react-router-dom'
+
+const INVOICE_STATUS_OPTIONS = [
+  { value: '', label: 'All statuses' },
+  { value: '1', label: 'Pending' },
+  { value: '2', label: 'Due' },
+  { value: '3', label: 'Paid' },
+  { value: '4', label: 'Partial paid' },
+  { value: '5', label: 'Cancelled' },
+]
 
 const Finance = () => {
   const [invoices, setInvoices] = useState([])
@@ -23,17 +32,21 @@ const Finance = () => {
 
   const [searchInput, setSearchInput] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
+  const [statusFilter, setStatusFilter] = useState('')
   const { get, response } = useFetch()
 
   useEffect(() => {
     loadInitialinvoices()
-  }, [currentPage, searchKeyword])
+  }, [currentPage, searchKeyword, statusFilter])
 
   async function loadInitialinvoices() {
     setLoading(true)
     let endpoint = `/v1/admin/invoices?page=${currentPage}`
     if (searchKeyword?.trim()) {
       endpoint += `&q[number_cont]=${encodeURIComponent(searchKeyword.trim())}`
+    }
+    if (statusFilter !== '') {
+      endpoint += `&q[status_eq]=${statusFilter}`
     }
     const initial_invoices = await get(endpoint)
 
@@ -69,6 +82,11 @@ const Finance = () => {
     }
   }
 
+  function handleStatusFilterChange(e) {
+    setStatusFilter(e.target.value)
+    setCurrentPage(1)
+  }
+
   return (
     <>
       <div>
@@ -78,7 +96,20 @@ const Finance = () => {
               <CNavbar expand="lg" colorScheme="light" className="bg-white">
                 <CContainer fluid>
                   <CNavbarBrand href="#">Invoices</CNavbarBrand>
-                  <div className="d-flex justify-content-end">
+                  <div className="d-flex justify-content-end align-items-center gap-2 flex-wrap">
+                    <Form.Select
+                      aria-label="Filter by invoice status"
+                      className="custom_input"
+                      style={{ width: 'auto', minWidth: '160px' }}
+                      value={statusFilter}
+                      onChange={handleStatusFilterChange}
+                    >
+                      {INVOICE_STATUS_OPTIONS.map((opt) => (
+                        <option key={opt.value || 'all'} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </Form.Select>
                     <form className="d-flex" role="search" onSubmit={applySearch}>
                       <input
                         value={searchInput}
