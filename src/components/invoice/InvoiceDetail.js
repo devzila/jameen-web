@@ -6,6 +6,7 @@ import CheckPermissions from 'src/permissions/CheckPermissions'
 import { formatdate, status_color } from 'src/services/CommonFunctions'
 import InvoiceCancel from 'src/views/finance/InvoiceCancel'
 import InvoicePayment from 'src/views/finance/InvoicePayment'
+import InvoiceStatusAside from 'src/components/invoice/screens/InvoiceStatusAside'
 
 export default function InvoiceDetail({
   invoice,
@@ -170,7 +171,9 @@ export default function InvoiceDetail({
 
         <div className="col-12 col-lg-5 d-flex">
           <div className="card rounded-1 flex-grow-1 w-100">
-            <div className="card-body p-4">{/* reserved for future content */}</div>
+            <div className="card-body p-4">
+              <InvoiceStatusAside status={invoice?.status} />
+            </div>
           </div>
         </div>
       </div>
