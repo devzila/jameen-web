@@ -33,7 +33,7 @@ export default function PropertyNav() {
               component={
                 <div>
                   <NavLink title="Allotment" to="Contracts">
-                    Allotments
+                    Contracts
                   </NavLink>
                 </div>
               }
