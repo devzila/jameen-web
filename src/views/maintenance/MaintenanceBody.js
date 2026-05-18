@@ -29,7 +29,7 @@ export default function MaintanceBody({ api_endpoint }) {
   const [table_view, setTableView] = useState(true)
   useEffect(() => {
     loaddMaintenanceRequests()
-  }, [currentPage])
+  }, [currentPage, searchKeyword])
 
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
