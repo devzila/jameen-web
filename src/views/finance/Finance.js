@@ -21,35 +21,52 @@ const Finance = () => {
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
 
-  const [searchKeyword, setSearchKeyword] = useState(null)
+  const [searchInput, setSearchInput] = useState('')
+  const [searchKeyword, setSearchKeyword] = useState('')
   const { get, response } = useFetch()
 
   useEffect(() => {
     loadInitialinvoices()
-  }, [currentPage])
+  }, [currentPage, searchKeyword])
 
   async function loadInitialinvoices() {
+    setLoading(true)
     let endpoint = `/v1/admin/invoices?page=${currentPage}`
-    if (searchKeyword) {
-      endpoint += `&q[number_cont]=${searchKeyword}`
+    if (searchKeyword?.trim()) {
+      endpoint += `&q[number_cont]=${encodeURIComponent(searchKeyword.trim())}`
     }
-    let initial_invoices = await get(endpoint)
+    const initial_invoices = await get(endpoint)
 
     if (response.ok) {
       if (initial_invoices.data) {
-        setLoading(false)
         setInvoices(initial_invoices.data)
         setPagination(initial_invoices.pagination)
+        setErrors(false)
       }
-    } else if (response.ok) {
+    } else {
       setErrors(true)
-      setLoading(false)
-      toast('else id executed')
+      toast.error('We are facing a technical issue at our end.')
     }
+    setLoading(false)
   }
 
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
+  }
+
+  function applySearch(e) {
+    e?.preventDefault()
+    setCurrentPage(1)
+    setSearchKeyword(searchInput.trim())
+  }
+
+  function handleSearchInputChange(e) {
+    const value = e.target.value
+    setSearchInput(value)
+    if (value === '') {
+      setCurrentPage(1)
+      setSearchKeyword('')
+    }
   }
 
   return (
@@ -62,22 +79,22 @@ const Finance = () => {
                 <CContainer fluid>
                   <CNavbarBrand href="#">Invoices</CNavbarBrand>
                   <div className="d-flex justify-content-end">
-                    <div className="d-flex" role="search">
+                    <form className="d-flex" role="search" onSubmit={applySearch}>
                       <input
-                        onChange={(e) => setSearchKeyword(e.target.value)}
+                        value={searchInput}
+                        onChange={handleSearchInputChange}
                         className="form-control  custom_input"
                         type="search"
                         placeholder="Search"
                         aria-label="Search"
                       />
                       <button
-                        onClick={loadInitialinvoices}
                         className="btn btn-outline-success custom_search_button"
                         type="submit"
                       >
                         <CIcon icon={freeSet.cilSearch} />
                       </button>
-                    </div>
+                    </form>
                   </div>
                 </CContainer>
               </CNavbar>
