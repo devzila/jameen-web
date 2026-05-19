@@ -145,7 +145,7 @@ const Contract = () => {
                       </td>
 
                       <td className="py-2">
-                        {PickOwner(running_contracts.contract_members) || '-'}
+                        {PickOwner(running_contracts.contract_members, 'owner') || '-'}
                       </td>
                     </tr>
                   ))

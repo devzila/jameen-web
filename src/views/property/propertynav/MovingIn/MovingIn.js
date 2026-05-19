@@ -127,7 +127,8 @@ const MovingIn = () => {
                                     {running_contracts.contract_type.replace(/_/g, ' ') || '-'}
                                   </td>
                                   <td className="p-2">
-                                    {PickOwner(running_contracts.contract_members) || '-'}
+                                    {PickOwner(running_contracts.contract_members, 'residents') ||
+                                      '-'}
                                   </td>
                                 </tr>
                               ))}

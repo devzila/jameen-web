@@ -393,7 +393,7 @@ export default function Showunit() {
                           <CRow>
                             <CCol className="d-flex align-items-center">Owner/Resident:</CCol>
                             <CCol className="p-0 m-0">
-                              {PickOwner(invoice?.unit_contract?.contract_members || '-')}
+                              {PickOwner(invoice?.unit_contract?.contract_members)}
                             </CCol>
                           </CRow>
                         </CCardText>
