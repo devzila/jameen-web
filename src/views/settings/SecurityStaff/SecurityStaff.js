@@ -3,7 +3,8 @@ import useFetch from 'use-http'
 import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
 import { toast } from 'react-toastify'
-
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 import { CNavbar, CCol } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
 import { Dropdown, Row, Col, Card } from 'react-bootstrap'
@@ -19,6 +20,7 @@ export default function SecurityStaff() {
   const [loading, setLoading] = useState(true)
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState('')
   const { get } = useFetch()
 
   useEffect(() => {
@@ -45,6 +47,10 @@ export default function SecurityStaff() {
     fetchSecurityStaff()
   }
 
+  const filteredSecurityStaff = securityStaff.filter((staff) =>
+    staff.name?.toLowerCase().includes(searchTerm.toLowerCase()),
+  )
+
   return (
     <>
       <CCol>
@@ -52,7 +58,22 @@ export default function SecurityStaff() {
           <Card className="border-0 mt-3 py-2 rounded-0">
             <div className="d-flex ms-2 justify-content-between">
               <div className="fs-5 border-0 d-flex align-items-center">Security Staff</div>
-              <div className=" mx-2 border-0 ">
+              <div className="d-flex align-items-center gap-2 mx-2 border-0">
+                <div className="d-flex">
+                  <input
+                    type="text"
+                    placeholder="Search by name"
+                    className="form-control"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{ width: '220px' }}
+                  />
+
+                  <button type="button" className="btn btn-outline-success custom_search_button">
+                    <CIcon icon={freeSet.cilSearch} />
+                  </button>
+                </div>
+
                 <AddSecurityStaff after_submit={reload_callback} />
               </div>
             </div>
@@ -80,7 +101,7 @@ export default function SecurityStaff() {
                         </thead>
 
                         <tbody>
-                          {securityStaff.map((securityStaff) => (
+                          {filteredSecurityStaff.map((securityStaff) => (
                             <tr key={securityStaff.id}>
                               <th className="pt-3 border-0" scope="row">
                                 {securityStaff.name}
