@@ -20,10 +20,8 @@ function resolveUserAvatarSrc(user) {
 const UserProfile = () => {
   const fileInputRef = useRef(null)
   const [uploadingAvatar, setUploadingAvatar] = useState(false)
-  const [resettingPassword, setResettingPassword] = useState(false)
   const { state, dispatch } = useContext(AuthContext)
   const user = state.user
-  console.log(user)
 
   const displayName =
     user?.name || [user?.first_name, user?.last_name].filter(Boolean).join(' ').trim() || '—'
@@ -31,38 +29,6 @@ const UserProfile = () => {
   const openAvatarPicker = () => {
     if (!uploadingAvatar) {
       fileInputRef.current?.click()
-    }
-  }
-  const handleResetPassword = async () => {
-    setResettingPassword(true)
-
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/v1/admin/auth/passwords`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json',
-          'company-slug': window.location.hostname.split('.')[0],
-        },
-        body: JSON.stringify({
-          email: user?.email,
-        }),
-      })
-
-      const result = await response.json().catch(() => ({}))
-
-      console.log('RESET RESPONSE:', result)
-
-      if (response.ok) {
-        toast.success(result.message || 'Password reset link sent successfully')
-      } else {
-        toast.error(result.message || 'Failed to send password reset link')
-      }
-    } catch (error) {
-      console.log(error)
-      toast.error('Something went wrong')
-    } finally {
-      setResettingPassword(false)
     }
   }
 
@@ -186,20 +152,8 @@ const UserProfile = () => {
                   <p className="text-muted mb-0">Password reset link will be sent on your email.</p>
                 </CCol>
                 <CCol xs={12} md="auto" className="text-md-end">
-                  <CButton
-                    type="button"
-                    color="primary"
-                    onClick={handleResetPassword}
-                    disabled={resettingPassword}
-                  >
-                    {resettingPassword ? (
-                      <>
-                        <CSpinner size="sm" className="me-2" />
-                        Sending...
-                      </>
-                    ) : (
-                      'Reset Password'
-                    )}
+                  <CButton type="button" color="primary">
+                    Reset Password
                   </CButton>
                 </CCol>
               </CRow>

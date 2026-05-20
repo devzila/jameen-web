@@ -171,7 +171,7 @@ const Finance = () => {
                             </td>
                             <td className="pt-3 text-center">{invoice.total_amount || '-'}</td>
                             <td className="pt-2">
-                              {PickOwner(invoice?.unit_contract?.contract_members)}
+                              {PickOwner(invoice?.unit_contract?.contract_members || '-')}
                             </td>
 
                             <td className="pt-3">{formatdate(invoice?.invoice_date) || '-'}</td>
