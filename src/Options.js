@@ -47,19 +47,29 @@ const options = {
                   </div>
                 ) : (
                   <>
-                    <h2>Session expired</h2>
-                    <p>Please login again to continue!</p>
-                    <button
-                      className="btn custom_grey_button"
-                      style={{ width: '200px', borderRadius: '2px' }}
-                      onClick={() => {
-                        window.location.reload()
-                        localStorage.clear()
-                        sessionStorage.clear()
-                      }}
-                    >
-                      Login
-                    </button>
+                    {response.status == 403 ? (
+                      <div>
+                        <h2>Access Denied</h2>
+                        <p>You do not have Authorized to perform this action</p>
+                      </div>
+                    ) : (
+                      <>
+                        <h2>Session expired</h2>
+                        <p>Please login again to continue!</p>
+
+                        <button
+                          className="btn custom_grey_button"
+                          style={{ width: '200px', borderRadius: '2px' }}
+                          onClick={() => {
+                            window.location.reload()
+                            localStorage.clear()
+                            sessionStorage.clear()
+                          }}
+                        >
+                          Login
+                        </button>
+                      </>
+                    )}
                   </>
                 )}{' '}
               </>
