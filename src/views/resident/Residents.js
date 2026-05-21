@@ -5,7 +5,7 @@ import AddResidents from './AddResidents'
 
 import Paginate from '../../components/Pagination'
 import Loading from 'src/components/loading/loading'
-
+import defaultAvatar from 'src/assets/images/avatars/default.png'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { Row, Col } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
@@ -14,6 +14,13 @@ import { freeSet } from '@coreui/icons'
 import ResidentUnitPicker from './ResidentNav/ResidentUnitPicker'
 import ResidentFIlters from './ResidentFIlters'
 import CheckPermissions from 'src/permissions/CheckPermissions'
+
+function resolveMemberAvatarSrc(avatar) {
+  if (typeof avatar === 'string' && avatar.trim() !== '') {
+    return avatar.trim()
+  }
+  return defaultAvatar
+}
 
 const Residents = () => {
   const { get, response } = useFetch()
@@ -131,8 +138,26 @@ const Residents = () => {
                       {residents.map((resident) => (
                         <tr key={resident.id}>
                           <th className="pt-3 border-0 text-nowrap" scope="row">
-                            <NavLink to={`/resident/${resident.id}/overview`}>
-                              {resident.first_name + ' ' + resident.last_name}
+                            <NavLink
+                              to={`/resident/${resident.id}/overview`}
+                              className="d-flex align-items-center gap-2 text-decoration-none"
+                            >
+                              <img
+                                src={resolveMemberAvatarSrc(resident.avatar)}
+                                alt={`${resident.first_name} ${resident.last_name}`}
+                                width="35"
+                                height="35"
+                                className="rounded-circle"
+                                style={{ objectFit: 'cover' }}
+                              />
+                              <div className="d-flex align-items-center gap-2">
+                                <span>
+                                  {resident.first_name} {resident.last_name}
+                                </span>
+                                {resident.membership?.some(
+                                  (member) => member.member_type === 'primary_resident',
+                                ) && <span className="badge bg-info">Primary</span>}
+                              </div>
                             </NavLink>
                           </th>
                           <td className="pt-3">
