@@ -105,7 +105,6 @@ export default function EditRoles({ roleId, after_submit }) {
                 <Form.Group>
                   <label>Description</label>
                   <Form.Control
-                    required
                     placeholder="Description"
                     type="text"
                     defaultValue={data.description}

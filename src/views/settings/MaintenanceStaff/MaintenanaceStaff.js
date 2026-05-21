@@ -3,6 +3,8 @@ import useFetch from 'use-http'
 import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 import { CNavbar, CCol } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
@@ -19,6 +21,7 @@ export default function MaintenanceStaff() {
   const [loading, setLoading] = useState(true)
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState('')
   const { get } = useFetch()
 
   useEffect(() => {
@@ -45,7 +48,9 @@ export default function MaintenanceStaff() {
   function reload_callback() {
     fetchMaintenanceStaff()
   }
-
+  const filteredMaintenanceData = maintenanceData.filter((staff) =>
+    staff.name?.toLowerCase().includes(searchTerm.toLowerCase()),
+  )
   return (
     <>
       <CCol>
@@ -53,7 +58,20 @@ export default function MaintenanceStaff() {
           <Card className="border-0 mt-3 py-2 rounded-1">
             <div className="d-flex  ms-2 justify-content-between">
               <div className="fs-5 border-0 d-flex align-items-center">Maintenance Staff</div>
-              <div className=" mx-2 border-0">
+              <div className="d-flex align-items-center gap-2">
+                <input
+                  type="text"
+                  placeholder="Search by name"
+                  className="form-control"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{ width: '220px' }}
+                />
+
+                <button type="button" className="btn btn-outline-success custom_search_button">
+                  <CIcon icon={freeSet.cilSearch} />
+                </button>
+
                 <AddMaintenanceStaff after_submit={reload_callback} />
               </div>
             </div>
@@ -81,7 +99,7 @@ export default function MaintenanceStaff() {
                         </thead>
 
                         <tbody>
-                          {maintenanceData.map((maintenanceData) => (
+                          {filteredMaintenanceData.map((maintenanceData) => (
                             <tr key={maintenanceData.id}>
                               <th className="pt-3 border-0" scope="row">
                                 {maintenanceData.name}

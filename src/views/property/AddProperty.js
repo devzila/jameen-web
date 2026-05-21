@@ -248,6 +248,24 @@ export default function PropertyForm({ after_submit }) {
                     />
                   </Form.Group>
                 </Col>
+                <Col className="pr-1 mt-3" md="6">
+                  <Form.Group>
+                    <label>
+                      Invoice generates
+                      <small className="text-danger"> *{errors?.invoice_day}</small>
+                    </label>
+
+                    <Form.Select {...register('invoice_day')}>
+                      <option value="">Select Invoice Day</option>
+
+                      {Array.from({ length: 31 }, (_, i) => (
+                        <option key={i + 1} value={i + 1}>
+                          {i + 1}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Use Type</label>

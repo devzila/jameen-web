@@ -86,7 +86,6 @@ export default function AddRoles({ after_submit }) {
                   <Form.Group>
                     <label>Description</label>
                     <Form.Control
-                      required
                       placeholder="Description"
                       type="text"
                       {...register('description')}
