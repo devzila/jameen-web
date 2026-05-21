@@ -3,6 +3,7 @@ import { Accordion } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import InvoiceCashPaymentForm from './InvoiceCashPaymentForm'
 import InvoiceChequePaymentForm from './InvoiceChequePaymentForm'
+import InvoiceCreditNotePaymentForm from './InvoiceCreditNotePaymentForm'
 import InvoicePaymentRecorded from './InvoicePaymentRecorded'
 
 const PAY_SECTIONS = [
@@ -44,7 +45,13 @@ export default function InvoicePayScreen({ invoiceId, onRefresh }) {
               {invoiceId && eventKey === 'cheque' ? (
                 <InvoiceChequePaymentForm invoiceId={invoiceId} onSuccess={handlePaymentSuccess} />
               ) : null}
-              {eventKey !== 'cash' && eventKey !== 'cheque' ? (
+              {invoiceId && eventKey === 'credit_note' ? (
+                <InvoiceCreditNotePaymentForm
+                  invoiceId={invoiceId}
+                  onSuccess={handlePaymentSuccess}
+                />
+              ) : null}
+              {eventKey !== 'cash' && eventKey !== 'cheque' && eventKey !== 'credit_note' ? (
                 <p className="mb-0">{title}</p>
               ) : null}
             </Accordion.Body>
