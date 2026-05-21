@@ -26,7 +26,7 @@ export default function AddResidents({ after_submit }) {
 
   const [imageView, setImageView] = useState('')
 
-  const { register, handleSubmit, control, watch, setValue } = useForm()
+  const { register, handleSubmit, control, watch, setValue, reset } = useForm()
   const { get, post, response } = useFetch()
 
   const gender = [
@@ -85,6 +85,7 @@ export default function AddResidents({ after_submit }) {
 
     if (response.ok) {
       toast('Resident added Successfully')
+      reset()
       after_submit()
       setVisible(!visible)
     } else {
@@ -133,7 +134,7 @@ export default function AddResidents({ after_submit }) {
                 data-original-title="Usuario"
               />
             </div>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
@@ -177,6 +178,7 @@ export default function AddResidents({ after_submit }) {
                     <Form.Control
                       placeholder="abc@example.com"
                       type="text"
+                      autoComplete="off"
                       {...register('email')}
                     ></Form.Control>
                   </Form.Group>
@@ -190,6 +192,7 @@ export default function AddResidents({ after_submit }) {
                     <Form.Control
                       placeholder="Password"
                       type="password"
+                      autoComplete="new-password"
                       {...register('password')}
                     ></Form.Control>
                   </Form.Group>
