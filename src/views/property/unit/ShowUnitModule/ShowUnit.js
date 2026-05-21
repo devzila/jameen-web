@@ -1,4 +1,13 @@
-import { CCol, CCard, CListGroupItem, CRow, CCardText, CCardBody, CButton } from '@coreui/react'
+import {
+  CCol,
+  CCard,
+  CListGroupItem,
+  CRow,
+  CCardText,
+  CCardBody,
+  CButton,
+  CAvatar,
+} from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 
@@ -15,24 +24,24 @@ import AllocateUnit from '../AllocateUnit'
 import MovingInUnit from '../MovingInUnit'
 import AddParking from './AllotParking'
 import CheckPermissions from 'src/permissions/CheckPermissions'
-
+import avtar from 'src/assets/images/default-building.png'
 export default function Showunit() {
   const { propertyId, unitId } = useParams()
 
   const [unit, setUnit] = useState({})
   const [invoices, setInvoices] = useState({})
   const [parkingData, setParkingData] = useState({})
+  const [residents, setResidents] = useState([])
   const { get, response } = useFetch()
-
   useEffect(() => {
     getUnitData()
     getUnitInvoices()
     getParkingData()
+    getResidents()
   }, [])
 
   async function getUnitInvoices() {
     let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/invoices`)
-
     if (response.ok) {
       setInvoices(api.data)
     }
@@ -52,9 +61,32 @@ export default function Showunit() {
       setParkingData(api.data)
     }
   }
+  async function getResidents() {
+    let api = await get(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/residents`)
+    console.log('Residents API => ', api)
+    if (response.ok) {
+      setResidents(api.data || [])
+    }
+  }
   const refresh_data = () => {
     getUnitData()
     getUnitInvoices()
+    getResidents()
+  }
+
+  const calculateAge = (dob) => {
+    if (!dob) return '-'
+
+    const birthDate = new Date(dob)
+    const today = new Date()
+
+    let age = today.getFullYear() - birthDate.getFullYear()
+    const monthDifference = today.getMonth() - birthDate.getMonth()
+
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+      age--
+    }
+    return age
   }
 
   return (
@@ -206,7 +238,56 @@ export default function Showunit() {
           </CCol>
         </CRow>
       </CCard>
+      {/* OWNERS & RESIDENTS */}
+      <CRow>
+        <CCol md="12">
+          <CCard className="p-3 mt-3 border-0">
+            <CListGroupItem>
+              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+              <strong className="text-black">Owners & Residents</strong>
+              <hr className="text-secondary" />
+            </CListGroupItem>
 
+            <CRow>
+              {residents?.length > 0 ? (
+                residents.map((member, index) => (
+                  <CCol md="4" key={index}>
+                    <CCard className="shadow-sm border-0 rounded-3 mb-3">
+                      <CCardBody>
+                        <div className="d-flex align-items-center mb-3">
+                          <CAvatar src={member?.avatar || avtar} size="xl" className="me-3" />
+                          <div>
+                            <h6 className="mb-0 text-capitalize">
+                              {member?.first_name || member?.last_name
+                                ? `${member?.first_name || ''} ${member?.last_name || ''}`
+                                : '-'}
+                            </h6>
+                          </div>
+                        </div>
+
+                        <CCardText className="mb-1">
+                          <strong>Age:</strong> {calculateAge(member?.dob)}
+                        </CCardText>
+
+                        <CCardText className="mb-1 text-capitalize">
+                          <strong>Gender:</strong> {member?.gender || '-'}
+                        </CCardText>
+
+                        <div className="mb-1">
+                          <strong>Join Date:</strong>
+                          {formatdate(member?.join_date) || '-'}
+                        </div>
+                      </CCardBody>
+                    </CCard>
+                  </CCol>
+                ))
+              ) : (
+                <p className="text-center fst-italic">No Owner/Resident Data Found</p>
+              )}
+            </CRow>
+          </CCard>
+        </CCol>
+      </CRow>
       <CRow>
         <CCol md="12" className="m-0">
           <CCard className=" p-3 mt-1 border-0 ">
