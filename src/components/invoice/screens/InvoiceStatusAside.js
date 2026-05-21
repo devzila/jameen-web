@@ -11,11 +11,11 @@ function normalizeStatus(status) {
     .toLowerCase()
 }
 
-export default function InvoiceStatusAside({ status }) {
+export default function InvoiceStatusAside({ status, invoiceId, onRefresh }) {
   const normalized = normalizeStatus(status)
 
   if (normalized === 'pending' || normalized === 'due') {
-    return <InvoicePayScreen />
+    return <InvoicePayScreen invoiceId={invoiceId} onRefresh={onRefresh} />
   }
 
   if (normalized === 'paid') {
@@ -23,7 +23,7 @@ export default function InvoiceStatusAside({ status }) {
   }
 
   if (normalized === 'partial_paid') {
-    return <InvoicePartialPaidScreen />
+    return <InvoicePartialPaidScreen invoiceId={invoiceId} onRefresh={onRefresh} />
   }
 
   if (normalized === 'cancelled') {
@@ -35,4 +35,6 @@ export default function InvoiceStatusAside({ status }) {
 
 InvoiceStatusAside.propTypes = {
   status: PropTypes.string,
+  invoiceId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  onRefresh: PropTypes.func,
 }

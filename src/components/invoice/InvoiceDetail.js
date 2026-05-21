@@ -172,7 +172,11 @@ export default function InvoiceDetail({
         <div className="col-12 col-lg-5 d-flex">
           <div className="card rounded-1 flex-grow-1 w-100">
             <div className="card-body p-4">
-              <InvoiceStatusAside status={invoice?.status} />
+              <InvoiceStatusAside
+                status={invoice?.status}
+                invoiceId={invoice?.id}
+                onRefresh={onRefresh}
+              />
             </div>
           </div>
         </div>
