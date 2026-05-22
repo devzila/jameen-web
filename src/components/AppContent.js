@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { CContainer } from '@coreui/react'
 import ShowMaintance from 'src/views/maintenance/ShowMaintance'
 import Loading from 'src/components/loading/loading'
+import ShowBuilding from 'src/views/property/propertynav/Building/ShowBuilding'
 
 // routes config
 const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
@@ -57,6 +58,7 @@ const AppContent = () => {
             name="Maintenance"
             element={<ShowMaintance />}
           />
+          <Route path="/properties/:propertyId/buildings/:buildingId" element={<ShowBuilding />} />
           <Route path="/visitor" name="Visitor" element={<Visitor />} />
           <Route path="/news" name="News" element={<News />} />
           <Route path="/news/:postId/*" name="Post" element={<NewsRoutes />} />

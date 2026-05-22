@@ -113,7 +113,7 @@ export default function Buildings() {
             {buildings.map((data) => (
               <tr key={data.id}>
                 <td>
-                  <NavLink to={`${data.id}/edit`}>{data.name}</NavLink>
+                  <NavLink to={`${data.id}`}>{data.name}</NavLink>
                 </td>
                 <td>{data.description}</td>
                 <td>{formatdate(data.created_at)}</td>
