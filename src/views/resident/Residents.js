@@ -24,41 +24,39 @@ function resolveMemberAvatarSrc(avatar) {
 
 const Residents = () => {
   const { get, response } = useFetch()
-
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-
   const [residents, setResidents] = useState([])
   const [searchKeyword, setSearchKeyword] = useState(null)
 
   useEffect(() => {
     loadInitialResidents()
   }, [currentPage])
-
   useEffect(() => {
     if (searchKeyword === '') {
       loadInitialResidents()
     }
   }, [searchKeyword])
-
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      loadInitialResidents(1, event.target.value)
+    }
+  }
   const handleInputChange = (event) => {
     const value = event.target.value
     setSearchKeyword(value)
   }
-
   async function loadInitialResidents(query) {
     let endpoint = `/v1/admin/members?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[username_cont]=${searchKeyword}`
+      endpoint += `&q[first_name_or_last_name_or_email_cont]=${searchKeyword}`
     }
     if (typeof query === 'string') {
       // endpoint += query
     }
-
     const initialResidents = await get(endpoint)
-
     if (response.ok) {
       if (initialResidents.data) {
         setLoading(false)
@@ -79,7 +77,6 @@ const Residents = () => {
     setLoading(true)
     setCurrentPage(e.selected + 1)
   }
-
   return (
     <div>
       <CNavbar expand="lg" colorScheme="light" className="bg-white">
@@ -89,7 +86,9 @@ const Residents = () => {
             <ResidentFIlters filter_callback={loadInitialResidents} />
             <div className="d-flex" role="search">
               <input
+                value={searchKeyword}
                 onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
                 className="form-control  custom_input"
                 type="search"
                 placeholder="Search"
