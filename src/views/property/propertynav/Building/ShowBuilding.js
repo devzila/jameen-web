@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import { useParams, NavLink } from 'react-router-dom'
-
-import { CCard, CCardBody, CCardHeader, CRow, CCol, CBadge } from '@coreui/react'
-
+import { CCard, CCardBody, CCardHeader, CRow, CCol, CBadge, CButton } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
 import Paginate from '../../../../components/Pagination'
 import { formatdate } from '../../../../services/CommonFunctions'
@@ -67,13 +65,15 @@ export default function ShowBuilding() {
         <CCardHeader>
           <div className="d-flex justify-content-between align-items-center">
             <h3>{building?.name || 'Building Details'}</h3>
-
-            <CBadge color="primary">
-              Total Units: {pagination?.total_entries || units.length}
-            </CBadge>
+            <div className="d-flex align-items-center gap-2">
+              <NavLink to={`/properties/${propertyId}/buildings/${buildingId}/edit`}>
+                <CButton color="sky" sixe="lg">
+                  Edit
+                </CButton>
+              </NavLink>
+            </div>
           </div>
         </CCardHeader>
-
         <CCardBody>
           {/* BUILDING DETAILS */}
           <CRow className="mb-4">
@@ -94,7 +94,7 @@ export default function ShowBuilding() {
 
           {/* UNITS LIST */}
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <h4>Units List</h4>
+            <h4>Units </h4>
           </div>
 
           {units.length === 0 ? (
