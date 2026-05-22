@@ -42,22 +42,28 @@ const Residents = () => {
       loadInitialResidents()
     }
   }, [searchKeyword])
+  
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      loadInitialResidents(1,event.target.value); // 1 means page 1
+    }
+  }
+
 
   const handleInputChange = (event) => {
     const value = event.target.value
-    setSearchKeyword(value)
+      setSearchKeyword(value)
   }
 
   async function loadInitialResidents(query) {
     let endpoint = `/v1/admin/members?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[username_cont]=${searchKeyword}`
+      endpoint += `&q[first_name_or_last_name_or_email_cont]=${searchKeyword}`
     }
     if (typeof query === 'string') {
       // endpoint += query
     }
-
-    const initialResidents = await get(endpoint)
+  const initialResidents = await get(endpoint)
 
     if (response.ok) {
       if (initialResidents.data) {
@@ -89,7 +95,9 @@ const Residents = () => {
             <ResidentFIlters filter_callback={loadInitialResidents} />
             <div className="d-flex" role="search">
               <input
+                value={searchKeyword}
                 onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
                 className="form-control  custom_input"
                 type="search"
                 placeholder="Search"
