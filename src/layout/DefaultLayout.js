@@ -4,6 +4,7 @@ import options from '../Options'
 import { AppContent, AppSidebar, AppHeader } from '../components/index'
 import { AuthContext, initialAuthState, reducer } from '../contexts/AuthContext'
 import AuthenticationRoutes from 'src/components/AuthenticationRoutes'
+import ShowBuilding from 'src/views/property/propertynav/Building/ShowBuilding'
 
 const DefaultLayout = () => {
   const [state, dispatch] = React.useReducer(reducer, initialAuthState)
