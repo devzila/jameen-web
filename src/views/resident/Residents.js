@@ -51,7 +51,7 @@ const Residents = () => {
   async function loadInitialResidents(query) {
     let endpoint = `/v1/admin/members?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[username_cont]=${searchKeyword}`
+      endpoint += `&q[first_name_or_last_name_or_email_cont]=${searchKeyword}`
     }
     if (typeof query === 'string') {
       // endpoint += query
