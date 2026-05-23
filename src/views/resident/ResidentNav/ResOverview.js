@@ -100,16 +100,16 @@ export default function ResOverview() {
                   {resident_data?.email || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color text-nowrap col-lg-3 col-sm-6">
+              <CCol className="p-3 mt-0 fw-light theme_color  col-lg-3 col-sm-3">
                 Phone No.
                 <CCardText
-                  className="fw-normal"
+                  className="fw-normal text-nowrap"
                   style={{ color: 'black', textTransform: 'capitalize' }}
                 >
                   {resident_data?.phone_number || '-'}
                 </CCardText>
               </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color  col-lg-3 col-sm-6">
+              <CCol className="p-3 mt-0 fw-light theme_color  col-lg-3 col-sm-3">
                 D.O.B.
                 <CCardText
                   className="fw-normal "
@@ -123,47 +123,9 @@ export default function ResOverview() {
         </CCol>
       </CRow>
 
-      <CRow>
-        <CCol md="2" sm="12">
-          <CCard className="p-3 my-3 border-0">
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Resident Log</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-2 px-2 mt-0 fw-light theme_color">
-                ⊙ Last Changes
-                <CCardText
-                  className="fw-normal ps-3"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {formatdate(resident_data?.updated_at) || '-'}
-                </CCardText>
-                |
-              </CCol>
-            </CRow>
-
-            <CRow>
-              <CCol className="p-2 mt-0 px-2 fw-light theme_color">
-                ⊙ Created On
-                <CCardText
-                  className="fw-normal ms-3"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {formatdate(resident_data?.created_at) || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-          </CCard>
-        </CCol>
-        <CCol md="10" sm="12">
-          <CCard className=" p-3 my-3 border-0">
+      <CRow classname="g-3">
+        <CCol md="8" sm="12">
+          <CCard className="p-3 mb-3 border-0">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -174,72 +136,8 @@ export default function ResOverview() {
               <strong>Billing Info. </strong>
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                VAT No.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.property?.vat_no || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Invoice Prefix
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.property?.invoice_no_prefix || '-'}
-                </CCardText>
-              </CCol>
-
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Email
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.email || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Username
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.username || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Phone No.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.phone_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                D.O.B.
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {formatdate(resident_data?.dob) || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
           </CCard>
-        </CCol>
-      </CRow>
-
-      <CRow>
-        <CCol md="12" sm="12">
-          <CCard className=" p-3 my-3 border-0">
+          <CCard className="p-3 mb-3 border-0">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -290,11 +188,7 @@ export default function ResOverview() {
             </CRow>
             <CRow></CRow>
           </CCard>
-        </CCol>
-      </CRow>
-      <CRow>
-        <CCol md="12" className="m-0 mb-3">
-          <CCard className="p-3 mt-3 border-0 ">
+          <CCard className="p-3  mb-3 border-0 ">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
               <strong className="text-black">Contract Info.</strong>
@@ -377,6 +271,44 @@ export default function ResOverview() {
               ) : (
                 <p className="text-center  fst-italic">No Contracts Found</p>
               )}
+            </CRow>
+          </CCard>
+        </CCol>
+        <CCol md="4">
+          <CCard className="p-3 border-0 shadow-sm h-100">
+            <CListGroupItem>
+              <CIcon
+                icon={freeSet.cilLineStyle}
+                size="lg"
+                className="me-2"
+                style={{ color: '#00bfcc' }}
+              />
+              <strong>Resident Log</strong>
+              <hr style={{ color: '#C8C2C0' }} />
+            </CListGroupItem>
+            <CRow className="">
+              <CCol className="p-2 px-2 mt-0 fw-light theme_color">
+                ⊙ Last Changes
+                <CCardText
+                  className="fw-normal ps-3"
+                  style={{ color: 'black', textTransform: 'capitalize' }}
+                >
+                  {formatdate(resident_data?.updated_at) || '-'}
+                </CCardText>
+                |
+              </CCol>
+            </CRow>
+
+            <CRow>
+              <CCol className="p-2 mt-0 px-2 fw-light theme_color">
+                ⊙ Created On
+                <CCardText
+                  className="fw-normal ms-3"
+                  style={{ color: 'black', textTransform: 'capitalize' }}
+                >
+                  {formatdate(resident_data?.created_at) || '-'}
+                </CCardText>
+              </CCol>
             </CRow>
           </CCard>
         </CCol>
