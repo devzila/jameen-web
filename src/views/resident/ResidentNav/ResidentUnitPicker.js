@@ -21,29 +21,35 @@ function ResidentUnitPicker(resident) {
     <div>
       <Dropdown>
         <Dropdown.Toggle className="ms-2 text-start text-black h-100 w-100 border-0 rounded-0 transparent-bg resident-unit-dropdown">
-          {(ownerNames && ownerNames.length > 1 ? ownerNames[0][1] + '...' : '') +
-            ' ' +
-            (co_ownerNames && co_ownerNames.length > 1 ? co_ownerNames[0][1] + ',...' : '-')}
+          {[
+            ...(ownerNames.length > 0 ? [ownerNames[0][1]] : []),
+            ...(co_ownerNames.length > 0 ? [co_ownerNames[0][1]] : []),
+          ].join(', ') || '-'}
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item eventKey="1">
-            <p className="d-inline me-1">Owner:</p>
-            {ownerNames.map((i, index) => (
-              <NavLink key={index} to={`${residentId}/property/${property}/${i[2]}/${i[0]}`}>
-                {i[1]}
-              </NavLink>
-            ))}
-          </Dropdown.Item>
-          <Dropdown.Item eventKey="2">
-            <p className="d-inline me-1"> Co-Owner:</p>
+          {ownerNames.length > 0 && (
+            <Dropdown.Item eventKey="1">
+              <p className="d-inline me-1">Owner:</p>
 
-            {co_ownerNames.map((i, index) => (
-              <NavLink key={index} to={`${residentId}/property/${property}/${i[2]}/${i[0]}`}>
-                {i[1]}
-              </NavLink>
-            ))}
-          </Dropdown.Item>
+              {ownerNames.map((i, index) => (
+                <NavLink key={index} to={`${residentId}/property/${property}/${i[2]}/${i[0]}`}>
+                  {i[1]}
+                </NavLink>
+              ))}
+            </Dropdown.Item>
+          )}
+          {co_ownerNames.length > 0 && (
+            <Dropdown.Item eventKey="2">
+              <p className="d-inline me-1">Co-Owner:</p>
+
+              {co_ownerNames.map((i, index) => (
+                <NavLink key={index} to={`${residentId}/property/${property}/${i[2]}/${i[0]}`}>
+                  {i[1]}
+                </NavLink>
+              ))}
+            </Dropdown.Item>
+          )}
         </Dropdown.Menu>
       </Dropdown>
     </div>
