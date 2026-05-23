@@ -19,7 +19,7 @@ import {
 import { freeSet } from '@coreui/icons'
 
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import { cilLockLocked, cilUser, cilLowVision, cilViewStream } from '@coreui/icons'
 import { AuthContext } from '../../../contexts/AuthContext'
 import { Navigate, NavLink, useLocation, useNavigate, useParams } from 'react-router-dom'
 import jameenlogo from 'src/assets/images/jameen-logo.png'
@@ -57,6 +57,7 @@ const Login = () => {
   })
   const [useDefaultLogo, setUseDefaultLogo] = React.useState(false)
 
+  const [showPassword, setShowPassword] = React.useState(false)
   useEffect(() => {
     setUseDefaultLogo(false)
   }, [branding.logo])
@@ -198,14 +199,23 @@ const Login = () => {
                     <CInputGroupText className="rounded-0">
                       <CIcon icon={cilLockLocked} />
                     </CInputGroupText>
+
                     <CFormInput
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       placeholder="Password"
                       autoComplete="current-password"
                       name="password"
                       value={data.password}
                       onChange={handleInputChange}
                     />
+
+                    <CInputGroupText
+                      className="rounded-0"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      <CIcon icon={showPassword ? cilLowVision : cilViewStream} />
+                    </CInputGroupText>
                   </CInputGroup>
                   {valid_subdomain ? (
                     <div className="input-group rounded-0 mb-4">
