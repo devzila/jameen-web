@@ -36,7 +36,7 @@ export default function Role() {
     if (searchKeyword) {
       endpoint += `&q[name_cont]=${searchKeyword}`
     }
-    let initialroles = await get(endpoint)
+    const initialroles = await get(endpoint)
 
     if (response.ok) {
       if (initialroles.data) {
@@ -54,7 +54,24 @@ export default function Role() {
     loadInitialroles()
   }, [currentPage])
 
+  useEffect(() => {
+    if (searchKeyword === '') {
+      loadInitialroles()
+    }
+  }, [searchKeyword])
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      loadInitialroles(1, event.target.value)
+    }
+  }
+  const handleInputChange = (event) => {
+    const value = event.target.value
+    setSearchKeyword(value)
+  }
+
   function handlePageClick(e) {
+    setRoles([])
+    setLoading(true)
     setCurrentPage(e.selected + 1)
   }
 
@@ -76,7 +93,9 @@ export default function Role() {
                       <div className="d-flex justify-content-end">
                         <div className="d-flex" role="search">
                           <input
-                            onChange={(e) => setSearchKeyword(e.target.value)}
+                            onChange={handleInputChange}
+                            onKeyDown={handleKeyDown}
+                            value={searchKeyword}
                             className="form-control custom_input"
                             type="search"
                             placeholder="Search"
