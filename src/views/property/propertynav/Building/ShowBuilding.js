@@ -36,10 +36,9 @@ export default function ShowBuilding() {
       }
 
       // UNITS API
-      const unitsResponse = await get(`/v1/admin/premises/properties/${propertyId}/units`)
-
-      console.log('Units Response:', unitsResponse)
-
+      const unitsResponse = await get(
+        `/v1/admin/premises/properties/${propertyId}/buildings/${buildingId}/units`,
+      )
       if (unitsResponse?.data) {
         setUnits(unitsResponse.data)
         setPagination(unitsResponse.pagination)
