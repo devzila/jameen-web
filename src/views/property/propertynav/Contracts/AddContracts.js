@@ -127,9 +127,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
 
     return payload
   }
-
   //submit function
-
   async function onSubmit(data) {
     //resident array
     setSubmitLoader(true)
@@ -156,7 +154,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
       setTemp_base64([])
     } else {
       setSubmitLoader(false)
-      setApiErrors(response?.data) 
+      setApiErrors(response?.data)
       toast(response.data?.message)
     }
   }
