@@ -198,18 +198,6 @@ export default function ResOverview() {
 
       <CRow classname="g-3">
         <CCol md="8" sm="12">
-          <CCard className="p-3 mb-3 border-0">
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Billing Info. </strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-          </CCard>
           <CCard className="p-3  mb-3 border-0 ">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
