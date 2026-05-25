@@ -1,7 +1,8 @@
-import { CCol, CCard, CListGroupItem, CRow, CCardText, CCardBody } from '@coreui/react'
+import { CCol, CCard, CListGroupItem, CRow, CCardText, CTooltip } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import useFetch from 'use-http'
-import { NavLink, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import logo from '../../../assets/images/avatars/default.png'
@@ -10,21 +11,100 @@ import { toast } from 'react-toastify'
 import EditResidents from '../EditResidents'
 import CheckPermissions from 'src/permissions/CheckPermissions'
 
+const NOTES_PREVIEW_LENGTH = 40
+
+function resolvePropertyName(contract) {
+  const unit = contract?.unit
+  const building = unit?.building
+
+  return (
+    building?.property_name ||
+    building?.property?.name ||
+    unit?.property?.name ||
+    unit?.property_name ||
+    contract?.property?.name ||
+    contract?.property_name ||
+    '-'
+  )
+}
+
+function formatUnitLocation(contract) {
+  const unit = contract?.unit
+  const building = unit?.building
+  const unitNo = unit?.unit_no ?? '-'
+  const buildingName = building?.name ?? '-'
+  const propertyName = resolvePropertyName(contract)
+  return `${unitNo}, ${buildingName}, (${propertyName})`
+}
+
+function formatContractType(contractType) {
+  if (!contractType) {
+    return '-'
+  }
+  return String(contractType).replace(/_/g, ' ')
+}
+
+function formatContractEndDate(endDate) {
+  if (!endDate) {
+    return 'Running'
+  }
+  return formatdate(endDate) || '-'
+}
+
+function ContractNotesCell({ notes }) {
+  const text = notes?.trim() || '-'
+  if (text === '-' || text.length <= NOTES_PREVIEW_LENGTH) {
+    return <span>{text}</span>
+  }
+
+  const preview = `${text.slice(0, NOTES_PREVIEW_LENGTH)}...`
+
+  return (
+    <CTooltip content={text} placement="top" trigger={['hover', 'focus']}>
+      <span
+        className="d-inline-block text-truncate"
+        style={{ maxWidth: '220px', cursor: 'default' }}
+        tabIndex={0}
+      >
+        {preview}
+      </span>
+    </CTooltip>
+  )
+}
+
+ContractNotesCell.propTypes = {
+  notes: PropTypes.string,
+}
+
 export default function ResOverview() {
   const { residentId } = useParams()
 
   const [resident_data, setResident_data] = useState({})
+  const [contracts, setContracts] = useState([])
   const { get, response } = useFetch()
 
   useEffect(() => {
     loadResident()
-  }, [])
+    loadContracts()
+  }, [residentId])
+
   const loadResident = async () => {
-    const endpoint = await get(`/v1/admin/members/${residentId}`)
+    const api = await get(`/v1/admin/members/${residentId}`)
     if (response.ok) {
-      setResident_data(endpoint.data)
+      setResident_data(api?.data ?? api)
     } else {
-      toast(response?.data.message)
+      toast(api?.message || response?.data?.message)
+    }
+  }
+
+  async function loadContracts() {
+    const api = await get(`/v1/admin/members/${residentId}/contracts`)
+    if (response.ok) {
+      const list = api?.data ?? api
+      setContracts(Array.isArray(list) ? list : [])
+    } else {
+      setContracts([])
+      toast(api?.message || response?.data?.message || 'Unable to load contracts.')
     }
   }
 
@@ -143,84 +223,42 @@ export default function ResOverview() {
               <strong className="text-black">Contract Info.</strong>
               <hr className="text-secondary" />
             </CListGroupItem>
-            <CRow>
-              {resident_data?.membership?.length >= 1 ? (
-                resident_data.membership.map((contract) => (
-                  <CCol md="4" key={contract.id}>
-                    <NavLink to={`contract/${contract.id}`}>
-                      <CCard className="shadow-sm border-0 rounded-2 mb-3 ">
-                        <CCardBody className="pt-0 mt-1">
-                          <CRow>
-                            <CCol md="12" className="theme_color">
-                              Contract
-                            </CCol>
-                          </CRow>
-                          <CRow>
-                            <CCol> Type :</CCol>
-                            <CCol className="text-capitalize">
-                              {contract.contract_type.replace('_', ' ') || '-'}
-                            </CCol>
-                          </CRow>
-
-                          <CCardText className=" m-0">
-                            <CRow>
-                              <CCol>Duration:</CCol>
-                              <CCol>
-                                {formatdate(contract.start_date) || '-'}
-                                {formatdate(contract.end_date) || ' - Present'}
-                              </CCol>
-                            </CRow>
-                          </CCardText>
-
-                          <CCardText className="m-0">
-                            <CRow>
-                              <CCol md="12" className="theme_color">
-                                Contract Members
-                              </CCol>
-                            </CRow>
-                          </CCardText>
-
-                          {contract.contract_members ? (
-                            contract.contract_members.map((members, index) => (
-                              <CCardText key={index} className="m-0  ps-1">
-                                <CRow>
-                                  <CCol>
-                                    {index + 1 + '.'} {members.member.name + ' ' || '-'}
-                                    <sub className="text-secondary">
-                                      {members.member_type.replace('_', ' ') || '-'}{' '}
-                                    </sub>
-                                  </CCol>
-                                </CRow>
-                              </CCardText>
-                            ))
-                          ) : (
-                            <p className="text-center  fst-italic">No Contract Members Found</p>
-                          )}
-
-                          <CCardText className=" m-0">
-                            <CRow>
-                              <CCol>Notes : </CCol>
-                              <CCol className="text-wrap ">
-                                <abbr
-                                  style={{ cursor: 'pointer' }}
-                                  className="text-decoration-none "
-                                  data-toggle="tooltip"
-                                  title={contract.notes || null}
-                                >
-                                  {contract.notes.slice(0, 15) + '...' || '-'}
-                                </abbr>
-                              </CCol>
-                            </CRow>
-                          </CCardText>
-                        </CCardBody>
-                      </CCard>
-                    </NavLink>
-                  </CCol>
-                ))
-              ) : (
-                <p className="text-center  fst-italic">No Contracts Found</p>
-              )}
-            </CRow>
+            <div className="table-responsive">
+              <table className="table table-striped mb-0">
+                <thead>
+                  <tr>
+                    <th className="py-3 border-0">Unit / Building / Property</th>
+                    <th className="py-3 border-0">Start date</th>
+                    <th className="py-3 border-0">Contract type</th>
+                    <th className="py-3 border-0">End date</th>
+                    <th className="py-3 border-0">Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {contracts.length >= 1 ? (
+                    contracts.map((contract) => (
+                      <tr key={contract.id}>
+                        <td className="pt-3 text-capitalize">{formatUnitLocation(contract)}</td>
+                        <td className="pt-3">{formatdate(contract.start_date) || '-'}</td>
+                        <td className="pt-3 text-capitalize">
+                          {formatContractType(contract.contract_type)}
+                        </td>
+                        <td className="pt-3">{formatContractEndDate(contract.end_date)}</td>
+                        <td className="pt-3">
+                          <ContractNotesCell notes={contract.notes} />
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={5} className="text-center fst-italic py-4">
+                        No Contracts Found
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </CCard>
         </CCol>
         <CCol md="4">
