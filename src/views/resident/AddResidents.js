@@ -25,6 +25,7 @@ export default function AddResidents({ after_submit }) {
   const [errors, setErrors] = useState({})
 
   const [imageView, setImageView] = useState('')
+  const [identityProof, setIdentityProof] = useState('')
 
   const { register, handleSubmit, control, watch, setValue, reset } = useForm()
   const { get, post, response } = useFetch()
@@ -51,6 +52,23 @@ export default function AddResidents({ after_submit }) {
       reader.onload = function (e) {
         const base64Result = e.target.result
         setImageView(base64Result)
+      }
+
+      reader.readAsDataURL(selectedFile)
+    }
+  }
+  const handleIdentityProof = (e) => {
+    const selectedFile = e.target.files[0]
+
+    if (selectedFile) {
+      const reader = new FileReader()
+
+      reader.onload = function (e) {
+        setIdentityProof({
+          data: e.target.result,
+          name: selectedFile.name,
+          type: selectedFile.type,
+        })
       }
 
       reader.readAsDataURL(selectedFile)
@@ -240,7 +258,24 @@ export default function AddResidents({ after_submit }) {
                   </Form.Group>
                 </Col>
               </Row>
+              <Row>
+                <Col className="pr-1 mt-3" md="12">
+                  <Form.Group>
+                    <label>Identity Proof (Optional)</label>
 
+                    <Form.Control
+                      type="file"
+                      accept=".jpg,.jpeg,.png,.pdf"
+                      {...register('identity_proof')}
+                      onChange={(e) => handleIdentityProof(e)}
+                    />
+
+                    <small className="text-muted">Upload JPEG, PNG or PDF file</small>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <br></br>
+              <br></br>
               <div className="text-center">
                 <CModalFooter>
                   <Button
