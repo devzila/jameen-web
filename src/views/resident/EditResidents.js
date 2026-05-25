@@ -21,6 +21,7 @@ export default function EditResidents(props) {
   const [properties_data, setProperties_data] = useState([])
   const [visible, setVisible] = useState(false)
   const [imageView, setImageView] = useState('')
+  const [identityProof, setIdentityProof] = useState('')
 
   const { register, handleSubmit, setValue, watch, control } = useForm()
   const { get, put, response } = useFetch()
@@ -42,7 +43,35 @@ export default function EditResidents(props) {
       reader.readAsDataURL(selectedFile)
     }
   }
+  const handleIdentityProof = (e) => {
+    const selectedFile = e.target.files[0]
 
+    if (selectedFile) {
+      const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf']
+
+      if (!allowedTypes.includes(selectedFile.type)) {
+        toast('Only JPG, PNG and PDF files are allowed')
+        return
+      }
+
+      if (selectedFile.size > 5 * 1024 * 1024) {
+        toast('File size should be less than 5MB')
+        return
+      }
+
+      const reader = new FileReader()
+
+      reader.onload = function (e) {
+        setIdentityProof({
+          data: e.target.result,
+          name: selectedFile.name,
+          type: selectedFile.type,
+        })
+      }
+
+      reader.readAsDataURL(selectedFile)
+    }
+  }
   const gender = [
     { value: 'male', label: 'Male' },
     { value: 'female', label: 'Female' },
@@ -90,7 +119,11 @@ export default function EditResidents(props) {
     }
   }
   const onSubmit = async (data) => {
-    const body = { ...data, avatar: { data: imageView } }
+    const body = {
+      ...data,
+      avatar: imageView ? { data: imageView } : resident?.avatar,
+      identity_proof: identityProof,
+    }
     const endpoint = await put(`/v1/admin/members/${id}`, { member: body })
 
     if (response.ok) {
@@ -246,6 +279,30 @@ export default function EditResidents(props) {
                       control={control}
                       placeholder="Role"
                     />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="pr-1 mt-3" md="12">
+                  <Form.Group>
+                    <label>Identity Proof (Optional)</label>
+
+                    <Form.Control
+                      type="file"
+                      accept=".jpg,.jpeg,.png,.pdf"
+                      {...register('identity_proof')}
+                      onChange={(e) => handleIdentityProof(e)}
+                    />
+
+                    <small className="text-muted">Upload JPG, PNG or PDF file</small>
+
+                    {resident?.identity_proof && (
+                      <div className="mt-2">
+                        <a href={resident.identity_proof} target="_blank" rel="noreferrer">
+                          View Existing Identity Proof
+                        </a>
+                      </div>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>

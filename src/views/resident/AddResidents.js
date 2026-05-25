@@ -97,13 +97,25 @@ export default function AddResidents({ after_submit }) {
 
   //Post Data
   async function onSubmit(data) {
-    const form_data = { ...data, avatar: { data: imageView } }
+    const form_data = {
+      ...data,
+      avatar: imageView ? { data: imageView } : null,
+      identity_proof: identityProof || null,
+    }
+
     const cleaned_form_data = cleanAvatar(form_data)
-    await post(`/v1/admin/members`, { member: cleaned_form_data })
+
+    await post(`/v1/admin/members`, {
+      member: cleaned_form_data,
+    })
 
     if (response.ok) {
       toast('Resident added Successfully')
+
       reset()
+      setImageView('')
+      setIdentityProof('')
+
       after_submit()
       setVisible(!visible)
     } else {
