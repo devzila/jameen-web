@@ -25,7 +25,7 @@ export default function AddResidents({ after_submit }) {
   const [errors, setErrors] = useState({})
 
   const [imageView, setImageView] = useState('')
-  const [identityProofDoc, setIdentityProof] = useState('')
+  const [identityProofDoc, setIdentityProof] = useState(null)
 
   const { register, handleSubmit, control, watch, setValue, reset } = useForm()
   const { get, post, response } = useFetch()
@@ -61,17 +61,19 @@ export default function AddResidents({ after_submit }) {
     const selectedFile = e.target.files[0]
 
     if (selectedFile) {
-      const reader = new FileReader()
+      const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf']
 
-      reader.onload = function (e) {
-        setIdentityProof({
-          data: e.target.result,
-          name: selectedFile.name,
-          type: selectedFile.type,
-        })
+      if (!allowedTypes.includes(selectedFile.type)) {
+        toast('Only JPG, PNG and PDF files are allowed')
+        return
       }
 
-      reader.readAsDataURL(selectedFile)
+      if (selectedFile.size > 5 * 1024 * 1024) {
+        toast('File size should be less than 5MB')
+        return
+      }
+
+      setIdentityProof(selectedFile)
     }
   }
   // Properties fetch
@@ -87,43 +89,52 @@ export default function AddResidents({ after_submit }) {
     }
   }
 
-  let properties_array = []
   function trimProperties(properties_obj) {
-    properties_obj.forEach((element) => {
-      properties_array.push({ value: element.id, label: element.name })
-    })
-    return properties_array
+    return properties_obj.map((element) => ({
+      value: element.id,
+      label: element.name,
+    }))
   }
 
   //Post Data
-  async function onSubmit(data) {
-    const form_data = {
-      ...data,
-      avatar: imageView ? { data: imageView } : null,
-      identity_proof: identityProofDoc || null,
+  const onSubmit = async (data) => {
+    const formData = new FormData()
+
+    formData.append('member[first_name]', data.first_name)
+    formData.append('member[last_name]', data.last_name)
+    formData.append('member[email]', data.email)
+    formData.append('member[phone_number]', data.phone_number)
+    formData.append('member[password]', data.password)
+    formData.append('member[gender]', data.gender)
+    formData.append('member[dob]', data.dob)
+
+    // avatar base64
+    if (imageView) {
+      formData.append('member[avatar]', imageView)
     }
 
-    const cleaned_form_data = cleanAvatar(form_data)
+    // identity proof file
+    if (identityProofDoc) {
+      formData.append('member[identity_proof]', identityProofDoc)
+    }
 
-    await post(`/v1/admin/members`, {
-      member: cleaned_form_data,
-    })
+    const result = await post('/v1/admin/members', formData)
 
     if (response.ok) {
-      toast('Resident added Successfully')
+      toast('Resident Added Successfully')
 
       reset()
       setImageView('')
-      setIdentityProof('')
+      setIdentityProof(null)
+      setVisible(false)
 
-      after_submit()
-      setVisible(!visible)
+      if (after_submit) {
+        after_submit()
+      }
     } else {
-      setErrors(response.data.errors)
-      toast(response.data?.message || response.statusText || 'Internet Not Working')
+      toast(response?.data?.message || 'Something went wrong')
     }
   }
-
   return (
     <div>
       <button
