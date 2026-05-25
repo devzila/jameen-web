@@ -115,7 +115,7 @@ export default function AddResidents({ after_submit }) {
 
     // identity proof file
     if (identityProofDoc) {
-      formData.append('member[identity_proof]', identityProofDoc)
+      formData.append('member[identity_proof_doc]', identityProofDoc)
     }
 
     const result = await post('/v1/admin/members', formData)
@@ -289,11 +289,12 @@ export default function AddResidents({ after_submit }) {
                     <Form.Control
                       type="file"
                       accept=".jpg,.jpeg,.png,.pdf"
-                      {...register('identity_proof')}
+                      {...register('identity_proof_doc')}
                       onChange={(e) => handleIdentityProof(e)}
                     />
 
                     <small className="text-muted">Upload JPEG, PNG or PDF file</small>
+                    <br></br>
                   </Form.Group>
                 </Col>
               </Row>
