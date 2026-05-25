@@ -137,57 +137,6 @@ export default function ResOverview() {
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
           </CCard>
-          <CCard className="p-3 mb-3 border-0">
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Property Info.</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Name
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.property?.name || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                City
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.property?.city || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Address
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.property?.address || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Use Type
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.property?.use_type || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-            <CRow></CRow>
-          </CCard>
           <CCard className="p-3  mb-3 border-0 ">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
