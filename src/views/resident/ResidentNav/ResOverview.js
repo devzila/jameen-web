@@ -34,7 +34,7 @@ function formatUnitLocation(contract) {
   const unitNo = unit?.unit_no ?? '-'
   const buildingName = building?.name ?? '-'
   const propertyName = resolvePropertyName(contract)
-  return `${unitNo}, ${buildingName}, (${propertyName})`
+  return `${unitNo}, ${buildingName} (${propertyName})`
 }
 
 function formatContractType(contractType) {
