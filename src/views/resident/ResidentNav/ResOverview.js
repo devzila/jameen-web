@@ -12,7 +12,6 @@ import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function ResOverview() {
   const { residentId } = useParams()
-
   const [resident_data, setResident_data] = useState({})
   const { get, response } = useFetch()
 
@@ -21,12 +20,16 @@ export default function ResOverview() {
   }, [])
   const loadResident = async () => {
     const endpoint = await get(`/v1/admin/members/${residentId}`)
+
     if (response.ok) {
+      console.log('Resident API Response =>', endpoint.data)
       setResident_data(endpoint.data)
     } else {
       toast(response?.data.message)
     }
   }
+  console.log('Membership =>', resident_data?.membership)
+  console.log('Property =>', resident_data?.property)
 
   return (
     <>
@@ -257,7 +260,7 @@ export default function ResOverview() {
                   className="fw-normal"
                   style={{ color: 'black', textTransform: 'capitalize' }}
                 >
-                  {resident_data?.property?.name || '-'}
+                  {resident_data.property.name || '-'}
                 </CCardText>
               </CCol>
               <CCol className="p-3 mt-0 fw-light theme_color">

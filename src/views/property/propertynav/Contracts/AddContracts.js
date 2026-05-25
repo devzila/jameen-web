@@ -24,12 +24,20 @@ import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
 export default function AllocateUnit({ unitId, unitNo, after_submit }) {
-  const { register, handleSubmit, setValue, control, reset, watch } = useForm()
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm()
   const { post, get, response } = useFetch()
   const [temp_base64, setTemp_base64] = useState([])
 
   const [residents, setResidents] = useState([])
-  const [errors, setErrors] = useState([])
+  const [apiErrors, setApiErrors] = useState([])
   const [units, setUnits] = useState([])
 
   const [visible, setVisible] = useState(false)
@@ -148,7 +156,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
       setTemp_base64([])
     } else {
       setSubmitLoader(false)
-      setErrors(response?.data)
+      setApiErrors(response?.data)
       toast(response.data?.message)
     }
   }
@@ -274,10 +282,27 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                     <Form.Group>
                       <b>Document Name</b>
                       <Form.Control
-                        placeholder=" Name"
+                        placeholder="Name"
                         type="text"
-                        {...register(`documents_attributes.${index}.name`)}
-                      ></Form.Control>
+                        {...register(`documents_attributes.${index}.name`, {
+                          validate: (value) => {
+                            const fileValue = watch(`documents_attributes.${index}.file.data`)
+
+                            // If file is uploaded but name is empty
+                            if (fileValue && !value?.trim()) {
+                              return 'Document name is required'
+                            }
+
+                            return true
+                          },
+                        })}
+                      />
+
+                      {errors?.documents_attributes?.[index]?.name && (
+                        <small className="text-danger">
+                          {errors.documents_attributes[index].name.message}
+                        </small>
+                      )}
                     </Form.Group>
                   </Col>
 
