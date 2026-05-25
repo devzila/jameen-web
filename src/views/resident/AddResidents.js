@@ -25,7 +25,7 @@ export default function AddResidents({ after_submit }) {
   const [errors, setErrors] = useState({})
 
   const [imageView, setImageView] = useState('')
-  const [identityProof, setIdentityProof] = useState('')
+  const [identityProofDoc, setIdentityProof] = useState('')
 
   const { register, handleSubmit, control, watch, setValue, reset } = useForm()
   const { get, post, response } = useFetch()
@@ -100,7 +100,7 @@ export default function AddResidents({ after_submit }) {
     const form_data = {
       ...data,
       avatar: imageView ? { data: imageView } : null,
-      identity_proof: identityProof || null,
+      identity_proof: identityProofDoc || null,
     }
 
     const cleaned_form_data = cleanAvatar(form_data)
