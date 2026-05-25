@@ -1,4 +1,4 @@
-import { CCol, CCard, CListGroupItem, CRow, CCardText, CTooltip } from '@coreui/react'
+import { CCol, CCard, CListGroupItem, CRow, CTooltip } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import useFetch from 'use-http'
@@ -76,6 +76,23 @@ ContractNotesCell.propTypes = {
   notes: PropTypes.string,
 }
 
+function ResidentDataField({ label, value, valueClassName = '' }) {
+  return (
+    <div className="h-100 d-flex flex-column">
+      <div className="small theme_color text-uppercase mb-1" style={{ letterSpacing: '0.02em' }}>
+        {label}
+      </div>
+      <div className={`fw-normal text-black mb-0 ${valueClassName}`}>{value || '-'}</div>
+    </div>
+  )
+}
+
+ResidentDataField.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  valueClassName: PropTypes.string,
+}
+
 export default function ResOverview() {
   const { residentId } = useParams()
 
@@ -139,66 +156,42 @@ export default function ResOverview() {
                 </div>
               </div>
 
-              <hr className="text-secondary mt-1 p-0" />
+              <hr className="text-secondary mt-1 mb-2 p-0" />
             </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                First Name
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.first_name || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Last Name
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.last_name || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color">
-                Gender
-                <CCardText
-                  className="fw-normal"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.gender || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
-            <CRow>
-              <CCol className="p-3 mt-0 fw-light theme_color col-lg-3 col-sm-3">
-                Email
-                <CCardText
-                  className="fw-normal text-nowrap"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.email || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color  col-lg-3 col-sm-3">
-                Phone No.
-                <CCardText
-                  className="fw-normal text-nowrap"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {resident_data?.phone_number || '-'}
-                </CCardText>
-              </CCol>
-              <CCol className="p-3 mt-0 fw-light theme_color  col-lg-3 col-sm-3">
-                D.O.B.
-                <CCardText
-                  className="fw-normal "
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {formatdate(resident_data?.dob) || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
+            <div className="px-2 pb-3">
+              <CRow className="g-3">
+                <CCol xs={6} md={4}>
+                  <ResidentDataField
+                    label="First Name"
+                    value={resident_data?.first_name}
+                    valueClassName="text-capitalize"
+                  />
+                </CCol>
+                <CCol xs={6} md={4}>
+                  <ResidentDataField
+                    label="Last Name"
+                    value={resident_data?.last_name}
+                    valueClassName="text-capitalize"
+                  />
+                </CCol>
+                <CCol xs={6} md={4}>
+                  <ResidentDataField
+                    label="Gender"
+                    value={resident_data?.gender}
+                    valueClassName="text-capitalize"
+                  />
+                </CCol>
+                <CCol xs={12} md={4}>
+                  <ResidentDataField label="Email" value={resident_data?.email} />
+                </CCol>
+                <CCol xs={6} md={4}>
+                  <ResidentDataField label="Phone No." value={resident_data?.phone_number} />
+                </CCol>
+                <CCol xs={6} md={4}>
+                  <ResidentDataField label="D.O.B." value={formatdate(resident_data?.dob)} />
+                </CCol>
+              </CRow>
+            </div>
           </CCard>
         </CCol>
       </CRow>
@@ -273,30 +266,22 @@ export default function ResOverview() {
               <strong>Resident Log</strong>
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
-            <CRow className="">
-              <CCol className="p-2 px-2 mt-0 fw-light theme_color">
-                ⊙ Last Changes
-                <CCardText
-                  className="fw-normal ps-3"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {formatdate(resident_data?.updated_at) || '-'}
-                </CCardText>
-                |
-              </CCol>
-            </CRow>
-
-            <CRow>
-              <CCol className="p-2 mt-0 px-2 fw-light theme_color">
-                ⊙ Created On
-                <CCardText
-                  className="fw-normal ms-3"
-                  style={{ color: 'black', textTransform: 'capitalize' }}
-                >
-                  {formatdate(resident_data?.created_at) || '-'}
-                </CCardText>
-              </CCol>
-            </CRow>
+            <div className="px-2 pb-3">
+              <CRow className="g-3">
+                <CCol xs={12}>
+                  <ResidentDataField
+                    label="Last Changes"
+                    value={formatdate(resident_data?.updated_at)}
+                  />
+                </CCol>
+                <CCol xs={12}>
+                  <ResidentDataField
+                    label="Created On"
+                    value={formatdate(resident_data?.created_at)}
+                  />
+                </CCol>
+              </CRow>
+            </div>
           </CCard>
         </CCol>
       </CRow>
