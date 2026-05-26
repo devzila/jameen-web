@@ -44,10 +44,29 @@ const PropertyUnitType = () => {
     loadInitialUnitsTypes()
   }, [currentPage])
 
-  async function loadInitialUnitsTypes() {
+  useEffect(() => {
+    if (searchKeyword === '') {
+      loadInitialUnitsTypes()
+    }
+  }, [searchKeyword])
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      loadInitialUnitsTypes(1, event.target.value)
+    }
+  }
+  const handleInputChange = (event) => {
+    const value = event.target.value
+    setSearchKeyword(value)
+  }
+
+  async function loadInitialUnitsTypes(query) {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/unit_types?page=${currentPage}`
     if (searchKeyword) {
       endpoint += `&q[name_cont]=${searchKeyword}`
+    }
+    if (typeof query === 'string') {
+      // endpoint += query
     }
     const initialUnitTypes = await get(endpoint)
 
@@ -56,6 +75,10 @@ const PropertyUnitType = () => {
         setLoading(false)
         setUnit_types(initialUnitTypes.data)
         setPagination(initialUnitTypes.pagination)
+        if (initialUnitTypes.data.length == 0) {
+          toast.dismiss()
+          toast.warn('No data found!')
+        }
       }
     } else {
       setErrors(true)
@@ -63,6 +86,8 @@ const PropertyUnitType = () => {
     }
   }
   function handlePageClick(e) {
+    setUnit_types([])
+    setLoading(true)
     setCurrentPage(e.selected + 1)
   }
 
@@ -77,7 +102,9 @@ const PropertyUnitType = () => {
                 <div className="d-flex justify-content-end">
                   <div className="d-flex" role="search">
                     <input
-                      onChange={(e) => setSearchKeyword(e.target.value)}
+                      value={searchKeyword}
+                      onKeyDown={handleKeyDown}
+                      onChange={handleInputChange}
                       className="form-control  custom_input"
                       type="search"
                       placeholder="Search"
