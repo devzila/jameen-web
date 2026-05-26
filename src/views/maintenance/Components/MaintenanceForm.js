@@ -216,10 +216,7 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData, 
           <Row>
             <Col className="pr-1 mt-3" md="6">
               <Form.Group>
-                <label>
-                  Available Date
-                  <small className="text-danger"> *{errors ? errors.unit_type : null} </small>
-                </label>
+                <label>Available Date</label>
 
                 <Form.Control
                   defaultValue={edit_data.available_date}
