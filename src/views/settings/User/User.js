@@ -13,7 +13,6 @@ import { BsThreeDots } from 'react-icons/bs'
 import { Dropdown, Row, Col } from 'react-bootstrap'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import { AuthContext } from 'src/contexts/AuthContext'
 import CheckPermissions from 'src/permissions/CheckPermissions'
 
 function Index() {
@@ -25,8 +24,6 @@ function Index() {
 
   const [searchKeyword, setSearchKeyword] = useState(null)
   const { get, response } = useFetch()
-
-  const { roles } = useContext(AuthContext)?.state
 
   useEffect(() => {
     loadInitialusers()

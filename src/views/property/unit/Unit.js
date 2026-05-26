@@ -45,8 +45,6 @@ function Unit() {
     previousLocationRef.current = location.pathname
   }, [location.pathname, propertyId, currentPage])
 
-  useEffect(() => {}, [])
-
   useEffect(() => {
     if (searchKeyword.trim() === '') {
       loadInitialUnits()
@@ -72,7 +70,7 @@ function Unit() {
   }
 
   async function loadInitialUnits(queries) {
-    let endpoint = `/v1/admin/premises/properties/${propertyId}/units?page=${currentPage}`
+    let endpoint = `/v1/admin/premises/properties/${propertyId}/units?=${currentPage}`
 
     if (queries) {
       endpoint += queries
@@ -97,6 +95,15 @@ function Unit() {
       setErrors(true)
       setLoading(false)
     }
+  }
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      loadInitialUnits(1, event.target.value)
+    }
+  }
+  const handleInputChange = (event) => {
+    const value = event.target.value
+    setSearchKeyword(value)
   }
 
   const handlePageClick = (e) => {
@@ -124,7 +131,8 @@ function Unit() {
                     <div className="d-flex  " role="search">
                       <input
                         value={searchKeyword}
-                        onChange={(e) => setSearchKeyword(e.target.value)}
+                        onChange={handleInputChange}
+                        onKeyDown={handleKeyDown}
                         className="form-control me-0 custom_input  "
                         type="text"
                         placeholder="Search"
