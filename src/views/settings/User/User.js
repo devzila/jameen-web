@@ -28,19 +28,34 @@ function Index() {
 
   const { roles } = useContext(AuthContext)?.state
 
-  const user_privileges = roles?.privileges?.users
-
   useEffect(() => {
     loadInitialusers()
   }, [currentPage])
 
-  async function loadInitialusers() {
+  useEffect(() => {
+    if (searchKeyword === '') {
+      loadInitialusers()
+    }
+  }, [searchKeyword])
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      loadInitialusers(1, event.target.value)
+    }
+  }
+  const handleInputChange = (event) => {
+    const value = event.target.value
+    setSearchKeyword(value)
+  }
+
+  async function loadInitialusers(query) {
     let endpoint = `/v1/admin/users?page=${currentPage}`
     if (searchKeyword) {
-      endpoint += `&q[username_cont]=${searchKeyword}`
+      endpoint += `&q[name_cont]=${searchKeyword}`
     }
-    let initialusers = await get(endpoint)
-
+    if (typeof query === 'string') {
+      // endpoint += query
+    }
+    const initialusers = await get(endpoint)
     if (response.ok) {
       if (initialusers.data) {
         setLoading(false)
@@ -54,6 +69,8 @@ function Index() {
   }
 
   function handlePageClick(e) {
+    setUsers([])
+    setLoading(true)
     setCurrentPage(e.selected + 1)
   }
 
@@ -75,8 +92,9 @@ function Index() {
                       <div className="d-flex justify-content-end">
                         <div className="d-flex" role="search">
                           <input
-                            onChange={(e) => setSearchKeyword(e.target.value)}
-                            onReset={loadInitialusers}
+                            value={searchKeyword}
+                            onChange={handleInputChange}
+                            onKeyDown={handleKeyDown}
                             className="form-control  custom_input"
                             type="search"
                             placeholder="Search"
@@ -152,7 +170,7 @@ function Index() {
                       </tbody>
                     </table>
                     {loading ? <Loading /> : null}
-                    {errors == true ? toast('We are facing a technical issue at our end.') : null}
+                    {errors === true ? toast('We are facing a technical issue at our end.') : null}
                   </div>
                 </div>
               </div>
