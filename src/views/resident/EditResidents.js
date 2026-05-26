@@ -21,9 +21,9 @@ export default function EditResidents(props) {
   const [properties_data, setProperties_data] = useState([])
   const [visible, setVisible] = useState(false)
   const [imageView, setImageView] = useState('')
-  const [identityProof, setIdentityProof] = useState('')
+  const [identityProofdoc, setIdentityProof] = useState('')
 
-  const { register, handleSubmit, setValue, watch, control } = useForm()
+  const { register, handleSubmit, setValue, watch, control, resetField } = useForm()
   const { get, put, response } = useFetch()
 
   const { id } = props
@@ -72,6 +72,12 @@ export default function EditResidents(props) {
       reader.readAsDataURL(selectedFile)
     }
   }
+
+  const clearIdentityProofInput = () => {
+    setIdentityProof('')
+    resetField('identity_proof_doc')
+  }
+
   const gender = [
     { value: 'male', label: 'Male' },
     { value: 'female', label: 'Female' },
@@ -122,7 +128,7 @@ export default function EditResidents(props) {
     const body = {
       ...data,
       avatar: imageView ? { data: imageView } : resident?.avatar,
-      identity_proof: identityProof,
+      identity_proof_doc: identityProofdoc,
     }
     const endpoint = await put(`/v1/admin/members/${id}`, { member: body })
 
@@ -140,7 +146,13 @@ export default function EditResidents(props) {
         type="button"
         className="btn custom_theme_button"
         data-mdb-ripple-init
-        onClick={() => setVisible(!visible)}
+        onClick={() => {
+          const nextVisible = !visible
+          setVisible(nextVisible)
+          if (nextVisible) {
+            clearIdentityProofInput()
+          }
+        }}
       >
         Edit
       </button>
@@ -149,7 +161,10 @@ export default function EditResidents(props) {
         size="xl"
         visible={visible}
         backdrop="static"
-        onClose={() => setVisible(false)}
+        onClose={() => {
+          setVisible(false)
+          clearIdentityProofInput()
+        }}
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
@@ -285,21 +300,21 @@ export default function EditResidents(props) {
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
-                    <label>Identity Proof (Optional)</label>
+                    <label>Identity Proof(Optional)</label>
 
                     <Form.Control
                       type="file"
                       accept=".jpg,.jpeg,.png,.pdf"
-                      {...register('identity_proof')}
+                      {...register('identity_proof_doc')}
                       onChange={(e) => handleIdentityProof(e)}
                     />
 
                     <small className="text-muted">Upload JPG, PNG or PDF file</small>
 
-                    {resident?.identity_proof && (
+                    {resident?.identity_proof_doc && (
                       <div className="mt-2">
-                        <a href={resident.identity_proof} target="_blank" rel="noreferrer">
-                          View Existing Identity Proof
+                        <a href={resident.identity_proof_doc} target="_blank" rel="noreferrer">
+                          View Existing Identity Proof Doc
                         </a>
                       </div>
                     )}
