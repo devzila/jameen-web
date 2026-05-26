@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import useFetch from 'use-http'
 import '../../../scss/_custom.scss'
 import Loading from 'src/components/loading/loading'
 import { Row, Col } from 'react-bootstrap'
 import Paginate from '../../../components/Pagination'
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink, useParams, useLocation } from 'react-router-dom'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import Add from './AddUnit'
 import PickOwner from './UnitFunctions/PickOwner'
@@ -16,9 +16,8 @@ import CheckPermissions from 'src/permissions/CheckPermissions'
 
 function Unit() {
   const { get, response, error } = useFetch()
-
-  useEffect(() => {}, [])
-
+  const location = useLocation()
+  const previousLocationRef = useRef(null)
   const { propertyId } = useParams()
   const [units, setUnits] = useState([])
   const [pagination, setPagination] = useState(null)
@@ -29,15 +28,34 @@ function Unit() {
   const [loading, setLoading] = useState(true)
   const [unit_type, setUnit_type] = useState([])
 
+  // Refresh data when returning from detail/nested routes
+  useEffect(() => {
+    const pathSegments = location.pathname.split('/')
+    // Check if the URL contains a numeric unit ID (detail page) or not (list page)
+    const hasUnitId = pathSegments.some((seg) => /^\d+$/.test(seg))
+
+    if (!hasUnitId && previousLocationRef.current) {
+      // We're on the list page and previously were on a detail page, refresh data
+      const previousSegments = previousLocationRef.current.split('/')
+      const hadUnitId = previousSegments.some((seg) => /^\d+$/.test(seg))
+      if (hadUnitId) {
+        loadInitialUnits()
+      }
+    }
+    previousLocationRef.current = location.pathname
+  }, [location.pathname, propertyId, currentPage])
+
+  useEffect(() => {}, [])
+
   useEffect(() => {
     if (searchKeyword.trim() === '') {
       loadInitialUnits()
     }
-  }, [searchKeyword])
+  }, [searchKeyword, propertyId, currentPage])
   useEffect(() => {
     loadInitialUnits()
     loadUnitTypes()
-  }, [currentPage])
+  }, [currentPage, propertyId, get, response])
 
   async function loadUnitTypes() {
     let endpoint = await get(`/v1/admin/premises/properties/${propertyId}/unit_types`)
