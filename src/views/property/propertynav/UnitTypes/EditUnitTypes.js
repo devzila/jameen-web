@@ -24,7 +24,7 @@ export default function EditUnitTypes({ after_submit, id }) {
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
   const [errors, setErrors] = useState({})
-  const [unit_type, setUnit_type] = useState()
+  const [unit_type, setUnit_type] = useState([])
 
   function fetchLocalData() {
     const temp_use_type = JSON.parse(localStorage.getItem('meta'))
@@ -67,8 +67,12 @@ export default function EditUnitTypes({ after_submit, id }) {
       unit_type: data,
     })
     if (response.ok) {
-      setVisible(!visible)
-      after_submit()
+      setVisible(false)
+
+      if (typeof after_submit === 'function') {
+        after_submit()
+      }
+
       toast('Item added successfully')
     } else {
       setErrors(response.data.errors)
