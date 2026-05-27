@@ -124,7 +124,11 @@ export default function AddMaintenanceStaff({ after_submit }) {
                       <small className="text-danger"> *{errors ? errors.email : null}</small>
                     </label>
 
-                    <Form.Control type="text" {...register('email')}></Form.Control>
+                    <Form.Control
+                      autoComplete="off"
+                      type="text"
+                      {...register('email')}
+                    ></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
@@ -135,7 +139,11 @@ export default function AddMaintenanceStaff({ after_submit }) {
                       Password
                       <small className="text-danger ">*{errors ? errors.password : null}</small>
                     </label>
-                    <Form.Control type="password" {...register('password')}></Form.Control>
+                    <Form.Control
+                      type="password"
+                      autoComplete="new-password"
+                      {...register('password')}
+                    ></Form.Control>
                   </Form.Group>
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
