@@ -26,7 +26,7 @@ function ParkingLot() {
   const [loading, setLoading] = useState(true)
 
   const loadInitialParkingLot = async (searchTerm = '') => {
-    let endpoint = `/v1/admin/premises/properties/${propertyId}/parkings?page=${currentPage}&search=${searchTerm}`
+    let endpoint = `/v1/admin/premises/properties/${propertyId}/parkings?q[parking_number_cont]=${searchTerm}&page=${currentPage}`
 
     try {
       const initialParkingLot = await get(endpoint)
@@ -68,14 +68,24 @@ function ParkingLot() {
                       <AllotPropertyParking after_submit={loadInitialParkingLot} />
                       <div className="d-flex" role="search">
                         <input
+                          value={searchKeyword}
                           onChange={(e) => setSearchKeyword(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              setCurrentPage(1)
+                              loadInitialParkingLot(searchKeyword)
+                            }
+                          }}
                           className="form-control  custom_input"
                           type="search"
                           placeholder="Search"
                           aria-label="Search"
                         />
                         <button
-                          onClick={loadInitialParkingLot}
+                          onClick={() => {
+                            setCurrentPage(1)
+                            loadInitialParkingLot(searchKeyword)
+                          }}
                           className="btn btn-outline-success custom_search_button"
                           type="submit"
                         >
