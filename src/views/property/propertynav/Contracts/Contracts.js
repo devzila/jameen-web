@@ -118,7 +118,7 @@ const Contract = () => {
             <table className="table table-striped mb-0">
               <thead>
                 <tr>
-                  <th className="py-3 border-0">Unit No</th>
+                  <th className="py-3 border-0">Unit No(Building_Name)</th>
                   <th className="py-3 border-0">Period</th>
                   <th className="py-3 border-0">Contract Type</th>
                   <th className="py-3 border-0">Member</th>
@@ -132,6 +132,9 @@ const Contract = () => {
                       <td className="py-2">
                         <NavLink className="mx-2" to={`${running_contracts.id}`}>
                           {running_contracts.unit?.unit_no || '-'}
+                          {running_contracts.unit?.building?.name
+                            ? ` (${running_contracts.unit.building.name})`
+                            : ''}
                         </NavLink>
                       </td>
 
