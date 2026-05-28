@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
 import Select from 'react-select'
@@ -13,22 +13,26 @@ import {
   CModalTitle,
   CContainer,
 } from '@coreui/react'
+
 import { Button, Form, Row, Col } from 'react-bootstrap'
 import { toast } from 'react-toastify'
 
-export default function EditResidents(props) {
+export default function EditResidents({ id, after_submit }) {
   const [resident, setResident] = useState({})
-  const [properties_data, setProperties_data] = useState([])
   const [visible, setVisible] = useState(false)
   const [imageView, setImageView] = useState('')
-  const [identityProof, setIdentityProof] = useState('')
+  const [identityProofDoc, setIdentityProof] = useState(null)
 
-  const { register, handleSubmit, setValue, watch, control } = useForm()
+  const { register, handleSubmit, setValue, control, reset } = useForm()
+
   const { get, put, response } = useFetch()
 
-  const { id } = props
+  const gender = [
+    { value: 'male', label: 'Male' },
+    { value: 'female', label: 'Female' },
+  ]
 
-  //base64
+  // Avatar Preview
   const handleFileSelection = (e) => {
     const selectedFile = e.target.files[0]
 
@@ -36,13 +40,14 @@ export default function EditResidents(props) {
       const reader = new FileReader()
 
       reader.onload = function (e) {
-        const base64Result = e.target.result
-        setImageView(base64Result)
+        setImageView(e.target.result)
       }
 
       reader.readAsDataURL(selectedFile)
     }
   }
+
+  // Identity Proof Upload
   const handleIdentityProof = (e) => {
     const selectedFile = e.target.files[0]
 
@@ -59,78 +64,73 @@ export default function EditResidents(props) {
         return
       }
 
-      const reader = new FileReader()
-
-      reader.onload = function (e) {
-        setIdentityProof({
-          data: e.target.result,
-          name: selectedFile.name,
-          type: selectedFile.type,
-        })
-      }
-
-      reader.readAsDataURL(selectedFile)
-    }
-  }
-  const gender = [
-    { value: 'male', label: 'Male' },
-    { value: 'female', label: 'Female' },
-  ]
-
-  useEffect(() => {
-    loadInitialProperties()
-    loadResident()
-  }, [])
-
-  const loadInitialProperties = async () => {
-    let endpoint = `/v1/admin/premises/properties`
-
-    const initialProperties = await get(endpoint)
-    if (response.ok) {
-      setProperties_data(trimProperties(initialProperties.data))
-    } else {
-      toast("Can't load properties data")
+      setIdentityProof(selectedFile)
     }
   }
 
-  let properties_array = []
-  function trimProperties(properties_obj) {
-    properties_obj.forEach((element) => {
-      properties_array.push({ value: element.id, label: element.name })
-    })
-    return properties_array
-  }
+  // Load Resident
   const loadResident = async () => {
-    const endpoint = await get(`/v1/admin/members/${id}`)
+    try {
+      const endpoint = await get(`/v1/admin/members/${id}`)
 
-    if (response.ok) {
-      setResident(endpoint.data)
-      setValue('first_name', endpoint.data.first_name)
-      setValue('last_name', endpoint.data.last_name)
-      setValue('email', endpoint.data.email)
-      setValue('phone_number', endpoint.data.phone_number)
-      setValue('username', endpoint.data.username)
-      setValue('password', endpoint.data.first_name)
-      setValue('gender', endpoint.data.gender)
-      setValue('dob', endpoint.data.dob)
-      setValue('property_id', endpoint.data.property_id)
-    } else {
-      toast(response?.data.message)
+      if (response.ok && endpoint?.data) {
+        const residentData = endpoint.data
+
+        setResident(residentData)
+
+        setValue('first_name', residentData.first_name || '')
+        setValue('last_name', residentData.last_name || '')
+        setValue('email', residentData.email || '')
+        setValue('phone_number', residentData.phone_number || '')
+        setValue('gender', residentData.gender || '')
+        setValue('dob', residentData.dob ? residentData.dob.split('T')[0] : '')
+      }
+    } catch (error) {
+      console.log(error)
+      toast('Unable to load resident')
     }
   }
+
+  // Submit
   const onSubmit = async (data) => {
-    const body = {
-      ...data,
-      avatar: imageView ? { data: imageView } : resident?.avatar,
-      identity_proof: identityProof,
+    const formData = new FormData()
+
+    formData.append('member[first_name]', data.first_name || '')
+    formData.append('member[last_name]', data.last_name || '')
+    formData.append('member[email]', data.email || '')
+    formData.append('member[phone_number]', data.phone_number || '')
+    formData.append('member[password]', data.password || '')
+    formData.append('member[gender]', data.gender || '')
+    formData.append('member[dob]', data.dob || '')
+
+    // avatar
+    if (imageView) {
+      formData.append('member[avatar]', imageView)
     }
-    const endpoint = await put(`/v1/admin/members/${id}`, { member: body })
+
+    // identity proof
+    if (identityProofDoc) {
+      formData.append('member[identity_proof_doc]', identityProofDoc)
+    }
+
+    await put(`/v1/admin/members/${id}`, formData)
 
     if (response.ok) {
       toast('Resident Data Edited Successfully')
+
       setVisible(false)
+
+      reset()
+
+      setImageView('')
+
+      setIdentityProof(null)
+
+      if (after_submit) {
+        after_submit()
+      }
     } else {
-      toast(response?.error)
+      toast(response?.data?.message || 'Something went wrong')
     }
   }
 
@@ -139,11 +139,17 @@ export default function EditResidents(props) {
       <button
         type="button"
         className="btn custom_theme_button"
-        data-mdb-ripple-init
-        onClick={() => setVisible(!visible)}
+        onClick={() => {
+          setVisible(true)
+
+          if (id) {
+            loadResident()
+          }
+        }}
       >
         Edit
       </button>
+
       <CModal
         alignment="center"
         size="xl"
@@ -155,119 +161,127 @@ export default function EditResidents(props) {
         <CModalHeader>
           <CModalTitle id="StaticBackdropExampleLabel">Edit Resident</CModalTitle>
         </CModalHeader>
+
         <CModalBody>
           <CContainer>
             <Row>
               <div className="col text-center">
                 <img
-                  alt="Avatar Image"
+                  alt="Avatar"
                   style={{
                     width: '300px',
                     height: '300px',
-
                     marginTop: '2%',
                     marginLeft: '4%',
                     borderRadius: '50%',
                   }}
                   title="Avatar"
-                  className="img-circle img-thumbnail isTooltip  "
+                  className="img-circle img-thumbnail isTooltip"
                   src={
-                    resident?.avatar
-                      ? resident.avatar
-                      : imageView
+                    imageView
                       ? imageView
+                      : resident?.avatar
+                      ? resident.avatar
                       : 'https://bootdey.com/img/Content/avatar/avatar7.png'
                   }
-                  data-original-title="Usuario"
                 />
               </div>
             </Row>
+
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Avatar Image</label>
+
                     <Form.Control
                       type="file"
                       accept=".jpg, .jpeg, .png"
                       {...register('avatar')}
                       onChange={(e) => handleFileSelection(e)}
-                    ></Form.Control>
+                    />
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>First Name</label>
+
                     <Form.Control
                       placeholder="First Name"
                       type="text"
                       {...register('first_name')}
-                    ></Form.Control>
+                    />
                   </Form.Group>
                 </Col>
+
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Last Name</label>
-                    <Form.Control
-                      placeholder="Last Name"
-                      type="text"
-                      {...register('last_name')}
-                    ></Form.Control>
+
+                    <Form.Control placeholder="Last Name" type="text" {...register('last_name')} />
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Email</label>
+
                     <Form.Control
                       placeholder="abc@example.com"
                       type="text"
                       {...register('email')}
-                    ></Form.Control>
+                    />
                   </Form.Group>
                 </Col>
+
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Password</label>
+
                     <Form.Control
                       placeholder="Password"
                       type="password"
                       {...register('password')}
-                    ></Form.Control>
+                    />
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Phone No</label>
+
                     <Form.Control
                       placeholder="Phone Number"
                       type="text"
                       {...register('phone_number')}
-                    ></Form.Control>
+                    />
                   </Form.Group>
                 </Col>
+
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>D.O.B</label>
-                    <Form.Control
-                      placeholder="Date of Birth"
-                      type="date"
-                      {...register('dob')}
-                    ></Form.Control>
+
+                    <Form.Control type="date" {...register('dob')} />
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
                     <label>Gender</label>
+
                     <Controller
                       name="gender"
+                      control={control}
                       render={({ field }) => (
                         <Select
                           {...field}
@@ -276,12 +290,11 @@ export default function EditResidents(props) {
                           onChange={(val) => field.onChange(val.value)}
                         />
                       )}
-                      control={control}
-                      placeholder="Role"
                     />
                   </Form.Group>
                 </Col>
               </Row>
+
               <Row>
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
@@ -290,15 +303,15 @@ export default function EditResidents(props) {
                     <Form.Control
                       type="file"
                       accept=".jpg,.jpeg,.png,.pdf"
-                      {...register('identity_proof')}
+                      {...register('identity_proof_doc')}
                       onChange={(e) => handleIdentityProof(e)}
                     />
 
                     <small className="text-muted">Upload JPG, PNG or PDF file</small>
 
-                    {resident?.identity_proof && (
+                    {resident?.identity_proof_doc && (
                       <div className="mt-2">
-                        <a href={resident.identity_proof} target="_blank" rel="noreferrer">
+                        <a href={resident.identity_proof_doc} target="_blank" rel="noreferrer">
                           View Existing Identity Proof
                         </a>
                       </div>
@@ -306,15 +319,25 @@ export default function EditResidents(props) {
                   </Form.Group>
                 </Col>
               </Row>
+
               <div className="text-center">
                 <CModalFooter>
-                  <Button data-mdb-ripple-init type="submit" className="btn  custom_theme_button">
+                  <Button type="submit" className="btn custom_theme_button">
                     Submit
                   </Button>
+
                   <CButton
                     className="custom_grey_button"
-                    color="light "
-                    onClick={() => setVisible(false)}
+                    color="light"
+                    onClick={() => {
+                      setVisible(false)
+
+                      reset()
+
+                      setImageView('')
+
+                      setIdentityProof(null)
+                    }}
                   >
                     Close
                   </CButton>
@@ -330,4 +353,5 @@ export default function EditResidents(props) {
 
 EditResidents.propTypes = {
   id: PropTypes.number.isRequired,
+  after_submit: PropTypes.func,
 }
