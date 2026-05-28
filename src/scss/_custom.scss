@@ -72,12 +72,14 @@
 .new-settings-menu .menu-list {
   display: flex;
   width: 100%;
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
   -ms-overflow-style: none;
   overflow: -moz-scrollbars-none;
   position: relative;
-  height: 100px;
+  height: auto;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 .new-settings-menu > .menu-list > div:first-child {
   margin-left: 0;
@@ -99,6 +101,34 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0);
   text-decoration: none;
   white-space: nowrap;
+}
+
+@media (max-width: 992px) {
+  .new-settings-menu {
+    height: auto;
+  }
+  .new-settings-menu .menu-list {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    height: auto;
+  }
+  .new-settings-menu .menu-list > div {
+    width: 50%;
+    min-width: 140px;
+  }
+  .new-settings-menu > .menu-list div a {
+    height: auto;
+    padding: 0.75rem 0.5rem;
+    white-space: normal;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .new-settings-menu .menu-list > div {
+    width: 100%;
+  }
 }
 .new-settings-menu .menu-list div a:hover {
   color: #00bfcc;
