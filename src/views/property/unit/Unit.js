@@ -169,7 +169,7 @@ function Unit() {
                         }}
                       >
                         <tr>
-                          <th className="pt-3 pb-3 border-0  ">Unit Number</th>
+                          <th className="pt-3 pb-3 border-0  ">Unit Number(Building_Name)</th>
                           <th className="pt-3 pb-3 border-0  "> Type </th>
                           <th className="pt-3 pb-3 border-0  ">Bed/Bath </th>
                           <th className="pt-3 pb-3 border-0  ">Year Built</th>
@@ -192,6 +192,7 @@ function Unit() {
                             <td className="pt-3 pb-2">
                               <NavLink className="mx-2 p-0" to={`${unit.id}`}>
                                 {unit.unit_no}
+                                {unit?.building?.name && ` (${unit.building.name})`}
                               </NavLink>
                             </td>
                             <td className="pt-3 pb-2">{unit?.unit_type?.name || '-'}</td>
