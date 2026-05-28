@@ -105,6 +105,10 @@ export default function EditResidents(props) {
 
     if (response.ok) {
       setResident(endpoint.data)
+      setIdentityProof({
+        name: endpoint.data.identity_proof_doc_name || '',
+        data: endpoint.data.identity_proof_doc || '',
+      })
       setValue('first_name', endpoint.data.first_name)
       setValue('last_name', endpoint.data.last_name)
       setValue('email', endpoint.data.email)
@@ -122,7 +126,7 @@ export default function EditResidents(props) {
     const body = {
       ...data,
       avatar: imageView ? { data: imageView } : resident?.avatar,
-      identity_proof: identityProof,
+      identity_proof_doc: identityProof,
     }
     const endpoint = await put(`/v1/admin/members/${id}`, { member: body })
 
@@ -172,10 +176,10 @@ export default function EditResidents(props) {
                   title="Avatar"
                   className="img-circle img-thumbnail isTooltip  "
                   src={
-                    resident?.avatar
-                      ? resident.avatar
-                      : imageView
+                    imageView
                       ? imageView
+                      : resident?.avatar
+                      ? resident.avatar
                       : 'https://bootdey.com/img/Content/avatar/avatar7.png'
                   }
                   data-original-title="Usuario"
@@ -290,18 +294,22 @@ export default function EditResidents(props) {
                     <Form.Control
                       type="file"
                       accept=".jpg,.jpeg,.png,.pdf"
-                      {...register('identity_proof')}
+                      {...register('identity_proof_doc')}
                       onChange={(e) => handleIdentityProof(e)}
                     />
 
                     <small className="text-muted">Upload JPG, PNG or PDF file</small>
 
-                    {resident?.identity_proof && (
+                    {resident?.identity_proof_doc && (
                       <div className="mt-2">
-                        <a href={resident.identity_proof} target="_blank" rel="noreferrer">
-                          View Existing Identity Proof
+                        <strong>Existing File:</strong>{' '}
+                        <a href={resident.identity_proof_doc} target="_blank" rel="noreferrer">
+                          {resident.identity_proof_doc_name}
                         </a>
                       </div>
+                    )}
+                    {identityProof?.name && (
+                      <div className="mt-1 text-success">Selected File: {identityProof.name}</div>
                     )}
                   </Form.Group>
                 </Col>
