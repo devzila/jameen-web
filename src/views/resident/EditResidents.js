@@ -297,22 +297,19 @@ export default function EditResidents({ id, after_submit }) {
 
               <Row>
                 <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <label>Identity Proof (Optional)</label>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Identity Proof</Form.Label>
 
-                    <Form.Control
-                      type="file"
-                      accept=".jpg,.jpeg,.png,.pdf"
-                      {...register('identity_proof_doc')}
-                      onChange={(e) => handleIdentityProof(e)}
-                    />
+                    <Form.Control type="file" {...register('identity_proof_doc')} />
 
-                    <small className="text-muted">Upload JPG, PNG or PDF file</small>
+                    {resident?.identity_proof_doc_name && (
+                      <div className="mt-2">Current File: {resident.identity_proof_doc_name}</div>
+                    )}
 
                     {resident?.identity_proof_doc && (
-                      <div className="mt-2">
+                      <div className="mt-1">
                         <a href={resident.identity_proof_doc} target="_blank" rel="noreferrer">
-                          View Existing Identity Proof
+                          View Current File
                         </a>
                       </div>
                     )}
