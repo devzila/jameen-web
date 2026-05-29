@@ -166,6 +166,8 @@ const PropertyInvoices = () => {
                                 </th>
                                 <td className="pt-3">
                                   {invoice?.unit_contract?.unit?.unit_no || '-'}
+                                  {invoice?.unit_contract?.unit?.building?.name &&
+                                    ` (${invoice?.unit_contract?.unit?.building?.name})`}
                                 </td>
                                 <td className="pt-3 text-center">{invoice?.total_amount || '-'}</td>
                                 <td className="pt-2">
