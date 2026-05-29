@@ -4,7 +4,7 @@ import CheckPermissions from 'src/permissions/CheckPermissions'
 
 export default function PropertyNav() {
   return (
-    <div className="container-fluid" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
+    <div className="container-fluid">
       <div className="body-box-new sectio new-settings-box" style={{ border: 'none' }}>
         <div className="new-settings-menu">
           <div className="menu-list">
