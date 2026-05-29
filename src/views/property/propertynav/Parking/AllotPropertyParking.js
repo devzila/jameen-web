@@ -27,7 +27,6 @@ export default function AllotPropertyParking({ after_submit }) {
 
   const { register, handleSubmit, control, reset } = useForm()
   const { get, post, response } = useFetch()
-
   useEffect(() => {
     loadUnits()
   }, [])
@@ -49,7 +48,11 @@ export default function AllotPropertyParking({ after_submit }) {
   const loadUnits = async () => {
     const api = await get(`/v1/admin/premises/properties/${propertyId}/units?limit=-1`)
     if (response.ok) {
-      setUnitsArray(format_react_select(api.data, ['id', 'unit_no']))
+      const formattedUnits = api.data.map((item) => ({
+        value: item.id,
+        label: `${item.unit_no} - ${item.building ? item.building.name : 'No Building'}`,
+      }))
+      setUnitsArray(formattedUnits)
     }
   }
 
