@@ -76,16 +76,6 @@ const CreditNote = () => {
                     <div>
                       <button
                         type="button"
-                        className={`bg-white small rounded-0 mx-2 border-0 theme-hover ${
-                          selectedOption == 'credit_notes' ? 'active-nav-bar-button' : ''
-                        } `}
-                        data-mdb-ripple-init
-                        onClick={() => handleOptionChange('credit_notes')}
-                      >
-                        Credit Notes
-                      </button>
-                      <button
-                        type="button"
                         className={`bg-white small rounded-0 border-0 theme-hover ${
                           selectedOption == 'invoices' ? 'active-nav-bar-button' : ''
                         } `}
