@@ -35,6 +35,7 @@ const AppContent = () => {
         <Routes>
           <Route path="/" exact={true} name="Dashboard" element={<Dashboard />} />
           <Route path="login" element={<Navigate to="/dashboard/overview" />} />
+          <Route path="/finance/show-invoices" element={<ShowInvoices />} />
 
           <Route path="/finance" name="Finance" element={<Finance />} />
           <Route path="/finance/invoice/:invoiceId" element={<ShowInvoices />} />
