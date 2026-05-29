@@ -89,75 +89,24 @@ const Finance = () => {
 
   return (
     <>
-      <div
-        className="container-fluid"
-        style={{
-          overflowX: 'auto',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        <style>
-          {`
-            .finance-nav-link {
-              background: transparent !important;
-              color: #6c757d !important;
-              text-decoration: none;
-              transition: all 0.3s ease;
-              display: inline-block;
-            }
-
-            .finance-nav-link:hover {
-              color: #0dcaf0 !important;
-              transform: translateY(-2px);
-            }
-
-            .finance-nav-active {
-              color: #0dcaf0 !important;
-            }
-          `}
-        </style>
-
+      <div className="container-fluid" style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
         <div className="body-box-new sectio new-settings-box" style={{ border: 'none' }}>
           <div className="new-settings-menu">
-            <div className="menu-list d-flex gap-2">
-              {/* Invoices */}
+            <div className="menu-list">
               <div>
-                <NavLink
-                  className={({ isActive }) =>
-                    `finance-nav-link px-4 py-2 fw-semibold ${isActive ? 'finance-nav-active' : ''}`
-                  }
-                >
-                  Invoices
-                </NavLink>
+                <NavLink> Invoice </NavLink>
               </div>
-
-              {/* Credit Notes */}
               <div>
-                <NavLink
-                  to="/finance/credit-notes"
-                  className={({ isActive }) =>
-                    `finance-nav-link px-4 py-2 fw-semibold ${isActive ? 'finance-nav-active' : ''}`
-                  }
-                >
-                  Credit Notes
-                </NavLink>
+                <NavLink to="/finance/credit-notes">Credit Note</NavLink>
               </div>
-
-              {/* Payments */}
               <div>
-                <NavLink
-                  to="/finance/payments"
-                  className={({ isActive }) =>
-                    `finance-nav-link px-4 py-2 fw-semibold ${isActive ? 'finance-nav-active' : ''}`
-                  }
-                >
-                  Payments
-                </NavLink>
+                <NavLink to="/finance/payments"> Payment </NavLink>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <br></br>
       <div>
         <section className="w-100">
           <div className="mask d-flex align-items-center h-100">

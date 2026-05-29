@@ -4,6 +4,8 @@ import { CContainer } from '@coreui/react'
 import ShowMaintance from 'src/views/maintenance/ShowMaintance'
 import Loading from 'src/components/loading/loading'
 import ShowBuilding from 'src/views/property/propertynav/Building/ShowBuilding'
+import CreditNotes from 'src/views/finance/credits.js'
+import Payments from 'src/views/finance/payment.js'
 
 // routes config
 const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
@@ -42,6 +44,8 @@ const AppContent = () => {
           <Route path="/properties" name="Properties" element={<Properties />} />
           <Route path="/properties/:propertyId/*" element={<PropertyRoutes />} />
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
+          <Route path="/finance/credit-notes" element={<CreditNotes />} />
+          <Route path="/finance/payments" element={<Payments />} />
 
           <Route
             path="/properties/:propertyId/units/:unitId"
