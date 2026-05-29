@@ -118,7 +118,10 @@ function ParkingLot() {
                           {parkingLot.map((parking) => (
                             <tr key={parking.id}>
                               <td>{parking.parking_number}</td>
-                              <td>{parking.unit.unit_no}</td>
+                              <td>
+                                {parking.unit.unit_no}
+                                {parking.unit.building?.name && ` (${parking.unit.building.name})`}
+                              </td>
                               <td>{parking.vehicle?.registration_no}</td>
                             </tr>
                           ))}
