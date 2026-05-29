@@ -87,7 +87,11 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData, 
   const loadUnits = async (id) => {
     const api = await get(`/v1/admin/premises/properties/${id}/units?limit=-1`)
     if (response.ok) {
-      setUnits_data(format_react_select(api.data, ['id', 'unit_no']))
+      const formattedUnits = api.data.map((item) => ({
+        value: item.id,
+        label: item.unit_no + ' - ' + item.building?.name,
+      }))
+      setUnits_data(formattedUnits)
     }
   }
 
@@ -174,6 +178,7 @@ export default function MaintenanceForm({ handleClose, data_array, refreshData, 
                   name="unit_id"
                   render={({ field }) => (
                     <Select
+                      isSearchable={true}
                       type="text"
                       className="basic-multi-select"
                       classNamePrefix="select"
