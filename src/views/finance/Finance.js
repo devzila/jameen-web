@@ -13,7 +13,7 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { formatdate } from 'src/services/CommonFunctions'
 import { NavLink } from 'react-router-dom'
-import FinanceNav from '/Users/devzila/Workspace/jameen/jameen-web/src/views/finance/FinanceNav.js'
+import FinanceNav from 'src/views/finance/FinanceNav.js'
 
 const INVOICE_STATUS_OPTIONS = [
   { value: '', label: 'All statuses' },

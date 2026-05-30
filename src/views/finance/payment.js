@@ -1,5 +1,5 @@
 import React from 'react'
-import FinanceNav from '/Users/devzila/Workspace/jameen/jameen-web/src/views/finance/FinanceNav.js'
+import FinanceNav from 'src/views/finance/FinanceNav.js'
 
 const Payments = () => {
   return (
