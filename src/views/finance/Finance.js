@@ -13,6 +13,7 @@ import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import { formatdate } from 'src/services/CommonFunctions'
 import { NavLink } from 'react-router-dom'
+import FinanceNav from 'src/views/finance/FinanceNav.js'
 
 const INVOICE_STATUS_OPTIONS = [
   { value: '', label: 'All statuses' },
@@ -89,6 +90,8 @@ const Finance = () => {
 
   return (
     <>
+      <FinanceNav />
+      <br></br>
       <div>
         <section className="w-100">
           <div className="mask d-flex align-items-center h-100">
