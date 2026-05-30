@@ -46,6 +46,7 @@ const AppContent = () => {
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
           <Route path="/finance/credit-notes" element={<CreditNotes />} />
           <Route path="/finance/payments" element={<Payments />} />
+          <Route path="/finance/invoices" element={<Finance />} />
 
           <Route
             path="/properties/:propertyId/units/:unitId"

@@ -1,7 +1,16 @@
 import React from 'react'
+import FinanceNav from '/Users/devzila/Workspace/jameen/jameen-web/src/views/finance/FinanceNav.js'
 
 const CreditNotes = () => {
-  return <h1>Coming soon</h1>
+  return (
+    <>
+      <FinanceNav />
+
+      <div className="container-fluid">
+        <h3>Credit Notes</h3>
+      </div>
+    </>
+  )
 }
 
 export default CreditNotes
