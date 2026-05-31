@@ -123,11 +123,16 @@ export default function EditResidents(props) {
     }
   }
   const onSubmit = async (data) => {
+    const { avatar, ...rest } = data
     const body = {
-      ...data,
-      avatar: imageView ? { data: imageView } : resident?.avatar,
+      ...rest,
       identity_proof_doc: identityProof,
     }
+
+    if (imageView) {
+      body.avatar = { data: imageView }
+    }
+
     const endpoint = await put(`/v1/admin/members/${id}`, { member: body })
 
     if (response.ok) {
