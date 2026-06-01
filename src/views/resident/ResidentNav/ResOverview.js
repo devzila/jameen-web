@@ -273,33 +273,6 @@ export default function ResOverview() {
           </CCard>
         </CCol>
       </CRow>
-
-      <CRow classname="g-3 mt-3">
-        <CCol md="4">
-          <CCard className="p-3 border-0 shadow-sm">
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Identity Document</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-            <div className="px-2 pb-3">
-              <CRow className="g-3">
-                <CCol xs={12}>
-                  <ResidentDataField label="ID Type" value={resident_data?.id_type} />
-                </CCol>
-                <CCol xs={12}>
-                  <ResidentDataField label="ID Number" value={resident_data?.id_number} />
-                </CCol>
-              </CRow>
-            </div>
-          </CCard>
-        </CCol>
-      </CRow>
     </>
   )
 }
