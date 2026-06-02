@@ -4,12 +4,10 @@ import { CContainer } from '@coreui/react'
 import ShowMaintance from 'src/views/maintenance/ShowMaintance'
 import Loading from 'src/components/loading/loading'
 import ShowBuilding from 'src/views/property/propertynav/Building/ShowBuilding'
-import CreditNotes from 'src/views/finance/credits.js'
-import Payments from 'src/views/finance/payment.js'
 
 // routes config
 const Dashboard = React.lazy(() => import('../views/dashboard/Dashboard'))
-const Finance = React.lazy(() => import('../views/finance/Finance'))
+const FinanceRoutes = React.lazy(() => import('../views/finance/FinanceRoutes'))
 const Residents = React.lazy(() => import('../views/resident/Residents'))
 const Unit = React.lazy(() => import('../views/property/unit/Unit'))
 const Properties = React.lazy(() => import('../views/property/Properties'))
@@ -26,7 +24,6 @@ const Page404 = React.lazy(() => import('../views/Page404'))
 
 const ShowUnit = React.lazy(() => import('../views/property/unit/ShowUnitModule/ShowUnit'))
 const ResidentRoutes = React.lazy(() => import('../views/resident/ResidentNav/ResidentRoutes'))
-const ShowInvoices = React.lazy(() => import('../views/finance/ShowInvoices'))
 const DashboardRoutes = React.lazy(() => import('../views/dashboard/DashboardRoutes'))
 const UserProfile = React.lazy(() => import('../views/profile/UserProfile'))
 
@@ -37,16 +34,12 @@ const AppContent = () => {
         <Routes>
           <Route path="/" exact={true} name="Dashboard" element={<Dashboard />} />
           <Route path="login" element={<Navigate to="/dashboard/overview" />} />
-          <Route path="/finance" name="Finance" element={<Finance />} />
-          <Route path="/finance/invoice/:invoiceId" element={<ShowInvoices />} />
+          <Route path="/finance/*" name="Finance" element={<FinanceRoutes />} />
           <Route path="/resident" name="Resident" element={<Residents />} />
           <Route path="/resident/:residentId/*" name="RView" element={<ResidentRoutes />} />
           <Route path="/properties" name="Properties" element={<Properties />} />
           <Route path="/properties/:propertyId/*" element={<PropertyRoutes />} />
           <Route path="/properties/:propertyId/units/" name="Unit" element={<Unit />} />
-          <Route path="/finance/credit-notes" element={<CreditNotes />} />
-          <Route path="/finance/payments" element={<Payments />} />
-          <Route path="/finance/invoices" element={<Finance />} />
 
           <Route
             path="/properties/:propertyId/units/:unitId"
