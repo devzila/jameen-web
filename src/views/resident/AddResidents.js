@@ -19,15 +19,26 @@ import { Button, Form, Row, Col } from 'react-bootstrap'
 import { cleanAvatar } from 'src/services/CommonFunctions'
 import PropTypes from 'prop-types'
 
-export default function AddResidents({ after_submit }) {
+export default function AddResidents({ after_submit, residentData = {} }) {
   const [visible, setVisible] = useState(false)
   const [properties_data, setProperties_data] = useState([])
   const [errors, setErrors] = useState({})
 
   const [imageView, setImageView] = useState('')
   const [identityProofDoc, setIdentityProof] = useState(null)
+  const [existingIdentityProof, setExistingIdentityProof] = useState('')
 
   const { register, handleSubmit, control, watch, setValue, reset } = useForm()
+  const extractFileName = (value) => {
+    if (!value) return ''
+    const parts = String(value).split('/')
+    return parts[parts.length - 1] || String(value)
+  }
+  const existingIdentityProofName =
+    residentData?.identity_proof_doc_name ||
+    residentData?.data?.identity_proof_doc_name ||
+    extractFileName(existingIdentityProof) ||
+    'View Identity Proof'
   const { get, post, response } = useFetch()
 
   const gender = [
@@ -37,10 +48,15 @@ export default function AddResidents({ after_submit }) {
   //image
 
   const avatar_obj = watch('avatar')
-
   useEffect(() => {
+    if (residentData?.identity_proof_doc) {
+      setExistingIdentityProof(residentData.identity_proof_doc)
+    } else if (residentData?.data?.identity_proof_doc) {
+      setExistingIdentityProof(residentData.data.identity_proof_doc)
+    }
+
     loadInitialProperties()
-  }, [])
+  }, [residentData])
 
   //base64
   const handleFileSelection = (e) => {
@@ -293,6 +309,19 @@ export default function AddResidents({ after_submit }) {
                       onChange={(e) => handleIdentityProof(e)}
                     />
 
+                    {existingIdentityProof && (
+                      <div className="mt-2">
+                        <strong>Current Document:</strong>{' '}
+                        <a href={existingIdentityProof} target="_blank" rel="noopener noreferrer">
+                          {existingIdentityProofName}
+                        </a>
+                      </div>
+                    )}
+                    {identityProofDoc?.name && (
+                      <div className="mt-1 text-success">
+                        Selected File: {identityProofDoc.name}
+                      </div>
+                    )}
                     <small className="text-muted">Upload JPEG, PNG or PDF file</small>
                     <br></br>
                   </Form.Group>
@@ -328,4 +357,5 @@ export default function AddResidents({ after_submit }) {
 }
 AddResidents.propTypes = {
   after_submit: PropTypes.func,
+  residentData: PropTypes.object,
 }

@@ -21,9 +21,15 @@ export default function EditResidents(props) {
   const [properties_data, setProperties_data] = useState([])
   const [visible, setVisible] = useState(false)
   const [imageView, setImageView] = useState('')
-  const [identityProof, setIdentityProof] = useState('')
+  const [selectedAvatarFile, setSelectedAvatarFile] = useState(null)
+  const [identityProof, setIdentityProof] = useState(null)
 
   const { register, handleSubmit, setValue, watch, control } = useForm()
+  const extractFileName = (value) => {
+    if (!value) return ''
+    const parts = String(value).split('/')
+    return parts[parts.length - 1] || String(value)
+  }
   const { get, put, response } = useFetch()
 
   const { id } = props
@@ -38,6 +44,7 @@ export default function EditResidents(props) {
       reader.onload = function (e) {
         const base64Result = e.target.result
         setImageView(base64Result)
+        setSelectedAvatarFile(selectedFile)
       }
 
       reader.readAsDataURL(selectedFile)
@@ -105,10 +112,10 @@ export default function EditResidents(props) {
 
     if (response.ok) {
       setResident(endpoint.data)
-      setIdentityProof({
-        name: endpoint.data.identity_proof_doc_name || '',
-        data: endpoint.data.identity_proof_doc || '',
-      })
+      if (endpoint.data.avatar) {
+        setImageView(endpoint.data.avatar)
+      }
+      setIdentityProof(null)
       setValue('first_name', endpoint.data.first_name)
       setValue('last_name', endpoint.data.last_name)
       setValue('email', endpoint.data.email)
@@ -126,10 +133,12 @@ export default function EditResidents(props) {
     const { avatar, ...rest } = data
     const body = {
       ...rest,
-      identity_proof_doc: identityProof,
+    }
+    if (identityProof?.data) {
+      body.identity_proof_doc = identityProof
     }
 
-    if (imageView) {
+    if (selectedAvatarFile && imageView) {
       body.avatar = { data: imageView }
     }
 
@@ -309,7 +318,9 @@ export default function EditResidents(props) {
                       <div className="mt-2">
                         <strong>Existing File:</strong>{' '}
                         <a href={resident.identity_proof_doc} target="_blank" rel="noreferrer">
-                          {resident.identity_proof_doc_name}
+                          {resident.identity_proof_doc_name ||
+                            extractFileName(resident.identity_proof_doc) ||
+                            'View Document'}
                         </a>
                       </div>
                     )}

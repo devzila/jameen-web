@@ -51,6 +51,12 @@ function formatContractEndDate(endDate) {
   return formatdate(endDate) || '-'
 }
 
+function extractFileName(value) {
+  if (!value) return ''
+  const parts = String(value).split('/')
+  return parts[parts.length - 1] || String(value)
+}
+
 function ContractNotesCell({ notes }) {
   const text = notes?.trim() || '-'
   if (text === '-' || text.length <= NOTES_PREVIEW_LENGTH) {
@@ -89,7 +95,7 @@ function ResidentDataField({ label, value, valueClassName = '' }) {
 
 ResidentDataField.propTypes = {
   label: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  value: PropTypes.node,
   valueClassName: PropTypes.string,
 }
 
@@ -124,6 +130,11 @@ export default function ResOverview() {
       toast(api?.message || response?.data?.message || 'Unable to load contracts.')
     }
   }
+
+  const identityProofLabel =
+    resident_data?.identity_proof_doc_name ||
+    extractFileName(resident_data?.identity_proof_doc) ||
+    'View Document'
 
   return (
     <>
@@ -189,6 +200,24 @@ export default function ResOverview() {
                 </CCol>
                 <CCol xs={6} md={4}>
                   <ResidentDataField label="D.O.B." value={formatdate(resident_data?.dob)} />
+                </CCol>
+                <CCol xs={12} md={4}>
+                  <ResidentDataField
+                    label="Identity Proof"
+                    value={
+                      resident_data?.identity_proof_doc ? (
+                        <a
+                          href={resident_data.identity_proof_doc}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {identityProofLabel}
+                        </a>
+                      ) : (
+                        '-'
+                      )
+                    }
+                  />
                 </CCol>
               </CRow>
             </div>
