@@ -108,6 +108,45 @@
   border-bottom-color: #00bfcc;
 }
 
+/* Responsive adjustments for property/sub-menus */
+@media (max-width: 992px) {
+  .new-settings-menu {
+    height: auto;
+    margin-top: 0;
+  }
+  .new-settings-menu .menu-list {
+    flex-wrap: wrap;
+    height: auto;
+    overflow-x: auto;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .new-settings-menu .menu-list div {
+    margin-left: 8px;
+    padding: 0;
+  }
+  .new-settings-menu > .menu-list > div:first-child {
+    margin-left: 0;
+  }
+  .new-settings-menu > .menu-list div a {
+    display: inline-block;
+    padding: 8px 10px;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 576px) {
+  .new-settings-menu .menu-list {
+    gap: 6px;
+    padding: 6px 8px;
+  }
+  .new-settings-menu > .menu-list div a {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}
+
 .full-page-container {
   min-height: 100vh;
   display: flex;
