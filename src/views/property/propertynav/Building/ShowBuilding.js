@@ -57,7 +57,7 @@ export default function ShowBuilding() {
   }
 
   function getUnitTooltipContent(unit) {
-    const statusLabel = unit.running_contracts?.length > 0 ? 'Active' : 'Not Active'
+    const statusLabel = unit.running_contracts?.length > 0 ? 'Alloted' : 'Not Alloted'
 
     return (
       <div style={{ textAlign: 'left' }}>
@@ -152,7 +152,7 @@ export default function ShowBuilding() {
                           content={getUnitTooltipContent(unit)}
                           placement="top"
                           trigger={['hover']}
-                          style={{ maxWidth: '320px', whiteSpace: 'normal' }}
+                          style={{ maxWidth: '500px', whiteSpace: 'normal' }}
                         >
                           <span className="btn btn-link p-0">{unit.unit_no}</span>
                         </CTooltip>
