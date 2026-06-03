@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
-import { useParams, NavLink, useNavigate } from 'react-router-dom'
+import { useParams, NavLink } from 'react-router-dom'
 import { CCard, CCardBody, CCardHeader, CRow, CCol, CBadge, CButton } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
 import Paginate from '../../../../components/Pagination'
@@ -15,7 +15,6 @@ export default function ShowBuilding() {
   const { propertyId, buildingId } = useParams()
 
   const { get } = useFetch()
-  const navigate = useNavigate()
 
   useEffect(() => {
     fetchBuilding()
@@ -55,12 +54,6 @@ export default function ShowBuilding() {
 
   function handlePageClick(e) {
     console.log(e.selected)
-  }
-
-  function handleUnitClick(unitId, e) {
-    if (e && e.preventDefault) e.preventDefault()
-    window.alert('Unit details are available from the Property Overview page. Redirecting...')
-    navigate(`/properties/${propertyId}/overview`)
   }
 
   if (loading) return <Loading />
@@ -126,13 +119,7 @@ export default function ShowBuilding() {
                       <td>{index + 1}</td>
 
                       <td>
-                        <button
-                          type="button"
-                          className="btn btn-link p-0"
-                          onClick={(e) => handleUnitClick(unit.id, e)}
-                        >
-                          {unit.unit_no}
-                        </button>
+                        <NavLink to={`/property/units/${unit.id}`}>{unit.unit_no}</NavLink>
                       </td>
 
                       <td>
