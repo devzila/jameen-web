@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import { useParams, NavLink, useNavigate } from 'react-router-dom'
-import { CCard, CCardBody, CCardHeader, CRow, CCol, CBadge, CButton } from '@coreui/react'
+import {
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CRow,
+  CCol,
+  CBadge,
+  CButton,
+  CModal,
+  CModalHeader,
+  CModalBody,
+  CModalFooter,
+  CModalTitle,
+} from '@coreui/react'
 import Loading from 'src/components/loading/loading'
 import Paginate from '../../../../components/Pagination'
 import { formatdate } from '../../../../services/CommonFunctions'
@@ -11,6 +24,9 @@ export default function ShowBuilding() {
   const [units, setUnits] = useState([])
   const [pagination, setPagination] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [selectedUnitId, setSelectedUnitId] = useState(null)
+  const [selectedUnitNo, setSelectedUnitNo] = useState('')
 
   const { propertyId, buildingId } = useParams()
 
@@ -57,10 +73,23 @@ export default function ShowBuilding() {
     console.log(e.selected)
   }
 
-  function handleUnitClick(unitId, e) {
+  function handleUnitClick(unitId, unitNo, e) {
     if (e && e.preventDefault) e.preventDefault()
-    window.alert('Unit details are available from the Property Overview page. Redirecting...')
-    navigate(`/properties/${propertyId}/overview`)
+    setSelectedUnitId(unitId)
+    setSelectedUnitNo(unitNo)
+    setShowConfirm(true)
+  }
+
+  function closeConfirm() {
+    setShowConfirm(false)
+    setSelectedUnitId(null)
+    setSelectedUnitNo('')
+  }
+
+  function confirmUnitNavigation() {
+    if (!selectedUnitId) return closeConfirm()
+    navigate(`/properties/${propertyId}/unit/${selectedUnitId}`)
+    closeConfirm()
   }
 
   if (loading) return <Loading />
@@ -129,7 +158,7 @@ export default function ShowBuilding() {
                         <button
                           type="button"
                           className="btn btn-link p-0"
-                          onClick={(e) => handleUnitClick(unit.id, e)}
+                          onClick={(e) => handleUnitClick(unit.id, unit.unit_no, e)}
                         >
                           {unit.unit_no}
                         </button>
@@ -174,6 +203,26 @@ export default function ShowBuilding() {
               />
             </div>
           )}
+
+          <CModal visible={showConfirm} onClose={closeConfirm} backdrop="static">
+            <CModalHeader>
+              <CModalTitle>View Unit Details</CModalTitle>
+            </CModalHeader>
+            <CModalBody>
+              <p>
+                You are about to open the overview page for unit <strong>{selectedUnitNo}</strong>.
+                Click OK to continue.
+              </p>
+            </CModalBody>
+            <CModalFooter>
+              <CButton color="secondary" onClick={closeConfirm}>
+                Cancel
+              </CButton>
+              <CButton color="primary" onClick={confirmUnitNavigation}>
+                OK
+              </CButton>
+            </CModalFooter>
+          </CModal>
         </CCardBody>
       </CCard>
     </section>
