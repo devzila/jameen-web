@@ -11,7 +11,7 @@ import { CNavbar, CContainer, CNavbarBrand, CForm, CFormInput, CButton } from '@
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import AllotPropertyParking from './AllotPropertyParking'
-
+import { status_color } from 'src/services/CommonFunctions'
 function ParkingLot() {
   const { propertyId } = useParams()
   const { get, put, response, error } = useFetch()
@@ -24,7 +24,7 @@ function ParkingLot() {
   const [searchKeyword, setSearchKeyword] = useState('')
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
-
+  const [statusFilter, setStatusFilter] = useState('')
   const loadInitialParkingLot = async (searchTerm = '') => {
     let endpoint = `/v1/admin/premises/properties/${propertyId}/parkings?q[parking_number_cont]=${searchTerm}&page=${currentPage}`
 
@@ -39,6 +39,10 @@ function ParkingLot() {
       setLoading(false)
     }
   }
+  const filteredParkingLot = parkingLot.filter((parking) => {
+    if (!statusFilter) return true
+    return parking.unit?.status?.toLowerCase() === statusFilter
+  })
 
   useEffect(() => {
     loadInitialParkingLot()
@@ -66,6 +70,15 @@ function ParkingLot() {
                     <CNavbarBrand href="#">Parkings</CNavbarBrand>
                     <div className="d-flex justify-content-end">
                       <AllotPropertyParking after_submit={loadInitialParkingLot} />
+                      <select
+                        className="form-select me-2"
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                      >
+                        <option value="">All</option>
+                        <option value="allotted">Allotted</option>
+                        <option value="unallotted">Unallotted</option>
+                      </select>
                       <div className="d-flex" role="search">
                         <input
                           value={searchKeyword}
@@ -111,11 +124,12 @@ function ParkingLot() {
                             <th className="border-0">Parking Number</th>
                             <th className="border-0">Unit Number</th>
                             <th className="border-0">Vechile Number</th>
+                            <th className="border-0  ">Status</th>
                           </tr>
                         </thead>
 
                         <tbody>
-                          {parkingLot.map((parking) => (
+                          {filteredParkingLot.map((parking) => (
                             <tr key={parking.id}>
                               <td>{parking.parking_number}</td>
                               <td>
@@ -123,6 +137,11 @@ function ParkingLot() {
                                 {parking.unit.building?.name && ` (${parking.unit.building.name})`}
                               </td>
                               <td>{parking.vehicle?.registration_no}</td>
+                              <td className="pt-3 pb-2 ">
+                                <button className={`request-${status_color(parking.unit?.status)}`}>
+                                  {parking.unit.status}
+                                </button>
+                              </td>
                             </tr>
                           ))}
                         </tbody>
