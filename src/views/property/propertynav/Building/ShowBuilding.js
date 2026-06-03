@@ -1,20 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
-import { useParams, NavLink, useNavigate } from 'react-router-dom'
-import {
-  CCard,
-  CCardBody,
-  CCardHeader,
-  CRow,
-  CCol,
-  CBadge,
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
-} from '@coreui/react'
+import { useParams, NavLink } from 'react-router-dom'
+import { CCard, CCardBody, CCardHeader, CRow, CCol, CBadge, CButton, CTooltip } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
 import Paginate from '../../../../components/Pagination'
 import { formatdate } from '../../../../services/CommonFunctions'
@@ -24,14 +11,10 @@ export default function ShowBuilding() {
   const [units, setUnits] = useState([])
   const [pagination, setPagination] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [showConfirm, setShowConfirm] = useState(false)
-  const [selectedUnitId, setSelectedUnitId] = useState(null)
-  const [selectedUnitNo, setSelectedUnitNo] = useState('')
 
   const { propertyId, buildingId } = useParams()
 
   const { get } = useFetch()
-  const navigate = useNavigate()
 
   useEffect(() => {
     fetchBuilding()
@@ -73,23 +56,33 @@ export default function ShowBuilding() {
     console.log(e.selected)
   }
 
-  function handleUnitClick(unitId, unitNo, e) {
-    if (e && e.preventDefault) e.preventDefault()
-    setSelectedUnitId(unitId)
-    setSelectedUnitNo(unitNo)
-    setShowConfirm(true)
-  }
+  function getUnitTooltipContent(unit) {
+    const statusLabel = unit.running_contracts?.length > 0 ? 'Active' : 'Not Active'
 
-  function closeConfirm() {
-    setShowConfirm(false)
-    setSelectedUnitId(null)
-    setSelectedUnitNo('')
-  }
-
-  function confirmUnitNavigation() {
-    if (!selectedUnitId) return closeConfirm()
-    navigate(`/properties/${propertyId}/unit/${selectedUnitId}`)
-    closeConfirm()
+    return (
+      <div style={{ textAlign: 'left' }}>
+        <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+          <tbody>
+            <tr>
+              <td style={{ padding: '2px 6px', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                Unit Name
+              </td>
+              <td style={{ padding: '2px 6px' }}>{unit.unit_no || '-'}</td>
+            </tr>
+            <tr>
+              <td style={{ padding: '2px 6px', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                Unit Type
+              </td>
+              <td style={{ padding: '2px 6px' }}>{unit.unit_type?.name || '-'}</td>
+            </tr>
+            <tr>
+              <td style={{ padding: '2px 6px', fontWeight: 600, whiteSpace: 'nowrap' }}>Status</td>
+              <td style={{ padding: '2px 6px' }}>{statusLabel}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    )
   }
 
   if (loading) return <Loading />
@@ -155,13 +148,14 @@ export default function ShowBuilding() {
                       <td>{index + 1}</td>
 
                       <td>
-                        <button
-                          type="button"
-                          className="btn btn-link p-0"
-                          onClick={(e) => handleUnitClick(unit.id, unit.unit_no, e)}
+                        <CTooltip
+                          content={getUnitTooltipContent(unit)}
+                          placement="top"
+                          trigger={['hover']}
+                          style={{ maxWidth: '320px', whiteSpace: 'normal' }}
                         >
-                          {unit.unit_no}
-                        </button>
+                          <span className="btn btn-link p-0">{unit.unit_no}</span>
+                        </CTooltip>
                       </td>
 
                       <td>
@@ -203,26 +197,6 @@ export default function ShowBuilding() {
               />
             </div>
           )}
-
-          <CModal visible={showConfirm} onClose={closeConfirm} backdrop="static">
-            <CModalHeader>
-              <CModalTitle>View Unit Details</CModalTitle>
-            </CModalHeader>
-            <CModalBody>
-              <p>
-                You are about to open the overview page for unit <strong>{selectedUnitNo}</strong>.
-                Click OK to continue.
-              </p>
-            </CModalBody>
-            <CModalFooter>
-              <CButton color="secondary" onClick={closeConfirm}>
-                Cancel
-              </CButton>
-              <CButton color="primary" onClick={confirmUnitNavigation}>
-                OK
-              </CButton>
-            </CModalFooter>
-          </CModal>
         </CCardBody>
       </CCard>
     </section>
