@@ -197,7 +197,7 @@ export default function ResOverview() {
       </CRow>
 
       <CRow classname="g-3">
-        <CCol md="6" sm="12">
+        <CCol md="9" sm="12">
           <CCard className="p-3  mb-3 border-0 ">
             <CListGroupItem>
               <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
@@ -242,8 +242,8 @@ export default function ResOverview() {
             </div>
           </CCard>
         </CCol>
-        <CCol md="3">
-          <CCard className="p-3 border-0 shadow-sm h-100">
+        <CCol md="3" sm="11">
+          <CCard className="p-3 border-0 shadow-sm h-90">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -272,8 +272,8 @@ export default function ResOverview() {
             </div>
           </CCard>
         </CCol>
-        <CCol md="3">
-          <CCard className="p-3 border-0 shadow-sm h-100">
+        <CCol md="12">
+          <CCard className="p-3 border-0 shadow-sm mb-3">
             <CListGroupItem>
               <CIcon
                 icon={freeSet.cilLineStyle}
@@ -284,18 +284,29 @@ export default function ResOverview() {
               <strong>Identity Document</strong>
               <hr style={{ color: '#C8C2C0' }} />
             </CListGroupItem>
-            <div className="px-2 pb-3">
+
+            <div className="px-2 py-3">
               {resident_data?.identity_proof_doc ? (
                 resident_data.identity_proof_doc.startsWith('data:image') ? (
-                  <img
-                    src={resident_data.identity_proof_doc}
-                    alt={resident_data.identity_proof_doc_name || 'Identity Document'}
-                    className="img-fluid"
-                    style={{ maxHeight: '300px' }}
-                  />
+                  <div className="text-center">
+                    <img
+                      src={resident_data.identity_proof_doc}
+                      alt={resident_data.identity_proof_doc_name || 'Identity Document'}
+                      className="img-fluid rounded border"
+                      style={{
+                        maxHeight: '350px',
+                        objectFit: 'contain',
+                      }}
+                    />
+                  </div>
                 ) : (
-                  <a href={resident_data.identity_proof_doc} target="_blank" rel="noreferrer">
-                    {resident_data.identity_proof_doc_name || 'View Document'}
+                  <a
+                    href={resident_data.identity_proof_doc}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn btn-outline-primary"
+                  >
+                    View Document
                   </a>
                 )
               ) : (
