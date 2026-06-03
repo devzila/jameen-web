@@ -118,32 +118,23 @@
     flex-wrap: wrap;
     height: auto;
     overflow-x: auto;
-    padding: 8px 12px;
-    gap: 8px;
+    overflow-y: visible;
+    padding: 0;
+    gap: 0;
   }
   .new-settings-menu .menu-list div {
-    margin-left: 8px;
+    margin-left: 0;
     padding: 0;
   }
   .new-settings-menu > .menu-list > div:first-child {
     margin-left: 0;
   }
   .new-settings-menu > .menu-list div a {
-    display: inline-block;
-    padding: 8px 10px;
+    padding: 0 15px;
     white-space: nowrap;
-    font-size: 13px;
-  }
-}
-
-@media (max-width: 576px) {
-  .new-settings-menu .menu-list {
-    gap: 6px;
-    padding: 6px 8px;
-  }
-  .new-settings-menu > .menu-list div a {
-    padding: 6px 8px;
-    font-size: 12px;
+    font-size: 14px;
+    height: 55px;
+    flex-shrink: 0;
   }
 }
 
