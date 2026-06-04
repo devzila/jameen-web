@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import { useParams, NavLink } from 'react-router-dom'
-import { CCard, CCardBody, CCardHeader, CRow, CCol, CBadge, CButton } from '@coreui/react'
+import { CCard, CCardBody, CCardHeader, CRow, CCol, CBadge, CButton, CTooltip } from '@coreui/react'
 import Loading from 'src/components/loading/loading'
 import Paginate from '../../../../components/Pagination'
 import { formatdate } from '../../../../services/CommonFunctions'
@@ -54,6 +54,35 @@ export default function ShowBuilding() {
 
   function handlePageClick(e) {
     console.log(e.selected)
+  }
+
+  function getUnitTooltipContent(unit) {
+    const statusLabel = unit.running_contracts?.length > 0 ? 'Alloted' : 'Not Alloted'
+
+    return (
+      <div style={{ textAlign: 'left' }}>
+        <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+          <tbody>
+            <tr>
+              <td style={{ padding: '2px 6px', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                Unit Name
+              </td>
+              <td style={{ padding: '2px 6px' }}>{unit.unit_no || '-'}</td>
+            </tr>
+            <tr>
+              <td style={{ padding: '2px 6px', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                Unit Type
+              </td>
+              <td style={{ padding: '2px 6px' }}>{unit.unit_type?.name || '-'}</td>
+            </tr>
+            <tr>
+              <td style={{ padding: '2px 6px', fontWeight: 600, whiteSpace: 'nowrap' }}>Status</td>
+              <td style={{ padding: '2px 6px' }}>{statusLabel}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    )
   }
 
   if (loading) return <Loading />
@@ -119,7 +148,14 @@ export default function ShowBuilding() {
                       <td>{index + 1}</td>
 
                       <td>
-                        <NavLink to={`/property/units/${unit.id}`}>{unit.unit_no}</NavLink>
+                        <CTooltip
+                          content={getUnitTooltipContent(unit)}
+                          placement="top"
+                          trigger={['hover']}
+                          style={{ maxWidth: '500px', whiteSpace: 'normal' }}
+                        >
+                          <span className="btn btn-link p-0">{unit.unit_no}</span>
+                        </CTooltip>
                       </td>
 
                       <td>
