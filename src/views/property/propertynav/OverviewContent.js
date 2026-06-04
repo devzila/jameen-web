@@ -138,45 +138,67 @@ export default function OverviewContent(propsd) {
                     {formatdate(property?.created_at)}
                   </CCardText>
                 </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  PIN Code
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.pin_code || '-'}
+                  </CCardText>
+                </CCol>
               </CRow>
             </CCard>
           </CCol>
         </CRow>
-
+        {/* Financial & Banking */}
         <CRow>
           <CCol md="12">
             <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
               <CListGroupItem>
                 <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
-                <strong className="text-black">Billing Info.</strong>
+                <strong className="text-black">Financial & Banking</strong>
                 <hr className="text-secondary" />
               </CListGroupItem>
-              <CRow className="">
-                <CCol className="p-2 mt-0 fw-light">
-                  Electricity Account No.
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {property?.electricity_account_number || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-2 mt-0 fw-light">
-                  Water Account No.
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {property?.water_account_number || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-2 mt-0 fw-light">
-                  Internal Extension No.
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {property?.internal_extension_number || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className="p-2 mt-0 fw-light">
-                  Last Status Changed
-                  <CCardText className="fw-normal text-black text-capitalize">
-                    {property?.year_built || '-'}
-                  </CCardText>
-                </CCol>
-              </CRow>
+              <CRow></CRow>
+            </CCard>
+          </CCol>
+        </CRow>
+
+        {/* Property & Infrastructure */}
+        <CRow>
+          <CCol md="12">
+            <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
+              <CListGroupItem>
+                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+                <strong className="text-black">Property & Infrastructure</strong>
+                <hr className="text-secondary" />
+              </CListGroupItem>
+              <CRow></CRow>
+            </CCard>
+          </CCol>
+        </CRow>
+
+        {/* Management & Governance */}
+        <CRow>
+          <CCol md="12">
+            <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
+              <CListGroupItem>
+                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+                <strong className="text-black">Management & Governance</strong>
+                <hr className="text-secondary" />
+              </CListGroupItem>
+              <CRow></CRow>
+            </CCard>
+          </CCol>
+        </CRow>
+
+        {/* Notification & Preferences */}
+        <CRow>
+          <CCol md="12">
+            <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
+              <CListGroupItem>
+                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
+                <strong className="text-black">Notification & Preferences</strong>
+                <hr className="text-secondary" />
+              </CListGroupItem>
               <CRow></CRow>
             </CCard>
           </CCol>
