@@ -9,6 +9,7 @@ export default function FinanceRoutes() {
   const CreditNotes = React.lazy(() => import('./credits'))
   const Payments = React.lazy(() => import('./payment'))
   const ShowInvoices = React.lazy(() => import('./ShowInvoices'))
+  const ShowCreditNote = React.lazy(() => import('src/views/finance/ShowCreditNote'))
 
   return (
     <>
@@ -22,6 +23,14 @@ export default function FinanceRoutes() {
             <Route path="credit-notes" name="Credit Notes" element={<CreditNotes />} />
             <Route path="payments" name="Payments" element={<Payments />} />
             <Route path="*" element={<Navigate to="/finance/invoices" replace />} />
+            <Route
+              path="/credit-notes/:id"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <ShowCreditNote />
+                </Suspense>
+              }
+            />
           </Routes>
         </Suspense>
       </CContainer>
