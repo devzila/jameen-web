@@ -405,19 +405,27 @@ export default function OverviewContent(propsd) {
                   Logo
                   <img
                     className="fw-normal text-black text-capitalize"
-                    src={property?.photo || '-'}
+                    src={property.photo || defaultbuilding}
                     alt="Logo"
                     style={{ width: '100px', height: '100px', objectFit: 'circle' }}
                   />
                 </CCol>
                 <CCol className="p-2 mt-0 fw-light d-flex flex-column align-items-center">
                   Signature Image
-                  <img
-                    className="fw-normal text-black text-capitalize"
-                    src={property?.signature_image || '-'}
-                    alt="Signature"
-                    style={{ width: '100px', height: '100px', objectFit: 'circle' }}
-                  />
+                  {property?.signature_image ? (
+                    <img
+                      className="fw-normal text-black text-capitalize"
+                      src={property.signature_image}
+                      alt="Signature"
+                      style={{
+                        width: '100px',
+                        height: '100px',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  ) : (
+                    <span className="text-muted">No Image Found</span>
+                  )}
                 </CCol>
               </CRow>
             </CCard>
