@@ -142,42 +142,284 @@ export default function OverviewContent(propsd) {
             </CCard>
           </CCol>
         </CRow>
-
+        {/*Contact & Communication*/}
         <CRow>
           <CCol md="12">
             <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
               <CListGroupItem>
-                <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
-                <strong className="text-black">Billing Info.</strong>
+                <CIcon icon={freeSet.cilContact} size="lg" className="me-2 theme_color" />
+                <strong className="text-black">Contact & Communication</strong>
                 <hr className="text-secondary" />
               </CListGroupItem>
               <CRow className="">
                 <CCol className="p-2 mt-0 fw-light">
-                  Electricity Account No.
+                  Email
                   <CCardText className="fw-normal text-black text-capitalize">
-                    {property?.electricity_account_number || '-'}
+                    {property?.email || '-'}
                   </CCardText>
                 </CCol>
                 <CCol className="p-2 mt-0 fw-light">
-                  Water Account No.
+                  Phone
                   <CCardText className="fw-normal text-black text-capitalize">
-                    {property?.water_account_number || '-'}
+                    {property?.phone || '-'}
                   </CCardText>
                 </CCol>
                 <CCol className="p-2 mt-0 fw-light">
-                  Internal Extension No.
+                  website
                   <CCardText className="fw-normal text-black text-capitalize">
-                    {property?.internal_extension_number || '-'}
+                    {property?.website || '-'}
                   </CCardText>
                 </CCol>
                 <CCol className="p-2 mt-0 fw-light">
-                  Last Status Changed
+                  Address
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.address || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  State
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.state || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  PIN Code
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.pin_code || '-'}
+                  </CCardText>
+                </CCol>
+              </CRow>
+            </CCard>
+          </CCol>
+        </CRow>
+
+        {/* Financial & Banking */}
+        <CRow>
+          <CCol md="12">
+            <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
+              <CListGroupItem>
+                <CIcon icon={freeSet.cilWallet} size="lg" className="me-2 theme_color" />
+                <strong className="text-black">Financial & Banking</strong>
+                <hr className="text-secondary" />
+              </CListGroupItem>
+              <CRow className="">
+                <CCol className="p-2 mt-0 fw-light">
+                  Bank_Name
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.bank_name || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Bank Account No
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.bank_account_no || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Bank IFSC Code
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.bank_ifsc_code || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Bank Branch
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.bank_branch || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  PAN Number
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.pan_no || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  GST Number
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.gst_no || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  TAN Number
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.tan_no || '-'}
+                  </CCardText>
+                </CCol>
+              </CRow>
+            </CCard>
+          </CCol>
+        </CRow>
+
+        {/* Property & Infrastructure */}
+        <CRow>
+          <CCol md="12">
+            <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
+              <CListGroupItem>
+                <CIcon icon={freeSet.cilBuilding} size="lg" className="me-2 theme_color" />
+                <strong className="text-black">Property & Infrastructure</strong>
+                <hr className="text-secondary" />
+              </CListGroupItem>
+              <CRow className="">
+                <CCol className="p-2 mt-0 fw-light">
+                  Total Area
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.total_area || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Area Unit
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.area_unit || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Unit Count
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.units_count || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Amenities count
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.amenities_count || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Maintenancestaff Count
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.maintenance_staff_count || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Year Built
                   <CCardText className="fw-normal text-black text-capitalize">
                     {property?.year_built || '-'}
                   </CCardText>
                 </CCol>
               </CRow>
-              <CRow></CRow>
+            </CCard>
+          </CCol>
+        </CRow>
+
+        {/* Management & Governance */}
+        <CRow>
+          <CCol md="12">
+            <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
+              <CListGroupItem>
+                <CIcon icon={freeSet.cilSettings} size="lg" className="me-2 theme_color" />
+                <strong className="text-black">Management & Governance</strong>
+                <hr className="text-secondary" />
+              </CListGroupItem>
+              <CRow className="">
+                <CCol className="p-2 mt-0 fw-light">
+                  Managed By
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.managed_by || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Association Registration No
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.association_registration_no || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Association Type
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.association_type || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Committee Formation Date
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.committee_formation_date || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Next AGM Date
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.next_agm_date || '-'}
+                  </CCardText>
+                </CCol>
+              </CRow>
+            </CCard>
+          </CCol>
+        </CRow>
+
+        {/* Notification & Preferences */}
+        <CRow>
+          <CCol md="12">
+            <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
+              <CListGroupItem>
+                <CIcon icon={freeSet.cilBell} size="lg" className="me-2 theme_color" />
+                <strong className="text-black">Notification & Preferences</strong>
+                <hr className="text-secondary" />
+              </CListGroupItem>
+              <CRow className="">
+                <CCol className="p-2 mt-0 fw-light">
+                  Notification Email
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.notification_email || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Notification Phone
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.notification_phone || '-'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Auto Invoice Enabled
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.auto_invoice_enabled ? 'Yes' : 'No'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Auto Reminder Enabled
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.auto_reminder_enabled ? 'Yes' : 'No'}
+                  </CCardText>
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light">
+                  Reminder Days Before Due
+                  <CCardText className="fw-normal text-black text-capitalize">
+                    {property?.reminder_days_before_due || '-'}
+                  </CCardText>
+                </CCol>
+              </CRow>
+            </CCard>
+          </CCol>
+        </CRow>
+
+        {/*Branding & Documents*/}
+        <CRow>
+          <CCol md="12">
+            <CCard className=" p-3 my-3 mt-2 border-0 theme_color">
+              <CListGroupItem>
+                <CIcon icon={freeSet.cilDescription} size="lg" className="me-2 theme_color" />
+                <strong className="text-black">Branding & Documents</strong>
+                <hr className="text-secondary" />
+              </CListGroupItem>
+              <CRow className="p-2">
+                <CCol className="p-2 mt-0 fw-light d-flex flex-column align-items-center">
+                  Logo
+                  <img
+                    className="fw-normal text-black text-capitalize"
+                    src={property?.photo || '-'}
+                    alt="Logo"
+                    style={{ width: '100px', height: '100px', objectFit: 'circle' }}
+                  />
+                </CCol>
+                <CCol className="p-2 mt-0 fw-light d-flex flex-column align-items-center">
+                  Signature Image
+                  <img
+                    className="fw-normal text-black text-capitalize"
+                    src={property?.signature_image || '-'}
+                    alt="Signature"
+                    style={{ width: '100px', height: '100px', objectFit: 'circle' }}
+                  />
+                </CCol>
+              </CRow>
             </CCard>
           </CCol>
         </CRow>
