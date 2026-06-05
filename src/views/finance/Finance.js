@@ -164,7 +164,9 @@ const Finance = () => {
                               scope="row"
                               style={{ color: '#666666' }}
                             >
-                              <NavLink to={`invoice/${invoice.id}`}>{invoice.number}</NavLink>
+                              <NavLink to={`/finance/invoices/${invoice.id}`}>
+                                {invoice.number}
+                              </NavLink>
                             </th>
                             <td className="pt-3">
                               {invoice?.unit_contract?.unit?.unit_no || '- '}
