@@ -1,95 +1,149 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import { useFetch } from 'use-http'
-import InvoiceDetail from 'src/components/invoice/InvoiceDetail'
-import Loading from 'src/components/loading/loading'
+import React, { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import useFetch from 'use-http'
+import { Row, Col, Spinner } from 'react-bootstrap'
+import { toast } from 'react-toastify'
 
-function invoiceEndpoints(invoiceId, propertyId) {
-  const base = propertyId
-    ? `/v1/admin/premises/properties/${propertyId}/invoices/${invoiceId}`
-    : `/v1/admin/invoices/${invoiceId}`
+const ShowCreditNote = () => {
+  const { id } = useParams()
+  const navigate = useNavigate()
 
-  return { show: base, pdf: `${base}.pdf` }
-}
+  const [creditNote, setCreditNote] = useState(null)
 
-const downloadPdf = (pdfString, fileName) => {
-  const blob = new Blob([pdfString], { type: 'application/pdf' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = fileName
-  a.target = '_blank'
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-}
-
-export default function ShowInvoices({ invoice_id: invoiceIdProp, embedded = false }) {
-  const { get, response } = useFetch()
-  const getRef = useRef(get)
-  const responseRef = useRef(response)
-  getRef.current = get
-  responseRef.current = response
-
-  const [invoice, setInvoice] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const { invoiceId: invoiceIdParam, propertyId } = useParams()
-  const invoiceId = String(invoiceIdProp ?? invoiceIdParam ?? '')
-
-  const invoiceIdRef = useRef(invoiceId)
-  const propertyIdRef = useRef(propertyId)
-  invoiceIdRef.current = invoiceId
-  propertyIdRef.current = propertyId
-
-  const loadInvoice = async ({ showLoading = false } = {}) => {
-    const id = invoiceIdRef.current
-    if (!id) {
-      setLoading(false)
-      return
-    }
-
-    if (showLoading) {
-      setLoading(true)
-    }
-
-    const { show } = invoiceEndpoints(id, propertyIdRef.current)
-    const api = await getRef.current(show)
-
-    if (responseRef.current.ok) {
-      setInvoice(api?.data ?? api)
-    }
-
-    setLoading(false)
-  }
+  const { get, loading } = useFetch('/v1/admin')
 
   useEffect(() => {
-    loadInvoice({ showLoading: true })
-    // Only re-fetch when the route/prop invoice id or property scope changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [invoiceId, propertyId])
+    fetchCreditNote()
+  }, [])
 
-  async function downloadFile() {
-    const { pdf } = invoiceEndpoints(invoiceId, propertyId)
-    const api = await get(pdf)
-    downloadPdf(api, invoice?.number)
+  const fetchCreditNote = async () => {
+    try {
+      const result = await get(`/credit_notes/${id}`)
+
+      if (result) {
+        setCreditNote(result.data || result)
+      }
+    } catch (error) {
+      toast.error('Failed to load credit note')
+    }
   }
 
-  if (loading) {
-    return <Loading />
+  if (loading || !creditNote) {
+    return (
+      <div className="text-center mt-5">
+        <Spinner animation="border" />
+      </div>
+    )
   }
 
   return (
-    <InvoiceDetail
-      invoice={invoice ?? {}}
-      onRefresh={() => loadInvoice()}
-      onDownload={downloadFile}
-      embedded={embedded}
-    />
+    <div className="container-fluid">
+      {/* Header */}
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h3 className="mb-1">Credit Note #{creditNote.credit_note_number || creditNote.id}</h3>
+
+          <small className="text-muted">
+            Created on{' '}
+            {creditNote.created_at ? new Date(creditNote.created_at).toLocaleDateString() : '-'}
+          </small>
+        </div>
+
+        <button
+          className="btn btn-outline-secondary"
+          onClick={() => navigate('/finance/credit-notes')}
+        >
+          Back
+        </button>
+      </div>
+
+      {/* Details Card */}
+      <div className="card shadow-sm border-0">
+        <div
+          className="card-header text-white"
+          style={{
+            backgroundColor: '#00bfcc',
+            fontWeight: '600',
+          }}
+        >
+          Credit Note Details
+        </div>
+
+        <div className="card-body">
+          <Row>
+            <Col md={6} className="mb-4">
+              <strong>Credit Note Number</strong>
+              <div className="mt-1">{creditNote.credit_note_number || '-'}</div>
+            </Col>
+
+            <Col md={6} className="mb-4">
+              <strong>Status</strong>
+              <div className="mt-1">
+                {creditNote.is_voided ? (
+                  <span className="badge bg-danger">Voided</span>
+                ) : (
+                  <span className="badge bg-info">Active</span>
+                )}
+              </div>
+            </Col>
+
+            <Col md={6} className="mb-4">
+              <strong>Contract ID</strong>
+              <div className="mt-1">{creditNote.contract?.id || '-'}</div>
+            </Col>
+
+            <Col md={6} className="mb-4">
+              <strong>Unit Number</strong>
+              <div className="mt-1">{creditNote.contract?.unit?.unit_no || '-'}</div>
+            </Col>
+
+            <Col md={6} className="mb-4">
+              <strong>Building</strong>
+              <div className="mt-1">{creditNote.contract?.unit?.building?.name || '-'}</div>
+            </Col>
+
+            <Col md={6} className="mb-4">
+              <strong>Property</strong>
+              <div className="mt-1">
+                {creditNote.contract?.unit?.building?.property?.name || '-'}
+              </div>
+            </Col>
+
+            <Col md={6} className="mb-4">
+              <strong>Amount</strong>
+              <div className="mt-1 fw-bold">₹ {creditNote.amount || 0}</div>
+            </Col>
+
+            <Col md={6} className="mb-4">
+              <strong>Consumed Amount</strong>
+              <div className="mt-1 fw-bold">₹ {creditNote.consumed_amount || 0}</div>
+            </Col>
+
+            <Col md={12} className="mb-4">
+              <strong>Description</strong>
+              <div className="mt-2 p-3 bg-light rounded">
+                {creditNote.description || 'No description available'}
+              </div>
+            </Col>
+
+            <Col md={6}>
+              <strong>Created At</strong>
+              <div className="mt-1">
+                {creditNote.created_at ? new Date(creditNote.created_at).toLocaleString() : '-'}
+              </div>
+            </Col>
+
+            <Col md={6}>
+              <strong>Updated At</strong>
+              <div className="mt-1">
+                {creditNote.updated_at ? new Date(creditNote.updated_at).toLocaleString() : '-'}
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </div>
+    </div>
   )
 }
 
-ShowInvoices.propTypes = {
-  invoice_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  embedded: PropTypes.bool,
-}
+export default ShowCreditNote

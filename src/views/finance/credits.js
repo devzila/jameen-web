@@ -3,13 +3,14 @@ import useFetch from 'use-http'
 import { toast } from 'react-toastify'
 import Paginate from '../../components/Pagination'
 import Loading from 'src/components/loading/loading'
-
+import { useNavigate } from 'react-router-dom'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { Row, Col, Modal, Form } from 'react-bootstrap'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 
 const CreditNotes = () => {
+  const navigate = useNavigate()
   const { get, post, response } = useFetch()
 
   const [errors, setErrors] = useState(false)
@@ -194,7 +195,18 @@ const CreditNotes = () => {
                     <tbody>
                       {creditNotes.map((note) => (
                         <tr key={note.id}>
-                          <td>{note.credit_note_number}</td>
+                          <td>
+                            <span
+                              style={{
+                                color: '#00bfcc',
+                                cursor: 'pointer',
+                                fontWeight: '500',
+                              }}
+                              onClick={() => navigate(`/finance/credit-notes/${note.id}`)}
+                            >
+                              {note.credit_note_number}
+                            </span>
+                          </td>
                           <td>₹ {note.amount}</td>
                           <td>₹ {note.consumed_amount}</td>
                           <td>{note.description}</td>
