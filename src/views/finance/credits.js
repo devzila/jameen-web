@@ -32,14 +32,22 @@ const CreditNotes = () => {
   }, [currentPage])
 
   useEffect(() => {
-    loadContracts()
-  }, [])
-
-  useEffect(() => {
     if (searchKeyword === '') {
       loadCreditNotes()
     }
   }, [searchKeyword])
+
+  useEffect(() => {
+    loadContracts()
+  }, [])
+
+  const loadContracts = async () => {
+    const data = await get('/v1/admin/allotments')
+
+    if (response.ok) {
+      setContracts(data.data || data || [])
+    }
+  }
 
   const handleInputChange = (event) => {
     setSearchKeyword(event.target.value)
@@ -74,14 +82,6 @@ const CreditNotes = () => {
     } else {
       setErrors(true)
       setLoading(false)
-    }
-  }
-
-  const loadContracts = async () => {
-    const data = await get('/v1/admin/contracts')
-
-    if (response.ok) {
-      setContracts(data.data || data || [])
     }
   }
 
@@ -186,7 +186,6 @@ const CreditNotes = () => {
                         <th className="pt-3 pb-3 border-0">Amount</th>
                         <th className="pt-3 pb-3 border-0">Consumed Amount</th>
                         <th className="pt-3 pb-3 border-0">Description</th>
-                        <th className="pt-3 pb-3 border-0">Unit ID</th>
                         <th className="pt-3 pb-3 border-0">Status</th>
                         <th className="pt-3 pb-3 border-0">Created At</th>
                       </tr>
@@ -199,7 +198,6 @@ const CreditNotes = () => {
                           <td>₹ {note.amount}</td>
                           <td>₹ {note.consumed_amount}</td>
                           <td>{note.description}</td>
-                          <td>{note.unit_id}</td>
                           <td>
                             {note.is_voided ? (
                               <span className="badge bg-danger">Voided</span>
@@ -265,7 +263,7 @@ const CreditNotes = () => {
 
               {contracts.map((contract) => (
                 <option key={contract.id} value={contract.id}>
-                  {contract.id}
+                  {contract.id} ({contract.unit?.unit_no} - {contract.unit?.building?.name})
                 </option>
               ))}
             </Form.Select>
