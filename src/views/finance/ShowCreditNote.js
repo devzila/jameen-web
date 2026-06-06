@@ -5,7 +5,8 @@ import { toast } from 'react-toastify'
 import Loading from 'src/components/loading/loading'
 
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import { Row, Col } from 'react-bootstrap'
+
+import { Row, Col, Card, Button } from 'react-bootstrap'
 
 const ShowCreditNote = () => {
   const { id } = useParams()
@@ -15,7 +16,6 @@ const ShowCreditNote = () => {
 
   const [loading, setLoading] = useState(true)
   const [creditNote, setCreditNote] = useState(null)
-  const [errors, setErrors] = useState(false)
 
   useEffect(() => {
     loadCreditNote()
@@ -28,12 +28,11 @@ const ShowCreditNote = () => {
 
     if (response.ok) {
       setCreditNote(api.data || api)
-      setLoading(false)
     } else {
-      setErrors(true)
-      setLoading(false)
       toast.error('Unable To Load Credit Note')
     }
+
+    setLoading(false)
   }
 
   if (loading) {
@@ -47,89 +46,135 @@ const ShowCreditNote = () => {
   return (
     <div>
       {/* Header */}
-      <CNavbar expand="lg" colorScheme="light" className="bg-white">
+      <CNavbar expand="lg" colorScheme="light" className="bg-white px-3">
         <CContainer fluid>
-          <CNavbarBrand>Credit Note #{creditNote.credit_note_number || creditNote.id}</CNavbarBrand>
+          <CNavbarBrand>
+            <div>
+              <h4 className="mb-0 fw-bold">Credit Note Details</h4>
 
-          <button
-            className="btn btn-outline-secondary"
+              <small className="text-muted">
+                #{creditNote.credit_note_number || creditNote.id}
+              </small>
+            </div>
+          </CNavbarBrand>
+
+          <Button
             onClick={() => navigate('/finance/credit-notes')}
+            style={{
+              backgroundColor: '#00bfcc',
+              borderColor: '#00bfcc',
+              color: '#fff',
+            }}
           >
             Back
-          </button>
+          </Button>
         </CContainer>
       </CNavbar>
-      <hr className="text-secondary m-0" />
-      {/* Content */}
-      <div className="container-fluid bg-white p-4">
-        <h5 className="mb-4">Credit Note Information</h5>
-        <Row>
-          <Col md={6} className="mb-4">
-            <strong>Credit Note Number</strong>
-            <p className="mt-2">{creditNote.credit_note_number || '-'}</p>
-          </Col>
-          <Col md={6} className="mb-4">
-            <strong>Status</strong>
-            <p className="mt-2">
-              {creditNote.is_voided ? (
-                <span className="badge bg-danger">Voided</span>
-              ) : (
-                <span className="badge bg-info">Active</span>
-              )}
-            </p>
-          </Col>
-          <Col md={6} className="mb-4">
-            <strong>Amount</strong>
-            <p className="mt-2">₹ {creditNote.amount || 0}</p>
-          </Col>
-          <Col md={6} className="mb-4">
-            <strong>Consumed Amount</strong>
-            <p className="mt-2">₹ {creditNote.consumed_amount || 0}</p>
-          </Col>
-          <Col md={6} className="mb-4">
-            <strong>Created At</strong>
-            <p className="mt-2">
-              {creditNote.created_at ? new Date(creditNote.created_at).toLocaleString() : '-'}
-            </p>
-          </Col>
-          <Col md={6} className="mb-4">
-            <strong>Updated At</strong>
-            <p className="mt-2">
-              {creditNote.updated_at ? new Date(creditNote.updated_at).toLocaleString() : '-'}
-            </p>
-          </Col>
-        </Row>
-        <hr />
-        <h5 className="mb-4">Contract Information</h5>
-        <Row>
-          <Col md={6} className="mb-4">
-            <strong>Contract ID</strong>
-            <p className="mt-2">{creditNote.contract?.id || '-'}</p>
-          </Col>
-          <Col md={6} className="mb-4">
-            <strong>Unit Number</strong>
-            <p className="mt-2">{creditNote.contract?.unit?.unit_no || '-'}</p>
-          </Col>
-          <Col md={6} className="mb-4">
-            <strong>Building</strong>
-            <p className="mt-2">{creditNote.contract?.unit?.building?.name || '-'}</p>
-          </Col>
-          <Col md={6} className="mb-4">
-            <strong>Property</strong>
-            <p className="mt-2">{creditNote.contract?.unit?.building?.property?.name || '-'}</p>
-          </Col>
-        </Row>
-        <hr />
-        <h5 className="mb-4">Description</h5>
-        <Row>
-          <Col md={12}>
-            <div className="p-3 border rounded bg-light" style={{ minHeight: '100px' }}>
-              {creditNote.description || 'No description available'}
+
+      <hr className="m-0 text-secondary" />
+
+      {/* Page Content */}
+      <div
+        className="container-fluid py-4"
+        style={{
+          backgroundColor: '#f8f9fa',
+          minHeight: '100vh',
+        }}
+      >
+        {/* Credit Note Information */}
+        <Card className="border-0 shadow-sm rounded-4 mb-4">
+          <Card.Body className="p-4">
+            <div className="d-flex align-items-center mb-4">
+              <h5 className="mb-0 fw-bold">Credit Note Information</h5>
             </div>
-          </Col>
-        </Row>
+
+            <Row>
+              <Col md={3} className="mb-4">
+                <small className="text-muted d-block">Credit Note Number</small>
+
+                <strong>{creditNote.credit_note_number || '-'}</strong>
+              </Col>
+
+              <Col md={3} className="mb-4">
+                <small className="text-muted d-block">Status</small>
+
+                {creditNote.is_voided ? (
+                  <span className="badge bg-danger px-3 py-2">Voided</span>
+                ) : (
+                  <span className="badge bg-success px-3 py-2">Active</span>
+                )}
+              </Col>
+
+              <Col md={3} className="mb-4">
+                <small className="text-muted d-block">Amount</small>
+
+                <strong className="text-success">₹ {creditNote.amount || 0}</strong>
+              </Col>
+
+              <Col md={3} className="mb-4">
+                <small className="text-muted d-block">Consumed Amount</small>
+
+                <strong className="text-warning">₹ {creditNote.consumed_amount || 0}</strong>
+              </Col>
+
+              <Col md={3} className="mb-4">
+                <small className="text-muted d-block">Created At</small>
+
+                <strong>
+                  {creditNote.created_at ? new Date(creditNote.created_at).toLocaleString() : '-'}
+                </strong>
+              </Col>
+
+              <Col md={3} className="mb-4">
+                <small className="text-muted d-block">Updated At</small>
+
+                <strong>
+                  {creditNote.updated_at ? new Date(creditNote.updated_at).toLocaleString() : '-'}
+                </strong>
+              </Col>
+              <Col md={3} className="mb-4">
+                <small className="text-muted d-block">Descriptions</small>
+                <strong>{creditNote.description || '-'}</strong>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+
+        {/* Contract Information */}
+        <Card className="border-0 shadow-sm rounded-4 mb-4">
+          <Card.Body className="p-4">
+            <div className="d-flex align-items-center mb-4">
+              <h5 className="mb-0 fw-bold">Contract Information</h5>
+            </div>
+
+            <Row>
+              <Col md={6} className="mb-4">
+                <small className="text-muted d-block">Contract ID</small>
+
+                <strong>{creditNote.contract?.id || '-'}</strong>
+              </Col>
+
+              <Col md={6} className="mb-4">
+                <small className="text-muted d-block">Unit Number</small>
+
+                <strong>{creditNote.contract?.unit?.unit_no || '-'}</strong>
+              </Col>
+
+              <Col md={6} className="mb-4">
+                <small className="text-muted d-block">Building</small>
+
+                <strong>{creditNote.contract?.unit?.building?.name || '-'}</strong>
+              </Col>
+
+              <Col md={6} className="mb-4">
+                <small className="text-muted d-block">Property</small>
+
+                <strong>{creditNote.contract?.unit?.building?.property?.name || '-'}</strong>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
       </div>
-      {errors && toast.error('Unable To Load Data')}
     </div>
   )
 }
