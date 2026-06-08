@@ -91,7 +91,6 @@ const ShowCreditNote = () => {
             <Row>
               <Col md={3} className="mb-4">
                 <small className="text-muted d-block">Credit Note Number</small>
-
                 <strong>{creditNote.credit_note_number || '-'}</strong>
               </Col>
 
@@ -107,19 +106,33 @@ const ShowCreditNote = () => {
 
               <Col md={3} className="mb-4">
                 <small className="text-muted d-block">Amount</small>
-
                 <strong className="text-success">₹ {creditNote.amount || 0}</strong>
               </Col>
 
               <Col md={3} className="mb-4">
                 <small className="text-muted d-block">Consumed Amount</small>
-
                 <strong className="text-warning">₹ {creditNote.consumed_amount || 0}</strong>
               </Col>
 
               <Col md={3} className="mb-4">
-                <small className="text-muted d-block">Created At</small>
+                <small className="text-muted d-block">Available Amount</small>
+                <strong className="text-primary">
+                  ₹ {(creditNote.amount || 0) - (creditNote.consumed_amount || 0)}
+                </strong>
+              </Col>
 
+              <Col md={3} className="mb-4">
+                <small className="text-muted d-block">Created By</small>
+                <strong>
+                  {creditNote.created_by?.name ||
+                    creditNote.user?.name ||
+                    creditNote.creator?.name ||
+                    '-'}
+                </strong>
+              </Col>
+
+              <Col md={3} className="mb-4">
+                <small className="text-muted d-block">Created At</small>
                 <strong>
                   {creditNote.created_at ? new Date(creditNote.created_at).toLocaleString() : '-'}
                 </strong>
@@ -127,14 +140,27 @@ const ShowCreditNote = () => {
 
               <Col md={3} className="mb-4">
                 <small className="text-muted d-block">Updated At</small>
-
                 <strong>
                   {creditNote.updated_at ? new Date(creditNote.updated_at).toLocaleString() : '-'}
                 </strong>
               </Col>
-              <Col md={3} className="mb-4">
-                <small className="text-muted d-block">Descriptions</small>
-                <strong>{creditNote.description || '-'}</strong>
+            </Row>
+
+            <hr />
+
+            <Row>
+              <Col md={12}>
+                <small className="text-muted d-block mb-2">Description</small>
+
+                <div
+                  className="p-3 rounded"
+                  style={{
+                    background: '#f8f9fa',
+                    minHeight: '60px',
+                  }}
+                >
+                  {creditNote.description || '-'}
+                </div>
               </Col>
             </Row>
           </Card.Body>
