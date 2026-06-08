@@ -130,37 +130,36 @@ const ShowCreditNote = () => {
                     '-'}
                 </strong>
               </Col>
-
               <Col md={3} className="mb-4">
                 <small className="text-muted d-block">Created At</small>
                 <strong>
-                  {creditNote.created_at ? new Date(creditNote.created_at).toLocaleString() : '-'}
+                  {creditNote.created_at
+                    ? new Date(creditNote.created_at).toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: '2-digit',
+                        year: 'numeric',
+                      })
+                    : '-'}
                 </strong>
               </Col>
 
               <Col md={3} className="mb-4">
                 <small className="text-muted d-block">Updated At</small>
                 <strong>
-                  {creditNote.updated_at ? new Date(creditNote.updated_at).toLocaleString() : '-'}
+                  {creditNote.updated_at
+                    ? new Date(creditNote.updated_at).toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: '2-digit',
+                        year: 'numeric',
+                      })
+                    : '-'}
                 </strong>
               </Col>
             </Row>
-
-            <hr />
-
             <Row>
               <Col md={12}>
                 <small className="text-muted d-block mb-2">Description</small>
-
-                <div
-                  className="p-3 rounded"
-                  style={{
-                    background: '#f8f9fa',
-                    minHeight: '60px',
-                  }}
-                >
-                  {creditNote.description || '-'}
-                </div>
+                <strong>{creditNote.description || '-'}</strong>
               </Col>
             </Row>
           </Card.Body>
