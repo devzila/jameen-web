@@ -18,6 +18,7 @@ import Invoices from './Invoice'
 import defaultAvatar from '../../../../../assets/images/avatars/default.png'
 import MovingInUnit from 'src/views/property/unit/MovingInUnit'
 import ContractDocuments from './ContractDocuments'
+import ContractCreditNotes from './ContractCreditNotes'
 
 function resolveMemberAvatarSrc(avatar) {
   if (typeof avatar === 'string' && avatar.trim() !== '') {
@@ -162,6 +163,7 @@ export default function ShowContract() {
           <Invoices after_submit={loadInitialContractData} contract={contract} />
         </CCard>
       )}
+      {for_moving_in ? '' : <ContractCreditNotes />}
     </>
   )
 }
