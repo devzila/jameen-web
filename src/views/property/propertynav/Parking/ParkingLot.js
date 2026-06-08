@@ -133,13 +133,13 @@ function ParkingLot() {
                             <tr key={parking.id}>
                               <td>{parking.parking_number}</td>
                               <td>
-                                {parking.unit.unit_no}
-                                {parking.unit.building?.name && ` (${parking.unit.building.name})`}
+                                {parking.unit?.unit_no || '-'}
+                                {parking.unit?.building?.name && ` (${parking.unit.building.name})`}
                               </td>
                               <td>{parking.vehicle?.registration_no}</td>
                               <td className="pt-3 pb-2 ">
                                 <button className={`request-${status_color(parking.unit?.status)}`}>
-                                  {parking.unit.status}
+                                  {parking.unit?.status || '-'}
                                 </button>
                               </td>
                             </tr>
