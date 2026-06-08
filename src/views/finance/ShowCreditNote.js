@@ -91,7 +91,6 @@ const ShowCreditNote = () => {
             <Row>
               <Col md={3} className="mb-4">
                 <small className="text-muted d-block">Credit Note Number</small>
-
                 <strong>{creditNote.credit_note_number || '-'}</strong>
               </Col>
 
@@ -107,33 +106,59 @@ const ShowCreditNote = () => {
 
               <Col md={3} className="mb-4">
                 <small className="text-muted d-block">Amount</small>
-
                 <strong className="text-success">₹ {creditNote.amount || 0}</strong>
               </Col>
 
               <Col md={3} className="mb-4">
                 <small className="text-muted d-block">Consumed Amount</small>
-
                 <strong className="text-warning">₹ {creditNote.consumed_amount || 0}</strong>
               </Col>
 
               <Col md={3} className="mb-4">
-                <small className="text-muted d-block">Created At</small>
+                <small className="text-muted d-block">Available Amount</small>
+                <strong className="text-primary">
+                  ₹ {(creditNote.amount || 0) - (creditNote.consumed_amount || 0)}
+                </strong>
+              </Col>
 
+              <Col md={3} className="mb-4">
+                <small className="text-muted d-block">Created By</small>
                 <strong>
-                  {creditNote.created_at ? new Date(creditNote.created_at).toLocaleString() : '-'}
+                  {creditNote.created_by?.name ||
+                    creditNote.user?.name ||
+                    creditNote.creator?.name ||
+                    '-'}
+                </strong>
+              </Col>
+              <Col md={3} className="mb-4">
+                <small className="text-muted d-block">Created At</small>
+                <strong>
+                  {creditNote.created_at
+                    ? new Date(creditNote.created_at).toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: '2-digit',
+                        year: 'numeric',
+                      })
+                    : '-'}
                 </strong>
               </Col>
 
               <Col md={3} className="mb-4">
                 <small className="text-muted d-block">Updated At</small>
-
                 <strong>
-                  {creditNote.updated_at ? new Date(creditNote.updated_at).toLocaleString() : '-'}
+                  {creditNote.updated_at
+                    ? new Date(creditNote.updated_at).toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: '2-digit',
+                        year: 'numeric',
+                      })
+                    : '-'}
                 </strong>
               </Col>
-              <Col md={3} className="mb-4">
-                <small className="text-muted d-block">Descriptions</small>
+            </Row>
+            <Row>
+              <Col md={12}>
+                <small className="text-muted d-block mb-2">Description</small>
                 <strong>{creditNote.description || '-'}</strong>
               </Col>
             </Row>
