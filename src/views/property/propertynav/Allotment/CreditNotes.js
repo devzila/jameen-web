@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
-
 import { Card, Table, Badge, Spinner } from 'react-bootstrap'
 
-const CreditNotes = ({ contractId }) => {
+const CreditNotes = ({ propertyId, allotmentId }) => {
   const { get, response } = useFetch()
 
   const [loading, setLoading] = useState(true)
@@ -12,14 +12,18 @@ const CreditNotes = ({ contractId }) => {
 
   useEffect(() => {
     loadCreditNotes()
-  }, [])
+  }, [propertyId, allotmentId])
 
   async function loadCreditNotes() {
+    if (!propertyId || !allotmentId) {
+      setLoading(false)
+      return
+    }
+
     setLoading(true)
 
-    // Replace with your actual endpoint
     const api = await get(
-      `/v1/admin/contracts/${contractId}/credit_notes`,
+      `/v1/admin/premises/properties/${propertyId}/allotments/${allotmentId}/credit_notes`,
     )
 
     if (response.ok) {
@@ -40,14 +44,12 @@ const CreditNotes = ({ contractId }) => {
   }
 
   return (
-    <Card className="shadow-sm">
+    <Card className="shadow-sm mt-4">
       <Card.Body>
         <h5 className="fw-bold mb-3">Credit Notes</h5>
 
         {creditNotes.length === 0 ? (
-          <div className="text-muted">
-            No credit notes have been issued for this contract.
-          </div>
+          <div className="text-muted">No credit notes have been issued for this allotment.</div>
         ) : (
           <Table bordered hover responsive>
             <thead>
@@ -66,13 +68,11 @@ const CreditNotes = ({ contractId }) => {
                 <tr key={note.id}>
                   <td>{note.credit_note_number}</td>
 
-                  <td>₹ {note.amount}</td>
+                  <td>₹ {note.amount || 0}</td>
 
-                  <td>₹ {note.consumed_amount}</td>
+                  <td>₹ {note.consumed_amount || 0}</td>
 
-                  <td>
-                    ₹ {(note.amount || 0) - (note.consumed_amount || 0)}
-                  </td>
+                  <td>₹ {(note.amount || 0) - (note.consumed_amount || 0)}</td>
 
                   <td>
                     {note.is_voided ? (
@@ -83,14 +83,13 @@ const CreditNotes = ({ contractId }) => {
                   </td>
 
                   <td>
-                    {new Date(note.created_at).toLocaleDateString(
-                      'en-US',
-                      {
-                        month: 'short',
-                        day: '2-digit',
-                        year: 'numeric',
-                      },
-                    )}
+                    {note.created_at
+                      ? new Date(note.created_at).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: '2-digit',
+                          year: 'numeric',
+                        })
+                      : '-'}
                   </td>
                 </tr>
               ))}
@@ -100,6 +99,11 @@ const CreditNotes = ({ contractId }) => {
       </Card.Body>
     </Card>
   )
+}
+
+CreditNotes.propTypes = {
+  propertyId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  allotmentId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 }
 
 export default CreditNotes

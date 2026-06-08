@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import Select from 'react-select'
 import { useParams } from 'react-router-dom'
 import Loading from 'src/components/loading/loading'
+import CreditNotes from './CreditNotes'
 
 import {
   CButton,
@@ -17,7 +18,7 @@ import {
   CContainer,
 } from '@coreui/react'
 
-import { Button, Form, Row, Col, Card, CardTitle } from 'react-bootstrap'
+import { Button, Form, Row, Col, CardTitle } from 'react-bootstrap'
 
 import { cilDelete, cilNoteAdd } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
@@ -26,7 +27,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   const { register, handleSubmit, setValue, control, reset } = useForm()
   const { post, get, response } = useFetch()
   const [temp_base64, setTemp_base64] = useState([])
-  const [creditNotes, setCreditNotes] = useState([])
 
   const [residents, setResidents] = useState([])
 
@@ -65,19 +65,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   useEffect(() => {
     loadInitialResidents()
     loadInitalUnits()
-  }, [])
-
-  useEffect(() => {
-    setCreditNotes([
-      {
-        id: 1,
-        credit_note_number: 'CN-001',
-        amount: 10000,
-        consumed_amount: 2500,
-        is_voided: false,
-        created_at: '2026-06-06',
-      },
-    ])
   }, [])
 
   //resident dropdown
@@ -299,51 +286,12 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
             </CModalFooter>
           </div>
         </Form>
-        <div className="clearfix">
-          <Card className="shadow-sm mt-4">
-            <Card.Body>
-              <CardTitle className="fw-bold mb-3">Credit Notes</CardTitle>
-
-              {creditNotes.length === 0 ? (
-                <div className="text-muted">
-                  No credit notes have been issued for this contract.
-                </div>
-              ) : (
-                <table className="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Credit Note Number</th>
-                      <th>Amount</th>
-                      <th>Consumed Amount</th>
-                      <th>Available Amount</th>
-                      <th>Status</th>
-                      <th>Created Date</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {creditNotes.map((note) => (
-                      <tr key={note.id}>
-                        <td>{note.credit_note_number}</td>
-                        <td>₹ {note.amount}</td>
-                        <td>₹ {note.consumed_amount}</td>
-                        <td>₹ {(note.amount || 0) - (note.consumed_amount || 0)}</td>
-                        <td>{note.is_voided ? 'Voided' : 'Active'}</td>
-                        <td>
-                          {new Date(note.created_at).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: '2-digit',
-                            year: 'numeric',
-                          })}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-            </Card.Body>
-          </Card>
-        </div>
+        <div className="clearfix"></div>
+        <hr className="text-secondary m-0" />
+        <CreditNotes unitId={unitId} />
+        {/* <div className="text-center p-4">
+          <Spinner animation="border" />
+        </div> */}
       </CContainer>
     </div>
   )
