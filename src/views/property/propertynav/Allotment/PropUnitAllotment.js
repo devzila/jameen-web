@@ -79,7 +79,6 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   }
 
   //base64
-  //base64
   const handleFileSelection = (e, index) => {
     const selectedFile = e.target.files[0]
 

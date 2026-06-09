@@ -29,6 +29,8 @@ const Finance = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [properties, setProperties] = useState([])
+  const [units, setUnits] = useState([])
 
   const [searchInput, setSearchInput] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
