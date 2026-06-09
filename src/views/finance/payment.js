@@ -74,7 +74,8 @@ const Payments = () => {
                           <th className="py-3 border-0">ID</th>
                           <th className="py-3 border-0">Amount</th>
                           <th className="py-3 border-0">Payment Date</th>
-                          <th className="py-3 border-0">Received On</th>
+                          <th className="py-3 border-0">Created At</th>
+                          <th className="py-3 border-0">Created BY</th>
                           <th className="py-3 border-0">Type</th>
                           <th className="py-3 border-0">Status</th>
                         </tr>
@@ -92,9 +93,8 @@ const Payments = () => {
                             <td>{payment.amount || '-'}</td>
 
                             <td>{payment.payment_date ? formatdate(payment.payment_date) : '-'}</td>
-
-                            <td>{payment.received_on ? formatdate(payment.received_on) : '-'}</td>
-
+                            <td>{payment.created_at ? formatdate(payment.created_at) : '-'}</td>
+                            <td>{payment.created_by?.name || '-'}</td>
                             <td>{payment.payment_type || '-'}</td>
 
                             <td>{payment.status || '-'}</td>
@@ -159,15 +159,6 @@ const Payments = () => {
             </Col>
             <Col md={6}>
               {selectedPayment?.payment_date ? formatdate(selectedPayment.payment_date) : '-'}
-            </Col>
-          </Row>
-
-          <Row className="mb-3">
-            <Col md={6}>
-              <strong>Received On:</strong>
-            </Col>
-            <Col md={6}>
-              {selectedPayment?.received_on ? formatdate(selectedPayment.received_on) : '-'}
             </Col>
           </Row>
 
