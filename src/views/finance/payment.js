@@ -132,66 +132,6 @@ const Payments = () => {
           </CNavbar>
         </section>
       </div>
-
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>Payment Details</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <Row className="mb-3">
-            <Col md={6}>
-              <strong>ID:</strong>
-            </Col>
-            <Col md={6}>{selectedPayment?.id || '-'}</Col>
-          </Row>
-
-          <Row className="mb-3">
-            <Col md={6}>
-              <strong>Amount:</strong>
-            </Col>
-            <Col md={6}>{selectedPayment?.amount || '-'}</Col>
-          </Row>
-
-          <Row className="mb-3">
-            <Col md={6}>
-              <strong>Payment Date:</strong>
-            </Col>
-            <Col md={6}>
-              {selectedPayment?.payment_date ? formatdate(selectedPayment.payment_date) : '-'}
-            </Col>
-          </Row>
-
-          <Row className="mb-3">
-            <Col md={6}>
-              <strong>Type:</strong>
-            </Col>
-            <Col md={6}>{selectedPayment?.payment_type || '-'}</Col>
-          </Row>
-
-          <Row className="mb-3">
-            <Col md={6}>
-              <strong>Status:</strong>
-            </Col>
-            <Col md={6}>{selectedPayment?.status || '-'}</Col>
-          </Row>
-
-          <Row className="mb-3">
-            <Col md={6}>
-              <strong>Created At:</strong>
-            </Col>
-            <Col md={6}>
-              {selectedPayment?.created_at ? formatdate(selectedPayment.created_at) : '-'}
-            </Col>
-          </Row>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </>
   )
 }
