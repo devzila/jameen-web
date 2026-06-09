@@ -75,7 +75,7 @@ export default function AllotPropertyParking({ after_submit }) {
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add User </CModalTitle>
+          <CModalTitle id="StaticBackdropExampleLabel">Add Parking </CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CContainer>
@@ -98,10 +98,7 @@ export default function AllotPropertyParking({ after_submit }) {
                 </Col>
                 <Col className="pr-1 mt-3" md="6">
                   <Form.Group>
-                    <label>
-                      Unit
-                      <small className="text-danger"> *{errors ? errors.role : null} </small>
-                    </label>
+                    <label>Unit</label>
                     <Controller
                       name="unit_id"
                       render={({ field }) => (
