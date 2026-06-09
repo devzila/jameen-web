@@ -7,6 +7,7 @@ import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import Paginate from '../../components/Pagination'
 import Loading from 'src/components/loading/loading'
 import { formatdate } from 'src/services/CommonFunctions'
+import { NavLink } from 'react-router-dom'
 
 const Payments = () => {
   const [payments, setPayments] = useState([])
@@ -83,13 +84,10 @@ const Payments = () => {
 
                       <tbody>
                         {payments?.map((payment) => (
-                          <tr
-                            key={payment.id}
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => openPayment(payment)}
-                          >
-                            <td>{payment.id}</td>
-
+                          <tr key={payment.id}>
+                            <td>
+                              <NavLink to={`/finance/payments/${payment.id}`}>{payment.id}</NavLink>
+                            </td>
                             <td>{payment.amount || '-'}</td>
 
                             <td>{payment.payment_date ? formatdate(payment.payment_date) : '-'}</td>
