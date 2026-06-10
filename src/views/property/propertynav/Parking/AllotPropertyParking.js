@@ -36,7 +36,11 @@ export default function AllotPropertyParking({ after_submit }) {
     if (response.ok) {
       toast('Parking Added Successfully')
       after_submit()
-      reset()
+      reset({
+        parking_number: '',
+        unit_id: null,
+        vehice_id: [],
+      })
 
       setVisible(!visible)
     } else {
@@ -55,6 +59,15 @@ export default function AllotPropertyParking({ after_submit }) {
       setUnitsArray(formattedUnits)
     }
   }
+  const handleClose = () => {
+    reset({
+      parking_number: '',
+      unit_id: null,
+      vehice_id: [],
+    })
+    setErrors({})
+    setVisible(false)
+  }
 
   return (
     <div>
@@ -71,7 +84,7 @@ export default function AllotPropertyParking({ after_submit }) {
         size="xl"
         visible={visible}
         backdrop="static"
-        onClose={() => setVisible(false)}
+        onClose={handleClose}
         aria-labelledby="StaticBackdropExampleLabel"
       >
         <CModalHeader>
@@ -148,11 +161,7 @@ export default function AllotPropertyParking({ after_submit }) {
                   >
                     Submit
                   </Button>
-                  <CButton
-                    className="custom_grey_button"
-                    color="secondary"
-                    onClick={() => setVisible(false)}
-                  >
+                  <CButton className="custom_grey_button" color="secondary" onClick={handleClose}>
                     Close
                   </CButton>
                 </CModalFooter>
