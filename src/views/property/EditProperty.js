@@ -543,7 +543,7 @@ export default function EditProperty(props) {
                           <label>Notification Number</label>
                           <Form.Control
                             placeholder="Notification Number"
-                            type="email"
+                            type="text"
                             {...register('notification_phone')}
                           />
                         </Form.Group>
