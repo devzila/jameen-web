@@ -582,6 +582,73 @@ export default function EditProperty(props) {
                       </Col>
                     </Row>
                   </div>
+                  {/* Branding & Documents */}
+                  <div className="border rounded p-3 mt-3">
+                    <h5 className="mb-3">
+                      <i className="bi bi-file-earmark-text-fill text-dark me-2"></i>
+                      Branding & Documents
+                    </h5>
+                    <Row>
+                      <Col md="6" className="text-center">
+                        <img
+                          alt="Logo"
+                          style={{
+                            width: '100px',
+                            height: '100px',
+                            borderRadius: '50%',
+                            objectFit: 'cover',
+                            border: '1px solid #ddd',
+                          }}
+                          className="img-circle img-thumbnail"
+                          src={
+                            property.photo
+                              ? property.photo
+                              : imageView
+                              ? imageView
+                              : defaultbuilding
+                          }
+                        />
+                        <Form.Group className="mt-3">
+                          <label>Logo Image</label>
+                          <Form.Control
+                            type="file"
+                            accept=".jpg,.jpeg,.png"
+                            {...register('photo')}
+                            onChange={(e) => handleFileSelection(e)}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col md="6" className="text-center">
+                        <img
+                          alt="Signature Logo"
+                          style={{
+                            width: '100px',
+                            height: '100px',
+                            borderRadius: '50%',
+                            objectFit: 'cover',
+                            border: '1px solid #ddd',
+                          }}
+                          className="img-circle img-thumbnail"
+                          src={
+                            property.signature_image
+                              ? property.signature_image
+                              : imageView
+                              ? imageView
+                              : defaultbuilding
+                          }
+                        />
+                        <Form.Group className="mt-3">
+                          <label>Signature Image</label>
+                          <Form.Control
+                            type="file"
+                            accept=".jpg,.jpeg,.png"
+                            {...register('singature_image')}
+                            onChange={(e) => handleFileSelection(e)}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </div>
 
                   <div className="text-center">
                     <CModalFooter>
