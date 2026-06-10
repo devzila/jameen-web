@@ -6,7 +6,7 @@ import Loading from 'src/components/loading/loading'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { BsThreeDots } from 'react-icons/bs'
-import { Row, Col, Form } from 'react-bootstrap'
+import { Row, Col, Form, Dropdown } from 'react-bootstrap'
 import { status_color } from 'src/services/CommonFunctions'
 import PickOwner from '../property/unit/UnitFunctions/PickOwner'
 import CIcon from '@coreui/icons-react'
@@ -33,11 +33,48 @@ const Finance = () => {
   const [searchInput, setSearchInput] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
+  const [propertyFilter, setPropertyFilter] = useState('')
+  const [contractFilter, setContractFilter] = useState('')
+  const [properties, setProperties] = useState([])
+  const [contracts, setContracts] = useState([])
   const { get, response } = useFetch()
 
   useEffect(() => {
     loadInitialinvoices()
-  }, [currentPage, searchKeyword, statusFilter])
+  }, [currentPage, searchKeyword, statusFilter, propertyFilter, contractFilter])
+
+  useEffect(() => {
+    loadProperties()
+  }, [])
+
+  async function loadProperties() {
+    const result = await get('/v1/admin/premises/properties')
+
+    if (response.ok) {
+      setProperties(result?.data || result)
+    }
+  }
+
+  async function handlePropertyChange(e) {
+    const propertyId = e.target.value
+
+    setPropertyFilter(propertyId)
+    setContractFilter('')
+    setCurrentPage(1)
+
+    if (!propertyId) {
+      setContracts([])
+      return
+    }
+
+    const result = await get(`/v1/admin/premises/properties/${propertyId}/allotments`)
+
+    if (response.ok) {
+      setContracts(result?.data || result)
+    } else {
+      setContracts([])
+    }
+  }
 
   async function loadInitialinvoices() {
     setLoading(true)
@@ -48,6 +85,13 @@ const Finance = () => {
     if (statusFilter !== '') {
       endpoint += `&q[status_eq]=${statusFilter}`
     }
+    if (propertyFilter) {
+      endpoint += `&q[property_id_eq]=${propertyFilter}`
+    }
+
+    if (contractFilter) {
+      endpoint += `&q[unit_contract_id_eq]=${contractFilter}`
+    }
     const initial_invoices = await get(endpoint)
 
     if (response.ok) {
@@ -55,6 +99,7 @@ const Finance = () => {
         setInvoices(initial_invoices.data)
         setPagination(initial_invoices.pagination)
         setErrors(false)
+        console.log('Invoice Data => ', initial_invoices.data)
       }
     } else {
       setErrors(true)
@@ -97,19 +142,57 @@ const Finance = () => {
                 <CContainer fluid>
                   <CNavbarBrand href="#">Invoices</CNavbarBrand>
                   <div className="d-flex justify-content-end align-items-center gap-2 flex-wrap">
-                    <Form.Select
-                      aria-label="Filter by invoice status"
-                      className="custom_input"
-                      style={{ width: 'auto', minWidth: '160px' }}
-                      value={statusFilter}
-                      onChange={handleStatusFilterChange}
-                    >
-                      {INVOICE_STATUS_OPTIONS.map((opt) => (
-                        <option key={opt.value || 'all'} value={opt.value}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </Form.Select>
+                    <Dropdown>
+                      <Dropdown.Toggle
+                        variant="white"
+                        style={{
+                          border: '1px solid #64d1f6',
+                          minWidth: '120px',
+                        }}
+                      >
+                        Filter
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu style={{ minWidth: '300px', padding: '15px' }}>
+                        <Form.Group className="mb-3">
+                          <Form.Select
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                          >
+                            <option value="">All Status</option>
+                            <option value="1">Pending</option>
+                            <option value="2">Due</option>
+                            <option value="3">Paid</option>
+                            <option value="4">Partial Paid</option>
+                            <option value="5">Cancelled</option>
+                          </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Select value={propertyFilter} onChange={handlePropertyChange}>
+                            <option value="">All Properties</option>
+
+                            {properties.map((property) => (
+                              <option key={property.id} value={property.id}>
+                                {property.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Select
+                            value={contractFilter}
+                            onChange={(e) => setContractFilter(e.target.value)}
+                          >
+                            <option value="">All Contracts</option>
+
+                            {contracts.map((contract) => (
+                              <option key={contract.id} value={contract.id}>
+                                {contract.unit?.unit_no} - {contract.unit?.building?.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </Form.Group>
+                      </Dropdown.Menu>
+                    </Dropdown>
                     <form className="d-flex" role="search" onSubmit={applySearch}>
                       <input
                         value={searchInput}
