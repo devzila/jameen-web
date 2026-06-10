@@ -5,7 +5,7 @@ import Paginate from '../../components/Pagination'
 import Loading from 'src/components/loading/loading'
 import { useNavigate } from 'react-router-dom'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import { Row, Col, Modal, Form } from 'react-bootstrap'
+import { Row, Col, Modal, Form, Dropdown } from 'react-bootstrap'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 
@@ -21,6 +21,10 @@ const CreditNotes = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [searchKeyword, setSearchKeyword] = useState('')
   const [showModal, setShowModal] = useState(false)
+  const [properties, setProperties] = useState([])
+  const [propertyFilter, setPropertyFilter] = useState('')
+  const [contractFilter, setContractFilter] = useState('')
+  const [statusFilter, setStatusFilter] = useState('')
 
   const [formData, setFormData] = useState({
     contract_id: '',
@@ -28,9 +32,18 @@ const CreditNotes = () => {
     description: '',
   })
 
+  const STATUS_OPTIONS = [
+    { value: '', label: 'All Status' },
+    { value: '1', label: 'Pending' },
+    { value: '2', label: 'Due' },
+    { value: '3', label: 'Paid' },
+    { value: '4', label: 'Partial Paid' },
+    { value: '5', label: 'Cancelled' },
+  ]
+
   useEffect(() => {
     loadCreditNotes()
-  }, [currentPage])
+  }, [currentPage, propertyFilter, contractFilter, statusFilter])
 
   useEffect(() => {
     if (searchKeyword === '') {
@@ -41,6 +54,38 @@ const CreditNotes = () => {
   useEffect(() => {
     loadContracts()
   }, [])
+
+  useEffect(() => {
+    loadProperties()
+  }, [])
+
+  const loadProperties = async () => {
+    const data = await get('/v1/admin/premises/properties')
+
+    if (response.ok) {
+      setProperties(data.data || data || [])
+    }
+  }
+
+  const handlePropertyChange = async (e) => {
+    const propertyId = e.target.value
+
+    setPropertyFilter(propertyId)
+    setContractFilter('')
+
+    if (!propertyId) {
+      setContracts([])
+      return
+    }
+
+    const data = await get(`/v1/admin/premises/properties/${propertyId}/allotments`)
+
+    if (response.ok) {
+      setContracts(data.data || data || [])
+    } else {
+      setContracts([])
+    }
+  }
 
   const loadContracts = async () => {
     const data = await get('/v1/admin/allotments')
@@ -67,6 +112,17 @@ const CreditNotes = () => {
 
     if (searchKeyword) {
       endpoint += `&q[credit_note_number_or_description_cont]=${searchKeyword}`
+    }
+    if (statusFilter) {
+      endpoint += `&q[is_voided_eq]=${statusFilter}`
+    }
+
+    if (propertyFilter) {
+      endpoint += `&q[property_id_eq]=${propertyFilter}`
+    }
+
+    if (contractFilter) {
+      endpoint += `&q[unit_contract_id_eq]=${contractFilter}`
     }
 
     const data = await get(endpoint)
@@ -129,6 +185,73 @@ const CreditNotes = () => {
             <CNavbarBrand href="/credit-notes">Credit Notes</CNavbarBrand>
 
             <div className="d-flex justify-content-end">
+              <div className="d-flex justify-content-end align-items-center gap-2 flex-wrap">
+                <Dropdown>
+                  <Dropdown.Toggle
+                    variant="white"
+                    style={{
+                      border: '1px solid #64d1f6',
+                      minWidth: '120px',
+                    }}
+                  >
+                    Filter
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu
+                    style={{
+                      minWidth: '320px',
+                      padding: '15px',
+                    }}
+                  >
+                    <Form.Group className="mb-3">
+                      <Form.Select
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                      >
+                        {STATUS_OPTIONS.map((status) => (
+                          <option key={status.value} value={status.value}>
+                            {status.label}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+                    {/* Property Filter */}
+
+                    <Form.Group className="mb-3">
+                      <Form.Select value={propertyFilter} onChange={handlePropertyChange}>
+                        <option value="">All Properties</option>
+
+                        {properties.map((property) => (
+                          <option key={property.id} value={property.id}>
+                            {property.name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+
+                    {/* Contract Filter */}
+
+                    <Form.Group>
+                      <Form.Select
+                        value={contractFilter}
+                        onChange={(e) => setContractFilter(e.target.value)}
+                        style={{
+                          color: '#000',
+                          backgroundColor: '#fff',
+                        }}
+                      >
+                        <option value="">All Contracts</option>
+
+                        {contracts.map((contract) => (
+                          <option key={contract.id} value={contract.id}>
+                            {contract.unit?.unit_no} - {contract.unit?.building?.name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
               <div className="d-flex" role="search">
                 <input
                   value={searchKeyword}
@@ -156,7 +279,6 @@ const CreditNotes = () => {
                   <CIcon icon={freeSet.cilSearch} />
                 </button>
               </div>
-
               <button
                 className="btn ms-2"
                 onClick={() => setShowModal(true)}
