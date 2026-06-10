@@ -100,6 +100,61 @@ const ShowPayment = () => {
             </Col>
           </Row>
         </Card.Body>
+        <Card.Body>
+          <h5 className="mb-3">Allocations</h5>
+
+          {payment?.allocations?.length > 0 ? (
+            <div className="table-responsive">
+              <table className="table table-bordered table-hover align-middle">
+                <thead className="table-light">
+                  <tr>
+                    <th>#</th>
+                    <th>Invoice No</th>
+                    <th>Unit No</th>
+                    <th>Allocated Amount</th>
+                    <th>Invoice Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {payment.allocations.map((allocation, index) => (
+                    <tr key={allocation.id}>
+                      <td>{index + 1}</td>
+                      <td>{allocation.invoice?.number || '-'}</td>
+                      <td>{allocation.invoice?.unit_contract?.unit?.unit_no || '-'}</td>
+                      <td>{allocation.allocated_amount || '-'}</td>
+                      <td>
+                        {allocation.invoice?.invoice_date
+                          ? new Date(allocation.invoice.invoice_date).toLocaleDateString('en-US', {
+                              month: 'long',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })
+                          : '-'}
+                      </td>
+                      <td>
+                        <span
+                          className={`badge ${
+                            allocation.invoice?.status === 'paid'
+                              ? 'bg-success'
+                              : allocation.invoice?.status === 'pending'
+                              ? 'bg-warning text-dark'
+                              : 'bg-secondary'
+                          }`}
+                        >
+                          {allocation.invoice?.status || '-'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="text-muted">No allocations found.</div>
+          )}
+        </Card.Body>
       </Card>
     </div>
   )
