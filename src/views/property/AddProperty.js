@@ -377,6 +377,16 @@ export default function PropertyForm({ after_submit }) {
                       />
                     </Form.Group>
                   </Col>
+                  <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <label>Bank Branch</label>
+                      <Form.Control
+                        placeholder="Bank Branch"
+                        type="text"
+                        {...register('bank_branch')}
+                      />
+                    </Form.Group>
+                  </Col>
 
                   <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
@@ -569,6 +579,16 @@ export default function PropertyForm({ after_submit }) {
                         placeholder="Notification Email"
                         type="email"
                         {...register('notification_email')}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col className="pr-1 mt-3" md="6">
+                    <Form.Group>
+                      <label>Notification Number</label>
+                      <Form.Control
+                        placeholder="Notification Number"
+                        type="text"
+                        {...register('notification_phone')}
                       />
                     </Form.Group>
                   </Col>
