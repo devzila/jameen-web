@@ -584,7 +584,7 @@ export default function PropertyForm({ after_submit }) {
                   </Col>
                   <Col className="pr-1 mt-3" md="6">
                     <Form.Group>
-                      <label>Notification Number</label>
+                      <label>Notification Phone No</label>
                       <Form.Control
                         placeholder="Notification Number"
                         type="text"
