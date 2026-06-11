@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
-import { Modal, Button, Row, Col } from 'react-bootstrap'
+import { Card, Row, Col, Button, Spinner, Dropdown, Form } from 'react-bootstrap'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 
 import Paginate from '../../components/Pagination'
@@ -19,17 +19,48 @@ const Payments = () => {
 
   const [showModal, setShowModal] = useState(false)
   const [selectedPayment, setSelectedPayment] = useState(null)
+  const [statusFilter, setStatusFilter] = useState('')
+  const [propertyFilter, setPropertyFilter] = useState('')
+  const [contractFilter, setContractFilter] = useState('')
+  const [properties, setProperties] = useState([])
+  const [contracts, setContracts] = useState([])
 
   const { get, response } = useFetch()
 
   useEffect(() => {
     loadPayments()
-  }, [currentPage])
+  }, [currentPage, statusFilter, propertyFilter, contractFilter])
+
+  useEffect(() => {
+    loadProperties()
+  }, [])
+
+  async function loadProperties() {
+    const result = await get('/v1/admin/premises/properties')
+
+    if (response.ok) {
+      setProperties(result?.data || result || [])
+    }
+  }
 
   async function loadPayments() {
     setLoading(true)
 
-    const result = await get(`/v1/admin/payments?page=${currentPage}`)
+    let endpoint = `/v1/admin/payments?page=${currentPage}`
+
+    if (statusFilter) {
+      endpoint += `&q[status_eq]=${statusFilter}`
+    }
+
+    if (propertyFilter) {
+      endpoint += `&q[property_id_eq]=${propertyFilter}`
+    }
+
+    if (contractFilter) {
+      endpoint += `&q[unit_contract_id_eq]=${contractFilter}`
+    }
+
+    const result = await get(endpoint)
 
     if (response.ok) {
       setPayments(result?.data || [])
@@ -41,6 +72,24 @@ const Payments = () => {
     }
 
     setLoading(false)
+  }
+
+  const handlePropertyChange = async (e) => {
+    const propertyId = e.target.value
+
+    setPropertyFilter(propertyId)
+    setContractFilter('')
+
+    if (!propertyId) {
+      setContracts([])
+      return
+    }
+
+    const result = await get(`/v1/admin/premises/properties/${propertyId}/allotments`)
+
+    if (response.ok) {
+      setContracts(result?.data || result)
+    }
   }
 
   function handlePageClick(e) {
@@ -61,6 +110,59 @@ const Payments = () => {
               <CNavbar expand="lg" colorScheme="light" className="bg-white">
                 <CContainer fluid>
                   <CNavbarBrand>Payments</CNavbarBrand>
+                  <div className="d-flex justify-content-end align-items-center gap-2 flex-wrap">
+                    <Dropdown>
+                      <Dropdown.Toggle
+                        variant="white"
+                        style={{
+                          border: '1px solid #64d1f6',
+                          minWidth: '120px',
+                        }}
+                      >
+                        Filter
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu style={{ minWidth: '300px', padding: '15px' }}>
+                        <Form.Group className="mb-3">
+                          <Form.Select
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                          >
+                            <option value="">All Status</option>
+                            <option value="1">Pending</option>
+                            <option value="2">Due</option>
+                            <option value="3">Paid</option>
+                            <option value="4">Partial Paid</option>
+                            <option value="5">Cancelled</option>
+                          </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Select value={propertyFilter} onChange={handlePropertyChange}>
+                            <option value="">All Properties</option>
+
+                            {properties.map((property) => (
+                              <option key={property.id} value={property.id}>
+                                {property.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                          <Form.Select
+                            value={contractFilter}
+                            onChange={(e) => setContractFilter(e.target.value)}
+                          >
+                            <option value="">All Contracts</option>
+
+                            {contracts.map((contract) => (
+                              <option key={contract.id} value={contract.id}>
+                                {contract.unit?.unit_no} - {contract.unit?.building?.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        </Form.Group>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </div>
                 </CContainer>
               </CNavbar>
 
