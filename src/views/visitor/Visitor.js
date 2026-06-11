@@ -31,7 +31,7 @@ export default function Visitor() {
 
   //Ladiong Data
   async function loadInitialVisitor() {
-    let endpoint = `/v1/admin/visitors?page=${currentPage}`
+    let endpoint = `/v1/admin/visits?page=${currentPage}`
 
     if (searchKeyword) {
       endpoint += `&q[name_cont]=${searchKeyword}&q[or][email_cont]=${searchKeyword}&q[or][phone_number_cont]=${searchKeyword}`

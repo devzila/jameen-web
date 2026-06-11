@@ -32,7 +32,7 @@ export default function AddVisitor() {
 
   //post method
   async function onSubmit(data) {
-    await post(`/v1/admin/visitors`, { visitor: data })
+    await post(`/v1/admin/visits`, { visit: data })
     if (response.ok) {
       toast('New Role Added: Operation Successful')
       reset()
@@ -168,19 +168,11 @@ export default function AddVisitor() {
                 <Col className="pr-1 mt-3" md="4">
                   <Form.Group>
                     <label>Unit</label>
-                    <Controller
-                      name="unit_id"
-                      render={({ field }) => (
-                        <Select
-                          {...field}
-                          options={statusarray}
-                          value={statusarray.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
-                        />
-                      )}
-                      control={control}
-                      placeholder="Role"
-                    />
+                    <Form.Control
+                      placeholder="unit"
+                      type="number"
+                      {...register('unit_id')}
+                    ></Form.Control>
                   </Form.Group>
                 </Col>
 
