@@ -306,6 +306,7 @@ const CreditNotes = () => {
                     <thead>
                       <tr>
                         <th className="pt-3 pb-3 border-0">Credit Note No.</th>
+                        <th className="pt-3 pb-3 border-0">Allotment</th>
                         <th className="pt-3 pb-3 border-0">Amount</th>
                         <th className="pt-3 pb-3 border-0">Consumed Amount</th>
                         <th className="pt-3 pb-3 border-0">Description</th>
@@ -328,6 +329,19 @@ const CreditNotes = () => {
                             >
                               {note.credit_note_number}
                             </span>
+                          </td>
+                          <td>
+                            {note.contract?.unit?.unit_no ? (
+                              <>
+                                <strong>{note.contract.unit.unit_no}</strong>
+                                <span className="text-muted">
+                                  {' '}
+                                  - {note.contract?.unit?.building?.name || 'N/A'}
+                                </span>
+                              </>
+                            ) : (
+                              'N/A'
+                            )}
                           </td>
                           <td>₹ {note.amount}</td>
                           <td>₹ {note.consumed_amount}</td>
