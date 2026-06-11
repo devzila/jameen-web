@@ -3,7 +3,8 @@ import useFetch from 'use-http'
 import { toast } from 'react-toastify'
 import { Card, Row, Col, Button, Spinner, Dropdown, Form } from 'react-bootstrap'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 import Paginate from '../../components/Pagination'
 import Loading from 'src/components/loading/loading'
 import { formatdate } from 'src/services/CommonFunctions'
@@ -16,7 +17,7 @@ const Payments = () => {
 
   const [loading, setLoading] = useState(true)
   const [errors, setErrors] = useState(false)
-
+  const [searchKeyword, setSearchKeyword] = useState('')
   const [showModal, setShowModal] = useState(false)
   const [selectedPayment, setSelectedPayment] = useState(null)
   const [statusFilter, setStatusFilter] = useState('')
@@ -25,15 +26,29 @@ const Payments = () => {
   const [properties, setProperties] = useState([])
   const [contracts, setContracts] = useState([])
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      loadPayments()
+    }
+  }
   const { get, response } = useFetch()
 
   useEffect(() => {
-    loadPayments()
-  }, [currentPage, statusFilter, propertyFilter, contractFilter])
+    const timer = setTimeout(() => {
+      loadPayments()
+    }, 300)
+
+    return () => clearTimeout(timer)
+  }, [currentPage, statusFilter, propertyFilter, contractFilter, searchKeyword])
 
   useEffect(() => {
     loadProperties()
   }, [])
+
+  const handleInputChange = (event) => {
+    setSearchKeyword(event.target.value)
+    setCurrentPage(1)
+  }
 
   async function loadProperties() {
     const result = await get('/v1/admin/premises/properties')
@@ -47,6 +62,10 @@ const Payments = () => {
     setLoading(true)
 
     let endpoint = `/v1/admin/payments?page=${currentPage}`
+
+    if (searchKeyword) {
+      endpoint += `&q[id_eq]=${searchKeyword}`
+    }
 
     if (statusFilter) {
       endpoint += `&q[status_eq]=${statusFilter}`
@@ -110,7 +129,8 @@ const Payments = () => {
               <CNavbar expand="lg" colorScheme="light" className="bg-white">
                 <CContainer fluid>
                   <CNavbarBrand>Payments</CNavbarBrand>
-                  <div className="d-flex justify-content-end align-items-center gap-2 flex-wrap">
+
+                  <div className="d-flex justify-content-end align-items-center gap-2 flex-wrap ms-auto">
                     <Dropdown>
                       <Dropdown.Toggle
                         variant="white"
@@ -121,6 +141,7 @@ const Payments = () => {
                       >
                         Filter
                       </Dropdown.Toggle>
+
                       <Dropdown.Menu style={{ minWidth: '300px', padding: '15px' }}>
                         <Form.Group className="mb-3">
                           <Form.Select
@@ -135,6 +156,7 @@ const Payments = () => {
                             <option value="5">Cancelled</option>
                           </Form.Select>
                         </Form.Group>
+
                         <Form.Group className="mb-3">
                           <Form.Select value={propertyFilter} onChange={handlePropertyChange}>
                             <option value="">All Properties</option>
@@ -146,7 +168,8 @@ const Payments = () => {
                             ))}
                           </Form.Select>
                         </Form.Group>
-                        <Form.Group className="mb-3">
+
+                        <Form.Group>
                           <Form.Select
                             value={contractFilter}
                             onChange={(e) => setContractFilter(e.target.value)}
@@ -162,6 +185,35 @@ const Payments = () => {
                         </Form.Group>
                       </Dropdown.Menu>
                     </Dropdown>
+
+                    <div className="d-flex" role="search">
+                      <input
+                        value={searchKeyword}
+                        onChange={handleInputChange}
+                        onKeyDown={handleKeyDown}
+                        className="form-control"
+                        type="search"
+                        placeholder="Search by Payment ID"
+                        style={{
+                          width: '250px',
+                          borderColor: '#00bfcc',
+                          boxShadow: 'none',
+                        }}
+                      />
+
+                      <button
+                        onClick={loadPayments}
+                        className="btn "
+                        type="button"
+                        style={{
+                          backgroundColor: '#00bfcc',
+                          borderColor: '#00bfcc',
+                          color: '#fff',
+                        }}
+                      >
+                        <CIcon icon={freeSet.cilSearch} />
+                      </button>
+                    </div>
                   </div>
                 </CContainer>
               </CNavbar>
