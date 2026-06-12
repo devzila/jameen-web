@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { Row, Col, Modal, Form, Dropdown } from 'react-bootstrap'
 import CIcon from '@coreui/icons-react'
+import { cilSync } from '@coreui/icons'
 import { freeSet } from '@coreui/icons'
 
 const CreditNotes = () => {
@@ -25,6 +26,12 @@ const CreditNotes = () => {
   const [propertyFilter, setPropertyFilter] = useState('')
   const [contractFilter, setContractFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
+  const resetFilters = () => {
+    setStatusFilter('')
+    setPropertyFilter('')
+    setContractFilter('')
+    setContracts([])
+  }
 
   const [formData, setFormData] = useState({
     contract_id: '',
@@ -197,7 +204,7 @@ const CreditNotes = () => {
                       minWidth: '120px',
                     }}
                   >
-                    Filter
+                    🔍 Filters
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu
@@ -206,6 +213,17 @@ const CreditNotes = () => {
                       padding: '15px',
                     }}
                   >
+                    <button
+                      style={{
+                        border: '0px',
+                        float: 'left',
+                        background: 'initial',
+                      }}
+                      onClick={resetFilters}
+                    >
+                      <CIcon icon={cilSync} /> Reset Filter
+                    </button>
+                    <br />
                     <Form.Group className="mb-3">
                       <Form.Select
                         value={statusFilter}

@@ -43,10 +43,7 @@ const Finance = () => {
     setStatusFilter('')
     setPropertyFilter('')
     setContractFilter('')
-    setContracts([]) // optional
-
-    // If you have an API function, call it here
-    // getPayments()
+    setContracts([])
   }
 
   useEffect(() => {
