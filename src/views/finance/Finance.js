@@ -10,6 +10,7 @@ import { Row, Col, Form, Dropdown } from 'react-bootstrap'
 import { status_color } from 'src/services/CommonFunctions'
 import PickOwner from '../property/unit/UnitFunctions/PickOwner'
 import CIcon from '@coreui/icons-react'
+import { cilSync } from '@coreui/icons'
 import { freeSet } from '@coreui/icons'
 import { formatdate } from 'src/services/CommonFunctions'
 import { NavLink } from 'react-router-dom'
@@ -38,6 +39,15 @@ const Finance = () => {
   const [properties, setProperties] = useState([])
   const [contracts, setContracts] = useState([])
   const { get, response } = useFetch()
+  const resetFilters = () => {
+    setStatusFilter('')
+    setPropertyFilter('')
+    setContractFilter('')
+    setContracts([]) // optional
+
+    // If you have an API function, call it here
+    // getPayments()
+  }
 
   useEffect(() => {
     loadInitialinvoices()
@@ -150,9 +160,20 @@ const Finance = () => {
                           minWidth: '120px',
                         }}
                       >
-                        Filter
+                        🔍 Filters
                       </Dropdown.Toggle>
                       <Dropdown.Menu style={{ minWidth: '300px', padding: '15px' }}>
+                        <button
+                          style={{
+                            border: '0px',
+                            float: 'left',
+                            background: 'initial',
+                          }}
+                          onClick={resetFilters}
+                        >
+                          <CIcon icon={cilSync} /> Reset Filter
+                        </button>
+                        <br />
                         <Form.Group className="mb-3">
                           <Form.Select
                             value={statusFilter}
