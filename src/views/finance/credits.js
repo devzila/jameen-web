@@ -113,6 +113,7 @@ const CreditNotes = () => {
     if (searchKeyword) {
       endpoint += `&q[credit_note_number_or_description_cont]=${searchKeyword}`
     }
+
     if (statusFilter) {
       endpoint += `&q[is_voided_eq]=${statusFilter}`
     }
@@ -122,9 +123,11 @@ const CreditNotes = () => {
     }
 
     if (contractFilter) {
-      endpoint += `&q[unit_contract_id_eq]=${contractFilter}`
+      endpoint += `&q[contract_id_eq]=${contractFilter}`
     }
 
+    console.log('Contract Filter:', contractFilter)
+    console.log('Endpoint:', endpoint)
     const data = await get(endpoint)
 
     if (response.ok) {
@@ -234,7 +237,10 @@ const CreditNotes = () => {
                     <Form.Group>
                       <Form.Select
                         value={contractFilter}
-                        onChange={(e) => setContractFilter(e.target.value)}
+                        onChange={(e) => {
+                          console.log('Selected Contract:', e.target.value)
+                          setContractFilter(e.target.value)
+                        }}
                         style={{
                           color: '#000',
                           backgroundColor: '#fff',
