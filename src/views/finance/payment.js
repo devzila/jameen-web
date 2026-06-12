@@ -72,13 +72,14 @@ const Payments = () => {
     }
 
     if (propertyFilter) {
-      endpoint += `&q[property_id_eq]=${propertyFilter}`
+      endpoint += `&q[allocations_invoice_property_id_eq]=${propertyFilter}`
     }
 
     if (contractFilter) {
-      endpoint += `&q[unit_contract_id_eq]=${contractFilter}`
+      endpoint += `&contract_id=${contractFilter}`
     }
-
+    console.log('Contract Filter:', contractFilter)
+    console.log('Endpoint:', endpoint)
     const result = await get(endpoint)
 
     if (response.ok) {
@@ -172,12 +173,15 @@ const Payments = () => {
                         <Form.Group>
                           <Form.Select
                             value={contractFilter}
-                            onChange={(e) => setContractFilter(e.target.value)}
+                            onChange={(e) => {
+                              console.log('Selected Contract:', e.target.value)
+                              setContractFilter(e.target.value)
+                            }}
                           >
                             <option value="">All Contracts</option>
 
                             {contracts.map((contract) => (
-                              <option key={contract.id} value={contract.id}>
+                              <option key={contract.id} value={contract.unit?.unit_no}>
                                 {contract.unit?.unit_no} - {contract.unit?.building?.name}
                               </option>
                             ))}
@@ -227,6 +231,7 @@ const Payments = () => {
                       <thead>
                         <tr>
                           <th className="py-3 border-0">ID</th>
+                          <th className="py-3 border-0">Allotment</th>
                           <th className="py-3 border-0">Amount</th>
                           <th className="py-3 border-0">Payment Date</th>
                           <th className="py-3 border-0">Created At</th>
@@ -241,6 +246,10 @@ const Payments = () => {
                           <tr key={payment.id}>
                             <td>
                               <NavLink to={`/finance/payments/${payment.id}`}>{payment.id}</NavLink>
+                            </td>
+                            <td>
+                              {payment.allocations?.[0]?.invoice?.unit_contract?.unit?.unit_no ||
+                                '-'}
                             </td>
                             <td>{payment.amount || '-'}</td>
 
