@@ -202,10 +202,10 @@ const Payments = () => {
                             cursor: 'pointer',
                             background: '#f8f9fa',
                             fontWeight: 600,
-                            color: '#495057',
+                            color: '#0d0e0e',
                           }}
                         >
-                          <CIcon icon={cilReload} size="lg" />
+                          <CIcon icon={cilReload} size="m" />
                           <span>Reset Filters</span>
                         </div>
                       </Dropdown.Menu>
