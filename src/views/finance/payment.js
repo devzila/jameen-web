@@ -78,6 +78,7 @@ const Payments = () => {
     if (contractFilter) {
       endpoint += `&contract_id=${contractFilter}`
     }
+
     console.log('Contract Filter:', contractFilter)
     console.log('Endpoint:', endpoint)
     const result = await get(endpoint)
@@ -181,7 +182,7 @@ const Payments = () => {
                             <option value="">All Contracts</option>
 
                             {contracts.map((contract) => (
-                              <option key={contract.id} value={contract.unit?.unit_no}>
+                              <option key={contract.id} value={contract.id}>
                                 {contract.unit?.unit_no} - {contract.unit?.building?.name}
                               </option>
                             ))}
