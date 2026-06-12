@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { Card, Row, Col, Button, Spinner, Dropdown, Form } from 'react-bootstrap'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilReload } from '@coreui/icons'
+import { cilSync } from '@coreui/icons'
 import { freeSet } from '@coreui/icons'
 import Paginate from '../../components/Pagination'
 import Loading from 'src/components/loading/loading'
@@ -154,6 +154,17 @@ const Payments = () => {
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu style={{ minWidth: '300px', padding: '15px' }}>
+                        <button
+                          style={{
+                            border: '0px',
+                            float: 'left',
+                            background: 'initial',
+                          }}
+                          onClick={resetFilters}
+                        >
+                          <CIcon icon={cilSync} /> Reset Filter
+                        </button>
+                        <br />
                         <Form.Group className="mb-3">
                           <Form.Select
                             value={statusFilter}
@@ -194,20 +205,6 @@ const Payments = () => {
                             ))}
                           </Form.Select>
                         </Form.Group>
-                        <br />
-                        <div
-                          className="d-flex align-items-center gap-2 p-2 mb-3 rounded"
-                          onClick={resetFilters}
-                          style={{
-                            cursor: 'pointer',
-                            background: '#f8f9fa',
-                            fontWeight: 600,
-                            color: '#0d0e0e',
-                          }}
-                        >
-                          <CIcon icon={cilReload} size="m" />
-                          <span>Reset Filters</span>
-                        </div>
                       </Dropdown.Menu>
                     </Dropdown>
                     <div className="d-flex" role="search">
