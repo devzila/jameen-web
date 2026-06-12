@@ -110,7 +110,6 @@ export default function Visitor() {
                     <th className="pt-3 pb-3 border-0">Check Out </th>
                   </tr>
                 </thead>
-
                 <tbody>
                   {visitor &&
                     visitor?.map((visitor) => (
@@ -126,7 +125,12 @@ export default function Visitor() {
                         </td>
                         <td className="pt-3">{visitor.unit_id}</td>
                         <td className="pt-3">
-                          {visitor.checkin?.replace('T', ' ')?.replace('Z', ' ').slice(0, 19)}
+                          {visitor.checkin
+                            ? String(visitor.checkin)
+                                .replace('T', ' ')
+                                .replace('Z', ' ')
+                                .slice(0, 19)
+                            : '-'}
                         </td>
                         <td className="pt-3">
                           {visitor.chackout?.replace('T', ' ')?.replace('Z', ' ').slice(0, 19)}
