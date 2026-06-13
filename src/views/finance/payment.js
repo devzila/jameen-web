@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import { Card, Row, Col, Button, Spinner, Dropdown, Form } from 'react-bootstrap'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import { cilSync } from '@coreui/icons'
 import { freeSet } from '@coreui/icons'
 import Paginate from '../../components/Pagination'
 import Loading from 'src/components/loading/loading'
@@ -25,6 +26,16 @@ const Payments = () => {
   const [contractFilter, setContractFilter] = useState('')
   const [properties, setProperties] = useState([])
   const [contracts, setContracts] = useState([])
+
+  const resetFilters = () => {
+    setStatusFilter('')
+    setPropertyFilter('')
+    setContractFilter('')
+    setContracts([]) // optional
+
+    // If you have an API function, call it here
+    // getPayments()
+  }
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
@@ -141,10 +152,21 @@ const Payments = () => {
                           minWidth: '120px',
                         }}
                       >
-                        Filter
+                        🔍 Filters
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu style={{ minWidth: '300px', padding: '15px' }}>
+                        <button
+                          style={{
+                            border: '0px',
+                            float: 'left',
+                            background: 'initial',
+                          }}
+                          onClick={resetFilters}
+                        >
+                          <CIcon icon={cilSync} /> Reset Filter
+                        </button>
+                        <br />
                         <Form.Group className="mb-3">
                           <Form.Select
                             value={statusFilter}
@@ -190,7 +212,6 @@ const Payments = () => {
                         </Form.Group>
                       </Dropdown.Menu>
                     </Dropdown>
-
                     <div className="d-flex" role="search">
                       <input
                         value={searchKeyword}
