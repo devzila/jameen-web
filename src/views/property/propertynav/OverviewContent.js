@@ -146,37 +146,37 @@ export default function OverviewContent(propsd) {
                     <hr className="text-secondary" />
                   </CListGroupItem>
                   <CRow className="">
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Email
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.email || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Phone
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.phone || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       website
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.website || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Address
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.address || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       State
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.state || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       PIN Code
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.pin_code || '-'}
@@ -197,43 +197,43 @@ export default function OverviewContent(propsd) {
                     <hr className="text-secondary" />
                   </CListGroupItem>
                   <CRow className="">
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Bank_Name
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.bank_name || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Bank Account No
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.bank_account_no || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Bank IFSC Code
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.bank_ifsc_code || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Bank Branch
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.bank_branch || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       PAN Number
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.pan_no || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       GST Number
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.gst_no || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       TAN Number
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.tan_no || '-'}
@@ -254,37 +254,37 @@ export default function OverviewContent(propsd) {
                     <hr className="text-secondary" />
                   </CListGroupItem>
                   <CRow className="">
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Total Area
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.total_area || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Area Unit
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.area_unit || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Unit Count
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.units_count || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Amenities count
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.amenities_count || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Maintenancestaff Count
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.maintenance_staff_count || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Year Built
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.year_built || '-'}
@@ -305,31 +305,31 @@ export default function OverviewContent(propsd) {
                     <hr className="text-secondary" />
                   </CListGroupItem>
                   <CRow className="">
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Managed By
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.managed_by || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Association Registration No
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.association_registration_no || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Association Type
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.association_type || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Committee Formation Date
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.committee_formation_date || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Next AGM Date
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.next_agm_date || '-'}
@@ -350,31 +350,31 @@ export default function OverviewContent(propsd) {
                     <hr className="text-secondary" />
                   </CListGroupItem>
                   <CRow className="">
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Notification Email
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.notification_email || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Notification Phone
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.notification_phone || '-'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Auto Invoice Enabled
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.auto_invoice_enabled ? 'Yes' : 'No'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Auto Reminder Enabled
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.auto_reminder_enabled ? 'Yes' : 'No'}
                       </CCardText>
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light">
+                    <CCol className="p-2 mt-0 field-label">
                       Reminder Days Before Due
                       <CCardText className="fw-normal text-black text-capitalize">
                         {property?.reminder_days_before_due || '-'}
@@ -395,7 +395,7 @@ export default function OverviewContent(propsd) {
                     <hr className="text-secondary" />
                   </CListGroupItem>
                   <CRow className="p-2">
-                    <CCol className="p-2 mt-0 fw-light d-flex flex-column align-items-center">
+                    <CCol className="p-2 mt-0 field-label d-flex flex-column align-items-center">
                       Logo
                       <img
                         className="fw-normal text-black text-capitalize"
@@ -404,7 +404,7 @@ export default function OverviewContent(propsd) {
                         style={{ width: '100px', height: '100px', objectFit: 'circle' }}
                       />
                     </CCol>
-                    <CCol className="p-2 mt-0 fw-light d-flex flex-column align-items-center">
+                    <CCol className="p-2 mt-0 field-label d-flex flex-column align-items-center">
                       Signature Image
                       {property?.signature_image ? (
                         <img
