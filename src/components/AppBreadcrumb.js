@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
 import { AuthContext } from '../contexts/AuthContext'
 import CIcon from '@coreui/icons-react'
@@ -7,7 +7,13 @@ import { freeSet } from '@coreui/icons'
 
 const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
+  const navigate = useNavigate()
   const auth = useContext(AuthContext)
+
+  const handleNavigate = (event, href) => {
+    event.preventDefault()
+    navigate(href)
+  }
 
   function extractLastPart(inputString) {
     const parts = inputString?.split('/')
@@ -42,14 +48,19 @@ const AppBreadcrumb = () => {
 
   return (
     <CBreadcrumb className="m-0 ms-1" style={{ '--cui-breadcrumb-divider': "''" }}>
-      <CBreadcrumbItem href="/" className="ms-1">
+      <CBreadcrumbItem href="/" className="ms-1" onClick={(e) => handleNavigate(e, '/')}>
         <CIcon icon={freeSet.cilHome} />
       </CBreadcrumbItem>
       {breadcrumbs.map((breadcrumb, index) => {
         return (
           <CBreadcrumbItem
             className="text-uppercase "
-            {...(breadcrumb.active ? { active: true } : { href: breadcrumb.href })}
+            {...(breadcrumb.active
+              ? { active: true }
+              : {
+                  href: breadcrumb.href,
+                  onClick: (e) => handleNavigate(e, breadcrumb.href),
+                })}
             key={index}
           >
             <div className="m-0 p-0">
