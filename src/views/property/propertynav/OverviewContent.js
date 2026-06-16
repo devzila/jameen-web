@@ -56,20 +56,30 @@ export default function OverviewContent(propsd) {
     fontWeight: 600,
   }
 
-  // Dummy stats for now; to be wired to real data later.
+  const propertyStats = property?.property_stats || {}
+  const pendingDuesAmount = Number(propertyStats?.pending_dues?.amount ?? 0)
+
   const stats = [
-    { label: 'Total Units', value: '120' },
-    { label: 'Occupied Units', value: '110' },
-    { label: 'Pending Dues', value: '₹52K' },
-    { label: 'Open Complaints', value: '3' },
+    { label: 'Total Units', value: propertyStats?.unit_count ?? 0 },
+    { label: 'Occupied Units', value: propertyStats?.occupied_unit_count ?? 0 },
+    {
+      label: 'Pending Dues',
+      value: `₹${pendingDuesAmount.toLocaleString('en-IN')}`,
+    },
+    {
+      label: 'Open Complaints',
+      value: propertyStats?.maintenance_requests?.open_count ?? 0,
+    },
   ]
 
-  // Dummy property health metrics for now.
   const health = [
-    { label: 'Occupancy Rate', value: '92%' },
-    { label: 'Vacant Units', value: '10' },
-    { label: 'Overdue Days', value: '14' },
-    { label: 'Maintenance Tasks', value: '7' },
+    { label: 'Occupancy Rate', value: `${propertyStats?.occupancy_rate ?? 0}%` },
+    { label: 'Vacant Units', value: propertyStats?.vacant_unit_count ?? 0 },
+    { label: 'Unallotted Units', value: propertyStats?.unallotted_unit_count ?? 0 },
+    {
+      label: 'Maintenance Tasks',
+      value: propertyStats?.maintenance_requests?.open_count ?? 0,
+    },
   ]
 
   return (
