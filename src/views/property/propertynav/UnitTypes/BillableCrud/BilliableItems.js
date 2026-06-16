@@ -1,31 +1,79 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import PropTypes from 'prop-types'
-import { useParams, NavLink } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-
-import {
-  CNavbar,
-  CContainer,
-  CNavbarBrand,
-  CCol,
-  CCard,
-  CListGroupItem,
-  CRow,
-  CCardText,
-} from '@coreui/react'
+import { Dropdown } from 'react-bootstrap'
 import { freeSet } from '@coreui/icons'
 import Loading from 'src/components/loading/loading'
-import { Dropdown, Row, Col, Card } from 'react-bootstrap'
 import Paginate from '../../../../../components/Pagination'
 import CustomDivToggle from 'src/components/CustomDivToggle'
 import AddBillable from './AddBillable'
 import EditBillable from './EditBillable'
 import CIcon from '@coreui/icons-react'
 import { BsThreeDots } from 'react-icons/bs'
-
 import { formatdate } from 'src/services/CommonFunctions'
 import EditUnitTypes from '../EditUnitTypes'
+
+const THEME_COLOR = '#00bfcc'
+
+const cardStyle = {
+  background: '#fff',
+  borderRadius: '16px',
+  boxShadow: '0 2px 12px rgba(0,0,0,.05)',
+  overflow: 'hidden',
+}
+
+const headerCellStyle = {
+  color: '#8a94a6',
+  fontSize: '11px',
+  fontWeight: 600,
+  textTransform: 'uppercase',
+  letterSpacing: '0.04em',
+  borderBottom: '1px solid #eef1f5',
+  padding: '14px 16px',
+  whiteSpace: 'nowrap',
+}
+
+const bodyCellStyle = {
+  padding: '14px 16px',
+  borderBottom: '1px solid #f2f4f7',
+  color: '#1f2933',
+  verticalAlign: 'middle',
+}
+
+function InfoTile({ label, value }) {
+  return (
+    <div
+      style={{
+        background: '#f8fafc',
+        border: '1px solid #eef1f5',
+        borderRadius: '12px',
+        padding: '14px 16px',
+      }}
+    >
+      <div
+        style={{
+          color: '#8a94a6',
+          fontSize: '11px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.04em',
+          marginBottom: '6px',
+        }}
+      >
+        {label}
+      </div>
+      <div className="text-capitalize" style={{ fontWeight: 600, color: '#1f2933' }}>
+        {value || '-'}
+      </div>
+    </div>
+  )
+}
+
+InfoTile.propTypes = {
+  label: PropTypes.node,
+  value: PropTypes.node,
+}
 
 export default function BillableItems() {
   const [billableItems, setBillableItems] = useState([])
@@ -48,11 +96,16 @@ export default function BillableItems() {
         `/v1/admin/premises/properties/${propertyId}/unit_types/${unittypeID}/billable_items`,
       )
       if (response.ok) {
-        setLoading(false)
-        setBillableItems(billableItemsData.data)
+        setBillableItems(billableItemsData.data || [])
+        setPagination(billableItemsData.pagination)
+        setErrors(false)
+      } else {
+        setErrors(true)
       }
     } catch (error) {
-      console.error('Error fetching billable items:', error)
+      setErrors(true)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -65,222 +118,242 @@ export default function BillableItems() {
       setUnittype(endpoint.data)
     }
   }
+
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
   }
 
   function reload_callback() {
     fetchBillableItems()
+    fetchUnittype()
   }
 
   return (
-    <>
-      <CCol>
-        <CRow>
-          <CCol md="12">
-            <CCard className="px-3 py-2 mt-2 border-0">
-              <CListGroupItem className="d-flex justify-content-between align-items-center">
-                <div>
-                  <CIcon
-                    icon={freeSet.cilLineStyle}
-                    size="lg"
-                    className="me-2"
-                    style={{ color: '#00bfcc' }}
-                  />
-                  <strong>Unit Type</strong>
-                </div>
-                <div>
-                  <EditUnitTypes id={unittypeID} />
-                </div>
-              </CListGroupItem>
-              <hr className="text-secondary p-0 m-0" />
+    <div style={{ padding: '20px' }}>
+      <style>{`
+        .billable-table tbody tr { transition: background-color .15s ease; }
+        .billable-table tbody tr:hover { background-color: #f5fdfe; }
 
-              <CRow className="mt-2">
-                <CCol className=" mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                  Name
-                  <CCardText
-                    className="fw-normal"
-                    style={{ color: 'black', textTransform: 'capitalize' }}
-                  >
-                    {unittype?.name || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className=" mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                  Use Type
-                  <CCardText
-                    className="fw-normal"
-                    style={{ color: 'black', textTransform: 'capitalize' }}
-                  >
-                    {unittype?.use_type || '-'}
-                  </CCardText>
-                </CCol>
+        .billable-pagination ul { margin: 0; align-items: center; gap: 4px; }
+        .billable-pagination .btn {
+          box-shadow: none !important;
+          border: 1px solid #eef1f5 !important;
+          border-radius: 8px !important;
+          background: #fff;
+          color: #495057;
+          min-width: 36px;
+          height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 10px;
+          margin: 0 !important;
+          transition: all .15s ease;
+        }
+        .billable-pagination .btn:hover {
+          border-color: ${THEME_COLOR} !important;
+          color: ${THEME_COLOR};
+        }
+        .billable-pagination .custom_background_color,
+        .billable-pagination .custom_background_color .btn {
+          background: ${THEME_COLOR} !important;
+          border-color: ${THEME_COLOR} !important;
+          color: #fff !important;
+        }
+      `}</style>
 
-                <CCol className=" mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                  Area
-                  <CCardText className="fw-normal" style={{ color: 'black' }}>
-                    {unittype?.sqft + ' sqft.' || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol className=" mt-0 fw-light" style={{ color: '#00bfcc' }}>
-                  Maintenace
-                  <CCardText
-                    className="fw-normal"
-                    style={{ color: 'black', textTransform: 'capitalize' }}
-                  >
-                    {unittype?.monthly_maintenance_amount_per_sqft || '-'}
-                  </CCardText>
-                </CCol>
-              </CRow>
-              <CRow className="mt-3">
-                <CCol
-                  className="mt-0 fw-light col-sm-6 text-nowrap col-lg-3"
-                  style={{ color: '#00bfcc' }}
-                >
-                  Description
-                  <CCardText
-                    className="fw-normal"
-                    style={{ color: 'black', textTransform: 'capitalize' }}
-                  >
-                    {unittype?.description || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol
-                  className=" mt-0 fw-light col-sm-6 text-nowrap col-lg-3"
-                  style={{ color: '#00bfcc' }}
-                >
-                  Created At
-                  <CCardText
-                    className="fw-normal"
-                    style={{ color: 'black', textTransform: 'capitalize' }}
-                  >
-                    {formatdate(unittype?.created_at) || '-'}
-                  </CCardText>
-                </CCol>
-                <CCol
-                  className=" mt-0 fw-light col-sm-6 text-nowrap col-lg-3"
-                  style={{ color: '#00bfcc' }}
-                >
-                  Modified On
-                  <CCardText
-                    className="fw-normal"
-                    style={{ color: 'black', textTransform: 'capitalize' }}
-                  >
-                    {formatdate(unittype?.updated_at) || '-'}
-                  </CCardText>
-                </CCol>
-              </CRow>
-            </CCard>
-          </CCol>
-        </CRow>
-        <div>
-          <Card className="border-0 mt-3 p-2 rounded-2">
-            <div className="d-flex  ms-2 justify-content-between align-items-center">
-              <strong className="d-flex justify-content-between align-items-center">
-                <CIcon icon={freeSet.cilDollar} size="xl" className="theme_color mx-1" />
-                Billable Items
-              </strong>
-
-              <div className=" me-4 border-0">
-                <AddBillable after_submit={reload_callback} unittypeID={unittypeID} />
-              </div>
+      {/* Hero */}
+      <div
+        style={{
+          ...cardStyle,
+          padding: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '16px',
+        }}
+      >
+        <div className="d-flex align-items-center" style={{ gap: '16px' }}>
+          <div
+            style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '16px',
+              background: `linear-gradient(135deg, ${THEME_COLOR} 0%, #0098a3 100%)`,
+              color: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CIcon icon={freeSet.cilLayers} size="xl" />
+          </div>
+          <div>
+            <h4 className="mb-0 text-capitalize" style={{ fontWeight: 700, color: '#1f2933' }}>
+              {unittype?.name || 'Unit Type'}
+            </h4>
+            <div style={{ color: '#8a94a6', marginTop: '4px' }}>
+              {unittype?.use_type || '-'}
+              {unittype?.sqft ? ` · ${unittype.sqft} sqft` : ''}
             </div>
-          </Card>
-          <hr className="p-0 m-0 text-secondary" />
-
-          {billableItems.length >= 1 ? (
-            <div className="mask d-flex align-items-center h-100">
-              <div className="w-100">
-                <div className="row justify-content-center">
-                  <div className="col-12">
-                    <div className="table-responsive bg-white">
-                      <table className="table table-striped mb-0">
-                        <thead
-                          style={{
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            overFlow: 'hidden',
-                          }}
-                        >
-                          <tr>
-                            <th className="pt-3 pb-3 border-0">Name</th>
-                            <th className="pt-3 pb-3 border-0">Description</th>
-                            <th className="pt-3 pb-3 border-0">Billabale Type </th>
-                            <th className="pt-3 pb-3 border-0">Monthly Amount</th>
-                            <th className="pt-3 pb-3 border-0">VAT</th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-                          {billableItems.map((billableItems) => (
-                            <tr key={billableItems.id}>
-                              <th
-                                className="pt-3 border-0"
-                                scope="row"
-                                style={{ color: '#666666' }}
-                              >
-                                {billableItems.name}
-                              </th>
-                              <td className="pt-3 text-capitalize">{billableItems.description}</td>
-                              <td className="pt-3 text-capitalize">
-                                {billableItems.billable_type}
-                              </td>
-                              <td className="pt-3"> {billableItems.monthly_amount}</td>
-                              <td>
-                                {`${billableItems.vat_percent} ${
-                                  billableItems?.billable_type === 'fixed' ? '' : '%'
-                                }`}
-                              </td>
-
-                              <td>
-                                <Dropdown key={billableItems.id}>
-                                  <Dropdown.Toggle
-                                    as={CustomDivToggle}
-                                    style={{ cursor: 'pointer' }}
-                                  >
-                                    <BsThreeDots />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu>
-                                    <EditBillable
-                                      id={billableItems.id}
-                                      after_submit={reload_callback}
-                                    />
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                      {loading ?? <Loading />}
-                      {errors ?? toast('Unable To Load data')}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <p className="text-center fst-italic bg-white p-5">No Billable Items Found.</p>
-          )}
+          </div>
         </div>
-        <br></br>
-        <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
-          <Row>
-            <Col md="12">
-              {pagination ? (
-                <Paginate
-                  onPageChange={handlePageClick}
-                  pageRangeDisplayed={pagination.per_page}
-                  pageCount={pagination.total_pages}
-                  forcePage={currentPage - 1}
-                />
-              ) : (
-                <br />
+        <EditUnitTypes id={unittypeID} after_submit={reload_callback} />
+      </div>
+
+      {/* Unit Type Details */}
+      <div style={{ ...cardStyle, padding: '24px', marginTop: '16px' }}>
+        <div className="d-flex align-items-center mb-3" style={{ gap: '10px' }}>
+          <div
+            style={{
+              width: '34px',
+              height: '34px',
+              borderRadius: '10px',
+              background: 'rgba(0,191,204,0.12)',
+              color: THEME_COLOR,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CIcon icon={freeSet.cilLineStyle} />
+          </div>
+          <h6 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+            Unit Type Information
+          </h6>
+        </div>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+            gap: '14px',
+          }}
+        >
+          <InfoTile label="Name" value={unittype?.name} />
+          <InfoTile label="Use Type" value={unittype?.use_type} />
+          <InfoTile label="Area" value={unittype?.sqft ? `${unittype.sqft} sqft` : '-'} />
+          <InfoTile
+            label="Maintenance / sqft"
+            value={
+              unittype?.monthly_maintenance_amount_per_sqft
+                ? `₹ ${unittype.monthly_maintenance_amount_per_sqft}`
+                : '-'
+            }
+          />
+          <InfoTile label="Description" value={unittype?.description} />
+          <InfoTile label="Created At" value={formatdate(unittype?.created_at)} />
+          <InfoTile label="Modified On" value={formatdate(unittype?.updated_at)} />
+        </div>
+      </div>
+
+      {/* Billable Items */}
+      <div style={{ ...cardStyle, marginTop: '16px' }}>
+        <div
+          className="d-flex justify-content-between align-items-center flex-wrap"
+          style={{ gap: '12px', padding: '20px 24px' }}
+        >
+          <div className="d-flex align-items-center" style={{ gap: '12px' }}>
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '12px',
+                background: 'rgba(0,191,204,0.12)',
+                color: THEME_COLOR,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <CIcon icon={freeSet.cilDollar} size="lg" />
+            </div>
+            <div>
+              <h5 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+                Billable Items
+              </h5>
+              <small style={{ color: '#8a94a6' }}>
+                {pagination?.total_entries ?? billableItems.length} total
+              </small>
+            </div>
+          </div>
+          <AddBillable after_submit={reload_callback} unittypeID={unittypeID} />
+        </div>
+
+        <div className="table-responsive">
+          <table className="table billable-table mb-0" style={{ borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                <th style={headerCellStyle}>Name</th>
+                <th style={headerCellStyle}>Description</th>
+                <th style={headerCellStyle}>Billable Type</th>
+                <th style={headerCellStyle}>Monthly Amount</th>
+                <th style={headerCellStyle}>VAT</th>
+                <th style={{ ...headerCellStyle, textAlign: 'center' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {billableItems.map((item) => (
+                <tr key={item.id}>
+                  <td style={bodyCellStyle}>{item.name || '-'}</td>
+                  <td style={bodyCellStyle} className="text-capitalize">
+                    {item.description || '-'}
+                  </td>
+                  <td style={bodyCellStyle} className="text-capitalize">
+                    {item.billable_type || '-'}
+                  </td>
+                  <td style={bodyCellStyle}>{item.monthly_amount ?? '-'}</td>
+                  <td style={bodyCellStyle}>
+                    {`${item.vat_percent ?? '-'} ${
+                      item?.billable_type === 'fixed' ? '' : '%'
+                    }`.trim()}
+                  </td>
+                  <td style={bodyCellStyle}>
+                    <div className="d-flex justify-content-center">
+                      <Dropdown>
+                        <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
+                          <BsThreeDots />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <EditBillable id={item.id} after_submit={reload_callback} />
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {!loading && billableItems.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="text-center text-secondary fst-italic"
+                    style={{ padding: '32px' }}
+                  >
+                    No billable items found
+                  </td>
+                </tr>
               )}
-            </Col>
-          </Row>
-        </CNavbar>
-      </CCol>
-    </>
+            </tbody>
+          </table>
+          {loading && <Loading />}
+          {errors ? toast('Unable to load data') : null}
+        </div>
+
+        {pagination?.total_pages > 1 ? (
+          <div
+            className="billable-pagination d-flex justify-content-center"
+            style={{ padding: '16px', borderTop: '1px solid #f2f4f7' }}
+          >
+            <Paginate
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={pagination.per_page}
+              pageCount={pagination.total_pages}
+              forcePage={currentPage - 1}
+            />
+          </div>
+        ) : null}
+      </div>
+    </div>
   )
 }
 

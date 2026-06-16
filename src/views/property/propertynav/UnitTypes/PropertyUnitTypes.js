@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
-
 import Paginate from '../../../../components/Pagination'
 import Loading from 'src/components/loading/loading'
-import CustomDivToggle from 'src/components/CustomDivToggle'
-
-import {
-  CNavbar,
-  CContainer,
-  CNavbarBrand,
-  CAccordionBody,
-  CAccordion,
-  CAccordionHeader,
-} from '@coreui/react'
-import { BsThreeDots } from 'react-icons/bs'
-import { Dropdown, Row, Col, Accordion } from 'react-bootstrap'
-import { Link, NavLink, useParams } from 'react-router-dom'
-import BillableItems from './BillableCrud/BilliableItems'
+import { NavLink, useParams } from 'react-router-dom'
 import AddUnitTypes from './AddUnitTypes'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
-import EditUnitTypes from './EditUnitTypes'
 import { formatdate } from 'src/services/CommonFunctions'
+
+const THEME_COLOR = '#00bfcc'
+
+const headerCellStyle = {
+  color: '#8a94a6',
+  fontSize: '11px',
+  fontWeight: 600,
+  textTransform: 'uppercase',
+  letterSpacing: '0.04em',
+  borderBottom: '1px solid #eef1f5',
+  padding: '14px 16px',
+  whiteSpace: 'nowrap',
+}
+
+const bodyCellStyle = {
+  padding: '14px 16px',
+  borderBottom: '1px solid #f2f4f7',
+  color: '#1f2933',
+  verticalAlign: 'middle',
+}
 
 const PropertyUnitType = () => {
   const { get, response } = useFetch()
@@ -32,13 +37,8 @@ const PropertyUnitType = () => {
   const [loading, setLoading] = useState(true)
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-
-  const [visible, setVisible] = useState(false)
-
-  const [showBillable, setShowBillable] = useState(false)
-
   const [unit_type, setUnit_types] = useState([])
-  const [searchKeyword, setSearchKeyword] = useState(null)
+  const [searchKeyword, setSearchKeyword] = useState('')
 
   useEffect(() => {
     loadInitialUnitsTypes()
@@ -52,140 +52,213 @@ const PropertyUnitType = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      loadInitialUnitsTypes(1, event.target.value)
+      loadInitialUnitsTypes()
     }
   }
+
   const handleInputChange = (event) => {
-    const value = event.target.value
-    setSearchKeyword(value)
+    setSearchKeyword(event.target.value)
   }
 
-  async function loadInitialUnitsTypes(query) {
+  async function loadInitialUnitsTypes() {
+    setLoading(true)
     let endpoint = `/v1/admin/premises/properties/${propertyId}/unit_types?page=${currentPage}`
     if (searchKeyword) {
       endpoint += `&q[name_cont]=${searchKeyword}`
     }
-    if (typeof query === 'string') {
-      // endpoint += query
-    }
+
     const initialUnitTypes = await get(endpoint)
 
     if (response.ok) {
-      if (initialUnitTypes.data) {
-        setLoading(false)
-        setUnit_types(initialUnitTypes.data)
-        setPagination(initialUnitTypes.pagination)
-        if (initialUnitTypes.data.length == 0) {
-          toast.dismiss()
-          toast.warn('No data found!')
-        }
-      }
+      setUnit_types(initialUnitTypes.data || [])
+      setPagination(initialUnitTypes.pagination)
+      setErrors(false)
     } else {
       setErrors(true)
-      setLoading(false)
+      toast.error('Unable to load unit types')
     }
+    setLoading(false)
   }
+
   function handlePageClick(e) {
-    setUnit_types([])
-    setLoading(true)
     setCurrentPage(e.selected + 1)
   }
 
   return (
-    <div>
-      <div>
-        <div className="mask d-flex align-items-center h-100 mt-2">
-          <div className="w-100">
-            <CNavbar expand="lg" colorScheme="light" className="bg-white">
-              <CContainer fluid>
-                <CNavbarBrand href="/unit_type">Unit Types</CNavbarBrand>
-                <div className="d-flex justify-content-end">
-                  <div className="d-flex" role="search">
-                    <input
-                      value={searchKeyword}
-                      onKeyDown={handleKeyDown}
-                      onChange={handleInputChange}
-                      className="form-control  custom_input"
-                      type="search"
-                      placeholder="Search"
-                      aria-label="Search"
-                    />
-                    <button
-                      onClick={loadInitialUnitsTypes}
-                      className="btn btn-outline-success custom_search_button"
-                      type="submit"
-                    >
-                      <CIcon icon={freeSet.cilSearch} />
-                    </button>
-                  </div>
-                  <AddUnitTypes after_submit={loadInitialUnitsTypes} />
-                </div>
-              </CContainer>
-            </CNavbar>
-            <hr className="p-0 m-0 text-secondary" />
+    <div style={{ padding: '20px' }}>
+      <style>{`
+        .unit-type-table tbody tr { transition: background-color .15s ease; }
+        .unit-type-table tbody tr:hover { background-color: #f5fdfe; }
 
-            <div className="row justify-content-center">
-              <div className="col-12">
-                <div className="table-responsive bg-white">
-                  <table className="table  table-striped mb-0">
-                    <thead
-                      style={{
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        overFlow: 'hidden',
-                      }}
-                    >
-                      <tr>
-                        <th className="pt-3 pb-3 border-0 ">Name</th>
-                        <th className="pt-3 pb-3 border-0">Use Type</th>
-                        <th className="pt-3 pb-3 border-0">Area </th>
-                        <th className="text-center pt-3 pb-3 border-0">Maintenace/sqft</th>
-                        <th className="pt-3 pb-3 border-0">Last Updated</th>
-                      </tr>
-                    </thead>
+        .unit-type-pagination ul { margin: 0; align-items: center; gap: 4px; }
+        .unit-type-pagination .btn {
+          box-shadow: none !important;
+          border: 1px solid #eef1f5 !important;
+          border-radius: 8px !important;
+          background: #fff;
+          color: #495057;
+          min-width: 36px;
+          height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 10px;
+          margin: 0 !important;
+          transition: all .15s ease;
+        }
+        .unit-type-pagination .btn:hover {
+          border-color: ${THEME_COLOR} !important;
+          color: ${THEME_COLOR};
+        }
+        .unit-type-pagination .custom_background_color,
+        .unit-type-pagination .custom_background_color .btn {
+          background: ${THEME_COLOR} !important;
+          border-color: ${THEME_COLOR} !important;
+          color: #fff !important;
+        }
+      `}</style>
 
-                    <tbody>
-                      {unit_type.map((unit_type) => (
-                        <tr key={unit_type.id}>
-                          <th className="pt-3 border-0 text-nowrap">
-                            <NavLink to={`${unit_type.id}/billableitems`}>{unit_type.name}</NavLink>
-                          </th>
-                          <td className="pt-3 border-0  text-capitalize">{unit_type.use_type}</td>
-                          <td className="pt-3 border-0 ">{unit_type.sqft}</td>
-                          <td className="text-center">
-                            ₹{unit_type.monthly_maintenance_amount_per_sqft}
-                          </td>
-
-                          <td className="pt-3 border-0 ">{formatdate(unit_type?.updated_at)}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {loading && <Loading />}
-                  {errors && toast('Unable To Load data')}
-                </div>
-              </div>
+      <div
+        style={{
+          background: '#fff',
+          borderRadius: '16px',
+          boxShadow: '0 2px 12px rgba(0,0,0,.05)',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          className="d-flex justify-content-between align-items-center flex-wrap"
+          style={{ gap: '12px', padding: '20px 24px' }}
+        >
+          <div className="d-flex align-items-center" style={{ gap: '12px' }}>
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '12px',
+                background: 'rgba(0,191,204,0.12)',
+                color: THEME_COLOR,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <CIcon icon={freeSet.cilLayers} size="lg" />
+            </div>
+            <div>
+              <h5 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+                Unit Types
+              </h5>
+              <small style={{ color: '#8a94a6' }}>
+                {pagination?.total_entries ?? unit_type.length} total
+              </small>
             </div>
           </div>
-        </div>
-      </div>
-      <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
-        <Row>
-          <Col md="12">
-            {pagination?.total_pages > 1 ? (
-              <Paginate
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={pagination.per_page}
-                pageCount={pagination.total_pages}
-                forcePage={currentPage - 1}
+
+          <div className="d-flex align-items-center" style={{ gap: '10px' }}>
+            <div
+              className="d-flex align-items-center"
+              style={{
+                background: '#f5f7fb',
+                borderRadius: '10px',
+                padding: '2px 6px 2px 12px',
+              }}
+            >
+              <input
+                value={searchKeyword}
+                onKeyDown={handleKeyDown}
+                onChange={handleInputChange}
+                className="border-0"
+                style={{ background: 'transparent', outline: 'none', minWidth: '160px' }}
+                type="search"
+                placeholder="Search by name"
+                aria-label="Search"
               />
-            ) : (
-              <br />
-            )}
-          </Col>
-        </Row>
-      </CNavbar>
+              <button
+                onClick={loadInitialUnitsTypes}
+                className="btn d-flex align-items-center justify-content-center"
+                type="button"
+                style={{
+                  background: THEME_COLOR,
+                  color: '#fff',
+                  borderRadius: '8px',
+                  width: '34px',
+                  height: '34px',
+                }}
+              >
+                <CIcon icon={freeSet.cilSearch} size="sm" />
+              </button>
+            </div>
+            <AddUnitTypes after_submit={loadInitialUnitsTypes} />
+          </div>
+        </div>
+
+        <div className="table-responsive">
+          <table className="table unit-type-table mb-0" style={{ borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                <th style={headerCellStyle}>Name</th>
+                <th style={headerCellStyle}>Use Type</th>
+                <th style={headerCellStyle}>Area</th>
+                <th style={{ ...headerCellStyle, textAlign: 'center' }}>Maintenance/sqft</th>
+                <th style={headerCellStyle}>Last Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              {unit_type.map((item) => (
+                <tr key={item.id}>
+                  <td style={bodyCellStyle}>
+                    <NavLink
+                      to={`${item.id}/billableitems`}
+                      className="fw-semibold"
+                      style={{ color: THEME_COLOR, textDecoration: 'none' }}
+                    >
+                      {item.name}
+                    </NavLink>
+                  </td>
+                  <td style={bodyCellStyle} className="text-capitalize">
+                    {item.use_type || '-'}
+                  </td>
+                  <td style={bodyCellStyle}>{item.sqft ? `${item.sqft} sqft` : '-'}</td>
+                  <td style={{ ...bodyCellStyle, textAlign: 'center' }}>
+                    ₹{item.monthly_maintenance_amount_per_sqft ?? '-'}
+                  </td>
+                  <td style={bodyCellStyle}>{formatdate(item?.updated_at) || '-'}</td>
+                </tr>
+              ))}
+              {!loading && unit_type.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="text-center text-secondary fst-italic"
+                    style={{ padding: '32px' }}
+                  >
+                    No unit types found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+          {loading && <Loading />}
+          {errors ? toast('Unable to load data') : null}
+        </div>
+
+        {pagination?.total_pages > 1 ? (
+          <div
+            className="unit-type-pagination d-flex justify-content-center"
+            style={{ padding: '16px', borderTop: '1px solid #f2f4f7' }}
+          >
+            <Paginate
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={pagination.per_page}
+              pageCount={pagination.total_pages}
+              forcePage={currentPage - 1}
+            />
+          </div>
+        ) : null}
+      </div>
     </div>
   )
 }
+
 export default PropertyUnitType

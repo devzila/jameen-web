@@ -1,34 +1,56 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { Button, Form, Row, Col } from 'react-bootstrap'
+import { Modal, Button, Form, Row, Col, InputGroup } from 'react-bootstrap'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
-import {
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
-  CContainer,
-} from '@coreui/react'
+const THEME_COLOR = '#00bfcc'
+const labelStyle = { fontWeight: 600, color: '#1f2933' }
+const cardStyle = {
+  background: '#f8fafc',
+  border: '1px solid #eef1f5',
+  borderRadius: '14px',
+  padding: '18px',
+}
+
+function SectionTitle({ children }) {
+  return (
+    <div className="d-flex align-items-center mb-3" style={{ gap: '8px' }}>
+      <span
+        style={{ width: '4px', height: '18px', background: THEME_COLOR, borderRadius: '2px' }}
+      />
+      <h6 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+        {children}
+      </h6>
+    </div>
+  )
+}
+
+SectionTitle.propTypes = { children: PropTypes.node }
 
 export default function EditUnitTypes({ after_submit, id }) {
-  const { register, handleSubmit, control, setValue } = useForm()
+  const { register, handleSubmit, control, setValue, reset } = useForm()
   const { get, put, response } = useFetch()
-
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
   const [errors, setErrors] = useState({})
   const [unit_type, setUnit_type] = useState([])
+  const [unitName, setUnitName] = useState('')
+
+  useEffect(() => {
+    if (visible) {
+      fetchLocalData()
+      loadUnitsTypes()
+    }
+  }, [visible])
 
   function fetchLocalData() {
     const temp_use_type = JSON.parse(localStorage.getItem('meta'))
-
     const temp2_unit_type = Object.entries(temp_use_type.property_use_types).map((x) => ({
       value: x[0],
       label: x[0],
@@ -36,179 +58,210 @@ export default function EditUnitTypes({ after_submit, id }) {
     setUnit_type(temp2_unit_type)
   }
 
-  //   { value: 'residential', label: 'residential' },
-  //   { value: 'commercial', label: 'commercial' },
-  //   { value: 'mixed', label: 'mixed' }
-
-  // use_type: 'residential',
-
-  React.useEffect(() => {
-    loadUnitsTypes()
-    fetchLocalData()
-  }, [])
-
   async function loadUnitsTypes() {
-    let endpoint = await get(`/v1/admin/premises/properties/${propertyId}/unit_types/${id}`)
+    const endpoint = await get(`/v1/admin/premises/properties/${propertyId}/unit_types/${id}`)
 
     if (response.ok) {
-      setValue('name', endpoint?.data?.name)
-      setValue('description', endpoint.data.description)
-      setValue('use_type', endpoint?.data?.use_type)
-      setValue('sqft', endpoint?.data?.sqft)
-      setValue(
-        'monthly_maintenance_amount_per_sqft',
-        endpoint?.data?.monthly_maintenance_amount_per_sqft,
-      )
+      const data = endpoint?.data
+      setUnitName(data?.name || '')
+      setValue('name', data?.name)
+      setValue('description', data?.description)
+      setValue('use_type', data?.use_type)
+      setValue('sqft', data?.sqft)
+      setValue('monthly_maintenance_amount_per_sqft', data?.monthly_maintenance_amount_per_sqft)
     }
+  }
+
+  function fieldError(name) {
+    const message = errors?.[name]?.[0] || (errors?.[name] && String(errors[name]))
+    if (!message) return null
+    return (
+      <small className="text-danger d-block" style={{ marginTop: '4px' }}>
+        {message}
+      </small>
+    )
   }
 
   async function onSubmit(data) {
-    const apiResponse = await put(`/v1/admin/premises/properties/${propertyId}/unit_types/${id}`, {
+    setErrors({})
+    await put(`/v1/admin/premises/properties/${propertyId}/unit_types/${id}`, {
       unit_type: data,
     })
+
     if (response.ok) {
       setVisible(false)
-
       if (typeof after_submit === 'function') {
         after_submit()
       }
-
-      toast('Item added successfully')
+      toast.success('Unit type updated successfully')
     } else {
-      setErrors(response.data.errors)
-      toast(response.data?.message)
+      setErrors(response.data?.errors || {})
+      toast.error(response.data?.message || 'Unable to update unit type')
     }
   }
+
   function handleClose() {
     setVisible(false)
     setErrors({})
+    reset()
   }
 
   return (
     <div>
-      <button
-        type="button"
-        className="tooltip_button text-nowrap px-3 py-2"
-        data-mdb-ripple-init
-        onClick={() => setVisible(!visible)}
-      >
+      <button type="button" className="btn custom_theme_button" onClick={() => setVisible(true)}>
         Edit
       </button>
-      <CModal
-        alignment="center"
+
+      <Modal
+        show={visible}
+        onHide={handleClose}
+        centered
         size="xl"
-        visible={visible}
         backdrop="static"
-        onClose={handleClose}
-        aria-labelledby="StaticBackdropExampleLabel"
+        contentClassName="border-0 overflow-hidden rounded-4"
       >
-        <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Edit Unit Types </CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CContainer>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
+        <Modal.Header
+          closeButton
+          closeVariant="white"
+          style={{
+            background: `linear-gradient(135deg, ${THEME_COLOR} 0%, #0098a3 100%)`,
+            border: 'none',
+            padding: '20px 24px',
+            borderTopLeftRadius: 'inherit',
+            borderTopRightRadius: 'inherit',
+          }}
+        >
+          <Modal.Title style={{ color: '#fff' }}>
+            <div className="d-flex align-items-center" style={{ gap: '14px' }}>
+              <div
+                style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '12px',
+                  background: 'rgba(255,255,255,0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <CIcon icon={freeSet.cilPencil} size="lg" />
+              </div>
+              <div className="d-flex flex-column">
+                <span style={{ fontSize: '18px', fontWeight: 700, lineHeight: 1.2 }}>
+                  Edit Unit Type
+                </span>
+                <span style={{ fontSize: '12px', fontWeight: 400, opacity: 0.9 }}>
+                  {unitName || 'Update unit type information'}
+                </span>
+              </div>
+            </div>
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body style={{ padding: '22px' }}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <div style={{ ...cardStyle, marginBottom: '14px' }}>
+              <SectionTitle>Basic Information</SectionTitle>
+              <Row className="g-3">
+                <Col md={6}>
                   <Form.Group>
-                    <label>
-                      Name
-                      <small className="text-danger"> *{errors ? errors.name : null} </small>
-                    </label>
-                    <Form.Control type="text" {...register('name')}></Form.Control>
+                    <Form.Label style={labelStyle}>
+                      Name <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
+                    <Form.Control type="text" {...register('name')} />
+                    {fieldError('name')}
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="6">
+                <Col md={6}>
                   <Form.Group>
-                    <label>Description</label>
-
-                    <Form.Control type="text" {...register('description')}></Form.Control>
+                    <Form.Label style={labelStyle}>Description</Form.Label>
+                    <Form.Control type="text" {...register('description')} />
+                    {fieldError('description')}
                   </Form.Group>
                 </Col>
-              </Row>
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
+                <Col md={12}>
                   <Form.Group>
-                    <label>
-                      Area (sqft.)
-                      <small className="text-danger ">*{errors ? errors.sqft : null}</small>
-                    </label>
-                    <Form.Control type="integer" {...register('sqft')}></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>
-                      Monthly Maintenace Amout / SQFT.
-                      <small className="text-danger ">
-                        *{errors ? errors.monthly_maintenance_amount_per_sqft : null}
-                      </small>
-                    </label>
-
-                    <Form.Control
-                      type="integer"
-                      {...register('monthly_maintenance_amount_per_sqft')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <label>
-                      Use Type
-                      <small className="text-danger"> *{errors ? errors.use_type : null} </small>
-                    </label>
-
+                    <Form.Label style={labelStyle}>
+                      Use Type <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
                     <Controller
                       name="use_type"
                       render={({ field }) => (
                         <Select
-                          type="text"
-                          className="basic-multi-select"
                           classNamePrefix="select"
                           {...field}
-                          value={unit_type.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
+                          value={unit_type.find((c) => c.value === field.value) || null}
+                          onChange={(val) => field.onChange(val?.value)}
                           options={unit_type}
+                          placeholder="Select use type"
                         />
                       )}
                       control={control}
                     />
+                    {fieldError('use_type')}
                   </Form.Group>
                 </Col>
               </Row>
+            </div>
 
-              <div className="text-center">
-                <CModalFooter>
-                  <Button
-                    data-mdb-ripple-init
-                    type="submit"
-                    className="btn  btn-primary btn-block custom_theme_button"
-                  >
-                    Submit
-                  </Button>
-                  <CButton
-                    className="custom_grey_button"
-                    color="secondary"
-                    style={{ border: '0px', color: 'white' }}
-                    onClick={handleClose}
-                  >
-                    Close
-                  </CButton>
-                </CModalFooter>
-              </div>
-            </Form>
-            <div className="clearfix"></div>
-          </CContainer>
-        </CModalBody>
-      </CModal>
+            <div style={cardStyle}>
+              <SectionTitle>Pricing &amp; Area</SectionTitle>
+              <Row className="g-3">
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label style={labelStyle}>
+                      Area (sqft) <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
+                    <Form.Control type="number" {...register('sqft')} />
+                    {fieldError('sqft')}
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label style={labelStyle}>
+                      Monthly Maintenance / SQFT <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
+                    <InputGroup>
+                      <InputGroup.Text>₹</InputGroup.Text>
+                      <Form.Control
+                        type="number"
+                        {...register('monthly_maintenance_amount_per_sqft')}
+                      />
+                    </InputGroup>
+                    {fieldError('monthly_maintenance_amount_per_sqft')}
+                  </Form.Group>
+                </Col>
+              </Row>
+            </div>
+
+            <Modal.Footer style={{ border: 'none', padding: '16px 0 0' }}>
+              <Button
+                variant="light"
+                onClick={handleClose}
+                style={{ borderRadius: '8px', fontWeight: 600 }}
+              >
+                Close
+              </Button>
+              <Button
+                type="submit"
+                style={{
+                  background: THEME_COLOR,
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: 600,
+                }}
+              >
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </div>
   )
 }
 
 EditUnitTypes.propTypes = {
   after_submit: PropTypes.func,
-  id: PropTypes.number,
+  id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 }
