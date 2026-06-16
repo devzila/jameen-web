@@ -477,10 +477,9 @@ export default function Visitor() {
         show={!!cancelVisit}
         onHide={() => (cancelling ? null : setCancelVisit(null))}
         centered
-        contentClassName="border-0"
-        style={{ borderRadius: '16px' }}
+        contentClassName="border-0 overflow-hidden rounded-4"
       >
-        <div style={{ borderRadius: '16px', overflow: 'hidden' }}>
+        <div>
           <Modal.Header
             closeButton
             closeVariant="white"
@@ -488,6 +487,8 @@ export default function Visitor() {
               background: `linear-gradient(135deg, #e03131 0%, #c92a2a 100%)`,
               border: 'none',
               padding: '18px 22px',
+              borderTopLeftRadius: 'inherit',
+              borderTopRightRadius: 'inherit',
             }}
           >
             <Modal.Title style={{ color: '#fff' }}>
