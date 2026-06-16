@@ -6,13 +6,13 @@ import Paginate from '../../components/Pagination'
 
 import Loading from 'src/components/loading/loading'
 
-import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import { Row, Col } from 'react-bootstrap'
 import AddVisitor from './AddVisitor'
 import ShowVisitor from './ShowVisitor'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import CheckPermissions from 'src/permissions/CheckPermissions'
+
+const THEME_COLOR = '#00bfcc'
 
 function firstVisitorName(visit) {
   const first = Array.isArray(visit?.visitors) ? visit.visitors[0] : null
@@ -35,10 +35,51 @@ function formatDateTime(value) {
   return String(value).replace('T', ' ').replace('Z', ' ').slice(0, 19)
 }
 
+function initials(name) {
+  const parts = String(name).trim().split(/\s+/)
+  return ((parts[0]?.[0] || '') + (parts[1]?.[0] || '')).toUpperCase() || '?'
+}
+
+function statusBadgeStyle(status) {
+  const palette = {
+    approved: { bg: '#e6f9ec', color: '#1a9e54' },
+    requested: { bg: '#e7f5ff', color: '#1c7ed6' },
+    cancelled: { bg: '#fdeaea', color: '#e03131' },
+  }
+  const colors = palette[String(status).toLowerCase()] || { bg: '#eef1f5', color: '#495057' }
+  return {
+    background: colors.bg,
+    color: colors.color,
+    padding: '4px 14px',
+    borderRadius: '999px',
+    fontSize: '12px',
+    fontWeight: 600,
+    textTransform: 'capitalize',
+    display: 'inline-block',
+  }
+}
+
+const headerCellStyle = {
+  color: '#8a94a6',
+  fontSize: '11px',
+  fontWeight: 600,
+  textTransform: 'uppercase',
+  letterSpacing: '0.04em',
+  borderBottom: '1px solid #eef1f5',
+  padding: '14px 16px',
+  whiteSpace: 'nowrap',
+}
+
+const bodyCellStyle = {
+  padding: '14px 16px',
+  borderBottom: '1px solid #f2f4f7',
+  color: '#1f2933',
+  verticalAlign: 'middle',
+}
+
 export default function Visitor() {
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [errors, setErrors] = useState(false)
   const [loading, setLoading] = useState(true)
 
   const [visitor, setVisitor] = useState([])
@@ -46,7 +87,6 @@ export default function Visitor() {
   const [searchKeyword, setSearchKeyword] = useState(null)
   const { get, response } = useFetch()
 
-  //Ladiong Data
   async function loadInitialVisitor() {
     let endpoint = `/v1/admin/visits?page=${currentPage}`
 
@@ -63,7 +103,6 @@ export default function Visitor() {
       }
     } else {
       toast('We are facing a technical issue at our end.')
-
       setLoading(false)
     }
   }
@@ -76,95 +115,198 @@ export default function Visitor() {
   }
 
   return (
-    <div>
-      <section className="w-100 p-0 bg-white">
-        <CNavbar expand="lg" colorScheme="light" className="bg-white">
-          <CContainer fluid>
-            <CNavbarBrand href="/residents">Visitors</CNavbarBrand>
-            <div className="d-flex justify-content-end">
-              <div className="d-flex" role="search">
-                <input
-                  onChange={(e) => setSearchKeyword(e.target.value)}
-                  className="form-control  custom_input"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button
-                  onClick={loadInitialVisitor}
-                  className="btn btn-outline-success custom_search_button"
-                  type="submit"
-                >
-                  <CIcon icon={freeSet.cilSearch} />
-                </button>
-              </div>
+    <div style={{ padding: '20px' }}>
+      <style>{`
+        .visitor-table tbody tr { transition: background-color .15s ease; }
+        .visitor-table tbody tr:hover { background-color: #f5fdfe; }
 
-              <CheckPermissions component={<AddVisitor />} keys={['visitor', 'create']} />
+        .visitor-pagination ul { margin: 0; align-items: center; gap: 4px; }
+        .visitor-pagination .btn {
+          box-shadow: none !important;
+          border: 1px solid #eef1f5 !important;
+          border-radius: 8px !important;
+          background: #fff;
+          color: #495057;
+          min-width: 36px;
+          height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 10px;
+          margin: 0 !important;
+          transition: all .15s ease;
+        }
+        .visitor-pagination .btn:hover {
+          border-color: ${THEME_COLOR} !important;
+          color: ${THEME_COLOR};
+        }
+        .visitor-pagination .custom_background_color,
+        .visitor-pagination .custom_background_color .btn {
+          background: ${THEME_COLOR} !important;
+          border-color: ${THEME_COLOR} !important;
+          color: #fff !important;
+        }
+      `}</style>
+
+      <div
+        style={{
+          background: '#fff',
+          borderRadius: '16px',
+          boxShadow: '0 2px 12px rgba(0,0,0,.05)',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Header */}
+        <div
+          className="d-flex justify-content-between align-items-center flex-wrap"
+          style={{ gap: '12px', padding: '20px 24px' }}
+        >
+          <div className="d-flex align-items-center" style={{ gap: '12px' }}>
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '12px',
+                background: 'rgba(0,191,204,0.12)',
+                color: THEME_COLOR,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <CIcon icon={freeSet.cilPeople} size="lg" />
             </div>
-          </CContainer>
-        </CNavbar>
-        <hr className=" text-secondary m-0" />
-
-        <div>
-          <div className="mask d-flex align-items-center w-100 h-100">
-            <div className="table-responsive bg-white w-100">
-              <table className="table mb-0 table-striped">
-                <thead
-                  style={{
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                    overFlow: 'hidden',
-                  }}
-                >
-                  <tr>
-                    <th className="pt-3 pb-3 border-0">Visitor Name</th>
-                    <th className="pt-3 pb-3 border-0">Unit No.</th>
-                    <th className="pt-3 pb-3 border-0">Vehicle Number</th>
-                    <th className="pt-3 pb-3 border-0">No. of Visitors</th>
-                    <th className="pt-3 pb-3 border-0">Purpose</th>
-                    <th className="pt-3 pb-3 border-0">Expected Arrival Time</th>
-                    <th className="pt-3 pb-3 border-0">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {visitor &&
-                    visitor?.map((visit) => (
-                      <tr key={visit.id}>
-                        <th className="pt-3 border-0" scope="row">
-                          <ShowVisitor visit={visit} label={firstVisitorName(visit)} />
-                        </th>
-                        <td className="pt-3">{unitLabel(visit)}</td>
-                        <td className="pt-3">{visit.vehicle_number || '-'}</td>
-                        <td className="pt-3">{visit.no_of_visitors ?? '-'}</td>
-                        <td className="pt-3">{visit.purpose || '-'}</td>
-                        <td className="pt-3">{formatDateTime(visit.expected_arrival_time)}</td>
-                        <td className="pt-3">{visit.status || '-'}</td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-              {loading && <Loading />}
+            <div>
+              <h5 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+                Visitors
+              </h5>
+              <small style={{ color: '#8a94a6' }}>
+                {pagination?.total_count ?? visitor.length} total
+              </small>
             </div>
           </div>
+
+          <div className="d-flex align-items-center" style={{ gap: '10px' }}>
+            <div
+              className="d-flex align-items-center"
+              style={{
+                background: '#f5f7fb',
+                borderRadius: '10px',
+                padding: '2px 6px 2px 12px',
+              }}
+            >
+              <input
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && loadInitialVisitor()}
+                className="border-0"
+                style={{ background: 'transparent', outline: 'none', minWidth: '180px' }}
+                type="search"
+                placeholder="Search by name, email, phone"
+                aria-label="Search"
+              />
+              <button
+                onClick={loadInitialVisitor}
+                className="btn d-flex align-items-center justify-content-center"
+                type="button"
+                style={{
+                  background: THEME_COLOR,
+                  color: '#fff',
+                  borderRadius: '8px',
+                  width: '34px',
+                  height: '34px',
+                }}
+              >
+                <CIcon icon={freeSet.cilSearch} size="sm" />
+              </button>
+            </div>
+
+            <CheckPermissions component={<AddVisitor />} keys={['visitor', 'create']} />
+          </div>
         </div>
-        <br></br>
-        <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
-          <Row>
-            <Col md="12">
-              {pagination ? (
-                <Paginate
-                  onPageChange={handlePageClick}
-                  pageRangeDisplayed={pagination.per_page}
-                  pageCount={pagination.total_pages}
-                  forcePage={currentPage - 1}
-                />
-              ) : (
-                <br />
+
+        {/* Table */}
+        <div className="table-responsive">
+          <table className="table visitor-table mb-0" style={{ borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                <th style={headerCellStyle}>Visitor Name</th>
+                <th style={headerCellStyle}>Unit No.</th>
+                <th style={headerCellStyle}>Vehicle Number</th>
+                <th style={headerCellStyle}>No. of Visitors</th>
+                <th style={headerCellStyle}>Purpose</th>
+                <th style={headerCellStyle}>Expected Arrival Time</th>
+                <th style={headerCellStyle}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {visitor?.map((visit) => {
+                const name = firstVisitorName(visit)
+                return (
+                  <tr key={visit.id}>
+                    <td style={bodyCellStyle}>
+                      <div className="d-flex align-items-center" style={{ gap: '10px' }}>
+                        <div
+                          style={{
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '50%',
+                            background: 'rgba(0,191,204,0.15)',
+                            color: THEME_COLOR,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 700,
+                            fontSize: '13px',
+                            flexShrink: 0,
+                          }}
+                        >
+                          {initials(name)}
+                        </div>
+                        <ShowVisitor visit={visit} label={name} />
+                      </div>
+                    </td>
+                    <td style={bodyCellStyle}>{unitLabel(visit)}</td>
+                    <td style={bodyCellStyle}>{visit.vehicle_number || '-'}</td>
+                    <td style={bodyCellStyle}>{visit.no_of_visitors ?? '-'}</td>
+                    <td style={bodyCellStyle}>{visit.purpose || '-'}</td>
+                    <td style={bodyCellStyle}>{formatDateTime(visit.expected_arrival_time)}</td>
+                    <td style={bodyCellStyle}>
+                      <span style={statusBadgeStyle(visit.status)}>{visit.status || '-'}</span>
+                    </td>
+                  </tr>
+                )
+              })}
+              {!loading && visitor?.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={7}
+                    className="text-center text-secondary fst-italic"
+                    style={{ padding: '32px' }}
+                  >
+                    No visitors found
+                  </td>
+                </tr>
               )}
-            </Col>
-          </Row>
-        </CNavbar>
-      </section>
+            </tbody>
+          </table>
+          {loading && <Loading />}
+        </div>
+
+        {/* Pagination */}
+        {pagination ? (
+          <div
+            className="visitor-pagination d-flex justify-content-center"
+            style={{ padding: '16px', borderTop: '1px solid #f2f4f7' }}
+          >
+            <Paginate
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={pagination.per_page}
+              pageCount={pagination.total_pages}
+              forcePage={currentPage - 1}
+            />
+          </div>
+        ) : null}
+      </div>
     </div>
   )
 }
