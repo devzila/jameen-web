@@ -172,8 +172,40 @@ export default function Visitor() {
       setCancelReason('')
       return
     }
-    // TODO: wire check-in / check-out to their respective APIs
+    if (actionKey === 'checkin') {
+      handleStatusChange(
+        visit,
+        2,
+        'Visitor checked in successfully.',
+        'Unable to check in the visitor. Please try again.',
+      )
+      return
+    }
+    if (actionKey === 'checkout') {
+      handleStatusChange(
+        visit,
+        3,
+        'Visitor checked out successfully.',
+        'Unable to check out the visitor. Please try again.',
+      )
+      return
+    }
     toast(`"${actionKey}" action for visit #${visit.id} will be available soon.`)
+  }
+
+  async function handleStatusChange(visit, status, successMsg, errorMsg) {
+    await put(`/v1/admin/visits/${visit.id}`, {
+      visit: {
+        status,
+      },
+    })
+
+    if (response.ok) {
+      toast.success(successMsg)
+      loadInitialVisitor()
+    } else {
+      toast.error(errorMsg)
+    }
   }
 
   async function submitCancellation() {
