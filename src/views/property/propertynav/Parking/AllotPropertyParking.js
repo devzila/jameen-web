@@ -3,53 +3,67 @@ import useFetch from 'use-http'
 import Select from 'react-select'
 import { toast } from 'react-toastify'
 import { useForm, Controller } from 'react-hook-form'
-import { Button, Form, Row, Col } from 'react-bootstrap'
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types'
-
-import {
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
-  CContainer,
-} from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 import { useParams } from 'react-router-dom'
-import { format_react_select } from 'src/services/CommonFunctions'
+
+const THEME_COLOR = '#00bfcc'
+const labelStyle = { fontWeight: 600, color: '#1f2933' }
+const cardStyle = {
+  background: '#f8fafc',
+  border: '1px solid #eef1f5',
+  borderRadius: '14px',
+  padding: '18px',
+}
 
 export default function AllotPropertyParking({ after_submit }) {
   const [visible, setVisible] = useState(false)
-  const [vehicle_array, setVehicle_array] = useState([])
+  const [vehicle_array] = useState([])
   const [units_array, setUnitsArray] = useState([])
   const [errors, setErrors] = useState({})
   const { propertyId } = useParams()
 
   const { register, handleSubmit, control, reset } = useForm()
   const { get, post, response } = useFetch()
+
   useEffect(() => {
-    loadUnits()
-  }, [])
+    if (visible) {
+      loadUnits()
+    }
+  }, [visible])
+
+  function fieldError(name) {
+    const message = errors?.[name]?.[0] || (errors?.[name] && String(errors[name]))
+    if (!message) return null
+    return (
+      <small className="text-danger d-block" style={{ marginTop: '4px' }}>
+        {message}
+      </small>
+    )
+  }
 
   async function onSubmit(data) {
+    setErrors({})
     await post(`/v1/admin/premises/properties/${propertyId}/parkings`, { parking: data })
+
     if (response.ok) {
-      toast('Parking Added Successfully')
+      toast.success('Parking added successfully')
       after_submit()
       reset({
         parking_number: '',
         unit_id: null,
         vehice_id: [],
       })
-
-      setVisible(!visible)
+      setVisible(false)
     } else {
-      setErrors(response.data.errors)
-      toast(response.data?.message)
+      setErrors(response.data?.errors || {})
+      toast.error(response.data?.message || 'Unknown Error')
     }
   }
 
-  const loadUnits = async () => {
+  async function loadUnits() {
     const api = await get(`/v1/admin/premises/properties/${propertyId}/units?limit=-1`)
     if (response.ok) {
       const formattedUnits = api.data.map((item) => ({
@@ -59,7 +73,8 @@ export default function AllotPropertyParking({ after_submit }) {
       setUnitsArray(formattedUnits)
     }
   }
-  const handleClose = () => {
+
+  function handleClose() {
     reset({
       parking_number: '',
       unit_id: null,
@@ -70,108 +85,169 @@ export default function AllotPropertyParking({ after_submit }) {
   }
 
   return (
-    <div>
+    <>
       <button
         type="button"
-        className="btn flex s-3 custom_theme_button"
-        data-mdb-ripple-init
-        onClick={() => setVisible(!visible)}
+        className="btn d-flex align-items-center"
+        onClick={() => setVisible(true)}
+        style={{
+          gap: '6px',
+          background: THEME_COLOR,
+          color: '#fff',
+          borderRadius: '10px',
+          height: '38px',
+          fontWeight: 600,
+          border: 'none',
+        }}
       >
+        <CIcon icon={freeSet.cilPlus} size="sm" />
         Add Parking
       </button>
-      <CModal
-        alignment="center"
-        size="xl"
-        visible={visible}
+
+      <Modal
+        show={visible}
+        onHide={handleClose}
+        centered
+        size="lg"
         backdrop="static"
-        onClose={handleClose}
-        aria-labelledby="StaticBackdropExampleLabel"
+        contentClassName="border-0 overflow-hidden rounded-4"
       >
-        <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add Parking </CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CContainer>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              <Row>
-                <Col className="pr-3 mt-3" md="6">
+        <Modal.Header
+          closeButton
+          closeVariant="white"
+          style={{
+            background: `linear-gradient(135deg, ${THEME_COLOR} 0%, #0098a3 100%)`,
+            border: 'none',
+            padding: '20px 24px',
+            borderTopLeftRadius: 'inherit',
+            borderTopRightRadius: 'inherit',
+          }}
+        >
+          <Modal.Title style={{ color: '#fff' }}>
+            <div className="d-flex align-items-center" style={{ gap: '14px' }}>
+              <div
+                style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '12px',
+                  background: 'rgba(255,255,255,0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <CIcon icon={freeSet.cilCarAlt} size="lg" />
+              </div>
+              <div className="d-flex flex-column">
+                <span style={{ fontSize: '18px', fontWeight: 700, lineHeight: 1.2 }}>
+                  Add Parking
+                </span>
+                <span style={{ fontSize: '12px', fontWeight: 400, opacity: 0.9 }}>
+                  Create a new parking spot for this property
+                </span>
+              </div>
+            </div>
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body style={{ padding: '22px' }}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <div style={cardStyle}>
+              <div className="d-flex align-items-center mb-3" style={{ gap: '8px' }}>
+                <span
+                  style={{
+                    width: '4px',
+                    height: '18px',
+                    background: THEME_COLOR,
+                    borderRadius: '2px',
+                  }}
+                />
+                <h6 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+                  Parking Details
+                </h6>
+              </div>
+
+              <Row className="g-3">
+                <Col md={6}>
                   <Form.Group>
-                    <label>
-                      Parking Number
-                      <small className="text-danger">
-                        *{errors ? errors.parking_number?.join(', ') : null}
-                      </small>
-                    </label>
+                    <Form.Label style={labelStyle}>
+                      Parking Number <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
                     <Form.Control
-                      placeholder="Parking Number"
+                      placeholder="Parking number"
                       type="text"
                       {...register('parking_number')}
-                    ></Form.Control>
+                    />
+                    {fieldError('parking_number')}
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="6">
+                <Col md={6}>
                   <Form.Group>
-                    <label>Unit</label>
+                    <Form.Label style={labelStyle}>Unit</Form.Label>
                     <Controller
                       name="unit_id"
                       render={({ field }) => (
                         <Select
                           {...field}
                           options={units_array}
-                          value={units_array.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
+                          value={units_array.find((c) => c.value === field.value) || null}
+                          onChange={(val) => field.onChange(val?.value)}
+                          placeholder="Select unit"
+                          isClearable
                         />
                       )}
                       control={control}
-                      placeholder="Role"
                     />
+                    {fieldError('unit_id')}
                   </Form.Group>
                 </Col>
-              </Row>
-              <Row>
-                <Col className="pr-1 mt-3" md="12">
+                <Col md={12}>
                   <Form.Group>
-                    <label>Vehicle</label>
-
+                    <Form.Label style={labelStyle}>Vehicle</Form.Label>
                     <Controller
                       name="vehice_id"
                       render={({ field }) => (
                         <Select
                           isMulti
-                          type="text"
                           className="basic-multi-select"
                           classNamePrefix="select"
                           {...field}
                           options={vehicle_array}
+                          placeholder="Vehicle number"
                         />
                       )}
                       control={control}
-                      placeholder="Vehicle Number"
                     />
+                    {fieldError('vehice_id')}
                   </Form.Group>
                 </Col>
               </Row>
+            </div>
 
-              <div className="text-center">
-                <CModalFooter>
-                  <Button
-                    data-mdb-ripple-init
-                    type="submit"
-                    className="btn custom_theme_button btn-primary btn-block"
-                  >
-                    Submit
-                  </Button>
-                  <CButton className="custom_grey_button" color="secondary" onClick={handleClose}>
-                    Close
-                  </CButton>
-                </CModalFooter>
-              </div>
-            </Form>
-            <div className="clearfix"></div>
-          </CContainer>
-        </CModalBody>
-      </CModal>
-    </div>
+            <Modal.Footer style={{ border: 'none', padding: '16px 0 0' }}>
+              <Button
+                variant="light"
+                onClick={handleClose}
+                style={{ borderRadius: '8px', fontWeight: 600 }}
+              >
+                Close
+              </Button>
+              <Button
+                type="submit"
+                style={{
+                  background: THEME_COLOR,
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: 600,
+                }}
+              >
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </>
   )
 }
 
