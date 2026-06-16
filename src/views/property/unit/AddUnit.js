@@ -3,30 +3,56 @@ import useFetch from 'use-http'
 import { useForm, Controller } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { Button, Form, Row, Col } from 'react-bootstrap'
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
-import {
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
-  CContainer,
-} from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
+
+const THEME_COLOR = '#00bfcc'
+
+const labelStyle = { fontWeight: 600, color: '#1f2933' }
+
+const cardStyle = {
+  background: '#f8fafc',
+  border: '1px solid #eef1f5',
+  borderRadius: '14px',
+  padding: '18px',
+}
+
+function SectionTitle({ children }) {
+  return (
+    <div className="d-flex align-items-center mb-3" style={{ gap: '8px' }}>
+      <span
+        style={{ width: '4px', height: '18px', background: THEME_COLOR, borderRadius: '2px' }}
+      />
+      <h6 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+        {children}
+      </h6>
+    </div>
+  )
+}
+
+SectionTitle.propTypes = {
+  children: PropTypes.node,
+}
+
 function Add({ after_submit }) {
   const { register, handleSubmit, control, reset } = useForm()
   const { get, post, response } = useFetch()
   const { propertyId } = useParams()
   const [visible, setVisible] = useState(false)
-  const [unitData, setUnitData] = useState({})
   const [errors, setErrors] = useState({})
   const [units_data, setUnits_data] = useState([])
   const [buildings_data, setBuildings_data] = useState([])
-  // =========================
-  // BUILDINGS
-  // =========================
+
+  useEffect(() => {
+    if (visible) {
+      fetchUnits()
+      fetchBuildings()
+    }
+  }, [visible])
+
   function trimBuildings(buildings) {
     if (buildings) {
       return buildings.map((e) => ({
@@ -36,6 +62,7 @@ function Add({ after_submit }) {
     }
     return []
   }
+
   async function fetchBuildings() {
     const apiResponse = await get(`/v1/admin/premises/properties/${propertyId}/buildings`)
     if (response.ok && apiResponse.data) {
@@ -44,9 +71,7 @@ function Add({ after_submit }) {
       setBuildings_data([])
     }
   }
-  // =========================
-  // UNIT TYPES
-  // =========================
+
   async function fetchUnits() {
     const apiResponse = await get(`/v1/admin/premises/properties/${propertyId}/unit_types`)
 
@@ -61,24 +86,26 @@ function Add({ after_submit }) {
       setUnits_data([])
     }
   }
-  // =========================
-  // LOAD DATA
-  // =========================
-  useEffect(() => {
-    fetchUnits()
-    fetchBuildings()
-  }, [])
-  // =========================
-  // SUBMIT FORM
-  // =========================
+
+  function fieldError(name) {
+    const message = errors?.[name]?.[0]
+    if (!message) return null
+    return (
+      <small className="text-danger d-block" style={{ marginTop: '4px' }}>
+        {message}
+      </small>
+    )
+  }
+
   async function onSubmit(data) {
-    const apiResponse = await post(`/v1/admin/premises/properties/${propertyId}/units`, {
+    setErrors({})
+    await post(`/v1/admin/premises/properties/${propertyId}/units`, {
       unit: data,
     })
+
     if (response.ok) {
       reset()
       setVisible(false)
-      setErrors({})
       after_submit()
       toast.success('Unit added successfully')
     } else {
@@ -86,200 +113,221 @@ function Add({ after_submit }) {
       toast.error(response.data?.message || 'Something went wrong')
     }
   }
-  // =========================
-  // CLOSE MODAL
-  // =========================
+
   function handleClose() {
     reset()
     setVisible(false)
     setErrors({})
   }
+
+  function openModal() {
+    setVisible(true)
+  }
+
   return (
     <div>
       <button
         type="button"
-        className="btn s-3 custom_theme_button"
-        onClick={() => setVisible(true)}
+        className="btn d-flex align-items-center"
+        onClick={openModal}
+        style={{
+          gap: '6px',
+          background: THEME_COLOR,
+          color: '#fff',
+          borderRadius: '10px',
+          height: '38px',
+          fontWeight: 600,
+          border: 'none',
+        }}
       >
+        <CIcon icon={freeSet.cilPlus} size="sm" />
         Add
       </button>
-      <CModal
-        alignment="center"
+
+      <Modal
+        show={visible}
+        onHide={handleClose}
+        centered
         size="xl"
-        visible={visible}
         backdrop="static"
-        onClose={handleClose}
+        contentClassName="border-0 overflow-hidden rounded-4"
       >
-        <CModalHeader>
-          <CModalTitle>Add Details</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CContainer>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              {/* ROW 1 */}
-              <Row>
-                {/* UNIT TYPE */}
-                <Col className="pr-1 mt-3" md="6">
+        <Modal.Header
+          closeButton
+          closeVariant="white"
+          style={{
+            background: `linear-gradient(135deg, ${THEME_COLOR} 0%, #0098a3 100%)`,
+            border: 'none',
+            padding: '20px 24px',
+            borderTopLeftRadius: 'inherit',
+            borderTopRightRadius: 'inherit',
+          }}
+        >
+          <Modal.Title style={{ color: '#fff' }}>
+            <div className="d-flex align-items-center" style={{ gap: '14px' }}>
+              <div
+                style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '12px',
+                  background: 'rgba(255,255,255,0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <CIcon icon={freeSet.cilHome} size="lg" />
+              </div>
+              <div className="d-flex flex-column">
+                <span style={{ fontSize: '18px', fontWeight: 700, lineHeight: 1.2 }}>Add Unit</span>
+                <span style={{ fontSize: '12px', fontWeight: 400, opacity: 0.9 }}>
+                  Create a new unit for this property
+                </span>
+              </div>
+            </div>
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body style={{ padding: '22px' }}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <div style={{ ...cardStyle, marginBottom: '14px' }}>
+              <SectionTitle>Unit Details</SectionTitle>
+              <Row className="g-3">
+                <Col md={6}>
                   <Form.Group>
-                    <label>
-                      Unit Type
-                      <small className="text-danger">*{errors?.unit_type_id}</small>
-                    </label>
+                    <Form.Label style={labelStyle}>
+                      Unit Type <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
                     <Controller
                       name="unit_type_id"
                       control={control}
                       defaultValue=""
                       render={({ field }) => (
                         <Select
-                          className="basic-multi-select"
                           classNamePrefix="select"
                           options={units_data}
-                          placeholder="Select Unit Type"
-                          value={units_data.find((c) => c.value === field.value)}
+                          placeholder="Select unit type"
+                          value={units_data.find((c) => c.value === field.value) || null}
                           onChange={(val) => field.onChange(val ? val.value : '')}
                         />
                       )}
                     />
+                    {fieldError('unit_type_id')}
                   </Form.Group>
                 </Col>
-                {/* UNIT NUMBER */}
-                <Col className="pr-1 mt-3" md="6">
+                <Col md={6}>
                   <Form.Group>
-                    <label>
-                      Unit Number
-                      <small className="text-danger">*{errors?.unit_no}</small>
-                    </label>
-                    <Form.Control
-                      defaultValue={unitData.no}
-                      type="number"
-                      {...register('unit_no')}
-                    />
+                    <Form.Label style={labelStyle}>
+                      Unit Number <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
+                    <Form.Control type="number" {...register('unit_no')} />
+                    {fieldError('unit_no')}
                   </Form.Group>
                 </Col>
-              </Row>
-              {/* ROW 2 */}
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
+                <Col md={12}>
                   <Form.Group>
-                    <label>Bathroom No.</label>
-                    <Form.Control
-                      defaultValue={unitData.bathrooms_number}
-                      type="number"
-                      {...register('bathrooms_number')}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>
-                      Year Built
-                      <small className="text-danger">*{errors?.year_built}</small>
-                    </label>
-                    <Form.Control
-                      defaultValue={unitData.year_built}
-                      type="number"
-                      {...register('year_built')}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              {/* ROW 3 */}
-              <Row>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <label>
-                      Building
-                      <small className="text-danger"> *{errors ? errors.building_id : null} </small>
-                    </label>
+                    <Form.Label style={labelStyle}>
+                      Building <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
                     <Controller
                       name="building_id"
                       control={control}
                       defaultValue=""
                       render={({ field }) => (
                         <Select
-                          className="basic-multi-select"
                           classNamePrefix="select"
                           options={buildings_data}
-                          placeholder="Select Building"
-                          value={buildings_data.find((c) => c.value === field.value)}
+                          placeholder="Select building"
+                          value={buildings_data.find((c) => c.value === field.value) || null}
                           onChange={(val) => field.onChange(val ? val.value : '')}
                         />
                       )}
                     />
+                    {fieldError('building_id')}
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label style={labelStyle}>Bedroom No.</Form.Label>
+                    <Form.Control type="number" {...register('bedrooms_number')} />
+                    {fieldError('bedrooms_number')}
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label style={labelStyle}>Bathroom No.</Form.Label>
+                    <Form.Control type="number" {...register('bathrooms_number')} />
+                    {fieldError('bathrooms_number')}
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group>
+                    <Form.Label style={labelStyle}>
+                      Year Built <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
+                    <Form.Control type="number" {...register('year_built')} />
+                    {fieldError('year_built')}
                   </Form.Group>
                 </Col>
               </Row>
-              {/* ROW 4 */}
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
+            </div>
+
+            <div style={cardStyle}>
+              <SectionTitle>Account Details</SectionTitle>
+              <Row className="g-3">
+                <Col md={6}>
                   <Form.Group>
-                    <label>Bedroom No.</label>
-                    <Form.Control
-                      defaultValue={unitData.bedrooms_number}
-                      type="number"
-                      {...register('bedrooms_number')}
-                    />
+                    <Form.Label style={labelStyle}>Electricity Account No.</Form.Label>
+                    <Form.Control type="text" {...register('electricity_account_number')} />
+                    {fieldError('electricity_account_number')}
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="6">
+                <Col md={6}>
                   <Form.Group>
-                    <label>Electricity Account No.</label>
-                    <Form.Control
-                      defaultValue={unitData.electricity_account_number}
-                      type="text"
-                      {...register('electricity_account_number')}
-                    />
+                    <Form.Label style={labelStyle}>Water Account No.</Form.Label>
+                    <Form.Control type="text" {...register('water_account_number')} />
+                    {fieldError('water_account_number')}
                   </Form.Group>
                 </Col>
-              </Row>
-              {/* ROW 5 */}
-              <Row>
-                <Col className="pr-1 mt-3" md="6">
+                <Col md={6}>
                   <Form.Group>
-                    <label>Water Account No.</label>
-                    <Form.Control
-                      defaultValue={unitData.water_account_number}
-                      type="text"
-                      {...register('water_account_number')}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col className="pr-1 mt-3" md="6">
-                  <Form.Group>
-                    <label>Internal Extension No.</label>
-                    <Form.Control
-                      defaultValue={unitData.internal_extension_number}
-                      type="text"
-                      {...register('internal_extension_number')}
-                    />
+                    <Form.Label style={labelStyle}>Internal Extension No.</Form.Label>
+                    <Form.Control type="text" {...register('internal_extension_number')} />
+                    {fieldError('internal_extension_number')}
                   </Form.Group>
                 </Col>
               </Row>
-              {/* FOOTER */}
-              <div className="text-center">
-                <CModalFooter>
-                  <Button type="submit" className="btn btn-primary btn-block custom_theme_button">
-                    Submit
-                  </Button>
-                  <CButton
-                    className="custom_grey_button"
-                    color="secondary"
-                    style={{ border: '0px', color: 'white' }}
-                    onClick={handleClose}
-                  >
-                    Close
-                  </CButton>
-                </CModalFooter>
-              </div>
-            </Form>
-            <div className="clearfix"></div>
-          </CContainer>
-        </CModalBody>
-      </CModal>
+            </div>
+
+            <Modal.Footer style={{ border: 'none', padding: '16px 0 0' }}>
+              <Button
+                variant="light"
+                onClick={handleClose}
+                style={{ borderRadius: '8px', fontWeight: 600 }}
+              >
+                Close
+              </Button>
+              <Button
+                type="submit"
+                style={{
+                  background: THEME_COLOR,
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: 600,
+                }}
+              >
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </div>
   )
 }
+
 export default Add
+
 Add.propTypes = {
   after_submit: PropTypes.func,
 }
