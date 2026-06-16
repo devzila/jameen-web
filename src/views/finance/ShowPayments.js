@@ -1,8 +1,91 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import { useParams, useNavigate } from 'react-router-dom'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
-import { Card, Row, Col, Button, Spinner } from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
+import { formatdate, status_color } from 'src/services/CommonFunctions'
+
+const THEME_COLOR = '#00bfcc'
+
+function statusBadgeStyle(status) {
+  const palette = {
+    red: { bg: '#fdeaea', color: '#e03131' },
+    orange: { bg: '#fff4e6', color: '#e8590c' },
+    green: { bg: '#e6f9ec', color: '#1a9e54' },
+    gray: { bg: '#eef1f5', color: '#495057' },
+  }
+  const colors = palette[status_color(String(status).toLowerCase())] || palette.gray
+  return {
+    background: colors.bg,
+    color: colors.color,
+    padding: '4px 14px',
+    borderRadius: '999px',
+    fontSize: '12px',
+    fontWeight: 600,
+    textTransform: 'capitalize',
+    display: 'inline-block',
+  }
+}
+
+const cardStyle = {
+  background: '#fff',
+  borderRadius: '16px',
+  boxShadow: '0 2px 12px rgba(0,0,0,.05)',
+  overflow: 'hidden',
+}
+
+const headerCellStyle = {
+  color: '#8a94a6',
+  fontSize: '11px',
+  fontWeight: 600,
+  textTransform: 'uppercase',
+  letterSpacing: '0.04em',
+  borderBottom: '1px solid #eef1f5',
+  padding: '14px 16px',
+  whiteSpace: 'nowrap',
+}
+
+const bodyCellStyle = {
+  padding: '14px 16px',
+  borderBottom: '1px solid #f2f4f7',
+  color: '#1f2933',
+  verticalAlign: 'middle',
+}
+
+function InfoTile({ label, value }) {
+  return (
+    <div
+      style={{
+        background: '#f8fafc',
+        border: '1px solid #eef1f5',
+        borderRadius: '12px',
+        padding: '14px 16px',
+        height: '100%',
+      }}
+    >
+      <div
+        style={{
+          color: '#8a94a6',
+          fontSize: '11px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.04em',
+          marginBottom: '6px',
+        }}
+      >
+        {label}
+      </div>
+      <div style={{ fontWeight: 600, color: '#1f2933' }}>{value || '-'}</div>
+    </div>
+  )
+}
+
+InfoTile.propTypes = {
+  label: PropTypes.node,
+  value: PropTypes.node,
+}
 
 const ShowPayment = () => {
   const { id } = useParams()
@@ -34,128 +117,184 @@ const ShowPayment = () => {
   if (loading) {
     return (
       <div className="text-center mt-5">
-        <Spinner animation="border" />
+        <Spinner animation="border" style={{ color: THEME_COLOR }} />
       </div>
     )
   }
 
-  return (
-    <div className="container-fluid mt-4">
-      <Card>
-        <Card.Header className="d-flex justify-content-between align-items-center">
-          <h4 className="mb-0">Payment Details</h4>
+  const allocations = payment?.allocations || []
 
-          <Button
-            onClick={() => navigate('/finance/payments')}
+  return (
+    <div style={{ padding: '20px' }}>
+      <style>{`
+        .payment-detail-table tbody tr { transition: background-color .15s ease; }
+        .payment-detail-table tbody tr:hover { background-color: #f5fdfe; }
+      `}</style>
+
+      {/* Hero */}
+      <div
+        style={{
+          ...cardStyle,
+          padding: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '16px',
+        }}
+      >
+        <div className="d-flex align-items-center" style={{ gap: '16px' }}>
+          <div
             style={{
-              backgroundColor: '#00bfcc',
-              borderColor: '#00bfcc',
+              width: '56px',
+              height: '56px',
+              borderRadius: '16px',
+              background: `linear-gradient(135deg, ${THEME_COLOR} 0%, #0098a3 100%)`,
               color: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
-            Back
-          </Button>
-        </Card.Header>
-
-        <Card.Body>
-          <Row className="g-4">
-            <Col md={3}>
-              <label className="fw-bold text-muted">Payment ID</label>
-              <div>{payment?.id || '-'}</div>
-            </Col>
-
-            <Col md={3}>
-              <label className="fw-bold text-muted">Amount</label>
-              <div>{payment?.amount || '-'}</div>
-            </Col>
-
-            <Col md={3}>
-              <label className="fw-bold text-muted">Status</label>
-              <div>{payment?.status || '-'}</div>
-            </Col>
-
-            <Col md={3}>
-              <label className="fw-bold text-muted">Type</label>
-              <div>{payment?.payment_type || '-'}</div>
-            </Col>
-
-            <Col md={3}>
-              <label className="fw-bold text-muted">Payment Date</label>
-              <div>{payment?.payment_date || '-'}</div>
-            </Col>
-
-            <Col md={3}>
-              <label className="fw-bold text-muted">Received On</label>
-              <div>{payment?.received_on || '-'}</div>
-            </Col>
-
-            <Col md={3}>
-              <label className="fw-bold text-muted">Created At</label>
-              <div>{payment?.created_at || '-'}</div>
-            </Col>
-
-            <Col md={3}>
-              <label className="fw-bold text-muted">Created By</label>
-              <div>{payment?.created_by?.name || payment?.created_by || '-'}</div>
-            </Col>
-          </Row>
-        </Card.Body>
-        <Card.Body>
-          <h5 className="mb-3">Allocations</h5>
-
-          {payment?.allocations?.length > 0 ? (
-            <div className="table-responsive">
-              <table className="table table-bordered table-hover align-middle">
-                <thead className="table-light">
-                  <tr>
-                    <th>#</th>
-                    <th>Invoice No</th>
-                    <th>Unit No</th>
-                    <th>Allocated Amount</th>
-                    <th>Invoice Date</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {payment.allocations.map((allocation, index) => (
-                    <tr key={allocation.id}>
-                      <td>{index + 1}</td>
-                      <td>{allocation.invoice?.number || '-'}</td>
-                      <td>{allocation.invoice?.unit_contract?.unit?.unit_no || '-'}</td>
-                      <td>{allocation.allocated_amount || '-'}</td>
-                      <td>
-                        {allocation.invoice?.invoice_date
-                          ? new Date(allocation.invoice.invoice_date).toLocaleDateString('en-US', {
-                              month: 'long',
-                              day: 'numeric',
-                              year: 'numeric',
-                            })
-                          : '-'}
-                      </td>
-                      <td>
-                        <span
-                          className={`badge ${
-                            allocation.invoice?.status === 'paid'
-                              ? 'bg-success'
-                              : allocation.invoice?.status === 'pending'
-                              ? 'bg-warning text-dark'
-                              : 'bg-secondary'
-                          }`}
-                        >
-                          {allocation.invoice?.status || '-'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <CIcon icon={freeSet.cilMoney} size="xl" />
+          </div>
+          <div>
+            <div className="d-flex align-items-center" style={{ gap: '10px' }}>
+              <h4 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+                Payment #{payment?.id}
+              </h4>
+              <span style={statusBadgeStyle(payment?.status)}>{payment?.status || '-'}</span>
             </div>
-          ) : (
-            <div className="text-muted">No allocations found.</div>
-          )}
-        </Card.Body>
-      </Card>
+            <div style={{ color: '#8a94a6', marginTop: '4px' }}>
+              {payment?.amount ? `₹ ${payment.amount}` : '-'}
+              {payment?.payment_type ? ` · ${payment.payment_type}` : ''}
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => navigate('/finance/payments')}
+          className="btn d-flex align-items-center"
+          style={{
+            gap: '6px',
+            background: '#f5f7fb',
+            color: '#495057',
+            border: 'none',
+            borderRadius: '10px',
+            height: '40px',
+            fontWeight: 600,
+          }}
+        >
+          <CIcon icon={freeSet.cilArrowLeft} size="sm" />
+          Back
+        </button>
+      </div>
+
+      {/* Details */}
+      <div style={{ ...cardStyle, padding: '24px', marginTop: '16px' }}>
+        <h6
+          style={{
+            fontWeight: 700,
+            color: '#1f2933',
+            marginBottom: '16px',
+            borderLeft: `3px solid ${THEME_COLOR}`,
+            paddingLeft: '10px',
+          }}
+        >
+          Payment Information
+        </h6>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+            gap: '14px',
+          }}
+        >
+          <InfoTile label="Payment ID" value={payment?.id} />
+          <InfoTile label="Amount" value={payment?.amount ? `₹ ${payment.amount}` : '-'} />
+          <InfoTile label="Status" value={payment?.status} />
+          <InfoTile label="Type" value={payment?.payment_type} />
+          <InfoTile
+            label="Payment Date"
+            value={payment?.payment_date ? formatdate(payment.payment_date) : '-'}
+          />
+          <InfoTile
+            label="Received On"
+            value={payment?.received_on ? formatdate(payment.received_on) : '-'}
+          />
+          <InfoTile
+            label="Created At"
+            value={payment?.created_at ? formatdate(payment.created_at) : '-'}
+          />
+          <InfoTile label="Created By" value={payment?.created_by?.name || payment?.created_by} />
+        </div>
+      </div>
+
+      {/* Allocations */}
+      <div style={{ ...cardStyle, marginTop: '16px' }}>
+        <div style={{ padding: '20px 24px' }}>
+          <h6
+            className="mb-0"
+            style={{
+              fontWeight: 700,
+              color: '#1f2933',
+              borderLeft: `3px solid ${THEME_COLOR}`,
+              paddingLeft: '10px',
+            }}
+          >
+            Allocations
+          </h6>
+        </div>
+
+        <div className="table-responsive">
+          <table className="table payment-detail-table mb-0" style={{ borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                <th style={headerCellStyle}>#</th>
+                <th style={headerCellStyle}>Invoice No</th>
+                <th style={headerCellStyle}>Unit No</th>
+                <th style={headerCellStyle}>Allocated Amount</th>
+                <th style={headerCellStyle}>Invoice Date</th>
+                <th style={headerCellStyle}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allocations.map((allocation, index) => (
+                <tr key={allocation.id}>
+                  <td style={bodyCellStyle}>{index + 1}</td>
+                  <td style={bodyCellStyle}>{allocation.invoice?.number || '-'}</td>
+                  <td style={bodyCellStyle}>
+                    {allocation.invoice?.unit_contract?.unit?.unit_no || '-'}
+                  </td>
+                  <td style={bodyCellStyle}>{allocation.allocated_amount || '-'}</td>
+                  <td style={bodyCellStyle}>
+                    {allocation.invoice?.invoice_date
+                      ? formatdate(allocation.invoice.invoice_date)
+                      : '-'}
+                  </td>
+                  <td style={bodyCellStyle}>
+                    <span style={statusBadgeStyle(allocation.invoice?.status)}>
+                      {allocation.invoice?.status || '-'}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+              {allocations.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="text-center text-secondary fst-italic"
+                    style={{ padding: '32px' }}
+                  >
+                    No allocations found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   )
 }
