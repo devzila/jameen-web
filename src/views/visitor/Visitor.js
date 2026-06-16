@@ -5,18 +5,34 @@ import { toast } from 'react-toastify'
 import Paginate from '../../components/Pagination'
 
 import Loading from 'src/components/loading/loading'
-import CustomDivToggle from 'src/components/CustomDivToggle'
 
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import { BsThreeDots } from 'react-icons/bs'
-import { Dropdown, Row, Col } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import AddVisitor from './AddVisitor'
-import ShowVisitor from './ShowVisitor'
-import EditVisitor from './EditVisitor'
-import DeleteVisitor from './DeleteVisitor'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import CheckPermissions from 'src/permissions/CheckPermissions'
+
+function firstVisitorName(visit) {
+  const first = Array.isArray(visit?.visitors) ? visit.visitors[0] : null
+  if (first) {
+    const fullName = [first.first_name, first.last_name].filter(Boolean).join(' ').trim()
+    return first.name || fullName || '-'
+  }
+  return visit?.name || '-'
+}
+
+function unitLabel(visit) {
+  const unitNo = visit?.unit_no ?? visit?.unit?.unit_no
+  const buildingName = visit?.building_name ?? visit?.building?.name ?? visit?.unit?.building?.name
+  if (unitNo && buildingName) return `${unitNo} (${buildingName})`
+  return unitNo || buildingName || '-'
+}
+
+function formatDateTime(value) {
+  if (!value) return '-'
+  return String(value).replace('T', ' ').replace('Z', ' ').slice(0, 19)
+}
 
 export default function Visitor() {
   const [pagination, setPagination] = useState(null)
@@ -100,60 +116,28 @@ export default function Visitor() {
                   }}
                 >
                   <tr>
-                    <th className="pt-3 pb-3 border-0">Name</th>
+                    <th className="pt-3 pb-3 border-0">Visitor Name</th>
+                    <th className="pt-3 pb-3 border-0">Unit No.</th>
+                    <th className="pt-3 pb-3 border-0">Vehicle Number</th>
+                    <th className="pt-3 pb-3 border-0">No. of Visitors</th>
+                    <th className="pt-3 pb-3 border-0">Purpose</th>
+                    <th className="pt-3 pb-3 border-0">Expected Arrival Time</th>
                     <th className="pt-3 pb-3 border-0">Status</th>
-                    <th className="pt-3 pb-3 border-0">Visit Date</th>
-                    <th className="pt-3 pb-3 border-0">Phone No.</th>
-                    <th className="pt-3 pb-3 border-0">Resident ID </th>
-                    <th className="pt-3 pb-3 border-0">Unit ID </th>
-                    <th className="pt-3 pb-3 border-0">Check In </th>
-                    <th className="pt-3 pb-3 border-0">Check Out </th>
                   </tr>
                 </thead>
                 <tbody>
                   {visitor &&
-                    visitor?.map((visitor) => (
-                      <tr key={visitor.id}>
+                    visitor?.map((visit) => (
+                      <tr key={visit.id}>
                         <th className="pt-3 border-0" scope="row" style={{ color: '#666666' }}>
-                          {visitor.name}
+                          {firstVisitorName(visit)}
                         </th>
-                        <td className="pt-3">{visitor.status || '-'}</td>
-                        <td className="pt-3">{visitor.visit_date}</td>
-                        <td className="pt-3">{visitor.phone_number}</td>
-                        <td className="pt-3">
-                          {visitor.resident_id?.replace('T', ' ')?.replace('Z', ' ').slice(0, 19)}
-                        </td>
-                        <td className="pt-3">{visitor.unit_id}</td>
-                        <td className="pt-3">
-                          {visitor.checkin
-                            ? String(visitor.checkin)
-                                .replace('T', ' ')
-                                .replace('Z', ' ')
-                                .slice(0, 19)
-                            : '-'}
-                        </td>
-                        <td className="pt-3">
-                          {visitor.chackout?.replace('T', ' ')?.replace('Z', ' ').slice(0, 19)}
-                        </td>
-
-                        <td>
-                          <Dropdown key={visitor.id}>
-                            <Dropdown.Toggle as={CustomDivToggle} style={{ cursor: 'pointer' }}>
-                              <BsThreeDots />
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                              <CheckPermissions
-                                component={<EditVisitor visitorId={visitor.id} />}
-                                keys={['visitor', 'edit']}
-                              />{' '}
-                              <CheckPermissions
-                                component={<DeleteVisitor visitorId={visitor.id} />}
-                                keys={['visitor', 'delete']}
-                              />
-                              <ShowVisitor visitorId={visitor.id} />
-                            </Dropdown.Menu>
-                          </Dropdown>
-                        </td>
+                        <td className="pt-3">{unitLabel(visit)}</td>
+                        <td className="pt-3">{visit.vehicle_number || '-'}</td>
+                        <td className="pt-3">{visit.no_of_visitors ?? '-'}</td>
+                        <td className="pt-3">{visit.purpose || '-'}</td>
+                        <td className="pt-3">{formatDateTime(visit.expected_arrival_time)}</td>
+                        <td className="pt-3">{visit.status || '-'}</td>
                       </tr>
                     ))}
                 </tbody>
