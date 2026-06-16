@@ -56,6 +56,22 @@ export default function OverviewContent(propsd) {
     fontWeight: 600,
   }
 
+  const heroStyle = {
+    borderRadius: '16px',
+    boxShadow: '0 2px 10px rgba(0,0,0,.05)',
+    padding: '30px',
+    gap: '20px',
+    backgroundColor: '#fff',
+    ...(property?.photo
+      ? {
+          backgroundImage: `linear-gradient(to right, #ffffff 22%, rgba(255,255,255,0.75) 48%, rgba(255,255,255,0.15) 100%), url(${property.photo})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center right',
+          backgroundSize: 'cover',
+        }
+      : {}),
+  }
+
   const propertyStats = property?.property_stats || {}
   const pendingDuesAmount = Number(propertyStats?.pending_dues?.amount ?? 0)
 
@@ -88,7 +104,7 @@ export default function OverviewContent(propsd) {
         {/* HERO */}
         <div
           className="mt-3 d-flex justify-content-between align-items-center flex-wrap"
-          style={{ ...cardStyle, padding: '30px', gap: '20px' }}
+          style={heroStyle}
         >
           <div className="property-info">
             <h1 style={{ fontSize: '32px', marginBottom: '10px' }} className="text-capitalize">
