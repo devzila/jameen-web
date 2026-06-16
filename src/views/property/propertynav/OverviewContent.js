@@ -131,7 +131,7 @@ export default function OverviewContent(propsd) {
             <CheckPermissions
               component={
                 <>
-                  <EditProperty propertyId={propertyId} />
+                  <EditProperty propertyId={propertyId} after_submit={getPropertyData} />
                   <DeleteProperty propertyId={propertyId} />
                 </>
               }

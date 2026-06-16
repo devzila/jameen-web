@@ -21,20 +21,45 @@ export default function EditProperty(props) {
   const [useTypeOptions, setUseTypeOptions] = useState([])
   const [paymentTermOptions, setPaymentTermOptions] = useState([])
   const [imageView, setImageView] = useState('')
+  const [signatureView, setSignatureView] = useState('')
+  const [photoFile, setPhotoFile] = useState(null)
+  const [signatureFile, setSignatureFile] = useState(null)
   const { get, put, response } = useFetch()
-  const { propertyId } = props
+  const { propertyId, after_submit } = props
   const [visible, setVisible] = useState(false)
+  const [validationErrors, setValidationErrors] = useState({})
   const { register, handleSubmit, setValue, control } = useForm()
+
+  const fieldError = (name) =>
+    validationErrors?.[name] ? (
+      <div className="text-danger small mt-1">{validationErrors[name].join(', ')}</div>
+    ) : null
 
   const handleFileSelection = (e) => {
     const selectedFile = e.target.files[0]
 
     if (selectedFile) {
+      setPhotoFile(selectedFile)
       const reader = new FileReader()
 
       reader.onload = function (e) {
         const base64Result = e.target.result
         setImageView(base64Result)
+      }
+
+      reader.readAsDataURL(selectedFile)
+    }
+  }
+
+  const handleSignatureSelection = (e) => {
+    const selectedFile = e.target.files[0]
+
+    if (selectedFile) {
+      setSignatureFile(selectedFile)
+      const reader = new FileReader()
+
+      reader.onload = function (e) {
+        setSignatureView(e.target.result)
       }
 
       reader.readAsDataURL(selectedFile)
@@ -110,13 +135,34 @@ export default function EditProperty(props) {
   }
 
   const onSubmit = async (data) => {
-    const body = { ...data, photo: { data: imageView } }
+    setValidationErrors({})
+    const { photo, singature_image, ...rest } = data
 
-    const endpoint = await put(`/v1/admin/premises/properties/${propertyId}`, { property: body })
+    const formData = new FormData()
+    Object.entries(rest).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(`property[${key}]`, value)
+      }
+    })
+
+    if (photoFile) {
+      formData.append('property[photo]', photoFile)
+    }
+    if (signatureFile) {
+      formData.append('property[signature_image]', signatureFile)
+    }
+
+    const result = await put(`/v1/admin/premises/properties/${propertyId}`, formData)
 
     if (response.ok) {
       toast('Property Data Edited Successfully')
       setVisible(false)
+      if (after_submit) {
+        after_submit()
+      }
+    } else if (response.status === 422) {
+      setValidationErrors(result?.errors || {})
+      toast.error(result?.message || 'Please fix the highlighted errors.')
     } else {
       toast(response?.error)
     }
@@ -160,7 +206,7 @@ export default function EditProperty(props) {
                     }}
                     title="Avatar"
                     className="img-circle img-thumbnail isTooltip  "
-                    src={property.photo ? property.photo : imageView ? imageView : defaultbuilding}
+                    src={imageView ? imageView : property.photo ? property.photo : defaultbuilding}
                     data-original-title="Usuario"
                   />
                 </div>
@@ -169,9 +215,8 @@ export default function EditProperty(props) {
                 <Col className="pr-1 mt-3" md="12">
                   <Form.Group>
                     <label>Avatar Image</label>
+                    {fieldError('photo')}
                     <Form.Control
-                      wr
-                      d
                       type="file"
                       accept=".jpg, .jpeg, .png"
                       {...register('photo')}
@@ -187,6 +232,7 @@ export default function EditProperty(props) {
                     <Col className="pr-1 mt-3" md="6">
                       <Form.Group>
                         <label>Name</label>
+                        {fieldError('name')}
                         <Form.Control
                           placeholder="Property Name"
                           type="text"
@@ -197,6 +243,7 @@ export default function EditProperty(props) {
                     <Col className="pr-1 mt-3" md="6">
                       <Form.Group>
                         <label>City</label>
+                        {fieldError('city')}
                         <Form.Control placeholder="City" type="text" {...register('city')} />
                       </Form.Group>
                     </Col>
@@ -205,6 +252,7 @@ export default function EditProperty(props) {
                     <Col className="pr-1 mt-3" md="6">
                       <Form.Group>
                         <label>Use Type</label>
+                        {fieldError('use_type')}
                         <Controller
                           name="use_type"
                           render={({ field }) => (
@@ -225,6 +273,7 @@ export default function EditProperty(props) {
                     <Col className="pr-1 mt-3" md="12">
                       <Form.Group>
                         <label>Payment Term</label>
+                        {fieldError('payment_term')}
                         <Controller
                           name="payment_term"
                           render={({ field }) => (
@@ -250,6 +299,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Email</label>
+                          {fieldError('email')}
                           <Form.Control placeholder="Email" type="email" {...register('email')} />
                         </Form.Group>
                       </Col>
@@ -257,6 +307,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Phone Number</label>
+                          {fieldError('phone')}
                           <Form.Control
                             placeholder="Phone Number"
                             type="text"
@@ -268,6 +319,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Website </label>
+                          {fieldError('website')}
                           <Form.Control
                             placeholder="Website URL"
                             type="text"
@@ -279,6 +331,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Address</label>
+                          {fieldError('address')}
                           <Form.Control
                             placeholder="Address"
                             type="text"
@@ -289,12 +342,14 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>State</label>
+                          {fieldError('state')}
                           <Form.Control placeholder="State" type="text" {...register('state')} />
                         </Form.Group>
                       </Col>
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Pin Code</label>
+                          {fieldError('pin_code')}
                           <Form.Control
                             placeholder="pin_code"
                             type="text"
@@ -314,6 +369,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Bank Name</label>
+                          {fieldError('bank_name')}
                           <Form.Control
                             placeholder="Bank Name"
                             type="text"
@@ -325,6 +381,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Bank Account Number </label>
+                          {fieldError('bank_account_no')}
                           <Form.Control
                             placeholder="Bank Account Number"
                             type="text"
@@ -336,6 +393,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Bank IFSC Code</label>
+                          {fieldError('bank_ifsc_code')}
                           <Form.Control
                             placeholder="Bank IFSC Code"
                             type="text"
@@ -347,6 +405,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Bank Branch</label>
+                          {fieldError('bank_branch')}
                           <Form.Control
                             placeholder="Bank Branch"
                             type="text"
@@ -358,6 +417,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>PAN Number</label>
+                          {fieldError('pan_no')}
                           <Form.Control
                             placeholder="PAN Number"
                             type="text"
@@ -368,6 +428,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>GST Number</label>
+                          {fieldError('gst_no')}
                           <Form.Control
                             placeholder="GST Number"
                             type="text"
@@ -378,6 +439,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>TAN Number</label>
+                          {fieldError('tan_no')}
                           <Form.Control
                             placeholder="TAN Number"
                             type="text"
@@ -397,6 +459,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Total Area</label>
+                          {fieldError('total_area')}
                           <Form.Control
                             placeholder="Total Area"
                             type="text"
@@ -408,6 +471,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Area Unit </label>
+                          {fieldError('area_unit')}
                           <Form.Control
                             placeholder="Area Unit"
                             type="text"
@@ -419,6 +483,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Unit Count</label>
+                          {fieldError('units_count')}
                           <Form.Control
                             placeholder="Unit Count"
                             type="text"
@@ -430,6 +495,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Amenities count</label>
+                          {fieldError('amenities_count')}
                           <Form.Control
                             placeholder="Amenities count"
                             type="text"
@@ -440,6 +506,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Maintenancestaff Count </label>
+                          {fieldError('maintenance_staff_count')}
                           <Form.Control
                             placeholder="Maintenancestaff Count"
                             type="text"
@@ -450,6 +517,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Year Built</label>
+                          {fieldError('year_built')}
                           <Form.Control
                             placeholder="Year Built"
                             type="text"
@@ -469,6 +537,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Managed By</label>
+                          {fieldError('managed_by')}
                           <Form.Control
                             placeholder="Managed By"
                             type="text"
@@ -480,6 +549,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Association Registration Number</label>
+                          {fieldError('association_registration_no')}
                           <Form.Control
                             placeholder="Association Registration Number"
                             type="text"
@@ -491,6 +561,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Association Type</label>
+                          {fieldError('association_type')}
                           <Form.Control
                             placeholder="Association Type"
                             type="text"
@@ -502,6 +573,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Committee Formation Date</label>
+                          {fieldError('committee_formation_date')}
                           <Form.Control
                             placeholder="Committee Formation Date"
                             type="text"
@@ -512,6 +584,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Next AGM Date </label>
+                          {fieldError('next_agm_date')}
                           <Form.Control
                             placeholder="Next AGM Date"
                             type="text"
@@ -531,6 +604,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Notification Email</label>
+                          {fieldError('notification_email')}
                           <Form.Control
                             placeholder="Notification Email"
                             type="email"
@@ -541,6 +615,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Notification Phone No</label>
+                          {fieldError('notification_phone')}
                           <Form.Control
                             placeholder="Notification Number"
                             type="text"
@@ -552,6 +627,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Auto Invoice Enabled</label>
+                          {fieldError('auto_invoice_enabled')}
                           <Form.Control
                             placeholder="Auto Invoice Enabled"
                             type="text"
@@ -563,6 +639,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Auto Reminder Enabled</label>
+                          {fieldError('auto_reminder_enabled')}
                           <Form.Control
                             placeholder="Auto Reminder Enabled"
                             type="text"
@@ -573,6 +650,7 @@ export default function EditProperty(props) {
                       <Col className="pr-1 mt-3" md="6">
                         <Form.Group>
                           <label>Reminder Days Before Due</label>
+                          {fieldError('reminder_days_before_due')}
                           <Form.Control
                             placeholder="Reminder Days Before Due"
                             type="text"
@@ -591,35 +669,6 @@ export default function EditProperty(props) {
                     <Row>
                       <Col md="6" className="text-center">
                         <img
-                          alt="Logo"
-                          style={{
-                            width: '100px',
-                            height: '100px',
-                            borderRadius: '50%',
-                            objectFit: 'cover',
-                            border: '1px solid #ddd',
-                          }}
-                          className="img-circle img-thumbnail"
-                          src={
-                            property.photo
-                              ? property.photo
-                              : imageView
-                              ? imageView
-                              : defaultbuilding
-                          }
-                        />
-                        <Form.Group className="mt-3">
-                          <label>Logo Image</label>
-                          <Form.Control
-                            type="file"
-                            accept=".jpg,.jpeg,.png"
-                            {...register('photo')}
-                            onChange={(e) => handleFileSelection(e)}
-                          />
-                        </Form.Group>
-                      </Col>
-                      <Col md="6" className="text-center">
-                        <img
                           alt="Signature Logo"
                           style={{
                             width: '100px',
@@ -630,20 +679,21 @@ export default function EditProperty(props) {
                           }}
                           className="img-circle img-thumbnail"
                           src={
-                            property.signature_image
+                            signatureView
+                              ? signatureView
+                              : property.signature_image
                               ? property.signature_image
-                              : imageView
-                              ? imageView
                               : defaultbuilding
                           }
                         />
                         <Form.Group className="mt-3">
                           <label>Signature Image</label>
+                          {fieldError('signature_image')}
                           <Form.Control
                             type="file"
                             accept=".jpg,.jpeg,.png"
                             {...register('singature_image')}
-                            onChange={(e) => handleFileSelection(e)}
+                            onChange={(e) => handleSignatureSelection(e)}
                           />
                         </Form.Group>
                       </Col>
@@ -681,4 +731,5 @@ export default function EditProperty(props) {
 
 EditProperty.propTypes = {
   propertyId: PropTypes.string.isRequired,
+  after_submit: PropTypes.func,
 }
