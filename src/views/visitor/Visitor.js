@@ -9,6 +9,7 @@ import Loading from 'src/components/loading/loading'
 import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import { Row, Col } from 'react-bootstrap'
 import AddVisitor from './AddVisitor'
+import ShowVisitor from './ShowVisitor'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
 import CheckPermissions from 'src/permissions/CheckPermissions'
@@ -129,8 +130,8 @@ export default function Visitor() {
                   {visitor &&
                     visitor?.map((visit) => (
                       <tr key={visit.id}>
-                        <th className="pt-3 border-0" scope="row" style={{ color: '#666666' }}>
-                          {firstVisitorName(visit)}
+                        <th className="pt-3 border-0" scope="row">
+                          <ShowVisitor visit={visit} label={firstVisitorName(visit)} />
                         </th>
                         <td className="pt-3">{unitLabel(visit)}</td>
                         <td className="pt-3">{visit.vehicle_number || '-'}</td>
