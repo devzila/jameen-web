@@ -279,6 +279,8 @@ const Finance = () => {
                 ) : null}
               </Dropdown.Toggle>
               <Dropdown.Menu
+                renderOnMount
+                popperConfig={{ strategy: 'fixed' }}
                 style={{
                   minWidth: '300px',
                   padding: '16px',
