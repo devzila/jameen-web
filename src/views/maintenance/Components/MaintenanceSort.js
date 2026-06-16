@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Dropdown } from 'react-bootstrap'
+import { Dropdown, Form } from 'react-bootstrap'
 import { useForm, Controller } from 'react-hook-form'
 import Select from 'react-select'
 import PropTypes from 'prop-types'
 import CIcon from '@coreui/icons-react'
 import { cilSync, freeSet } from '@coreui/icons'
+
+const THEME_COLOR = '#00bfcc'
+const labelStyle = { fontSize: '12px', color: '#8a94a6', fontWeight: 600 }
 
 export default function MaintenanceSort({ filter_callback }) {
   const [status_query, setStatus_query] = useState('')
@@ -55,52 +58,63 @@ export default function MaintenanceSort({ filter_callback }) {
   }
 
   return (
-    <div className="mx-2">
-      <Dropdown data-bs-theme="light" className="d-flex" autoClose="outside">
+    <div>
+      <Dropdown data-bs-theme="light" autoClose="outside">
         <Dropdown.Toggle
-          id=" d-inline mx-4"
-          variant="secondary"
-          className="ms-2 text-start h-100 w-100"
+          as="button"
+          type="button"
+          className="btn d-flex align-items-center"
           style={{
-            backgroundColor: 'white',
-            width: '15vw',
-            border: '1px solid #00bfcc',
-            borderRadius: '2px',
+            gap: '8px',
+            background: '#f5f7fb',
+            color: '#495057',
+            border: 'none',
+            borderRadius: '10px',
+            height: '38px',
+            fontWeight: 600,
+            fontSize: '14px',
           }}
         >
-          <CIcon icon={freeSet.cilSortAlphaDown} />
+          <CIcon icon={freeSet.cilSortAlphaDown} size="sm" />
           Sort
         </Dropdown.Toggle>
 
         <Dropdown.Menu
-          className="p-2 border-0 rounded-0"
+          renderOnMount
+          popperConfig={{ strategy: 'fixed' }}
           style={{
-            boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 12px',
-            width: '20vw',
+            minWidth: '260px',
+            padding: '16px',
+            border: '1px solid #eef1f5',
+            borderRadius: '12px',
+            boxShadow: '0 6px 24px rgba(0,0,0,.08)',
           }}
-          variant="success"
         >
-          {/* <Dropdown.Item className="btn btn-teritary"> */}
-          <button
-            style={{
-              border: '0px',
-              float: 'left',
-              background: 'initial',
-            }}
-            onClick={handle_reset}
-          >
-            <CIcon icon={cilSync} /> Reset Filter
-          </button>
-          {/* </Dropdown.Item> */}
-          <Dropdown.Item className="btn btn-teritary mt-2" href="#/action-3">
-            <label>Sort By</label>
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <span style={{ fontWeight: 700, color: '#1f2933' }}>Sort</span>
+            <button
+              type="button"
+              className="d-inline-flex align-items-center border-0"
+              style={{
+                gap: '5px',
+                background: 'initial',
+                color: THEME_COLOR,
+                fontWeight: 600,
+              }}
+              onClick={handle_reset}
+            >
+              <CIcon icon={cilSync} size="sm" /> Reset
+            </button>
+          </div>
 
+          <Form.Group className="mb-3">
+            <Form.Label style={labelStyle}>Sort By</Form.Label>
             <Controller
               name="sort_by"
               render={({ field }) => (
                 <Select
                   type="text"
-                  className="basic-multi-select"
+                  className="basic-single"
                   classNamePrefix="select"
                   {...field}
                   onChange={(val) => handleunit_status(val)}
@@ -109,9 +123,10 @@ export default function MaintenanceSort({ filter_callback }) {
               )}
               control={control}
             />
-          </Dropdown.Item>
-          <Dropdown.Item className="btn btn-teritary" href="#/action-3">
-            <label>Order</label>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label style={labelStyle}>Order</Form.Label>
             <Controller
               name="order"
               render={({ field }) => (
@@ -126,7 +141,7 @@ export default function MaintenanceSort({ filter_callback }) {
               )}
               control={control}
             />
-          </Dropdown.Item>
+          </Form.Group>
         </Dropdown.Menu>
       </Dropdown>
     </div>

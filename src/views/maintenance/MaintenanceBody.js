@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
-import { Row, Col } from 'react-bootstrap'
-import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
 import Loader from 'src/components/loading/loading'
 import Paginate from 'src/components/Pagination'
 import TopCards from 'src/views/maintenance/Components/TopCards'
@@ -17,8 +15,10 @@ import MaintenanceSort from './Components/MaintenanceSort'
 import PropTypes from 'prop-types'
 import CheckPermissions from 'src/permissions/CheckPermissions'
 
+const THEME_COLOR = '#00bfcc'
+
 export default function MaintanceBody({ api_endpoint }) {
-  const { get, response, error } = useFetch()
+  const { get, response } = useFetch()
   const [maintenance, setMaintenance] = useState([])
   const [loading, setLoading] = useState(true)
   const [refresh, setRefresh] = useState(true)
@@ -58,71 +58,169 @@ export default function MaintanceBody({ api_endpoint }) {
     loaddMaintenanceRequests(query)
   }
 
+  const viewToggleStyle = (active) => ({
+    width: '36px',
+    height: '36px',
+    borderRadius: '8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    background: active ? 'rgba(0,191,204,0.12)' : 'transparent',
+    color: active ? THEME_COLOR : '#8a94a6',
+  })
+
   return (
     <>
       {loading ? (
         <Loader />
       ) : (
-        <>
+        <div style={{ padding: '20px' }}>
+          <style>{`
+            .maintenance-pagination ul { margin: 0; align-items: center; gap: 4px; }
+            .maintenance-pagination .btn {
+              box-shadow: none !important;
+              border: 1px solid #eef1f5 !important;
+              border-radius: 8px !important;
+              background: #fff;
+              color: #495057;
+              min-width: 36px;
+              height: 36px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 0 10px;
+              margin: 0 !important;
+              transition: all .15s ease;
+            }
+            .maintenance-pagination .btn:hover {
+              border-color: ${THEME_COLOR} !important;
+              color: ${THEME_COLOR};
+            }
+            .maintenance-pagination .custom_background_color,
+            .maintenance-pagination .custom_background_color .btn {
+              background: ${THEME_COLOR} !important;
+              border-color: ${THEME_COLOR} !important;
+              color: #fff !important;
+            }
+          `}</style>
+
           <TopCards refresh={refresh} filter_callback={applyFilters} />
-          <div className="mask d-flex align-items-center h-100 p-0 mt-2 w-100">
-            <div className="w-100">
-              <CNavbar expand="lg" colorScheme="light" className="bg-white">
-                <CContainer fluid>
-                  <div className="d-flex justify-content-between w-100">
-                    <div className="d-flex align-items-center">
-                      <CNavbarBrand href="#">Maintenance Requests</CNavbarBrand>
-                      <CIcon
-                        onClick={() => setTableView(true)}
-                        icon={freeSet.cilMenu}
-                        size="xxl"
-                        title="Table View"
-                        className={`mt-0 p-0 mx-2 ${table_view ? 'theme_color' : ''}`}
-                      />
-                      <CIcon
-                        onClick={() => setTableView(false)}
-                        icon={freeSet.cilGrid}
-                        size="xxl"
-                        title="Card View"
-                        className={`mt-0 p-0 ${table_view ? '' : 'theme_color'}`}
-                      />
+
+          <div style={{ marginTop: '16px' }}>
+            <div
+              style={{
+                background: '#fff',
+                borderRadius: '16px',
+                boxShadow: '0 2px 12px rgba(0,0,0,.05)',
+                overflow: 'hidden',
+              }}
+            >
+              {/* Header */}
+              <div
+                className="d-flex justify-content-between align-items-center flex-wrap"
+                style={{ gap: '12px', padding: '20px 24px' }}
+              >
+                <div className="d-flex align-items-center" style={{ gap: '12px' }}>
+                  <div
+                    style={{
+                      width: '42px',
+                      height: '42px',
+                      borderRadius: '12px',
+                      background: 'rgba(0,191,204,0.12)',
+                      color: THEME_COLOR,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <CIcon icon={freeSet.cilTask} size="lg" />
+                  </div>
+                  <div>
+                    <h5 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+                      Maintenance Requests
+                    </h5>
+                    <small style={{ color: '#8a94a6' }}>
+                      {pagination?.total_count ?? maintenance.length} total
+                    </small>
+                  </div>
+
+                  <div
+                    className="d-flex align-items-center ms-2"
+                    style={{
+                      gap: '4px',
+                      background: '#f5f7fb',
+                      borderRadius: '10px',
+                      padding: '3px',
+                    }}
+                  >
+                    <div
+                      onClick={() => setTableView(true)}
+                      title="Table View"
+                      style={viewToggleStyle(table_view)}
+                    >
+                      <CIcon icon={freeSet.cilList} />
                     </div>
-                    <div className="d-flex justify-content-end ">
-                      <MaintenanceaFilter filter_callback={loaddMaintenanceRequests} />
-                      <MaintenanceSort filter_callback={loaddMaintenanceRequests} />
-                      <div className="d-flex" role="search">
-                        <input
-                          value={searchKeyword}
-                          onChange={(e) => setSearchKeyword(e.target.value)}
-                          className="form-control me-0 custom_input  "
-                          type="text"
-                          placeholder="Search"
-                          aria-label="Search"
-                        />
-                        <button
-                          onClick={loaddMaintenanceRequests}
-                          className="btn btn-outline-success custom_search_button bg-light "
-                          type="submit"
-                        >
-                          <CIcon icon={freeSet.cilSearch} />
-                        </button>
-                      </div>
-                      <CheckPermissions
-                        component={
-                          <AddEditMaintenance
-                            type="add"
-                            id={0}
-                            refreshData={loaddMaintenanceRequests}
-                            api_endpoint={api_endpoint}
-                          />
-                        }
-                        keys={['maintenance_requests', 'create']}
-                      />
+                    <div
+                      onClick={() => setTableView(false)}
+                      title="Card View"
+                      style={viewToggleStyle(!table_view)}
+                    >
+                      <CIcon icon={freeSet.cilGrid} />
                     </div>
                   </div>
-                </CContainer>
-              </CNavbar>
-              <hr className="p-0 m-0 text-secondary" />
+                </div>
+
+                <div className="d-flex align-items-center flex-wrap" style={{ gap: '10px' }}>
+                  <MaintenanceaFilter filter_callback={loaddMaintenanceRequests} />
+                  <MaintenanceSort filter_callback={loaddMaintenanceRequests} />
+                  <div
+                    className="d-flex align-items-center"
+                    style={{
+                      background: '#f5f7fb',
+                      borderRadius: '10px',
+                      padding: '2px 6px 2px 12px',
+                    }}
+                  >
+                    <input
+                      value={searchKeyword}
+                      onChange={(e) => setSearchKeyword(e.target.value)}
+                      className="border-0"
+                      style={{ background: 'transparent', outline: 'none', minWidth: '160px' }}
+                      type="text"
+                      placeholder="Search by title"
+                      aria-label="Search"
+                    />
+                    <button
+                      onClick={() => loaddMaintenanceRequests()}
+                      className="btn d-flex align-items-center justify-content-center"
+                      type="button"
+                      style={{
+                        background: THEME_COLOR,
+                        color: '#fff',
+                        borderRadius: '8px',
+                        width: '34px',
+                        height: '34px',
+                      }}
+                    >
+                      <CIcon icon={freeSet.cilSearch} size="sm" />
+                    </button>
+                  </div>
+                  <CheckPermissions
+                    component={
+                      <AddEditMaintenance
+                        type="add"
+                        id={0}
+                        refreshData={loaddMaintenanceRequests}
+                        api_endpoint={api_endpoint}
+                      />
+                    }
+                    keys={['maintenance_requests', 'create']}
+                  />
+                </div>
+              </div>
+
+              {/* Body */}
               <div>
                 {table_view ? (
                   <MaintenanceTable
@@ -131,28 +229,29 @@ export default function MaintanceBody({ api_endpoint }) {
                     api_endpoint={api_endpoint}
                   />
                 ) : (
-                  <MaintenanceCard data={maintenance} />
+                  <div style={{ padding: '0 16px 16px' }}>
+                    <MaintenanceCard data={maintenance} />
+                  </div>
                 )}
               </div>
-            </div>
-          </div>
-          <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center my-3">
-            <Row>
-              <Col md="12">
-                {pagination?.total_pages > 1 ? (
+
+              {/* Pagination */}
+              {pagination?.total_pages > 1 ? (
+                <div
+                  className="maintenance-pagination d-flex justify-content-center"
+                  style={{ padding: '16px', borderTop: '1px solid #f2f4f7' }}
+                >
                   <Paginate
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={pagination.per_page}
                     pageCount={pagination.total_pages}
                     forcePage={currentPage - 1}
                   />
-                ) : (
-                  <br />
-                )}
-              </Col>
-            </Row>
-          </CNavbar>
-        </>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </div>
       )}
     </>
   )
