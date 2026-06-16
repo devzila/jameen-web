@@ -1,12 +1,96 @@
 import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 import { useParams, useNavigate } from 'react-router-dom'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
 import Loading from 'src/components/loading/loading'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
+import { formatdate } from 'src/services/CommonFunctions'
 
-import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
+const THEME_COLOR = '#00bfcc'
 
-import { Row, Col, Card, Button } from 'react-bootstrap'
+function statusBadgeStyle(isVoided) {
+  const colors = isVoided
+    ? { bg: '#fdeaea', color: '#e03131' }
+    : { bg: '#e6f9ec', color: '#1a9e54' }
+  return {
+    background: colors.bg,
+    color: colors.color,
+    padding: '4px 14px',
+    borderRadius: '999px',
+    fontSize: '12px',
+    fontWeight: 600,
+    textTransform: 'capitalize',
+    display: 'inline-block',
+  }
+}
+
+const cardStyle = {
+  background: '#fff',
+  borderRadius: '16px',
+  boxShadow: '0 2px 12px rgba(0,0,0,.05)',
+  overflow: 'hidden',
+}
+
+function SectionTitle({ children }) {
+  return (
+    <h6
+      style={{
+        fontWeight: 700,
+        color: '#1f2933',
+        marginBottom: '16px',
+        borderLeft: `3px solid ${THEME_COLOR}`,
+        paddingLeft: '10px',
+      }}
+    >
+      {children}
+    </h6>
+  )
+}
+
+SectionTitle.propTypes = {
+  children: PropTypes.node,
+}
+
+function InfoTile({ label, value, valueColor }) {
+  return (
+    <div
+      style={{
+        background: '#f8fafc',
+        border: '1px solid #eef1f5',
+        borderRadius: '12px',
+        padding: '14px 16px',
+        height: '100%',
+      }}
+    >
+      <div
+        style={{
+          color: '#8a94a6',
+          fontSize: '11px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.04em',
+          marginBottom: '6px',
+        }}
+      >
+        {label}
+      </div>
+      <div style={{ fontWeight: 600, color: valueColor || '#1f2933' }}>{value || '-'}</div>
+    </div>
+  )
+}
+
+InfoTile.propTypes = {
+  label: PropTypes.node,
+  value: PropTypes.node,
+  valueColor: PropTypes.string,
+}
+
+const tileGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+  gap: '14px',
+}
 
 const ShowCreditNote = () => {
   const { id } = useParams()
@@ -43,162 +127,114 @@ const ShowCreditNote = () => {
     return null
   }
 
+  const availableAmount = (creditNote.amount || 0) - (creditNote.consumed_amount || 0)
+  const createdBy =
+    creditNote.created_by?.name || creditNote.user?.name || creditNote.creator?.name || '-'
+
   return (
-    <div>
-      {/* Header */}
-      <CNavbar expand="lg" colorScheme="light" className="bg-white px-3">
-        <CContainer fluid>
-          <CNavbarBrand>
-            <div>
-              <h4 className="mb-0 fw-bold">Credit Note Details</h4>
-
-              <small className="text-muted">
-                #{creditNote.credit_note_number || creditNote.id}
-              </small>
-            </div>
-          </CNavbarBrand>
-
-          <Button
-            onClick={() => navigate('/finance/credit-notes')}
-            style={{
-              backgroundColor: '#00bfcc',
-              borderColor: '#00bfcc',
-              color: '#fff',
-            }}
-          >
-            Back
-          </Button>
-        </CContainer>
-      </CNavbar>
-
-      <hr className="m-0 text-secondary" />
-
-      {/* Page Content */}
+    <div style={{ padding: '20px' }}>
+      {/* Hero */}
       <div
-        className="container-fluid py-4"
         style={{
-          backgroundColor: '#f8f9fa',
-          minHeight: '100vh',
+          ...cardStyle,
+          padding: '24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '16px',
         }}
       >
-        {/* Credit Note Information */}
-        <Card className="border-0 shadow-sm rounded-4 mb-4">
-          <Card.Body className="p-4">
-            <div className="d-flex align-items-center mb-4">
-              <h5 className="mb-0 fw-bold">Credit Note Information</h5>
+        <div className="d-flex align-items-center" style={{ gap: '16px' }}>
+          <div
+            style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '16px',
+              background: `linear-gradient(135deg, ${THEME_COLOR} 0%, #0098a3 100%)`,
+              color: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CIcon icon={freeSet.cilNotes} size="xl" />
+          </div>
+          <div>
+            <div className="d-flex align-items-center" style={{ gap: '10px' }}>
+              <h4 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+                Credit Note #{creditNote.credit_note_number || creditNote.id}
+              </h4>
+              <span style={statusBadgeStyle(creditNote.is_voided)}>
+                {creditNote.is_voided ? 'Voided' : 'Active'}
+              </span>
             </div>
-
-            <Row>
-              <Col md={3} className="mb-4">
-                <small className="text-muted d-block">Credit Note Number</small>
-                <strong>{creditNote.credit_note_number || '-'}</strong>
-              </Col>
-
-              <Col md={3} className="mb-4">
-                <small className="text-muted d-block">Status</small>
-
-                {creditNote.is_voided ? (
-                  <span className="badge bg-danger px-3 py-2">Voided</span>
-                ) : (
-                  <span className="badge bg-success px-3 py-2">Active</span>
-                )}
-              </Col>
-
-              <Col md={3} className="mb-4">
-                <small className="text-muted d-block">Amount</small>
-                <strong className="text-success">₹ {creditNote.amount || 0}</strong>
-              </Col>
-
-              <Col md={3} className="mb-4">
-                <small className="text-muted d-block">Consumed Amount</small>
-                <strong className="text-warning">₹ {creditNote.consumed_amount || 0}</strong>
-              </Col>
-
-              <Col md={3} className="mb-4">
-                <small className="text-muted d-block">Available Amount</small>
-                <strong className="text-primary">
-                  ₹ {(creditNote.amount || 0) - (creditNote.consumed_amount || 0)}
-                </strong>
-              </Col>
-
-              <Col md={3} className="mb-4">
-                <small className="text-muted d-block">Created By</small>
-                <strong>
-                  {creditNote.created_by?.name ||
-                    creditNote.user?.name ||
-                    creditNote.creator?.name ||
-                    '-'}
-                </strong>
-              </Col>
-              <Col md={3} className="mb-4">
-                <small className="text-muted d-block">Created At</small>
-                <strong>
-                  {creditNote.created_at
-                    ? new Date(creditNote.created_at).toLocaleDateString('en-US', {
-                        month: 'long',
-                        day: '2-digit',
-                        year: 'numeric',
-                      })
-                    : '-'}
-                </strong>
-              </Col>
-
-              <Col md={3} className="mb-4">
-                <small className="text-muted d-block">Updated At</small>
-                <strong>
-                  {creditNote.updated_at
-                    ? new Date(creditNote.updated_at).toLocaleDateString('en-US', {
-                        month: 'long',
-                        day: '2-digit',
-                        year: 'numeric',
-                      })
-                    : '-'}
-                </strong>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={12}>
-                <small className="text-muted d-block mb-2">Description</small>
-                <strong>{creditNote.description || '-'}</strong>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-
-        {/* Contract Information */}
-        <Card className="border-0 shadow-sm rounded-4 mb-4">
-          <Card.Body className="p-4">
-            <div className="d-flex align-items-center mb-4">
-              <h5 className="mb-0 fw-bold">Contract Information</h5>
+            <div style={{ color: '#8a94a6', marginTop: '4px' }}>
+              ₹ {creditNote.amount || 0} total · ₹ {availableAmount} available
             </div>
+          </div>
+        </div>
 
-            <Row>
-              <Col md={6} className="mb-4">
-                <small className="text-muted d-block">Contract ID</small>
+        <button
+          type="button"
+          onClick={() => navigate('/finance/credit-notes')}
+          className="btn d-flex align-items-center"
+          style={{
+            gap: '6px',
+            background: '#f5f7fb',
+            color: '#495057',
+            border: 'none',
+            borderRadius: '10px',
+            height: '40px',
+            fontWeight: 600,
+          }}
+        >
+          <CIcon icon={freeSet.cilArrowLeft} size="sm" />
+          Back
+        </button>
+      </div>
 
-                <strong>{creditNote.contract?.id || '-'}</strong>
-              </Col>
+      {/* Credit Note Information */}
+      <div style={{ ...cardStyle, padding: '24px', marginTop: '16px' }}>
+        <SectionTitle>Credit Note Information</SectionTitle>
+        <div style={tileGridStyle}>
+          <InfoTile label="Credit Note Number" value={creditNote.credit_note_number} />
+          <InfoTile label="Amount" value={`₹ ${creditNote.amount || 0}`} valueColor="#1a9e54" />
+          <InfoTile
+            label="Consumed Amount"
+            value={`₹ ${creditNote.consumed_amount || 0}`}
+            valueColor="#e8590c"
+          />
+          <InfoTile
+            label="Available Amount"
+            value={`₹ ${availableAmount}`}
+            valueColor={THEME_COLOR}
+          />
+          <InfoTile label="Created By" value={createdBy} />
+          <InfoTile
+            label="Created At"
+            value={creditNote.created_at ? formatdate(creditNote.created_at) : '-'}
+          />
+          <InfoTile
+            label="Updated At"
+            value={creditNote.updated_at ? formatdate(creditNote.updated_at) : '-'}
+          />
+        </div>
 
-              <Col md={6} className="mb-4">
-                <small className="text-muted d-block">Unit Number</small>
+        <div style={{ marginTop: '14px' }}>
+          <InfoTile label="Description" value={creditNote.description} />
+        </div>
+      </div>
 
-                <strong>{creditNote.contract?.unit?.unit_no || '-'}</strong>
-              </Col>
-
-              <Col md={6} className="mb-4">
-                <small className="text-muted d-block">Building</small>
-
-                <strong>{creditNote.contract?.unit?.building?.name || '-'}</strong>
-              </Col>
-
-              <Col md={6} className="mb-4">
-                <small className="text-muted d-block">Property</small>
-
-                <strong>{creditNote.contract?.unit?.building?.property?.name || '-'}</strong>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
+      {/* Contract Information */}
+      <div style={{ ...cardStyle, padding: '24px', marginTop: '16px' }}>
+        <SectionTitle>Contract Information</SectionTitle>
+        <div style={tileGridStyle}>
+          <InfoTile label="Contract ID" value={creditNote.contract?.id} />
+          <InfoTile label="Unit Number" value={creditNote.contract?.unit?.unit_no} />
+          <InfoTile label="Building" value={creditNote.contract?.unit?.building?.name} />
+          <InfoTile label="Property" value={creditNote.contract?.unit?.building?.property?.name} />
+        </div>
       </div>
     </div>
   )
