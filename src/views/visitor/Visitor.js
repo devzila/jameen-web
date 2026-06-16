@@ -302,7 +302,7 @@ export default function Visitor() {
             </div>
             <div>
               <h5 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
-                Visitors
+                Visits
               </h5>
               <small style={{ color: '#8a94a6' }}>
                 {pagination?.total_count ?? visitor.length} total
