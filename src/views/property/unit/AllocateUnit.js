@@ -152,7 +152,7 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
     <div>
       <button
         type="button"
-        className="custom_theme_button "
+        className="btn custom_theme_button"
         data-mdb-ripple-init
         onClick={() => setVisible(true)}
       >
