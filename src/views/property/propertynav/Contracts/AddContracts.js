@@ -5,23 +5,36 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import SearchableSelect from 'src/components/SearchableSelect'
 import { useParams } from 'react-router-dom'
-import Loading from 'src/components/loading/loading'
 import { format_react_select } from 'src/services/CommonFunctions'
-
-import {
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
-  CContainer,
-} from '@coreui/react'
-
-import { Button, Form, Row, Col, CardTitle } from 'react-bootstrap'
-
-import { cilDelete, cilNoteAdd } from '@coreui/icons'
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
+import { cilDelete, cilNoteAdd, freeSet } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
+
+const THEME_COLOR = '#00bfcc'
+const labelStyle = { fontWeight: 600, color: '#1f2933' }
+const cardStyle = {
+  background: '#f8fafc',
+  border: '1px solid #eef1f5',
+  borderRadius: '14px',
+  padding: '18px',
+}
+
+function SectionTitle({ children }) {
+  return (
+    <div className="d-flex align-items-center mb-3" style={{ gap: '8px' }}>
+      <span
+        style={{ width: '4px', height: '18px', background: THEME_COLOR, borderRadius: '2px' }}
+      />
+      <h6 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+        {children}
+      </h6>
+    </div>
+  )
+}
+
+SectionTitle.propTypes = {
+  children: PropTypes.node,
+}
 
 export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   const {
@@ -35,118 +48,96 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
   } = useForm()
   const { post, get, response } = useFetch()
   const [temp_base64, setTemp_base64] = useState([])
-
   const [residents, setResidents] = useState([])
-  const [apiErrors, setApiErrors] = useState([])
   const [units, setUnits] = useState([])
-
   const [visible, setVisible] = useState(false)
   const [submitLoader, setSubmitLoader] = useState(false)
-
   const { propertyId } = useParams()
 
-  //dynamic form
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'documents_attributes',
   })
 
-  //resident api call
+  useEffect(() => {
+    if (visible) {
+      loadInitialResidents()
+      loadInitalUnits()
+    }
+  }, [visible])
+
+  useEffect(() => {
+    setValue('documents_attributes', [{ name: '', description: '', file: { data: '' } }])
+  }, [setValue])
 
   async function loadInitialResidents() {
-    let endpoint = `/v1/admin/members?limit=-1`
+    const initialResidents = await get(`/v1/admin/members?limit=-1`)
 
-    const initialResidents = await get(endpoint)
-
-    if (response.ok) {
-      if (initialResidents.data) {
-        setResidents(
-          initialResidents.data.map((m) => ({
-            value: m.id,
-            label: [m.first_name, m.last_name].filter(Boolean).join(' ').trim() || '—',
-            email: (m.email || '').trim(),
-          })),
-        )
-      }
+    if (response.ok && initialResidents.data) {
+      setResidents(
+        initialResidents.data.map((m) => ({
+          value: m.id,
+          label: [m.first_name, m.last_name].filter(Boolean).join(' ').trim() || '—',
+          email: (m.email || '').trim(),
+        })),
+      )
     } else {
       toast.error('Unable to load residents')
     }
   }
 
-  const loadInitalUnits = async () => {
+  async function loadInitalUnits() {
     const initialUnits = await get(`/v1/admin/premises/properties/${propertyId}/units?limit=-1`)
-    if (response.ok) {
-      if (initialUnits.data) {
-        setUnits(format_react_select(initialUnits.data, ['id', 'unit_no']))
-      }
+    if (response.ok && initialUnits.data) {
+      setUnits(format_react_select(initialUnits.data, ['id', 'unit_no']))
     } else {
-      toast.error('Unable to load residents')
+      toast.error('Unable to load units')
     }
   }
-  //useEffext
-  useEffect(() => {
-    loadInitialResidents()
-    loadInitalUnits()
-  }, [])
 
-  //resident dropdown
-
-  //base64
-  const handleFileSelection = (e, index) => {
+  function handleFileSelection(e, index) {
     const selectedFile = e.target.files[0]
 
     if (selectedFile) {
       const reader = new FileReader()
 
-      reader.onload = function (e) {
+      reader.onload = function (event) {
         const temp_array64 = Array.from(temp_base64)
-        const base64Result = e.target.result
-        temp_array64[index] = base64Result
+        temp_array64[index] = event.target.result
         setTemp_base64(temp_array64)
-
-        // setValue(`documents_attributes.${index}.file.data`, base64Result)
       }
 
       reader.readAsDataURL(selectedFile)
     }
   }
 
-  //initially append
-  useEffect(() => {
-    setValue('documents_attributes', [{ name: '', description: '', file: { data: '' } }])
-  }, [setValue])
-
-  //remvoe emptydocuments
   function removeEmptyDocuments(payload) {
-    console.log(payload)
     const documents = payload.documents_attributes
-    console.log(documents)
     payload.documents_attributes = documents.filter((doc) => {
       return doc.name !== '' || doc.description !== '' || doc.file.data != undefined
     })
 
     return payload
   }
-  //submit function
+
   async function onSubmit(data) {
-    //resident array
     setSubmitLoader(true)
     const assigned_resident_data =
       data?.resident_ids?.length > 0 ? data.resident_ids.map((element) => element.value) : []
 
-    //filestobase64
     temp_base64.map((x, index) => setValue(`documents_attributes.${index}.file.data`, x))
-
     data.documents_attributes.map((element, index) => (element.file.data = temp_base64[index]))
 
     const processed_data = removeEmptyDocuments(data)
     const body = { ...processed_data, resident_ids: assigned_resident_data }
-    unitId = unitId || watch('unit_id')
-    await post(`/v1/admin/premises/properties/${propertyId}/units/${unitId}/allotment`, {
+    const selectedUnitId = unitId || watch('unit_id')
+
+    await post(`/v1/admin/premises/properties/${propertyId}/units/${selectedUnitId}/allotment`, {
       allotment: body,
     })
+
     if (response.ok) {
-      toast('Unit Alloted : Operation Successful')
+      toast.success('Contract added successfully')
       reset()
       after_submit()
       setSubmitLoader(false)
@@ -154,48 +145,102 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
       setTemp_base64([])
     } else {
       setSubmitLoader(false)
-      setApiErrors(response?.data)
-      toast(response.data?.message)
+      toast.error(response.data?.message || 'Unknown Error')
     }
   }
+
   function handleClose() {
     setVisible(false)
     setTemp_base64([])
+    reset()
+  }
+
+  function openModal() {
+    setVisible(true)
   }
 
   return (
-    <div>
+    <>
       <button
         type="button"
-        className="btn s-3 custom_theme_button "
-        data-mdb-ripple-init
-        onClick={() => setVisible(!visible)}
+        className="btn d-flex align-items-center"
+        onClick={openModal}
+        style={{
+          gap: '6px',
+          background: THEME_COLOR,
+          color: '#fff',
+          borderRadius: '10px',
+          height: '38px',
+          fontWeight: 600,
+          border: 'none',
+        }}
       >
-        Add
+        <CIcon icon={freeSet.cilPlus} size="sm" />
+        Add Contract
       </button>
-      <CModal
-        alignment="center"
+
+      <Modal
+        show={visible}
+        onHide={handleClose}
+        centered
         size="xl"
-        visible={visible}
         backdrop="static"
-        onClose={handleClose}
-        aria-labelledby="StaticBackdropExampleLabel"
+        contentClassName="border-0 overflow-hidden rounded-4"
       >
-        <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add </CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CContainer className="bg-white  mt-1">
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              <Row>
-                <Col className="pr-1 mt-1 " md="12">
-                  <label>
-                    <b>Unit No: </b> <small className="text-danger"> *</small>
-                  </label>
+        <Modal.Header
+          closeButton
+          closeVariant="white"
+          style={{
+            background: `linear-gradient(135deg, ${THEME_COLOR} 0%, #0098a3 100%)`,
+            border: 'none',
+            padding: '20px 24px',
+            borderTopLeftRadius: 'inherit',
+            borderTopRightRadius: 'inherit',
+          }}
+        >
+          <Modal.Title style={{ color: '#fff' }}>
+            <div className="d-flex align-items-center" style={{ gap: '14px' }}>
+              <div
+                style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '12px',
+                  background: 'rgba(255,255,255,0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <CIcon icon={freeSet.cilDescription} size="lg" />
+              </div>
+              <div className="d-flex flex-column">
+                <span style={{ fontSize: '18px', fontWeight: 700, lineHeight: 1.2 }}>
+                  Add Contract
+                </span>
+                <span style={{ fontSize: '12px', fontWeight: 400, opacity: 0.9 }}>
+                  Allot a unit and assign residents
+                </span>
+              </div>
+            </div>
+          </Modal.Title>
+        </Modal.Header>
 
-                  {unitNo}
-
-                  <Form.Group className="col-12">
+        <Modal.Body style={{ padding: '22px' }}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <div style={{ ...cardStyle, marginBottom: '16px' }}>
+              <SectionTitle>Contract Details</SectionTitle>
+              <Row className="g-3">
+                <Col md={12}>
+                  {unitNo ? (
+                    <div className="mb-2" style={{ color: '#495057' }}>
+                      <span style={labelStyle}>Unit No: </span>
+                      {unitNo}
+                    </div>
+                  ) : null}
+                  <Form.Group>
+                    <Form.Label style={labelStyle}>
+                      Unit <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
                     <Controller
                       name="unit_id"
                       render={({ field }) => (
@@ -214,13 +259,11 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                     />
                   </Form.Group>
                 </Col>
-
-                <Col className="pr-1 mt-3" md="12">
+                <Col md={12}>
                   <Form.Group>
-                    <label>
-                      Resident <small className="text-danger"> *</small>
-                    </label>
-
+                    <Form.Label style={labelStyle}>
+                      Resident <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
                     <Controller
                       name="resident_ids"
                       render={({ field }) => (
@@ -247,132 +290,144 @@ export default function AllocateUnit({ unitId, unitNo, after_submit }) {
                     />
                   </Form.Group>
                 </Col>
-              </Row>
-
-              <Row>
-                <Col className="pr-3 mt-3" md="12">
+                <Col md={12}>
                   <Form.Group>
-                    <label>Allocation Date</label>
+                    <Form.Label style={labelStyle}>Allocation Date</Form.Label>
+                    <Form.Control required type="date" {...register('allotment_date')} />
+                  </Form.Group>
+                </Col>
+                <Col md={12}>
+                  <Form.Group>
+                    <Form.Label style={labelStyle}>Notes</Form.Label>
                     <Form.Control
-                      required
-                      type="date"
-                      {...register('allotment_date')}
-                    ></Form.Control>
+                      as="textarea"
+                      rows={3}
+                      placeholder="Notes"
+                      style={{ resize: 'none' }}
+                      {...register('notes')}
+                    />
                   </Form.Group>
                 </Col>
               </Row>
-              <Col className="pr-1 mt-3" md="12">
-                <Form.Group>
-                  <label>Notes</label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    placeholder="Notes"
-                    {...register('notes')}
-                  ></Form.Control>
-                </Form.Group>
-              </Col>
+            </div>
+
+            <div style={cardStyle}>
+              <SectionTitle>Documents</SectionTitle>
 
               {fields.map((field, index) => (
-                <Row key={field.id}>
-                  <b className="mt-4"> </b>
-                  <Col className="pr-1 mt-3" md="6">
-                    <Form.Group>
-                      <b>Document Name</b>
-                      <Form.Control
-                        placeholder="Name"
-                        type="text"
-                        {...register(`documents_attributes.${index}.name`, {
-                          validate: (value) => {
-                            const fileValue = watch(`documents_attributes.${index}.file.data`)
-
-                            // If file is uploaded but name is empty
-                            if (fileValue && !value?.trim()) {
-                              return 'Document name is required'
-                            }
-
-                            return true
-                          },
-                        })}
-                      />
-
-                      {errors?.documents_attributes?.[index]?.name && (
-                        <small className="text-danger">
-                          {errors.documents_attributes[index].name.message}
-                        </small>
-                      )}
-                    </Form.Group>
-                  </Col>
-
-                  <Col className="pr-1 mt-3 mb-2" md="6">
-                    <Form.Group>
-                      <label>
-                        <b>Document</b>
-                      </label>
-                      <Form.Control
-                        type="file"
-                        accept=".jpg, .jpeg, .png"
-                        {...register(`documents_attributes.${index}.file.data`)}
-                        onChange={(e) => handleFileSelection(e, index)}
-                      ></Form.Control>
-                    </Form.Group>
-                  </Col>
-                  <Col className="pr-1 mt-3" md="6">
-                    <Form.Group>
-                      <label>Description</label>
-                      <Form.Control
-                        placeholder="Description"
-                        type="text"
-                        {...register(`documents_attributes.${index}.description`)}
-                      ></Form.Control>
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    {fields.length > 1 && (
-                      <Col className="justify-content-center mt-2" md="4">
-                        <CIcon
-                          className="mt-3"
-                          onClick={() => remove(index)}
-                          icon={cilDelete}
-                          size="xl"
-                          style={{ '--ci-primary-color': 'red' }}
+                <div
+                  key={field.id}
+                  style={{
+                    background: '#fff',
+                    border: '1px solid #eef1f5',
+                    borderRadius: '12px',
+                    padding: '14px',
+                    marginBottom: index < fields.length - 1 ? '12px' : 0,
+                  }}
+                >
+                  <Row className="g-3 align-items-end">
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label style={labelStyle}>Document Name</Form.Label>
+                        <Form.Control
+                          placeholder="Name"
+                          type="text"
+                          {...register(`documents_attributes.${index}.name`, {
+                            validate: (value) => {
+                              const fileValue = watch(`documents_attributes.${index}.file.data`)
+                              if (fileValue && !value?.trim()) {
+                                return 'Document name is required'
+                              }
+                              return true
+                            },
+                          })}
                         />
+                        {errors?.documents_attributes?.[index]?.name && (
+                          <small className="text-danger d-block" style={{ marginTop: '4px' }}>
+                            {errors.documents_attributes[index].name.message}
+                          </small>
+                        )}
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label style={labelStyle}>Document</Form.Label>
+                        <Form.Control
+                          type="file"
+                          accept=".jpg, .jpeg, .png"
+                          {...register(`documents_attributes.${index}.file.data`)}
+                          onChange={(e) => handleFileSelection(e, index)}
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={fields.length > 1 ? 10 : 12}>
+                      <Form.Group>
+                        <Form.Label style={labelStyle}>Description</Form.Label>
+                        <Form.Control
+                          placeholder="Description"
+                          type="text"
+                          {...register(`documents_attributes.${index}.description`)}
+                        />
+                      </Form.Group>
+                    </Col>
+                    {fields.length > 1 && (
+                      <Col md={2} className="d-flex justify-content-end">
+                        <button
+                          type="button"
+                          className="btn btn-link p-0"
+                          onClick={() => remove(index)}
+                          aria-label="Remove document"
+                        >
+                          <CIcon icon={cilDelete} size="lg" style={{ color: '#e03131' }} />
+                        </button>
                       </Col>
                     )}
-                  </Col>
-                </Row>
+                  </Row>
+                </div>
               ))}
-              <Col className="m-3 d-flex justify-content-center">
-                <CButton
-                  className="btn custom-add-more"
+
+              <div className="d-flex justify-content-center mt-3">
+                <Button
+                  type="button"
+                  variant="light"
+                  className="d-flex align-items-center"
+                  style={{ gap: '6px', borderRadius: '8px', fontWeight: 600 }}
                   onClick={() => append({ name: '', description: '', file: { data: '' } })}
                 >
-                  <CIcon className="mt-1" icon={cilNoteAdd} />
-                  ADD More
-                </CButton>
-              </Col>
-              <div className="text-center">
-                <CModalFooter>
-                  <CButton
-                    className="custom_grey_button"
-                    color="secondary"
-                    onClick={() => setVisible(false)}
-                  >
-                    Close
-                  </CButton>
-                  <Button data-mdb-ripple-init type="submit" className="custom_theme_button">
-                    Submit
-                  </Button>
-                </CModalFooter>
+                  <CIcon icon={cilNoteAdd} size="sm" />
+                  Add More
+                </Button>
               </div>
-            </Form>
-            <div className="clearfix"></div>
-          </CContainer>
-        </CModalBody>
-      </CModal>
-    </div>
+            </div>
+
+            <Modal.Footer style={{ border: 'none', padding: '16px 0 0' }}>
+              <Button
+                variant="light"
+                onClick={handleClose}
+                style={{ borderRadius: '8px', fontWeight: 600 }}
+              >
+                Close
+              </Button>
+              <Button
+                type="submit"
+                disabled={submitLoader}
+                style={{
+                  background: THEME_COLOR,
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: 600,
+                }}
+              >
+                {submitLoader ? 'Submitting...' : 'Submit'}
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </>
   )
 }
+
 AllocateUnit.propTypes = {
   unitId: PropTypes.number,
   unitNo: PropTypes.string,
