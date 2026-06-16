@@ -223,7 +223,7 @@ function Unit() {
                 Units
               </h5>
               <small style={{ color: '#8a94a6' }}>
-                {pagination?.total_count ?? units.length} total
+                {pagination?.total_entries ?? units.length} total
               </small>
             </div>
           </div>

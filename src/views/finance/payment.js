@@ -240,7 +240,7 @@ const Payments = () => {
                 Payments
               </h5>
               <small style={{ color: '#8a94a6' }}>
-                {pagination?.total_count ?? payments.length} total
+                {pagination?.total_entries ?? payments.length} total
               </small>
             </div>
           </div>

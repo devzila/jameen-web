@@ -239,7 +239,7 @@ const Finance = () => {
                 Invoices
               </h5>
               <small style={{ color: '#8a94a6' }}>
-                {pagination?.total_count ?? invoices.length} total
+                {pagination?.total_entries ?? invoices.length} total
               </small>
             </div>
           </div>

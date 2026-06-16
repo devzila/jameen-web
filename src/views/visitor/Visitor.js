@@ -305,7 +305,7 @@ export default function Visitor() {
                 Visits
               </h5>
               <small style={{ color: '#8a94a6' }}>
-                {pagination?.total_count ?? visitor.length} total
+                {pagination?.total_entries ?? visitor.length} total
               </small>
             </div>
           </div>

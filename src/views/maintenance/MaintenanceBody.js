@@ -141,7 +141,7 @@ export default function MaintanceBody({ api_endpoint }) {
                       Maintenance Requests
                     </h5>
                     <small style={{ color: '#8a94a6' }}>
-                      {pagination?.total_count ?? maintenance.length} total
+                      {pagination?.total_entries ?? maintenance.length} total
                     </small>
                   </div>
 

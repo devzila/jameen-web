@@ -293,7 +293,7 @@ const CreditNotes = () => {
                 Credit Notes
               </h5>
               <small style={{ color: '#8a94a6' }}>
-                {pagination?.total_count ?? creditNotes.length} total
+                {pagination?.total_entries ?? creditNotes.length} total
               </small>
             </div>
           </div>
