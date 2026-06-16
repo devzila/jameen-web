@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useFetch from 'use-http'
+import { Modal, Form, Button } from 'react-bootstrap'
 
 import { toast } from 'react-toastify'
 import Paginate from '../../components/Pagination'
@@ -59,6 +60,52 @@ function statusBadgeStyle(status) {
   }
 }
 
+const ROW_ACTIONS = [
+  {
+    key: 'checkin',
+    label: 'Check In',
+    icon: freeSet.cilCheckCircle,
+    color: '#1a9e54',
+    bg: '#e6f9ec',
+  },
+  {
+    key: 'checkout',
+    label: 'Check Out',
+    icon: freeSet.cilExitToApp,
+    color: '#1c7ed6',
+    bg: '#e7f5ff',
+  },
+  {
+    key: 'cancel',
+    label: 'Cancel',
+    icon: freeSet.cilXCircle,
+    color: '#e03131',
+    bg: '#fdeaea',
+  },
+]
+
+function isActionApplicable(actionKey, status) {
+  const s = String(status || '')
+    .toLowerCase()
+    .replace(/[\s-]/g, '_')
+
+  switch (actionKey) {
+    case 'checkin':
+      // can check in only while the visit is still upcoming/approved
+      return ['requested', 'approved', 'pending', 'expected'].includes(s)
+    case 'checkout':
+      // can check out only once the visitor has checked in
+      return ['checked_in', 'checkedin', 'arrived', 'in'].includes(s)
+    case 'cancel':
+      // can cancel unless it is already finished or cancelled
+      return !['cancelled', 'canceled', 'checked_out', 'checkedout', 'completed', 'left'].includes(
+        s,
+      )
+    default:
+      return true
+  }
+}
+
 const headerCellStyle = {
   color: '#8a94a6',
   fontSize: '11px',
@@ -85,7 +132,12 @@ export default function Visitor() {
   const [visitor, setVisitor] = useState([])
 
   const [searchKeyword, setSearchKeyword] = useState(null)
-  const { get, response } = useFetch()
+
+  const [cancelVisit, setCancelVisit] = useState(null)
+  const [cancelReason, setCancelReason] = useState('')
+  const [cancelling, setCancelling] = useState(false)
+
+  const { get, put, response } = useFetch()
 
   async function loadInitialVisitor() {
     let endpoint = `/v1/admin/visits?page=${currentPage}`
@@ -114,11 +166,51 @@ export default function Visitor() {
     setCurrentPage(e.selected + 1)
   }
 
+  function handleRowAction(actionKey, visit) {
+    if (actionKey === 'cancel') {
+      setCancelVisit(visit)
+      setCancelReason('')
+      return
+    }
+    // TODO: wire check-in / check-out to their respective APIs
+    toast(`"${actionKey}" action for visit #${visit.id} will be available soon.`)
+  }
+
+  async function submitCancellation() {
+    if (!cancelVisit) return
+    if (!cancelReason.trim()) {
+      toast.error('Please provide a reason for cancellation.')
+      return
+    }
+
+    setCancelling(true)
+    await put(`/v1/admin/visits/${cancelVisit.id}`, {
+      visit: {
+        status: 4,
+        reason_of_cancellation: cancelReason.trim(),
+      },
+    })
+    setCancelling(false)
+
+    if (response.ok) {
+      toast.success('Visit cancelled successfully.')
+      setCancelVisit(null)
+      setCancelReason('')
+      loadInitialVisitor()
+    } else {
+      toast.error('Unable to cancel the visit. Please try again.')
+    }
+  }
+
   return (
     <div style={{ padding: '20px' }}>
       <style>{`
         .visitor-table tbody tr { transition: background-color .15s ease; }
         .visitor-table tbody tr:hover { background-color: #f5fdfe; }
+
+        .action-pill { transition: filter .15s ease, transform .15s ease; cursor: pointer; }
+        .action-pill:hover { filter: brightness(0.95); transform: translateY(-1px); }
+        .action-pill:active { transform: translateY(0); }
 
         .visitor-pagination ul { margin: 0; align-items: center; gap: 4px; }
         .visitor-pagination .btn {
@@ -239,6 +331,7 @@ export default function Visitor() {
                 <th style={headerCellStyle}>Purpose</th>
                 <th style={headerCellStyle}>Expected Arrival Time</th>
                 <th style={headerCellStyle}>Status</th>
+                <th style={{ ...headerCellStyle, textAlign: 'center' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -276,13 +369,50 @@ export default function Visitor() {
                     <td style={bodyCellStyle}>
                       <span style={statusBadgeStyle(visit.status)}>{visit.status || '-'}</span>
                     </td>
+                    <td style={bodyCellStyle}>
+                      {(() => {
+                        const actions = ROW_ACTIONS.filter((action) =>
+                          isActionApplicable(action.key, visit.status),
+                        )
+                        if (actions.length === 0) {
+                          return <span style={{ color: '#b0b8c4' }}>-</span>
+                        }
+                        return (
+                          <div className="d-flex justify-content-center" style={{ gap: '6px' }}>
+                            {actions.map((action) => (
+                              <button
+                                key={action.key}
+                                type="button"
+                                title={action.label}
+                                onClick={() => handleRowAction(action.key, visit)}
+                                className="d-inline-flex align-items-center action-pill"
+                                style={{
+                                  gap: '5px',
+                                  border: 'none',
+                                  background: action.bg,
+                                  color: action.color,
+                                  borderRadius: '8px',
+                                  padding: '6px 10px',
+                                  fontSize: '12px',
+                                  fontWeight: 600,
+                                  whiteSpace: 'nowrap',
+                                }}
+                              >
+                                <CIcon icon={action.icon} size="sm" />
+                                {action.label}
+                              </button>
+                            ))}
+                          </div>
+                        )
+                      })()}
+                    </td>
                   </tr>
                 )
               })}
               {!loading && visitor?.length === 0 && (
                 <tr>
                   <td
-                    colSpan={7}
+                    colSpan={8}
                     className="text-center text-secondary fst-italic"
                     style={{ padding: '32px' }}
                   >
@@ -310,6 +440,92 @@ export default function Visitor() {
           </div>
         ) : null}
       </div>
+
+      <Modal
+        show={!!cancelVisit}
+        onHide={() => (cancelling ? null : setCancelVisit(null))}
+        centered
+        contentClassName="border-0"
+        style={{ borderRadius: '16px' }}
+      >
+        <div style={{ borderRadius: '16px', overflow: 'hidden' }}>
+          <Modal.Header
+            closeButton
+            closeVariant="white"
+            style={{
+              background: `linear-gradient(135deg, #e03131 0%, #c92a2a 100%)`,
+              border: 'none',
+              padding: '18px 22px',
+            }}
+          >
+            <Modal.Title style={{ color: '#fff' }}>
+              <div className="d-flex align-items-center" style={{ gap: '12px' }}>
+                <div
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '12px',
+                    background: 'rgba(255,255,255,0.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <CIcon icon={freeSet.cilXCircle} size="lg" />
+                </div>
+                <div className="d-flex flex-column">
+                  <span style={{ fontSize: '17px', fontWeight: 700, lineHeight: 1.2 }}>
+                    Cancel Visit
+                  </span>
+                  <span style={{ fontSize: '12px', fontWeight: 400, opacity: 0.9 }}>
+                    {firstVisitorName(cancelVisit || {})} · {unitLabel(cancelVisit || {})}
+                  </span>
+                </div>
+              </div>
+            </Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body style={{ padding: '22px' }}>
+            <Form.Group>
+              <Form.Label style={{ fontWeight: 600, color: '#1f2933' }}>
+                Reason of cancellation <span style={{ color: '#e03131' }}>*</span>
+              </Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                placeholder="e.g. Phone call"
+                autoFocus
+                style={{ borderRadius: '10px', resize: 'none' }}
+              />
+            </Form.Group>
+          </Modal.Body>
+
+          <Modal.Footer style={{ border: 'none', padding: '0 22px 22px' }}>
+            <Button
+              variant="light"
+              onClick={() => setCancelVisit(null)}
+              disabled={cancelling}
+              style={{ borderRadius: '8px', fontWeight: 600 }}
+            >
+              Close
+            </Button>
+            <Button
+              onClick={submitCancellation}
+              disabled={cancelling}
+              style={{
+                background: '#e03131',
+                border: 'none',
+                borderRadius: '8px',
+                fontWeight: 600,
+              }}
+            >
+              {cancelling ? 'Cancelling…' : 'Confirm Cancellation'}
+            </Button>
+          </Modal.Footer>
+        </div>
+      </Modal>
     </div>
   )
 }
