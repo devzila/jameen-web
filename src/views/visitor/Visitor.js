@@ -220,7 +220,10 @@ export default function Visitor() {
               </button>
             </div>
 
-            <CheckPermissions component={<AddVisitor />} keys={['visitor', 'create']} />
+            <CheckPermissions
+              component={<AddVisitor after_submit={loadInitialVisitor} />}
+              keys={['visitor', 'create']}
+            />
           </div>
         </div>
 
