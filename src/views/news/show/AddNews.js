@@ -3,18 +3,36 @@ import useFetch from 'use-http'
 import Select from 'react-select'
 import { toast } from 'react-toastify'
 import { useForm, Controller } from 'react-hook-form'
-import { Button, Form, Row, Col } from 'react-bootstrap'
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
-import {
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
-  CContainer,
-} from '@coreui/react'
+const THEME_COLOR = '#00bfcc'
+const labelStyle = { fontWeight: 600, color: '#1f2933' }
+const cardStyle = {
+  background: '#f8fafc',
+  border: '1px solid #eef1f5',
+  borderRadius: '14px',
+  padding: '18px',
+}
+
+function SectionTitle({ children }) {
+  return (
+    <div className="d-flex align-items-center mb-3" style={{ gap: '8px' }}>
+      <span
+        style={{ width: '4px', height: '18px', background: THEME_COLOR, borderRadius: '2px' }}
+      />
+      <h6 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+        {children}
+      </h6>
+    </div>
+  )
+}
+
+SectionTitle.propTypes = {
+  children: PropTypes.node,
+}
 
 export default function AddNews({ after_submit }) {
   const [visible, setVisible] = useState(false)
@@ -25,170 +43,238 @@ export default function AddNews({ after_submit }) {
   const { register, handleSubmit, control, reset } = useForm()
   const { get, post, response } = useFetch()
 
-  let properties_array = []
-  function trimProperties(properties) {
-    properties.forEach((element) => {
-      properties_array.push({ value: element.id, label: element.name })
-    })
-    return properties_array
-  }
-  //fetch properties
   async function fetchProperties() {
     const api = await get('/v1/admin/premises/properties')
     if (response.ok) {
-      setProperties_data(trimProperties(api.data))
+      setProperties_data(api.data.map((element) => ({ value: element.id, label: element.name })))
+    }
+  }
+
+  function fetchPostCategory() {
+    const meta = localStorage.getItem('meta')
+    if (meta) {
+      const postdata = JSON.parse(meta)?.post_categories
+      const processed_data = Object.entries(postdata || {}).map(([key, value]) => ({
+        label: key,
+        value: value,
+      }))
+      setPostTypes(processed_data)
     }
   }
 
   useEffect(() => {
-    fetchProperties()
-    fetchPostCategory()
-  }, [])
-
-  const fetchPostCategory = () => {
-    const meta = localStorage.getItem('meta')
-    if (meta) {
-      const postdata = JSON.parse(meta)?.post_categories
-      const processed_data = Object.entries(postdata).map(([key, value]) => ({
-        label: key,
-        value: value,
-      }))
-
-      setPostTypes(processed_data)
+    if (visible) {
+      fetchProperties()
+      fetchPostCategory()
     }
+  }, [visible])
+
+  function fieldError(name) {
+    const message = errors?.[name]?.[0] || (errors?.[name] && String(errors[name]))
+    if (!message) return null
+    return (
+      <small className="text-danger d-block" style={{ marginTop: '4px' }}>
+        {message}
+      </small>
+    )
   }
+
   async function onSubmit(data) {
     const assigned_properties_data =
       data?.property_ids?.length > 0 ? data.property_ids.map((element) => element.value) : []
 
     const body = { ...data, property_ids: assigned_properties_data }
     await post(`/v1/admin/posts`, { post: body })
+
     if (response.ok) {
-      toast('Post added successfully')
+      toast.success('Post added successfully')
       after_submit()
       reset()
-      setVisible(!visible)
+      setVisible(false)
     } else {
-      setErrors(response.data.errors)
-      toast(response.data?.message)
+      setErrors(response.data?.errors || {})
+      toast.error(response.data?.message || 'Unable to add post')
     }
   }
 
+  function handleClose() {
+    setVisible(false)
+    setErrors({})
+    reset()
+  }
+
   return (
-    <div>
+    <>
       <button
         type="button"
-        className="btn flex s-3 custom_theme_button"
-        data-mdb-ripple-init
-        onClick={() => setVisible(!visible)}
+        className="btn d-flex align-items-center"
+        onClick={() => setVisible(true)}
+        style={{
+          gap: '6px',
+          background: THEME_COLOR,
+          color: '#fff',
+          borderRadius: '10px',
+          height: '38px',
+          fontWeight: 600,
+          border: 'none',
+          flexShrink: 0,
+        }}
       >
+        <CIcon icon={freeSet.cilPlus} size="sm" />
         Add Post
       </button>
-      <CModal
-        alignment="center"
+
+      <Modal
+        show={visible}
+        onHide={handleClose}
+        centered
         size="xl"
-        visible={visible}
         backdrop="static"
-        onClose={() => setVisible(false)}
-        aria-labelledby="StaticBackdropExampsleLabel"
+        contentClassName="border-0 overflow-hidden rounded-4"
       >
-        <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add Post </CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CContainer>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              <Row>
-                <Col className="pr-1 mt-3" md="12">
+        <Modal.Header
+          closeButton
+          closeVariant="white"
+          style={{
+            background: `linear-gradient(135deg, ${THEME_COLOR} 0%, #0098a3 100%)`,
+            border: 'none',
+            padding: '20px 24px',
+            borderTopLeftRadius: 'inherit',
+            borderTopRightRadius: 'inherit',
+          }}
+        >
+          <Modal.Title style={{ color: '#fff' }}>
+            <div className="d-flex align-items-center" style={{ gap: '14px' }}>
+              <div
+                style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '12px',
+                  background: 'rgba(255,255,255,0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <CIcon icon={freeSet.cilNewspaper} size="lg" />
+              </div>
+              <div className="d-flex flex-column">
+                <span style={{ fontSize: '18px', fontWeight: 700, lineHeight: 1.2 }}>Add Post</span>
+                <span style={{ fontSize: '12px', fontWeight: 400, opacity: 0.9 }}>
+                  Create a new news post
+                </span>
+              </div>
+            </div>
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body style={{ padding: '22px', maxHeight: '75vh', overflowY: 'auto' }}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <div style={cardStyle}>
+              <SectionTitle>Post Details</SectionTitle>
+              <Row className="g-3">
+                <Col md={12}>
                   <Form.Group>
-                    <label>Title</label>
+                    <Form.Label style={labelStyle}>
+                      Title <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
                     <Form.Control
                       required
-                      placeholder="title"
+                      placeholder="Post title"
                       type="text"
                       {...register('title')}
-                    ></Form.Control>
+                    />
+                    {fieldError('title')}
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="12">
+                <Col md={12}>
                   <Form.Group>
-                    <label>
-                      Post Type
-                      <small className="text-danger"> *{errors ? errors.role : null} </small>
-                    </label>
+                    <Form.Label style={labelStyle}>
+                      Post Type <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
                     <Controller
                       name="category"
+                      control={control}
                       render={({ field }) => (
                         <Select
                           {...field}
                           options={postTypes}
-                          value={postTypes.find((c) => c.value === field.value)}
-                          onChange={(val) => field.onChange(val.value)}
+                          value={postTypes.find((c) => c.value === field.value) || null}
+                          onChange={(val) => field.onChange(val?.value)}
+                          placeholder="Select post type"
                         />
                       )}
-                      control={control}
-                      placeholder="Role"
                     />
+                    {fieldError('category')}
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <label>Assigned Properties</label>
+              </Row>
+            </div>
 
+            <div style={{ ...cardStyle, marginTop: '16px' }}>
+              <SectionTitle>Access</SectionTitle>
+              <Row className="g-3">
+                <Col md={12}>
+                  <Form.Group>
+                    <Form.Label style={labelStyle}>Assigned Properties</Form.Label>
                     <Controller
                       name="property_ids"
+                      control={control}
                       render={({ field }) => (
                         <Select
                           isMulti
-                          type="text"
                           className="basic-multi-select"
                           classNamePrefix="select"
                           {...field}
                           options={properties_data}
+                          placeholder="Select properties"
                         />
                       )}
-                      control={control}
-                      placeholder="Assigned Properties"
                     />
                   </Form.Group>
                 </Col>
-                <Col className="pr-1 mt-3" md="12">
-                  <Form.Group>
-                    <label>Content</label>
-                    <Form.Control
-                      as="textarea"
-                      rows={20}
-                      placeholder="Content"
-                      {...register('content')}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
               </Row>
+            </div>
 
-              <div className="text-center">
-                <CModalFooter>
-                  <Button
-                    data-mdb-ripple-init
-                    type="submit"
-                    className="btn custom_theme_button btn-primary btn-block"
-                  >
-                    Submit
-                  </Button>
-                  <CButton
-                    className="custom_grey_button"
-                    color="secondary"
-                    onClick={() => setVisible(false)}
-                  >
-                    Close
-                  </CButton>
-                </CModalFooter>
-              </div>
-            </Form>
-            <div className="clearfix"></div>
-          </CContainer>
-        </CModalBody>
-      </CModal>
-    </div>
+            <div style={{ ...cardStyle, marginTop: '16px' }}>
+              <SectionTitle>Content</SectionTitle>
+              <Form.Group>
+                <Form.Label style={labelStyle}>Body</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={12}
+                  placeholder="Write post content..."
+                  style={{ resize: 'none' }}
+                  {...register('content')}
+                />
+                {fieldError('content')}
+              </Form.Group>
+            </div>
+
+            <Modal.Footer style={{ border: 'none', padding: '16px 0 0' }}>
+              <Button
+                variant="light"
+                onClick={handleClose}
+                style={{ borderRadius: '8px', fontWeight: 600 }}
+              >
+                Close
+              </Button>
+              <Button
+                type="submit"
+                style={{
+                  background: THEME_COLOR,
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: 600,
+                }}
+              >
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </>
   )
 }
 

@@ -1,114 +1,157 @@
 import { freeSet } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import { CCard, CRow, CCol, CListGroupItem } from '@coreui/react'
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Col } from 'react-bootstrap'
 import { formatdate, formatNumberCount } from 'src/services/CommonFunctions'
+
+const THEME_COLOR = '#00bfcc'
+const commentRowStyle = { gap: '8px' }
+
+const cardStyle = {
+  background: '#fff',
+  borderRadius: '16px',
+  boxShadow: '0 2px 12px rgba(0,0,0,.05)',
+  padding: '18px',
+  marginBottom: '16px',
+}
+
+function SectionHeader({ icon, title }) {
+  return (
+    <div className="d-flex align-items-center mb-3" style={{ gap: '10px' }}>
+      <div
+        style={{
+          width: '34px',
+          height: '34px',
+          borderRadius: '10px',
+          background: 'rgba(0,191,204,0.12)',
+          color: THEME_COLOR,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <CIcon icon={icon} size="sm" />
+      </div>
+      <h6 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+        {title}
+      </h6>
+    </div>
+  )
+}
+
+SectionHeader.propTypes = {
+  icon: PropTypes.array,
+  title: PropTypes.string,
+}
 
 export default function ShowLeftBar({ data, delete_comment }) {
   return (
-    <CCol md="3">
-      <CCol md="12">
-        <CCard className="p-3 my-3 rounded-0 border-0">
-          <CListGroupItem>
-            <CIcon icon={freeSet.cilGraph} size="lg" className="me-2 theme_color" />
-            <strong>Stats</strong>
-            <hr className="text-secondary" />
-          </CListGroupItem>
-          <CRow>
-            <div className="d-flex align-items-center justify-content-around">
-              <p className="m-0">
-                <CIcon icon={freeSet.cilChart} size="lg" className="me-2 theme_color" />{' '}
-                {formatNumberCount(data?.view_count) || 0}
-              </p>
-              <p className="mx-2 my-0">
-                <CIcon icon={freeSet.cilHeart} size="lg" className="me-2 theme_color" />{' '}
-                {formatNumberCount(data?.likes_count) || 0}
-              </p>
-              <p className="mx-2 my-0">
-                <CIcon icon={freeSet.cilCommentSquare} size="lg" className="me-2 theme_color" />{' '}
-                {formatNumberCount(data?.comments?.length) || 0}
-              </p>
+    <Col md={3}>
+      <div style={cardStyle}>
+        <SectionHeader icon={freeSet.cilGraph} title="Stats" />
+        <div className="d-flex align-items-center justify-content-around">
+          <div className="text-center">
+            <CIcon icon={freeSet.cilChart} style={{ color: THEME_COLOR }} />
+            <div style={{ fontWeight: 700, color: '#1f2933', marginTop: '4px' }}>
+              {formatNumberCount(data?.view_count) || 0}
             </div>
-          </CRow>
-        </CCard>
-      </CCol>
-      <CCol md="12">
-        <CCard className=" p-3 my-3rounded-0 border-0">
-          <CListGroupItem>
-            <CIcon icon={freeSet.cilTags} size="lg" className="me-2 theme_color" />
-            <strong>Tags</strong>
-            <hr className="text-secondary" />
-          </CListGroupItem>
-          <small className="fst-italic text-center text-secondary p-2 ">No Tags found.</small>
-        </CCard>
-      </CCol>
-      <CCol md="12" sm="12">
-        <CCard className=" p-3 my-3 rounded-0 border-0">
-          <CListGroupItem>
-            <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
-            <strong>Properties Tagged</strong>
-            <hr className="text-secondary" />
-          </CListGroupItem>
+            <small style={{ color: '#8a94a6' }}>Views</small>
+          </div>
+          <div className="text-center">
+            <CIcon icon={freeSet.cilHeart} style={{ color: THEME_COLOR }} />
+            <div style={{ fontWeight: 700, color: '#1f2933', marginTop: '4px' }}>
+              {formatNumberCount(data?.likes_count) || 0}
+            </div>
+            <small style={{ color: '#8a94a6' }}>Likes</small>
+          </div>
+          <div className="text-center">
+            <CIcon icon={freeSet.cilCommentSquare} style={{ color: THEME_COLOR }} />
+            <div style={{ fontWeight: 700, color: '#1f2933', marginTop: '4px' }}>
+              {formatNumberCount(data?.comments?.length) || 0}
+            </div>
+            <small style={{ color: '#8a94a6' }}>Comments</small>
+          </div>
+        </div>
+      </div>
 
-          {data?.properties?.map((property) => (
-            <button
-              key={property.id}
-              className="request-gray mt-1 w-100 fw-normal text-black text-capitalize"
-              title={property?.name}
-            >
-              <CIcon icon={freeSet.cilBuilding} className="mx-2 text-secondary" />
-              {property?.name?.slice(0, 50) || '-'}
-            </button>
-          ))}
+      <div style={cardStyle}>
+        <SectionHeader icon={freeSet.cilTags} title="Tags" />
+        <small className="text-secondary fst-italic">No tags found.</small>
+      </div>
 
-          <CRow></CRow>
-        </CCard>
-      </CCol>
-      <CCol md="12">
-        <CCard className=" p-3 my-3 rounded-0 border-0">
-          <CListGroupItem>
-            <CIcon icon={freeSet.cilCommentSquare} size="lg" className="me-2 theme_color" />
-            <strong>Comments</strong>
-            <hr className="text-secondary" />
-          </CListGroupItem>
-          <CRow>
-            <div style={{ maxHeight: '20vh', overflow: 'scroll' }}>
-              {/* add user and date  */}
-              {data?.comments?.length > 0 ? (
-                data?.comments?.map((comment, index) => (
-                  <section key={index}>
-                    <div className="d-flex justify-content-between m-0 p-0">
-                      <p className="mx-2">{comment?.description || '-'}</p>
-                      <CIcon
-                        className="text-danger mx-1"
-                        title="Delete Comment"
-                        icon={freeSet.cilDelete}
-                        onClick={() => delete_comment(comment.id)}
-                      />
-                    </div>
-                    <div className="d-flex justify-content-end">
-                      <small className="fst-italic text-secondary">
-                        {comment?.member?.first_name + comment?.member?.last_name} •
-                      </small>
-                      <small className="fst-italic text-secondary">
-                        {formatdate(comment?.created_at)}
-                      </small>{' '}
-                    </div>
-                  </section>
-                ))
-              ) : (
-                <small className="fst-italic text-center text-secondary py-5 my-4">
-                  No comment found.
+      <div style={cardStyle}>
+        <SectionHeader icon={freeSet.cilLineStyle} title="Properties Tagged" />
+        {data?.properties?.length > 0 ? (
+          <div className="d-flex flex-wrap" style={{ gap: '8px' }}>
+            {data.properties.map((property) => (
+              <span
+                key={property.id}
+                title={property?.name}
+                style={{
+                  background: 'rgba(0,191,204,0.12)',
+                  color: THEME_COLOR,
+                  padding: '6px 12px',
+                  borderRadius: '999px',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                }}
+              >
+                <CIcon icon={freeSet.cilBuilding} size="sm" className="me-1" />
+                {property?.name?.slice(0, 40) || '-'}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <small className="text-secondary fst-italic">No properties tagged.</small>
+        )}
+      </div>
+
+      <div style={cardStyle}>
+        <SectionHeader icon={freeSet.cilCommentSquare} title="Comments" />
+        <div style={{ maxHeight: '240px', overflowY: 'auto' }}>
+          {data?.comments?.length > 0 ? (
+            data.comments.map((comment) => (
+              <div
+                key={comment.id}
+                style={{
+                  padding: '12px 0',
+                  borderBottom: '1px solid #f2f4f7',
+                }}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-start"
+                  style={commentRowStyle}
+                >
+                  <p className="mb-1" style={{ color: '#1f2933', fontSize: '14px' }}>
+                    {comment?.description || '-'}
+                  </p>
+                  <button
+                    type="button"
+                    className="btn btn-link p-0 text-danger"
+                    title="Delete comment"
+                    onClick={() => delete_comment(comment.id)}
+                  >
+                    <CIcon icon={freeSet.cilTrash} size="sm" />
+                  </button>
+                </div>
+                <small className="text-secondary fst-italic">
+                  {[comment?.member?.first_name, comment?.member?.last_name]
+                    .filter(Boolean)
+                    .join(' ')}{' '}
+                  • {formatdate(comment?.created_at)}
                 </small>
-              )}
-            </div>
-          </CRow>
-        </CCard>
-      </CCol>
-    </CCol>
+              </div>
+            ))
+          ) : (
+            <small className="text-secondary fst-italic">No comments found.</small>
+          )}
+        </div>
+      </div>
+    </Col>
   )
 }
+
 ShowLeftBar.propTypes = {
   data: PropTypes.object,
   delete_comment: PropTypes.func,

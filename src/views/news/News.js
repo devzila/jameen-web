@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useFetch } from 'use-http'
 import { toast } from 'react-toastify'
-import { CNavbar, CContainer, CNavbarBrand } from '@coreui/react'
-import { Row, Col } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
@@ -12,140 +10,289 @@ import { status_color } from 'src/services/CommonFunctions'
 import AddNews from './show/AddNews'
 import CheckPermissions from 'src/permissions/CheckPermissions'
 
-function News() {
-  const { get, response } = useFetch()
+const THEME_COLOR = '#00bfcc'
 
-  const [errors, setErrors] = useState(false)
+const headerCellStyle = {
+  color: '#8a94a6',
+  fontSize: '11px',
+  fontWeight: 600,
+  textTransform: 'uppercase',
+  letterSpacing: '0.04em',
+  borderBottom: '1px solid #eef1f5',
+  padding: '14px 16px',
+  whiteSpace: 'nowrap',
+}
+
+const bodyCellStyle = {
+  padding: '14px 16px',
+  borderBottom: '1px solid #f2f4f7',
+  color: '#1f2933',
+  verticalAlign: 'middle',
+}
+
+function statusBadgeStyle(status) {
+  const palette = {
+    red: { bg: '#fdeaea', color: '#e03131' },
+    orange: { bg: '#fff4e6', color: '#e8590c' },
+    green: { bg: '#e6f9ec', color: '#1a9e54' },
+    gray: { bg: '#eef1f5', color: '#495057' },
+  }
+  const colors = palette[status_color(String(status).toLowerCase())] || palette.gray
+  return {
+    background: colors.bg,
+    color: colors.color,
+    padding: '4px 14px',
+    borderRadius: '999px',
+    fontSize: '12px',
+    fontWeight: 600,
+    textTransform: 'capitalize',
+    display: 'inline-block',
+  }
+}
+
+function categoryBadgeStyle() {
+  return {
+    background: 'rgba(0,191,204,0.12)',
+    color: THEME_COLOR,
+    padding: '4px 14px',
+    borderRadius: '999px',
+    fontSize: '12px',
+    fontWeight: 600,
+    textTransform: 'capitalize',
+    display: 'inline-block',
+  }
+}
+
+export default function News() {
+  const { get, response } = useFetch()
   const [loading, setLoading] = useState(true)
   const [pagination, setPagination] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-
   const [posts, setPosts] = useState([])
-  const [searchKeyword, setSearchKeyword] = useState(null)
+  const [searchInput, setSearchInput] = useState('')
+  const [searchKeyword, setSearchKeyword] = useState('')
 
   useEffect(() => {
     loadInitialPosts()
-  }, [currentPage])
+  }, [currentPage, searchKeyword])
 
   async function loadInitialPosts() {
+    setLoading(true)
     let endpoint = `/v1/admin/posts?page=${currentPage}`
-    if (searchKeyword) {
-      endpoint += `&q[title_cont]=${searchKeyword}`
+
+    if (searchKeyword?.trim()) {
+      endpoint += `&q[title_cont]=${encodeURIComponent(searchKeyword.trim())}`
     }
+
     const initialPosts = await get(endpoint)
 
-    if (response.ok) {
-      if (initialPosts.data) {
-        setLoading(false)
-        setPosts(initialPosts.data)
-        setPagination(initialPosts.pagination)
-      }
+    if (response.ok && initialPosts?.data) {
+      setPosts(initialPosts.data)
+      setPagination(initialPosts.pagination)
     } else {
-      setErrors(true)
-      setLoading(false)
+      toast.error('Unable to load news posts')
     }
+    setLoading(false)
   }
 
   function handlePageClick(e) {
     setCurrentPage(e.selected + 1)
   }
 
+  function applySearch(e) {
+    e?.preventDefault()
+    setCurrentPage(1)
+    setSearchKeyword(searchInput.trim())
+  }
+
+  function handleSearchInputChange(e) {
+    const value = e.target.value
+    setSearchInput(value)
+    if (value === '') {
+      setCurrentPage(1)
+      setSearchKeyword('')
+    }
+  }
+
   return (
-    <div>
-      <CNavbar expand="lg" colorScheme="light" className="bg-white">
-        <CContainer fluid>
-          <CNavbarBrand href="/news">News</CNavbarBrand>
-          <div className="d-flex justify-content-end">
-            <div className="d-flex" role="search">
+    <div style={{ padding: '20px' }}>
+      <style>{`
+        .news-table tbody tr { transition: background-color .15s ease; }
+        .news-table tbody tr:hover { background-color: #f5fdfe; }
+
+        .news-pagination ul { margin: 0; align-items: center; gap: 4px; }
+        .news-pagination .btn {
+          box-shadow: none !important;
+          border: 1px solid #eef1f5 !important;
+          border-radius: 8px !important;
+          background: #fff;
+          color: #495057;
+          min-width: 36px;
+          height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 10px;
+          margin: 0 !important;
+          transition: all .15s ease;
+        }
+        .news-pagination .btn:hover {
+          border-color: ${THEME_COLOR} !important;
+          color: ${THEME_COLOR};
+        }
+        .news-pagination .custom_background_color,
+        .news-pagination .custom_background_color .btn {
+          background: ${THEME_COLOR} !important;
+          border-color: ${THEME_COLOR} !important;
+          color: #fff !important;
+        }
+      `}</style>
+
+      <div
+        style={{
+          background: '#fff',
+          borderRadius: '16px',
+          boxShadow: '0 2px 12px rgba(0,0,0,.05)',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          className="d-flex justify-content-between align-items-center flex-wrap"
+          style={{ gap: '12px', padding: '20px 24px' }}
+        >
+          <div className="d-flex align-items-center" style={{ gap: '12px' }}>
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '12px',
+                background: 'rgba(0,191,204,0.12)',
+                color: THEME_COLOR,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <CIcon icon={freeSet.cilNewspaper} size="lg" />
+            </div>
+            <div>
+              <h5 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+                News
+              </h5>
+              <small style={{ color: '#8a94a6' }}>
+                {pagination?.total_entries ?? posts.length} total
+              </small>
+            </div>
+          </div>
+
+          <div className="d-flex align-items-center flex-nowrap" style={{ gap: '10px' }}>
+            <form
+              className="d-flex align-items-center flex-nowrap"
+              role="search"
+              onSubmit={applySearch}
+              style={{
+                background: '#f5f7fb',
+                borderRadius: '10px',
+                padding: '2px 6px 2px 12px',
+                flexShrink: 0,
+              }}
+            >
               <input
-                onChange={(e) => setSearchKeyword(e.target.value)}
-                className="form-control  custom_input"
+                value={searchInput}
+                onChange={handleSearchInputChange}
+                className="border-0"
+                style={{ background: 'transparent', outline: 'none', width: '160px' }}
                 type="search"
-                placeholder="Search"
+                placeholder="Search by title"
                 aria-label="Search"
               />
               <button
-                onClick={loadInitialPosts}
-                className="btn btn-outline-success custom_search_button"
+                className="btn d-flex align-items-center justify-content-center"
                 type="submit"
+                style={{
+                  background: THEME_COLOR,
+                  color: '#fff',
+                  borderRadius: '8px',
+                  width: '34px',
+                  height: '34px',
+                  flexShrink: 0,
+                }}
               >
-                <CIcon icon={freeSet.cilSearch} />
+                <CIcon icon={freeSet.cilSearch} size="sm" />
               </button>
-            </div>
+            </form>
             <CheckPermissions
               component={<AddNews after_submit={loadInitialPosts} />}
               keys={['posts', 'create']}
             />
-            {/* Add News button goes here */}
-          </div>
-        </CContainer>
-      </CNavbar>
-      <hr className=" text-secondary m-0" />
-
-      <div>
-        <div className="mask d-flex align-items-center h-100">
-          <div className="w-100">
-            <div className="row justify-content-center">
-              <div className="">
-                <div className="table-responsive bg-white">
-                  <table className="table table-striped mb-0 ">
-                    <thead>
-                      <tr>
-                        <th className="pt-3 pb-3 border-0">Title</th>
-                        <th className="pt-3 pb-3 border-0">Category</th>
-                        <th className="pt-3 pb-3 border-0">User</th>
-                        <th className="pt-3 pb-3 border-0">Views</th>
-                        <th className="pt-3 pb-3 border-0">Likes</th>
-                        <th className="pt-3 pb-3 border-0">Status</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {posts.map((post) => (
-                        <tr key={post.id}>
-                          <th className="pt-3 border-0" scope="row">
-                            <NavLink to={`${post.id}/view`}>{post.title}</NavLink>
-                          </th>
-                          <td className="pt-3 text-capitalize">{post.category}</td>
-                          <td className="pt-3">{post.user_id}</td>
-                          <td className="pt-3">{post.view_count}</td>
-                          <td className="pt-3">{post.likes_count}</td>
-                          <td className="pt-3">
-                            <button className={`request-${status_color(post?.status)}`}>
-                              {post.status}
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {loading && <Loading />}
-                  {errors && toast('Unable To Load data')}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
+
+        <div className="table-responsive">
+          <table className="table news-table mb-0" style={{ borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                <th style={headerCellStyle}>Title</th>
+                <th style={headerCellStyle}>Category</th>
+                <th style={headerCellStyle}>User</th>
+                <th style={headerCellStyle}>Views</th>
+                <th style={headerCellStyle}>Likes</th>
+                <th style={headerCellStyle}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {posts.map((post) => (
+                <tr key={post.id}>
+                  <td style={bodyCellStyle}>
+                    <NavLink
+                      to={`${post.id}/view`}
+                      className="fw-semibold"
+                      style={{ color: THEME_COLOR, textDecoration: 'none' }}
+                    >
+                      {post.title}
+                    </NavLink>
+                  </td>
+                  <td style={bodyCellStyle}>
+                    <span style={categoryBadgeStyle()}>{post.category || '-'}</span>
+                  </td>
+                  <td style={bodyCellStyle}>{post.user_id || '-'}</td>
+                  <td style={bodyCellStyle}>{post.view_count ?? '-'}</td>
+                  <td style={bodyCellStyle}>{post.likes_count ?? '-'}</td>
+                  <td style={bodyCellStyle}>
+                    <span style={statusBadgeStyle(post?.status)}>{post?.status || '-'}</span>
+                  </td>
+                </tr>
+              ))}
+              {!loading && posts.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="text-center text-secondary fst-italic"
+                    style={{ padding: '32px' }}
+                  >
+                    No news posts found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+          {loading && <Loading />}
+        </div>
+
+        {pagination?.total_pages > 1 ? (
+          <div
+            className="news-pagination d-flex justify-content-center"
+            style={{ padding: '16px', borderTop: '1px solid #f2f4f7' }}
+          >
+            <Paginate
+              onPageChange={handlePageClick}
+              pageRangeDisplayed={pagination.per_page}
+              pageCount={pagination.total_pages}
+              forcePage={currentPage - 1}
+            />
+          </div>
+        ) : null}
       </div>
-      <br />
-      <CNavbar colorScheme="light" className="bg-light d-flex justify-content-center">
-        <Row>
-          <Col md="12">
-            {pagination ? (
-              <Paginate
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={pagination.per_page}
-                pageCount={pagination.total_pages}
-                forcePage={currentPage - 1}
-              />
-            ) : (
-              <br />
-            )}
-          </Col>
-        </Row>
-      </CNavbar>
     </div>
   )
 }
-
-export default News

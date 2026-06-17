@@ -1,95 +1,154 @@
-import { CCard, CRow, CCol } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { formatdate } from 'src/services/CommonFunctions'
+import { formatdate, status_color } from 'src/services/CommonFunctions'
 import useFetch from 'use-http'
 import { toast } from 'react-toastify'
+import { Col, Row } from 'react-bootstrap'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 import ShowLeftBar from './show/ShowLeftBar'
 import EditNews from './EditNews'
 import ConfirmationPopup from '../shared/ConfirmationPopup'
 import CheckPermissions from 'src/permissions/CheckPermissions'
 
-function NewsShow() {
+const THEME_COLOR = '#00bfcc'
+
+const cardStyle = {
+  background: '#fff',
+  borderRadius: '16px',
+  boxShadow: '0 2px 12px rgba(0,0,0,.05)',
+  overflow: 'hidden',
+}
+
+function statusBadgeStyle(status) {
+  const palette = {
+    red: { bg: '#fdeaea', color: '#e03131' },
+    orange: { bg: '#fff4e6', color: '#e8590c' },
+    green: { bg: '#e6f9ec', color: '#1a9e54' },
+    gray: { bg: '#eef1f5', color: '#495057' },
+  }
+  const colors = palette[status_color(String(status).toLowerCase())] || palette.gray
+  return {
+    background: colors.bg,
+    color: colors.color,
+    padding: '4px 14px',
+    borderRadius: '999px',
+    fontSize: '12px',
+    fontWeight: 600,
+    textTransform: 'capitalize',
+    display: 'inline-block',
+  }
+}
+
+const actionBtnStyle = {
+  borderRadius: '10px',
+  height: '38px',
+  fontWeight: 600,
+  border: 'none',
+  padding: '0 16px',
+}
+
+const heroHeaderRowStyle = { gap: '12px' }
+
+export default function NewsShow() {
   const { postId } = useParams()
   const [data, setData] = useState({})
   const [edit, setEdit] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [deleteVisible, setDeleteVisible] = useState(false)
   const navigate = useNavigate()
+  const { get, put, del, response } = useFetch()
+
   useEffect(() => {
     fetchPost()
-  }, [])
-  const { get, put, post, del, response } = useFetch()
+  }, [postId])
 
-  const fetchPost = async () => {
-    const endpoint = await get(`v1/admin/posts/${postId}`)
-
-    if (response.ok) {
+  async function fetchPost() {
+    const endpoint = await get(`/v1/admin/posts/${postId}`)
+    if (response.ok && endpoint?.data) {
       setData(endpoint.data)
     }
   }
-  const deletePost = async () => {
-    const endpoint = await del(`v1/admin/posts/${postId}`)
+
+  async function deletePost() {
+    await del(`/v1/admin/posts/${postId}`)
     if (response.ok) {
-      toast.success('Post is deleted.')
+      toast.success('Post deleted successfully')
       navigate('/news')
     } else {
-      toast.success('Error occured while deleting post.')
+      toast.error('Error occurred while deleting post')
     }
   }
 
-  const publishUnpublishPost = async (type) => {
-    const endpoint = await put(`v1/admin/posts/${postId}/${type}`)
-
+  async function publishUnpublishPost(type) {
+    await put(`/v1/admin/posts/${postId}/${type}`)
     if (response.ok) {
-      toast.success('Post status updated.')
+      toast.success('Post status updated')
       fetchPost()
     }
   }
 
-  const callPublishUnpublish = (type) => {
-    const request = type == 'draft' ? 'publish' : 'unpublish'
+  function callPublishUnpublish() {
+    const request = data.status === 'draft' ? 'publish' : 'unpublish'
     publishUnpublishPost(request)
   }
 
-  const handleEditSavePost = async (type) => {
+  function handleEditToggle() {
     setEdit(!edit)
-    fetchPost()
-  }
-
-  async function handleDeleteComment(id) {
-    await del(`/v1/admin/posts/${postId}/comments/${id}`, {})
-    if (response.ok) {
-      toast.success('Comment deleted succesfully.')
+    if (edit) {
       fetchPost()
     }
   }
 
+  async function handleDeleteComment(id) {
+    await del(`/v1/admin/posts/${postId}/comments/${id}`)
+    if (response.ok) {
+      toast.success('Comment deleted successfully')
+      fetchPost()
+    }
+  }
+
+  const heroStatusStyle = {
+    ...statusBadgeStyle(data?.status),
+    background: 'rgba(255,255,255,0.2)',
+    color: '#fff',
+  }
+
   return (
-    <>
-      <div className="d-flex justify-content-end" style={{ overflow: 'hidden' }}>
-        {edit ? (
-          ''
-        ) : (
+    <div style={{ padding: '20px' }}>
+      <div
+        className="d-flex justify-content-end flex-wrap"
+        style={{ gap: '10px', marginBottom: '16px' }}
+      >
+        {!edit && (
           <CheckPermissions
             component={
-              <button className="btn custom_theme_button" onClick={handleEditSavePost}>
+              <button
+                type="button"
+                className="btn d-flex align-items-center"
+                onClick={handleEditToggle}
+                style={{ ...actionBtnStyle, background: THEME_COLOR, color: '#fff', gap: '6px' }}
+              >
+                <CIcon icon={freeSet.cilPencil} size="sm" />
                 Edit
               </button>
             }
             keys={['posts', 'edit']}
           />
         )}
-        {edit ? (
-          ''
-        ) : (
+        {!edit && (
           <CheckPermissions
             component={
               <button
-                className="btn custom_theme_button"
-                onClick={() => callPublishUnpublish(data.status)}
+                type="button"
+                className="btn"
+                onClick={callPublishUnpublish}
+                style={{
+                  ...actionBtnStyle,
+                  background: 'rgba(0,191,204,0.12)',
+                  color: THEME_COLOR,
+                }}
               >
-                {data.status == 'draft' ? 'Publish' : 'Unpublish'}
+                {data.status === 'draft' ? 'Publish' : 'Unpublish'}
               </button>
             }
             keys={['posts', 'edit']}
@@ -99,11 +158,16 @@ function NewsShow() {
           sure_callback={deletePost}
           message={{
             header: 'Delete',
-            body: 'Are you sure want to delete this post?',
+            body: 'Are you sure you want to delete this post?',
             button_name: 'Delete',
           }}
           button={
-            <button className="btn custom_red_button" onClick={() => setDeleteVisible(true)}>
+            <button
+              type="button"
+              className="btn"
+              onClick={() => setDeleteVisible(true)}
+              style={{ ...actionBtnStyle, background: '#e03131', color: '#fff' }}
+            >
               Delete
             </button>
           }
@@ -111,36 +175,49 @@ function NewsShow() {
           hide_show={() => setDeleteVisible(!deleteVisible)}
         />
       </div>
-      <CRow>
+
+      <Row>
         <ShowLeftBar data={data} delete_comment={handleDeleteComment} />
 
-        <CCol md="9">
+        <Col md={9}>
           {edit ? (
             <CheckPermissions
-              component={<EditNews data={data} callback={handleEditSavePost} />}
+              component={<EditNews data={data} callback={handleEditToggle} />}
               keys={['posts', 'edit']}
             />
           ) : (
-            <CCard className="my-3 rounded-0 bg-white border-0 p-3">
-              <div>
-                <div>
-                  <h3 className="theme_color p-0 m-0">{data.title}</h3>
-                  <div className="d-flex justify-content-end">
-                    <small className="fst-italic text-secondary">
-                      {formatdate(data?.content?.created_at)}
+            <div style={cardStyle}>
+              <div
+                style={{
+                  background: `linear-gradient(135deg, ${THEME_COLOR} 0%, #0098a3 100%)`,
+                  padding: '24px',
+                  color: '#fff',
+                }}
+              >
+                <div
+                  className="d-flex justify-content-between align-items-start flex-wrap"
+                  style={heroHeaderRowStyle}
+                >
+                  <div>
+                    <h4 className="mb-2" style={{ fontWeight: 700 }}>
+                      {data.title || 'News Post'}
+                    </h4>
+                    <small style={{ opacity: 0.9 }}>
+                      {formatdate(data?.content?.created_at) || '-'}
                     </small>
                   </div>
-                </div>
-                <hr className="text-seocndary" />
-                <div style={{ minHeight: '60vh' }}>
-                  <p>{data?.content?.body}</p>
+                  <span style={heroStatusStyle}>{data?.status || '-'}</span>
                 </div>
               </div>
-            </CCard>
+              <div style={{ padding: '24px', minHeight: '50vh' }}>
+                <p style={{ color: '#1f2933', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>
+                  {data?.content?.body || '-'}
+                </p>
+              </div>
+            </div>
           )}
-        </CCol>
-      </CRow>
-    </>
+        </Col>
+      </Row>
+    </div>
   )
 }
-export default NewsShow
