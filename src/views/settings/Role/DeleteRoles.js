@@ -1,89 +1,97 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import PropTypes from 'prop-types'
 import useFetch from 'use-http'
-
-import { Button } from 'react-bootstrap'
-import {
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
-  CContainer,
-} from '@coreui/react'
+import { Modal, Button } from 'react-bootstrap'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
 export default function DeleteRoles({ roleId, after_submit }) {
   const [visible, setVisible] = useState(false)
   const { delete: deleteReq, response } = useFetch()
 
   const handle_roles_delete = async () => {
-    const api = await deleteReq(`/v1/admin/roles/${roleId}`)
+    await deleteReq(`/v1/admin/roles/${roleId}`)
     if (response.ok) {
-      toast('Role Deleted: Operation Successful')
+      toast.success('Role deleted successfully')
       after_submit()
-      setVisible(!visible)
+      setVisible(false)
     } else {
-      toast(response.data?.message)
+      toast.error(response.data?.message || 'Unable to delete role')
     }
   }
 
   return (
-    <div>
-      <button
-        type="button"
-        className="tooltip_button"
-        data-mdb-ripple-init
-        onClick={() => setVisible(!visible)}
-      >
+    <>
+      <button type="button" className="tooltip_button" onClick={() => setVisible(true)}>
         Delete
       </button>
 
-      <CModal
-        alignment="center"
-        size="lg"
-        visible={visible}
+      <Modal
+        show={visible}
+        onHide={() => setVisible(false)}
+        centered
         backdrop="static"
-        onClose={() => setVisible(false)}
-        aria-labelledby="StaticBackdropExampleLabel"
+        contentClassName="border-0 overflow-hidden rounded-4"
       >
-        <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel"> Delete </CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CContainer>
-            <p>Confirm Permanent Deletion?</p>
-            <div className="text-center">
-              <CModalFooter>
-                <Button
-                  data-mdb-ripple-init
-                  type="submit"
-                  className="btn  btn-primary btn-block"
-                  onClick={handle_roles_delete}
-                  style={{
-                    marginTop: '5px',
-                    color: 'white',
-                    backgroundColor: 'red',
-                    border: '0px',
-                  }}
-                >
-                  Delete
-                </Button>
-                <CButton
-                  color="secondary"
-                  style={{ border: '0px', color: 'white' }}
-                  onClick={() => setVisible(false)}
-                >
-                  Cancel
-                </CButton>
-              </CModalFooter>
+        <Modal.Header
+          closeButton
+          style={{
+            border: 'none',
+            padding: '24px 24px 0',
+          }}
+        >
+          <div className="d-flex align-items-center w-100" style={{ gap: '14px' }}>
+            <div
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '12px',
+                background: '#fdeaea',
+                color: '#e03131',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <CIcon icon={freeSet.cilTrash} size="lg" />
             </div>
-            <div className="clearfix"></div>
-          </CContainer>
-        </CModalBody>
-      </CModal>
-    </div>
+            <div>
+              <h5 className="mb-1" style={{ fontWeight: 700, color: '#1f2933' }}>
+                Delete Role
+              </h5>
+              <p className="mb-0" style={{ color: '#8a94a6', fontSize: '14px' }}>
+                This action cannot be undone. Confirm permanent deletion?
+              </p>
+            </div>
+          </div>
+        </Modal.Header>
+
+        <Modal.Body style={{ padding: '16px 24px 24px' }}>
+          <div className="d-flex justify-content-end" style={{ gap: '10px' }}>
+            <Button
+              variant="light"
+              onClick={() => setVisible(false)}
+              style={{ borderRadius: '8px', fontWeight: 600 }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handle_roles_delete}
+              style={{
+                background: '#e03131',
+                border: 'none',
+                borderRadius: '8px',
+                fontWeight: 600,
+              }}
+            >
+              Delete
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
   )
 }
 

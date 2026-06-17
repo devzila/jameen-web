@@ -1,119 +1,163 @@
 import React, { useState } from 'react'
 import useFetch from 'use-http'
-import Select from 'react-select'
 import { toast } from 'react-toastify'
-import { useForm, Controller } from 'react-hook-form'
-import { Button, Form, Row, Col } from 'react-bootstrap'
+import { useForm } from 'react-hook-form'
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types'
+import CIcon from '@coreui/icons-react'
+import { freeSet } from '@coreui/icons'
 
-import {
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
-  CContainer,
-} from '@coreui/react'
-import { propTypes } from 'react-bootstrap/esm/Image'
+const THEME_COLOR = '#00bfcc'
+const labelStyle = { fontWeight: 600, color: '#1f2933' }
+const cardStyle = {
+  background: '#f8fafc',
+  border: '1px solid #eef1f5',
+  borderRadius: '14px',
+  padding: '18px',
+}
 
 export default function AddRoles({ after_submit }) {
   const [visible, setVisible] = useState(false)
-
-  const { register, handleSubmit, control, reset } = useForm()
+  const { register, handleSubmit, reset } = useForm()
   const { post, response } = useFetch()
 
-  //post method
   async function onSubmit(data) {
     await post(`/v1/admin/roles`, { role: data })
     if (response.ok) {
-      toast('New Role Added: Operation Successful')
+      toast.success('New role added successfully')
       after_submit()
       reset()
-
-      setVisible(!visible)
+      setVisible(false)
     } else {
-      toast(response.data?.message)
+      toast.error(response.data?.message || 'Unable to add role')
     }
   }
 
+  function handleClose() {
+    setVisible(false)
+    reset()
+  }
+
   return (
-    <div>
+    <>
       <button
         type="button"
-        className="btn flex s-3 custom_theme_button"
-        data-mdb-ripple-init
-        onClick={() => setVisible(!visible)}
+        className="btn d-flex align-items-center"
+        onClick={() => setVisible(true)}
+        style={{
+          gap: '6px',
+          background: THEME_COLOR,
+          color: '#fff',
+          borderRadius: '10px',
+          height: '38px',
+          fontWeight: 600,
+          border: 'none',
+          flexShrink: 0,
+        }}
       >
+        <CIcon icon={freeSet.cilPlus} size="sm" />
         Add Role
       </button>
-      <CModal
-        alignment="center"
-        size="xl"
-        visible={visible}
-        backdrop="static"
-        onClose={() => setVisible(false)}
-        aria-labelledby="StaticBackdropExampleLabel"
-      >
-        <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Add Role </CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CContainer>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              <Row>
-                <div className="col text-center">
-                  <p className="text-center display-6" style={{ color: '#00bfcc' }}>
-                    JAMEEN
-                  </p>
-                </div>
-              </Row>
 
-              <Row>
-                <Col className="pr-1 mt-3" md="12">
+      <Modal
+        show={visible}
+        onHide={handleClose}
+        centered
+        size="lg"
+        backdrop="static"
+        contentClassName="border-0 overflow-hidden rounded-4"
+      >
+        <Modal.Header
+          closeButton
+          closeVariant="white"
+          style={{
+            background: `linear-gradient(135deg, ${THEME_COLOR} 0%, #0098a3 100%)`,
+            border: 'none',
+            padding: '20px 24px',
+            borderTopLeftRadius: 'inherit',
+            borderTopRightRadius: 'inherit',
+          }}
+        >
+          <Modal.Title style={{ color: '#fff' }}>
+            <div className="d-flex align-items-center" style={{ gap: '14px' }}>
+              <div
+                style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '12px',
+                  background: 'rgba(255,255,255,0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <CIcon icon={freeSet.cilPeople} size="lg" />
+              </div>
+              <div className="d-flex flex-column">
+                <span style={{ fontSize: '18px', fontWeight: 700, lineHeight: 1.2 }}>Add Role</span>
+                <span style={{ fontSize: '12px', fontWeight: 400, opacity: 0.9 }}>
+                  Create a new role with permissions
+                </span>
+              </div>
+            </div>
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body style={{ padding: '22px' }}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <div style={cardStyle}>
+              <Row className="g-3">
+                <Col md={12}>
                   <Form.Group>
-                    <label>Name</label>
+                    <Form.Label style={labelStyle}>
+                      Name <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
                     <Form.Control
-                      placeholder="Name"
+                      placeholder="Role name"
                       type="text"
                       {...register('name', { required: true })}
-                    ></Form.Control>
+                    />
                   </Form.Group>
                 </Col>
-              </Row>
-              <Row>
-                <Col className="pr-3 mt-3" md="12">
+                <Col md={12}>
                   <Form.Group>
-                    <label>Description</label>
+                    <Form.Label style={labelStyle}>Description</Form.Label>
                     <Form.Control
+                      as="textarea"
+                      rows={3}
                       placeholder="Description"
-                      type="text"
+                      style={{ resize: 'none' }}
                       {...register('description')}
-                    ></Form.Control>
+                    />
                   </Form.Group>
                 </Col>
               </Row>
+            </div>
 
-              <div className="text-center">
-                <CModalFooter>
-                  <Button data-mdb-ripple-init type="submit" className="btn custom_theme_button">
-                    Submit
-                  </Button>
-                  <CButton
-                    color="secondary"
-                    className="custom_grey_button"
-                    onClick={() => setVisible(false)}
-                  >
-                    Close
-                  </CButton>
-                </CModalFooter>
-              </div>
-            </Form>
-            <div className="clearfix"></div>
-          </CContainer>
-        </CModalBody>
-      </CModal>
-    </div>
+            <Modal.Footer style={{ border: 'none', padding: '16px 0 0' }}>
+              <Button
+                variant="light"
+                onClick={handleClose}
+                style={{ borderRadius: '8px', fontWeight: 600 }}
+              >
+                Close
+              </Button>
+              <Button
+                type="submit"
+                style={{
+                  background: THEME_COLOR,
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: 600,
+                }}
+              >
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </>
   )
 }
 
