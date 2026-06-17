@@ -1,26 +1,40 @@
 import React, { useEffect, useState } from 'react'
-import PropTypes, { element } from 'prop-types'
+import PropTypes from 'prop-types'
 import useFetch from 'use-http'
 import { useForm, Controller, useFieldArray } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import SearchableSelect from 'src/components/SearchableSelect'
 import { useParams } from 'react-router-dom'
-
-import {
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
-  CModalTitle,
-  CContainer,
-} from '@coreui/react'
-
-import { Button, Form, Row, Col } from 'react-bootstrap'
-
-import { cilDelete, cilNoteAdd } from '@coreui/icons'
+import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
+import { cilDelete, cilNoteAdd, freeSet } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { removeEmptyDocuments } from 'src/services/CommonFunctions'
+
+const THEME_COLOR = '#00bfcc'
+const labelStyle = { fontWeight: 600, color: '#1f2933' }
+const cardStyle = {
+  background: '#f8fafc',
+  border: '1px solid #eef1f5',
+  borderRadius: '14px',
+  padding: '18px',
+}
+
+function SectionTitle({ children }) {
+  return (
+    <div className="d-flex align-items-center mb-3" style={{ gap: '8px' }}>
+      <span
+        style={{ width: '4px', height: '18px', background: THEME_COLOR, borderRadius: '2px' }}
+      />
+      <h6 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+        {children}
+      </h6>
+    </div>
+  )
+}
+
+SectionTitle.propTypes = {
+  children: PropTypes.node,
+}
 
 export default function MovingInUnit({ unitNo, unitId, after_submit }) {
   const { register, handleSubmit, setValue, control, watch, reset } = useForm()
@@ -164,7 +178,7 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
       allotment: processed_data,
     })
     if (response.ok) {
-      toast('Moved In : Operation Successful')
+      toast.success('Moved in successfully')
       reset()
       updatedUnitId = undefined
       after_submit()
@@ -175,47 +189,98 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
     } else {
       setSubmitLoader(false)
       setErrors(response?.data)
-
-      toast(response.data?.message)
+      toast.error(response.data?.message || 'Unknown Error')
     }
   }
+
   function handlClose() {
     setVisible(false)
     setTemp_base64([])
+    reset()
   }
 
   return (
-    <div>
+    <>
       <button
         type="button"
-        className="btn custom_theme_button "
-        data-mdb-ripple-init
+        className="btn d-flex align-items-center"
         onClick={() => setVisible(true)}
+        style={{
+          gap: '6px',
+          background: THEME_COLOR,
+          color: '#fff',
+          borderRadius: '10px',
+          height: '38px',
+          fontWeight: 600,
+          border: 'none',
+        }}
       >
+        <CIcon icon={freeSet.cilPlus} size="sm" />
         Moving In
       </button>
-      <CModal
-        alignment="center"
+
+      <Modal
+        show={visible}
+        onHide={handlClose}
+        centered
         size="xl"
-        visible={visible}
         backdrop="static"
-        onClose={handlClose}
-        aria-labelledby="StaticBackdropExampleLabel"
+        contentClassName="border-0 overflow-hidden rounded-4"
       >
-        <CModalHeader>
-          <CModalTitle id="StaticBackdropExampleLabel">Moving In </CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CContainer>
-            <Row>
-              <Col className="pr-1 mt-3" md="4">
-                <label>
-                  <b>Unit No: </b>
-                  {unitNo ? unitNo : null}
-                </label>
-                {unitNo ? null : (
-                  <Col className="pr-1 mt-3">
+        <Modal.Header
+          closeButton
+          closeVariant="white"
+          style={{
+            background: `linear-gradient(135deg, ${THEME_COLOR} 0%, #0098a3 100%)`,
+            border: 'none',
+            padding: '20px 24px',
+            borderTopLeftRadius: 'inherit',
+            borderTopRightRadius: 'inherit',
+          }}
+        >
+          <Modal.Title style={{ color: '#fff' }}>
+            <div className="d-flex align-items-center" style={{ gap: '14px' }}>
+              <div
+                style={{
+                  width: '46px',
+                  height: '46px',
+                  borderRadius: '12px',
+                  background: 'rgba(255,255,255,0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <CIcon icon={freeSet.cilHome} size="lg" />
+              </div>
+              <div className="d-flex flex-column">
+                <span style={{ fontSize: '18px', fontWeight: 700, lineHeight: 1.2 }}>
+                  Moving In
+                </span>
+                <span style={{ fontSize: '12px', fontWeight: 400, opacity: 0.9 }}>
+                  Register a resident moving into a unit
+                </span>
+              </div>
+            </div>
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body style={{ padding: '22px' }}>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <div style={{ ...cardStyle, marginBottom: '16px' }}>
+              <SectionTitle>Moving In Details</SectionTitle>
+              <Row className="g-3">
+                <Col md={12}>
+                  {unitNo ? (
+                    <div className="mb-2" style={{ color: '#495057' }}>
+                      <span style={labelStyle}>Unit No: </span>
+                      {unitNo}
+                    </div>
+                  ) : (
                     <Form.Group>
+                      <Form.Label style={labelStyle}>
+                        Unit <span style={{ color: '#e03131' }}>*</span>
+                      </Form.Label>
                       <Controller
                         required
                         name="unit_id"
@@ -246,18 +311,13 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
                         control={control}
                       />
                     </Form.Group>
-                  </Col>
-                )}
-              </Col>
-            </Row>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              <Row>
-                <Col className="pr-1 mt-3" md="12">
+                  )}
+                </Col>
+                <Col md={12}>
                   <Form.Group>
-                    <label>
-                      Resident <small className="text-danger"> *</small>
-                    </label>
-
+                    <Form.Label style={labelStyle}>
+                      Resident <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
                     <Controller
                       name="resident_ids"
                       render={({ field }) => (
@@ -284,13 +344,11 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
                     />
                   </Form.Group>
                 </Col>
-
-                <Col className="pr-1 mt-3" md="12">
+                <Col md={12}>
                   <Form.Group>
-                    <label>
-                      Primary Resident <small className="text-danger"> *</small>
-                    </label>
-
+                    <Form.Label style={labelStyle}>
+                      Primary Resident <span style={{ color: '#e03131' }}>*</span>
+                    </Form.Label>
                     <Controller
                       name="primary_resident_id"
                       render={({ field }) => (
@@ -324,109 +382,128 @@ export default function MovingInUnit({ unitNo, unitId, after_submit }) {
                     />
                   </Form.Group>
                 </Col>
-              </Row>
-
-              <Row>
-                <Col className="pr-3 mt-3" md="12">
+                <Col md={12}>
                   <Form.Group>
-                    <label>Moving In Date</label>
+                    <Form.Label style={labelStyle}>Moving In Date</Form.Label>
+                    <Form.Control required type="date" {...register('moving_in_date')} />
+                  </Form.Group>
+                </Col>
+                <Col md={12}>
+                  <Form.Group>
+                    <Form.Label style={labelStyle}>Notes</Form.Label>
                     <Form.Control
-                      required
-                      type="date"
-                      {...register('moving_in_date')}
-                    ></Form.Control>
+                      as="textarea"
+                      rows={3}
+                      placeholder="Notes"
+                      style={{ resize: 'none' }}
+                      {...register('notes')}
+                    />
                   </Form.Group>
                 </Col>
               </Row>
-              <Col className="pr-1 mt-3" md="12">
-                <Form.Group>
-                  <label>Notes</label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    placeholder="Notes"
-                    {...register('notes')}
-                  ></Form.Control>
-                </Form.Group>
-              </Col>
+            </div>
+
+            <div style={cardStyle}>
+              <SectionTitle>Documents</SectionTitle>
 
               {fields.map((field, index) => (
-                <Row key={field.id}>
-                  <b className="mt-4"> </b>
-                  <Col className="pr-1 mt-3" md="6">
-                    <Form.Group>
-                      <b>Document Name</b>
-                      <Form.Control
-                        placeholder=" Name"
-                        type="text"
-                        {...register(`documents_attributes.${index}.name`)}
-                      ></Form.Control>
-                    </Form.Group>
-                  </Col>
-
-                  <Col className="pr-1 mt-3 mb-2" md="6">
-                    <Form.Group>
-                      <label>
-                        <b>Document</b>
-                      </label>
-                      <Form.Control
-                        type="file"
-                        accept=".jpg, .jpeg, .png"
-                        {...register(`documents_attributes.${index}.file.data`)}
-                        onChange={(e) => handleFileSelection(e, index)}
-                      ></Form.Control>
-                    </Form.Group>
-                  </Col>
-                  <Col className="pr-1 mt-3" md="6">
-                    <Form.Group>
-                      <label>Description</label>
-                      <Form.Control
-                        placeholder="Description"
-                        type="text"
-                        {...register(`documents_attributes.${index}.description`)}
-                      ></Form.Control>
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    {fields.length > 1 && (
-                      <Col className="justify-content-center mt-2" md="4">
-                        <CIcon
-                          className="mt-3"
-                          onClick={() => remove(index)}
-                          icon={cilDelete}
-                          size="xl"
-                          style={{ '--ci-primary-color': 'red' }}
+                <div
+                  key={field.id}
+                  style={{
+                    background: '#fff',
+                    border: '1px solid #eef1f5',
+                    borderRadius: '12px',
+                    padding: '14px',
+                    marginBottom: index < fields.length - 1 ? '12px' : 0,
+                  }}
+                >
+                  <Row className="g-3 align-items-end">
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label style={labelStyle}>Document Name</Form.Label>
+                        <Form.Control
+                          placeholder="Name"
+                          type="text"
+                          {...register(`documents_attributes.${index}.name`)}
                         />
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label style={labelStyle}>Document</Form.Label>
+                        <Form.Control
+                          type="file"
+                          accept=".jpg, .jpeg, .png"
+                          {...register(`documents_attributes.${index}.file.data`)}
+                          onChange={(e) => handleFileSelection(e, index)}
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={fields.length > 1 ? 10 : 12}>
+                      <Form.Group>
+                        <Form.Label style={labelStyle}>Description</Form.Label>
+                        <Form.Control
+                          placeholder="Description"
+                          type="text"
+                          {...register(`documents_attributes.${index}.description`)}
+                        />
+                      </Form.Group>
+                    </Col>
+                    {fields.length > 1 && (
+                      <Col md={2} className="d-flex justify-content-end">
+                        <button
+                          type="button"
+                          className="btn btn-link p-0"
+                          onClick={() => remove(index)}
+                          aria-label="Remove document"
+                        >
+                          <CIcon icon={cilDelete} size="lg" style={{ color: '#e03131' }} />
+                        </button>
                       </Col>
                     )}
-                  </Col>
-                </Row>
+                  </Row>
+                </div>
               ))}
-              <Col className="m-3 d-flex justify-content-center">
-                <CButton
-                  className=" btn custom-add-more"
+
+              <div className="d-flex justify-content-center mt-3">
+                <Button
+                  type="button"
+                  variant="light"
+                  className="d-flex align-items-center"
+                  style={{ gap: '6px', borderRadius: '8px', fontWeight: 600 }}
                   onClick={() => append({ name: '', description: '', file: { data: '' } })}
                 >
-                  <CIcon className="mt-1" icon={cilNoteAdd} />
-                  ADD More
-                </CButton>
-              </Col>
-              <div className="text-center">
-                <CModalFooter>
-                  <Button data-mdb-ripple-init type="submit" className="btn  custom_theme_button">
-                    Submit
-                  </Button>
-                  <CButton className="btn custom_grey_button" onClick={handlClose}>
-                    Close
-                  </CButton>
-                </CModalFooter>
+                  <CIcon icon={cilNoteAdd} size="sm" />
+                  Add More
+                </Button>
               </div>
-            </Form>
-            <div className="clearfix"></div>
-          </CContainer>
-        </CModalBody>
-      </CModal>
-    </div>
+            </div>
+
+            <Modal.Footer style={{ border: 'none', padding: '16px 0 0' }}>
+              <Button
+                variant="light"
+                onClick={handlClose}
+                style={{ borderRadius: '8px', fontWeight: 600 }}
+              >
+                Close
+              </Button>
+              <Button
+                type="submit"
+                disabled={submitLoader}
+                style={{
+                  background: THEME_COLOR,
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: 600,
+                }}
+              >
+                {submitLoader ? 'Submitting...' : 'Submit'}
+              </Button>
+            </Modal.Footer>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </>
   )
 }
 MovingInUnit.propTypes = {
