@@ -1,17 +1,113 @@
-import { CCol, CCard, CListGroupItem, CRow, CTooltip } from '@coreui/react'
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import useFetch from 'use-http'
 import { useParams } from 'react-router-dom'
 import CIcon from '@coreui/icons-react'
 import { freeSet } from '@coreui/icons'
+import { CTooltip } from '@coreui/react'
 import logo from '../../../assets/images/avatars/default.png'
 import { formatdate } from 'src/services/CommonFunctions'
 import { toast } from 'react-toastify'
 import EditResidents from '../EditResidents'
 import CheckPermissions from 'src/permissions/CheckPermissions'
 
+const THEME_COLOR = '#00bfcc'
 const NOTES_PREVIEW_LENGTH = 40
+
+const cardStyle = {
+  background: '#fff',
+  borderRadius: '16px',
+  boxShadow: '0 2px 12px rgba(0,0,0,.05)',
+  overflow: 'hidden',
+}
+
+const headerCellStyle = {
+  color: '#8a94a6',
+  fontSize: '11px',
+  fontWeight: 600,
+  textTransform: 'uppercase',
+  letterSpacing: '0.04em',
+  borderBottom: '1px solid #eef1f5',
+  padding: '14px 16px',
+  whiteSpace: 'nowrap',
+}
+
+const bodyCellStyle = {
+  padding: '14px 16px',
+  borderBottom: '1px solid #f2f4f7',
+  color: '#1f2933',
+  verticalAlign: 'middle',
+}
+
+function SectionHeader({ icon, title, action }) {
+  return (
+    <div
+      className="d-flex justify-content-between align-items-center"
+      style={{ padding: '20px 24px', borderBottom: '1px solid #f2f4f7' }}
+    >
+      <div className="d-flex align-items-center" style={{ gap: '12px' }}>
+        <div
+          style={{
+            width: '38px',
+            height: '38px',
+            borderRadius: '10px',
+            background: 'rgba(0,191,204,0.12)',
+            color: THEME_COLOR,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CIcon icon={icon} size="lg" />
+        </div>
+        <h6 className="mb-0" style={{ fontWeight: 700, color: '#1f2933' }}>
+          {title}
+        </h6>
+      </div>
+      {action}
+    </div>
+  )
+}
+
+SectionHeader.propTypes = {
+  icon: PropTypes.object,
+  title: PropTypes.string,
+  action: PropTypes.node,
+}
+
+function InfoTile({ label, value, className = '' }) {
+  return (
+    <div
+      style={{
+        background: '#f8fafc',
+        border: '1px solid #eef1f5',
+        borderRadius: '12px',
+        padding: '14px 16px',
+      }}
+    >
+      <small
+        style={{
+          color: '#8a94a6',
+          fontSize: '11px',
+          fontWeight: 600,
+          textTransform: 'uppercase',
+          letterSpacing: '0.04em',
+        }}
+      >
+        {label}
+      </small>
+      <div className={className} style={{ color: '#1f2933', fontWeight: 600, marginTop: '4px' }}>
+        {value ?? '-'}
+      </div>
+    </div>
+  )
+}
+
+InfoTile.propTypes = {
+  label: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  className: PropTypes.string,
+}
 
 function resolvePropertyName(contract) {
   const unit = contract?.unit
@@ -76,23 +172,6 @@ ContractNotesCell.propTypes = {
   notes: PropTypes.string,
 }
 
-function ResidentDataField({ label, value, valueClassName = '' }) {
-  return (
-    <div className="h-100 d-flex flex-column">
-      <div className="small theme_color text-uppercase mb-1" style={{ letterSpacing: '0.02em' }}>
-        {label}
-      </div>
-      <div className={`fw-normal text-black mb-0 ${valueClassName}`}>{value || '-'}</div>
-    </div>
-  )
-}
-
-ResidentDataField.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  valueClassName: PropTypes.string,
-}
-
 export default function ResOverview() {
   const { residentId } = useParams()
 
@@ -110,7 +189,7 @@ export default function ResOverview() {
     if (response.ok) {
       setResident_data(api?.data ?? api)
     } else {
-      toast(api?.message || response?.data?.message)
+      toast.error(api?.message || response?.data?.message)
     }
   }
 
@@ -121,171 +200,189 @@ export default function ResOverview() {
       setContracts(Array.isArray(list) ? list : [])
     } else {
       setContracts([])
-      toast(api?.message || response?.data?.message || 'Unable to load contracts.')
+      toast.error(api?.message || response?.data?.message || 'Unable to load contracts.')
     }
   }
 
-  return (
-    <>
-      <CRow className="bg-white mt-2 m-1 p-1 rounded-2 border-0">
-        <CCol md="4" sm="6">
-          <CCard className="p-5 my-3 border-0 text-center" style={{ backgroundColor: '#00bfcc' }}>
-            <div className="">
-              <img className="rounded-circle w-50 " src={resident_data.avatar || logo} />
-            </div>
-          </CCard>
-        </CCol>
-        <CCol className="col">
-          <CCard className="px-3 py-1 my-3 border-0">
-            <CListGroupItem>
-              <div className="d-flex justify-content-between align-items-center">
-                <div>
-                  <CIcon
-                    icon={freeSet.cilLineStyle}
-                    size="lg"
-                    className="me-2"
-                    style={{ color: '#00bfcc' }}
-                  />
-                  <strong>Resident Data</strong>
-                </div>
-                <div>
-                  <CheckPermissions
-                    component={<EditResidents id={residentId} />}
-                    keys={['resident', 'update']}
-                  />
-                </div>
-              </div>
+  const residentName = [resident_data?.first_name, resident_data?.last_name]
+    .filter(Boolean)
+    .join(' ')
 
-              <hr className="text-secondary mt-1 mb-2 p-0" />
-            </CListGroupItem>
-            <div className="px-2 pb-3">
-              <CRow className="g-3">
-                <CCol xs={6} md={4}>
-                  <ResidentDataField
-                    label="First Name"
-                    value={resident_data?.first_name}
-                    valueClassName="text-capitalize"
-                  />
-                </CCol>
-                <CCol xs={6} md={4}>
-                  <ResidentDataField
-                    label="Last Name"
-                    value={resident_data?.last_name}
-                    valueClassName="text-capitalize"
-                  />
-                </CCol>
-                <CCol xs={6} md={4}>
-                  <ResidentDataField
+  return (
+    <div style={{ padding: '20px' }}>
+      <style>{`
+        .resident-overview-table tbody tr { transition: background-color .15s ease; }
+        .resident-overview-table tbody tr:hover { background-color: #f5fdfe; }
+      `}</style>
+
+      <div className="row g-3">
+        <div className="col-lg-4">
+          <div style={cardStyle}>
+            <div
+              className="text-center"
+              style={{
+                background: `linear-gradient(135deg, ${THEME_COLOR} 0%, #0098a3 100%)`,
+                padding: '32px 24px 24px',
+              }}
+            >
+              <img
+                src={resident_data.avatar || logo}
+                alt={residentName || 'Resident'}
+                style={{
+                  width: '120px',
+                  height: '120px',
+                  objectFit: 'cover',
+                  borderRadius: '50%',
+                  border: '4px solid rgba(255,255,255,0.4)',
+                }}
+              />
+              <h5 className="mt-3 mb-0 text-white fw-bold text-capitalize">
+                {residentName || '-'}
+              </h5>
+              <small style={{ color: 'rgba(255,255,255,0.85)' }}>
+                {resident_data.email || '-'}
+              </small>
+            </div>
+            <div style={{ padding: '20px 24px' }}>
+              <div className="row g-3">
+                <div className="col-6">
+                  <InfoTile label="Phone" value={resident_data?.phone_number} />
+                </div>
+                <div className="col-6">
+                  <InfoTile
                     label="Gender"
                     value={resident_data?.gender}
-                    valueClassName="text-capitalize"
+                    className="text-capitalize"
                   />
-                </CCol>
-                <CCol xs={12} md={4}>
-                  <ResidentDataField label="Email" value={resident_data?.email} />
-                </CCol>
-                <CCol xs={6} md={4}>
-                  <ResidentDataField label="Phone No." value={resident_data?.phone_number} />
-                </CCol>
-                <CCol xs={6} md={4}>
-                  <ResidentDataField label="D.O.B." value={formatdate(resident_data?.dob)} />
-                </CCol>
-              </CRow>
+                </div>
+                <div className="col-12">
+                  <InfoTile label="Date of Birth" value={formatdate(resident_data?.dob)} />
+                </div>
+              </div>
             </div>
-          </CCard>
-        </CCol>
-      </CRow>
+          </div>
+        </div>
 
-      <CRow classname="g-3">
-        <CCol md="9" sm="12">
-          <CCard className="p-3  mb-3 border-0 ">
-            <CListGroupItem>
-              <CIcon icon={freeSet.cilLineStyle} size="lg" className="me-2 theme_color" />
-              <strong className="text-black">Contract Info.</strong>
-              <hr className="text-secondary" />
-            </CListGroupItem>
+        <div className="col-lg-8">
+          <div style={cardStyle}>
+            <SectionHeader
+              icon={freeSet.cilUser}
+              title="Resident Data"
+              action={
+                <CheckPermissions
+                  component={<EditResidents id={residentId} after_submit={loadResident} />}
+                  keys={['resident', 'update']}
+                />
+              }
+            />
+            <div style={{ padding: '20px 24px' }}>
+              <div className="row g-3">
+                <div className="col-md-4">
+                  <InfoTile
+                    label="First Name"
+                    value={resident_data?.first_name}
+                    className="text-capitalize"
+                  />
+                </div>
+                <div className="col-md-4">
+                  <InfoTile
+                    label="Last Name"
+                    value={resident_data?.last_name}
+                    className="text-capitalize"
+                  />
+                </div>
+                <div className="col-md-4">
+                  <InfoTile
+                    label="Gender"
+                    value={resident_data?.gender}
+                    className="text-capitalize"
+                  />
+                </div>
+                <div className="col-md-4">
+                  <InfoTile label="Email" value={resident_data?.email} />
+                </div>
+                <div className="col-md-4">
+                  <InfoTile label="Phone No." value={resident_data?.phone_number} />
+                </div>
+                <div className="col-md-4">
+                  <InfoTile label="D.O.B." value={formatdate(resident_data?.dob)} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-lg-9">
+          <div style={cardStyle}>
+            <SectionHeader icon={freeSet.cilDescription} title="Contract Info" />
             <div className="table-responsive">
-              <table className="table table-striped mb-0">
+              <table
+                className="table resident-overview-table mb-0"
+                style={{ borderCollapse: 'collapse' }}
+              >
                 <thead>
                   <tr>
-                    <th className="py-3 border-0">Unit / Building / Property</th>
-                    <th className="py-3 border-0">Start date</th>
-                    <th className="py-3 border-0">Contract type</th>
-                    <th className="py-3 border-0">End date</th>
-                    <th className="py-3 border-0">Notes</th>
+                    <th style={headerCellStyle}>Unit / Building / Property</th>
+                    <th style={headerCellStyle}>Start date</th>
+                    <th style={headerCellStyle}>Contract type</th>
+                    <th style={headerCellStyle}>End date</th>
+                    <th style={headerCellStyle}>Notes</th>
                   </tr>
                 </thead>
                 <tbody>
                   {contracts.length >= 1 ? (
                     contracts.map((contract) => (
                       <tr key={contract.id}>
-                        <td className="pt-3 text-capitalize">{formatUnitLocation(contract)}</td>
-                        <td className="pt-3">{formatdate(contract.start_date) || '-'}</td>
-                        <td className="pt-3 text-capitalize">
+                        <td style={bodyCellStyle} className="text-capitalize">
+                          {formatUnitLocation(contract)}
+                        </td>
+                        <td style={bodyCellStyle}>{formatdate(contract.start_date) || '-'}</td>
+                        <td style={bodyCellStyle} className="text-capitalize">
                           {formatContractType(contract.contract_type)}
                         </td>
-                        <td className="pt-3">{formatContractEndDate(contract.end_date)}</td>
-                        <td className="pt-3">
+                        <td style={bodyCellStyle}>{formatContractEndDate(contract.end_date)}</td>
+                        <td style={bodyCellStyle}>
                           <ContractNotesCell notes={contract.notes} />
                         </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan={5} className="text-center fst-italic py-4">
-                        No Contracts Found
+                      <td
+                        colSpan={5}
+                        className="text-center text-secondary fst-italic"
+                        style={{ padding: '32px' }}
+                      >
+                        No contracts found
                       </td>
                     </tr>
                   )}
                 </tbody>
               </table>
             </div>
-          </CCard>
-        </CCol>
-        <CCol md="3" sm="11">
-          <CCard className="p-3 border-0 shadow-sm h-90">
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Resident Log</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
-            <div className="px-2 pb-3">
-              <CRow className="g-3">
-                <CCol xs={12}>
-                  <ResidentDataField
-                    label="Last Changes"
-                    value={formatdate(resident_data?.updated_at)}
-                  />
-                </CCol>
-                <CCol xs={12}>
-                  <ResidentDataField
-                    label="Created On"
-                    value={formatdate(resident_data?.created_at)}
-                  />
-                </CCol>
-              </CRow>
-            </div>
-          </CCard>
-        </CCol>
-        <CCol md="12">
-          <CCard className="p-3 border-0 shadow-sm mb-3">
-            <CListGroupItem>
-              <CIcon
-                icon={freeSet.cilLineStyle}
-                size="lg"
-                className="me-2"
-                style={{ color: '#00bfcc' }}
-              />
-              <strong>Identity Document</strong>
-              <hr style={{ color: '#C8C2C0' }} />
-            </CListGroupItem>
+          </div>
+        </div>
 
-            <div className="px-2 py-3">
+        <div className="col-lg-3">
+          <div style={cardStyle}>
+            <SectionHeader icon={freeSet.cilHistory} title="Resident Log" />
+            <div style={{ padding: '20px 24px' }}>
+              <div className="row g-3">
+                <div className="col-12">
+                  <InfoTile label="Last Changes" value={formatdate(resident_data?.updated_at)} />
+                </div>
+                <div className="col-12">
+                  <InfoTile label="Created On" value={formatdate(resident_data?.created_at)} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12">
+          <div style={cardStyle}>
+            <SectionHeader icon={freeSet.cilFile} title="Identity Document" />
+            <div style={{ padding: '20px 24px' }}>
               {resident_data?.identity_proof_doc ? (
                 resident_data.identity_proof_doc.startsWith('data:image') ? (
                   <div className="text-center">
@@ -293,10 +390,7 @@ export default function ResOverview() {
                       src={resident_data.identity_proof_doc}
                       alt={resident_data.identity_proof_doc_name || 'Identity Document'}
                       className="img-fluid rounded border"
-                      style={{
-                        maxHeight: '350px',
-                        objectFit: 'contain',
-                      }}
+                      style={{ maxHeight: '350px', objectFit: 'contain' }}
                     />
                   </div>
                 ) : (
@@ -304,7 +398,14 @@ export default function ResOverview() {
                     href={resident_data.identity_proof_doc}
                     target="_blank"
                     rel="noreferrer"
-                    className="btn btn-outline-primary"
+                    className="btn"
+                    style={{
+                      background: 'rgba(0,191,204,0.12)',
+                      color: THEME_COLOR,
+                      borderRadius: '8px',
+                      fontWeight: 600,
+                      border: '1px solid rgba(0,191,204,0.2)',
+                    }}
                   >
                     View Document
                   </a>
@@ -313,9 +414,9 @@ export default function ResOverview() {
                 <div className="text-muted">No identity document uploaded.</div>
               )}
             </div>
-          </CCard>
-        </CCol>
-      </CRow>
-    </>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

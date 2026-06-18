@@ -10,7 +10,7 @@ import ShowContract from 'src/views/property/propertynav/Contracts/ShowContracts
 
 export default function ShowResidentPage() {
   return (
-    <div>
+    <div style={{ padding: '0 0 20px' }}>
       <ResNav />
       <Suspense>
         <Routes>

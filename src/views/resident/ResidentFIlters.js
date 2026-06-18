@@ -7,21 +7,18 @@ import { cilSync, freeSet } from '@coreui/icons'
 import { format_react_select } from 'src/services/CommonFunctions'
 import { useFetch } from 'use-http'
 import { Dropdown } from 'react-bootstrap'
-export default function ResidentFIlters({ units_type, filter_callback }) {
+
+const THEME_COLOR = '#00bfcc'
+const labelStyle = { fontWeight: 600, color: '#1f2933', fontSize: '13px' }
+
+export default function ResidentFIlters({ filter_callback }) {
   const [gender_query, setGenderQuery] = useState('')
   const [property_query, setPropertyQuery] = useState('')
-  const [property_array, setPropertyArray] = useState('')
+  const [property_array, setPropertyArray] = useState([])
+  const [hasActiveFilter, setHasActiveFilter] = useState(false)
 
   const { get, response } = useFetch()
-
-  const [visible_, setVisible_] = useState(true)
-
-  useEffect(() => {
-    queries_function()
-    fetchProperties()
-  }, [gender_query, property_query])
-
-  const { control, watch, reset, setValue, register } = useForm()
+  const { control, watch, setValue } = useForm()
 
   const gender_type = [
     { value: 0, label: 'Male' },
@@ -29,111 +26,140 @@ export default function ResidentFIlters({ units_type, filter_callback }) {
     { value: 2, label: 'Other' },
   ]
 
+  useEffect(() => {
+    fetchProperties()
+  }, [])
+
+  useEffect(() => {
+    filter_callback(gender_query + property_query)
+    setHasActiveFilter(Boolean(gender_query || property_query))
+  }, [gender_query, property_query])
+
   const handle_reset = () => {
     setValue('gender_val', null)
     setValue('property_select', null)
-    setGenderQuery(null)
-    setPropertyQuery(null)
+    setGenderQuery('')
+    setPropertyQuery('')
   }
 
   const handle_property = (val) => {
-    setValue('property_val', watch('property_val')?.value)
-
-    const query = `&q[property_id_eq]=${val.value}`
-    setPropertyQuery(query)
+    if (!val) {
+      setPropertyQuery('')
+      return
+    }
+    setPropertyQuery(`&q[property_id_eq]=${val.value}`)
   }
 
   const handle_gender = (val) => {
-    setValue('gender_val', watch('gender_val')?.value)
-    const query = `&q[gender_eq]=${val.value}`
-    setGenderQuery(query)
-  }
-
-  const queries_function = () => {
-    filter_callback(gender_query + property_query)
-    setVisible_(false)
+    if (!val) {
+      setGenderQuery('')
+      return
+    }
+    setGenderQuery(`&q[gender_eq]=${val.value}`)
   }
 
   async function fetchProperties() {
-    let endpoint = `/v1/admin/premises/properties?limit=-1`
-    const initialProperties = await get(endpoint)
+    const initialProperties = await get(`/v1/admin/premises/properties?limit=-1`)
     if (response.ok) {
       setPropertyArray(format_react_select(initialProperties.data, ['id', 'name']))
     }
   }
-  return (
-    <div className="mx-1">
-      <Dropdown data-bs-theme="light" className="d-flex" autoClose="outside">
-        <Dropdown.Toggle
-          id=" d-inline mx-2"
-          variant="secondary"
-          className="ms-2 text-start h-100 w-100 bg-white rounded-0"
-          style={{ width: '15vw', border: '1px solid #00bfcc' }}
-        >
-          <CIcon icon={freeSet.cilFilter} />
-          Filter
-        </Dropdown.Toggle>
 
-        <Dropdown.Menu
-          className="p-2 border-0 rounded-0"
-          style={{
-            boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 12px',
-            width: '20vw',
-          }}
-          variant="success"
-        >
-          {/* <Dropdown.Item className="btn btn-teritary"> */}
+  return (
+    <Dropdown align="end" autoClose="outside" className="resident-filter-dropdown">
+      <Dropdown.Toggle
+        as="button"
+        type="button"
+        className="btn d-flex align-items-center"
+        style={{
+          gap: '6px',
+          background: hasActiveFilter ? 'rgba(0,191,204,0.12)' : '#f5f7fb',
+          color: hasActiveFilter ? THEME_COLOR : '#495057',
+          border: '1px solid #eef1f5',
+          borderRadius: '10px',
+          height: '38px',
+          padding: '0 12px',
+          fontWeight: 600,
+          fontSize: '13px',
+          flexShrink: 0,
+        }}
+      >
+        <CIcon icon={freeSet.cilFilter} size="sm" />
+        Filter
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu
+        renderOnMount
+        popperConfig={{ strategy: 'fixed' }}
+        style={{
+          minWidth: '260px',
+          padding: '14px',
+          border: '1px solid #eef1f5',
+          borderRadius: '12px',
+          boxShadow: '0 6px 24px rgba(0,0,0,.08)',
+        }}
+      >
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <span style={{ fontWeight: 700, color: '#1f2933', fontSize: '14px' }}>Filters</span>
           <button
-            style={{
-              border: '0px',
-              float: 'left',
-              background: 'initial',
-            }}
+            type="button"
+            className="btn btn-link p-0 d-flex align-items-center"
+            style={{ gap: '4px', color: THEME_COLOR, fontSize: '13px', textDecoration: 'none' }}
             onClick={handle_reset}
           >
-            <CIcon icon={cilSync} /> Reset Filter
+            <CIcon icon={cilSync} size="sm" />
+            Reset
           </button>
-          {/* </Dropdown.Item> */}
-          <Dropdown.Item className="btn btn-teritary mt-2" href="#/action-3">
-            <label>Gender</label>
+        </div>
 
-            <Controller
-              name="gender_val"
-              render={({ field }) => (
-                <Select
-                  type="text"
-                  className="basic-multi-select"
-                  classNamePrefix="select"
-                  {...field}
-                  onChange={(val) => handle_gender(val)}
-                  options={gender_type}
-                />
-              )}
-              control={control}
-            />
-          </Dropdown.Item>
-          <Dropdown.Item className="btn btn-teritary" href="#/action-3">
-            <label>Property</label>
-            <Controller
-              name="property_select"
-              render={({ field }) => (
-                <Select
-                  type="text"
-                  className="basic-single"
-                  classNamePrefix="select"
-                  {...field}
-                  onChange={(val) => handle_property(val)}
-                  options={property_array}
-                />
-              )}
-              control={control}
-            />
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
-    </div>
+        <div className="mb-3">
+          <label style={labelStyle}>Gender</label>
+          <Controller
+            name="gender_val"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                isClearable
+                className="basic-single"
+                classNamePrefix="select"
+                onChange={(val) => {
+                  field.onChange(val)
+                  handle_gender(val)
+                }}
+                options={gender_type}
+                placeholder="All genders"
+              />
+            )}
+          />
+        </div>
+
+        <div>
+          <label style={labelStyle}>Property</label>
+          <Controller
+            name="property_select"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                isClearable
+                className="basic-single"
+                classNamePrefix="select"
+                onChange={(val) => {
+                  field.onChange(val)
+                  handle_property(val)
+                }}
+                options={property_array}
+                placeholder="All properties"
+              />
+            )}
+          />
+        </div>
+      </Dropdown.Menu>
+    </Dropdown>
   )
 }
+
 ResidentFIlters.propTypes = {
   filter_callback: PropTypes.func,
   units_type: PropTypes.array,
